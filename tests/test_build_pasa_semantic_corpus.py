@@ -123,6 +123,25 @@ def test_conflicting_duplicate_metadata_fails(tmp_path: Path) -> None:
         build_semantic_corpus(metadata, pasa, tmp_path / "output.jsonl")
 
 
+def test_official_json_snapshot_name_is_streamed_as_jsonl(tmp_path: Path) -> None:
+    pasa = tmp_path / "pasa.json"
+    pasa.write_text(json.dumps({"2501.00001": "Paper"}), encoding="utf-8")
+    metadata = tmp_path / "arxiv-metadata-oai-snapshot.json"
+    _write_jsonl(
+        metadata,
+        [
+            {"id": "2501.00001", "abstract": "Abstract"},
+            {"id": "2501.00002", "abstract": "Unmatched"},
+        ],
+    )
+
+    report = build_semantic_corpus(metadata, pasa, tmp_path / "output.jsonl")
+
+    assert report.input_rows == 2
+    assert report.exact_matches == 1
+    assert report.output_rows == 1
+
+
 def test_evaluator_gold_paths_are_rejected(tmp_path: Path) -> None:
     pasa = tmp_path / "pasa.json"
     pasa.write_text(json.dumps({"2501.00001": "Paper"}), encoding="utf-8")

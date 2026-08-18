@@ -16,7 +16,7 @@ from collections import Counter
 from collections.abc import Iterable, Iterator, Mapping
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, BinaryIO
 
 
 _ARXIV_ID_RE = re.compile(
@@ -293,26 +293,39 @@ def _iter_source_records(path: Path) -> Iterator[Mapping[str, Any]]:
                     "metadata archive must contain exactly one CSV, JSON, or JSONL member"
                 )
             with archive.open(members[0]) as handle:
-                yield from _iter_text_records(handle.read().decode("utf-8"), members[0])
+                yield from _iter_stream_records(handle, members[0])
         return
-    yield from _iter_text_records(path.read_text(encoding="utf-8"), path.name)
+    with path.open("rb") as handle:
+        yield from _iter_stream_records(handle, path.name)
 
 
-def _iter_text_records(text: str, name: str) -> Iterator[Mapping[str, Any]]:
+def _iter_stream_records(handle: BinaryIO, name: str) -> Iterator[Mapping[str, Any]]:
     suffix = Path(name).suffix.casefold()
+    text_handle = io.TextIOWrapper(handle, encoding="utf-8", newline="")
     if suffix == ".csv":
-        reader = csv.DictReader(io.StringIO(text))
+        reader = csv.DictReader(text_handle)
         yield from (row for row in reader if row)
         return
     if suffix == ".jsonl":
-        for line in text.splitlines():
+        for line in text_handle:
             if line.strip():
                 payload = json.loads(line)
                 if not isinstance(payload, Mapping):
                     raise ValueError("metadata JSONL rows must be objects")
                 yield payload
         return
-    payload = json.loads(text)
+    if (
+        suffix == ".json"
+        and Path(name).name.casefold() == "arxiv-metadata-oai-snapshot.json"
+    ):
+        for line in text_handle:
+            if line.strip():
+                payload = json.loads(line)
+                if not isinstance(payload, Mapping):
+                    raise ValueError("metadata JSONL rows must be objects")
+                yield payload
+        return
+    payload = json.load(text_handle)
     if isinstance(payload, Mapping):
         for key in ("papers", "records", "data"):
             if isinstance(payload.get(key), list):
