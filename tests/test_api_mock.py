@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import pytest
 from fastapi.testclient import TestClient
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -110,6 +111,7 @@ def test_runtime_config_shows_local_hybrid_from_env(
     tmp_path: Path,
     monkeypatch,
 ) -> None:
+    faiss = pytest.importorskip("faiss")
     _clear_llm_env(monkeypatch)
     _clear_local_bm25_env(monkeypatch)
     _clear_local_hybrid_env(monkeypatch)
@@ -131,9 +133,12 @@ def test_runtime_config_shows_local_hybrid_from_env(
     index_dir.mkdir()
     model_dir.mkdir()
     np.save(index_dir / "embeddings.npy", np.array([[1.0, 0.0, 0.0]], dtype=np.float32))
+    faiss_index = faiss.IndexHNSWFlat(3, 4, faiss.METRIC_INNER_PRODUCT)
+    faiss_index.add(np.array([[1.0, 0.0, 0.0]], dtype=np.float32))
+    faiss.write_index(faiss_index, str(index_dir / "index.faiss"))
     corpus_bytes = semantic_corpus.read_bytes()
     metadata = {
-        "schema_version": "1",
+        "schema_version": "2",
         "semantic_corpus_sha256": hashlib.sha256(corpus_bytes).hexdigest(),
         "semantic_corpus_size_bytes": len(corpus_bytes),
         "document_count": 1,
@@ -142,6 +147,17 @@ def test_runtime_config_shows_local_hybrid_from_env(
         "model_path": str(model_dir.resolve()),
         "model_fingerprint": "test",
         "index_fingerprint": "test",
+        "index_type": "hnsw_ip",
+        "hnsw_m": 4,
+        "hnsw_ef_construction": 80,
+        "hnsw_ef_search": 64,
+        "build_seconds": 0.01,
+        "peak_memory_bytes": 1,
+        "ann_recall_at_k": 1.0,
+        "recall_query_count": 1,
+        "recall_k": 1,
+        "ann_query_seconds": 0.01,
+        "exact_query_seconds": 0.01,
     }
     (index_dir / "metadata.json").write_text(
         json.dumps(metadata),
@@ -265,5 +281,9 @@ def _clear_local_hybrid_env(monkeypatch) -> None:
         "SCHOLAR_AGENT_LOCAL_HYBRID_BM25_CANDIDATE_LIMIT",
         "SCHOLAR_AGENT_LOCAL_HYBRID_SEMANTIC_CANDIDATE_LIMIT",
         "SCHOLAR_AGENT_LOCAL_HYBRID_RRF_K",
+        "SCHOLAR_AGENT_LOCAL_HYBRID_SEMANTIC_SEARCH_MODE",
+        "SCHOLAR_AGENT_LOCAL_HYBRID_HNSW_M",
+        "SCHOLAR_AGENT_LOCAL_HYBRID_HNSW_EF_CONSTRUCTION",
+        "SCHOLAR_AGENT_LOCAL_HYBRID_HNSW_EF_SEARCH",
     ):
         monkeypatch.delenv(env_name, raising=False)

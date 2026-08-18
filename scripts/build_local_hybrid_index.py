@@ -55,6 +55,12 @@ def _parser() -> argparse.ArgumentParser:
             "AI-ModelScope--bge-small-en-v1.5/snapshots/master"
         ),
     )
+    parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--hnsw-m", type=int, default=32)
+    parser.add_argument("--hnsw-ef-construction", type=int, default=80)
+    parser.add_argument("--hnsw-ef-search", type=int, default=64)
+    parser.add_argument("--recall-sample-size", type=int, default=100)
+    parser.add_argument("--recall-k", type=int, default=10)
     return parser
 
 
@@ -77,7 +83,13 @@ def main(argv: list[str] | None = None) -> int:
                 semantic_corpus_path=args.semantic_corpus,
                 semantic_index_dir=args.semantic_index_dir,
                 model_path=args.model,
-            )
+                hnsw_m=args.hnsw_m,
+                hnsw_ef_construction=args.hnsw_ef_construction,
+                hnsw_ef_search=args.hnsw_ef_search,
+                recall_sample_size=args.recall_sample_size,
+                recall_k=args.recall_k,
+            ),
+            resume=args.resume,
         )
     except (OSError, ValueError, ImportError, RuntimeError) as exc:
         print(str(exc), file=sys.stderr)

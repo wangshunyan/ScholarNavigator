@@ -26,6 +26,10 @@ LOCAL_HYBRID_SEMANTIC_CANDIDATE_LIMIT_ENV = (
     "SCHOLAR_AGENT_LOCAL_HYBRID_SEMANTIC_CANDIDATE_LIMIT"
 )
 LOCAL_HYBRID_RRF_K_ENV = "SCHOLAR_AGENT_LOCAL_HYBRID_RRF_K"
+LOCAL_HYBRID_SEARCH_MODE_ENV = "SCHOLAR_AGENT_LOCAL_HYBRID_SEMANTIC_SEARCH_MODE"
+LOCAL_HYBRID_HNSW_M_ENV = "SCHOLAR_AGENT_LOCAL_HYBRID_HNSW_M"
+LOCAL_HYBRID_HNSW_EF_CONSTRUCTION_ENV = "SCHOLAR_AGENT_LOCAL_HYBRID_HNSW_EF_CONSTRUCTION"
+LOCAL_HYBRID_HNSW_EF_SEARCH_ENV = "SCHOLAR_AGENT_LOCAL_HYBRID_HNSW_EF_SEARCH"
 
 _DEFAULT_INDEX_DIR = Path("outputs") / "benchmark_cache" / "local_hybrid"
 _REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -67,6 +71,10 @@ def local_hybrid_config_from_env(
             60,
         ),
         rrf_k=_int_env(LOCAL_HYBRID_RRF_K_ENV, 60),
+        semantic_search_mode=_env_or_default(LOCAL_HYBRID_SEARCH_MODE_ENV, "ann"),
+        hnsw_m=_int_env(LOCAL_HYBRID_HNSW_M_ENV, 32),
+        hnsw_ef_construction=_int_env(LOCAL_HYBRID_HNSW_EF_CONSTRUCTION_ENV, 80),
+        hnsw_ef_search=_int_env(LOCAL_HYBRID_HNSW_EF_SEARCH_ENV, 64),
     )
 
 
@@ -111,6 +119,10 @@ def _config_signature(config: LocalHybridConfig) -> tuple[object, ...]:
         config.bm25_candidate_limit,
         config.semantic_candidate_limit,
         config.rrf_k,
+        config.semantic_search_mode,
+        config.hnsw_m,
+        config.hnsw_ef_construction,
+        config.hnsw_ef_search,
     )
 
 

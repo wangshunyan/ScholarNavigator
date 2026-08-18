@@ -1,8 +1,8 @@
 # PaSa 本地 BM25 与语义混合检索接入步骤
 
 本项目默认使用 OpenAlex、arXiv、Semantic Scholar、PubMed 四个公开来源。
-参加赛题三时，建议把 PaSa/AutoScholar 的论文库接成本地 BM25 来源，用于提高召回和降低外部 API 依赖；在此基础上，再接入带摘要的公开 arXiv 子集和 BGE 向量索引，作为当前主候选 `local_hybrid`。
-BM25 索引使用 SQLite FTS5 落盘实现；语义索引使用本地 SentenceTransformers/BGE 向量矩阵，适合在普通笔记本上运行当前 31,136 篇摘要子集。
+参加赛题三时，建议把 PaSa/AutoScholar 的论文库接成本地 BM25 来源，用于提高召回和降低外部 API 依赖；在此基础上，再接入按 arXiv ID 精确关联的公开元数据和 BGE 向量索引，作为 `local_hybrid` 候选。
+BM25 索引使用 SQLite FTS5 落盘实现；语义索引使用本地 SentenceTransformers/BGE 向量和持久化 Faiss ANN。当前仓库中按标题匹配生成的 31,136 篇摘要子集属于 legacy 产物，不能作为新的正式 P0 语料。
 
 ## 推荐数据集
 
@@ -53,11 +53,13 @@ SCHOLAR_AGENT_LOCAL_BM25_DOI_FIELD=doi
 
 ## 语义混合索引
 
-安装语义检索依赖后运行：
+安装语义检索依赖后，先准备带 `id/arxiv_id`、`title`、`abstract` 的 Cornell/arXiv 元数据，再运行：
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements-semantic.txt
-.\.venv\Scripts\python.exe scripts\build_pasa_semantic_corpus.py
+.\.venv\Scripts\python.exe scripts\build_pasa_semantic_corpus.py `
+  --metadata datasets\semantic\arxiv_metadata.jsonl `
+  --pasa-paper-index datasets\pasa\paper_database\id2paper.json
 .\.venv\Scripts\python.exe scripts\build_local_hybrid_index.py
 .\.venv\Scripts\python.exe scripts\check_local_hybrid_search.py --limit 5
 ```
@@ -73,7 +75,7 @@ SCHOLAR_AGENT_LOCAL_HYBRID_SEMANTIC_CANDIDATE_LIMIT=60
 SCHOLAR_AGENT_LOCAL_HYBRID_RRF_K=60
 ```
 
-`scripts/build_local_hybrid_index.py` 使用分批写入和进度文件；如果中断，重新运行同一命令会复用 `outputs/benchmark_cache/local_hybrid/build_progress.json` 和临时向量文件继续构建。最终产物是 `embeddings.npy` 与 `metadata.json`，不应提交到 GitHub。
+`scripts/build_local_hybrid_index.py` 使用分批写入、Faiss 持久化索引和进度文件；如果中断，只能使用相同配置和 `--resume` 继续构建。构建报告必须包含语料覆盖率、ANN 相对 exact-flat 的 Recall、构建耗时、峰值内存和检索延迟。最终产物是本地索引和 metadata，不应提交到 GitHub。
 
 ## 前端使用
 

@@ -28,17 +28,25 @@ from scholar_agent.core.diagnostics_schemas import (
 from scholar_agent.core.paper_schemas import Paper, PaperIdentifiers
 
 
-LOCAL_HYBRID_CONNECTOR_VERSION = "local-hybrid-v1"
-LOCAL_HYBRID_INDEX_SCHEMA_VERSION = "1"
+LOCAL_HYBRID_CONNECTOR_VERSION = "local-hybrid-v2"
+LOCAL_HYBRID_INDEX_SCHEMA_VERSION = "2"
 DEFAULT_BM25_CANDIDATE_LIMIT = 60
 DEFAULT_SEMANTIC_CANDIDATE_LIMIT = 60
 DEFAULT_RRF_K = 60
 _EMBEDDINGS_FILE = "embeddings.npy"
 _METADATA_FILE = "metadata.json"
+_FAISS_INDEX_FILE = "index.faiss"
 _PARTIAL_EMBEDDINGS_FILE = "embeddings.partial.npy"
+_PARTIAL_FAISS_INDEX_FILE = "index.partial.faiss"
 _BUILD_PROGRESS_FILE = "build_progress.json"
-_BUILD_SCHEMA_VERSION = "1"
+_BUILD_SCHEMA_VERSION = "2"
 _ENCODE_BATCH_SIZE = 128
+_FAISS_BATCH_SIZE = 4096
+_DEFAULT_HNSW_M = 32
+_DEFAULT_EF_CONSTRUCTION = 80
+_DEFAULT_EF_SEARCH = 64
+_DEFAULT_RECALL_SAMPLE_SIZE = 100
+_DEFAULT_RECALL_K = 10
 _CONFIG_LOCK = RLock()
 _MODEL_LOCK = RLock()
 _ACTIVE_CONFIG: "LocalHybridConfig | None" = None
@@ -64,6 +72,12 @@ class LocalHybridConfig:
     bm25_candidate_limit: int = DEFAULT_BM25_CANDIDATE_LIMIT
     semantic_candidate_limit: int = DEFAULT_SEMANTIC_CANDIDATE_LIMIT
     rrf_k: int = DEFAULT_RRF_K
+    semantic_search_mode: str = "ann"
+    hnsw_m: int = _DEFAULT_HNSW_M
+    hnsw_ef_construction: int = _DEFAULT_EF_CONSTRUCTION
+    hnsw_ef_search: int = _DEFAULT_EF_SEARCH
+    recall_sample_size: int = _DEFAULT_RECALL_SAMPLE_SIZE
+    recall_k: int = _DEFAULT_RECALL_K
 
 
 @dataclass(frozen=True)
@@ -77,6 +91,17 @@ class LocalHybridIndexMetadata:
     model_fingerprint: str
     index_dir: str
     index_fingerprint: str
+    index_type: str
+    hnsw_m: int
+    hnsw_ef_construction: int
+    hnsw_ef_search: int
+    build_seconds: float
+    peak_memory_bytes: int
+    ann_recall_at_k: float
+    recall_query_count: int
+    recall_k: int
+    ann_query_seconds: float
+    exact_query_seconds: float
     cache_hit: bool
     index_load_seconds: float
 
@@ -89,6 +114,7 @@ class _SemanticIndex:
     document_count: int
     embedding_dimension: int
     index_fingerprint: str
+    faiss_index: Any | None
 
 
 def configure_local_hybrid(
@@ -131,6 +157,16 @@ def configure_local_hybrid(
         rows = tuple(_read_semantic_rows(normalized.semantic_corpus_path))
         if len(rows) != metadata.document_count:
             raise ValueError("local_hybrid_semantic_corpus_count_changed")
+        faiss_index = None
+        if metadata.index_type == "hnsw_ip":
+            faiss_index = _read_faiss_index(
+                normalized.semantic_index_dir / _FAISS_INDEX_FILE,
+                metadata.embedding_dimension,
+                metadata.document_count,
+            )
+            _set_faiss_ef_search(faiss_index, normalized.hnsw_ef_search)
+        elif metadata.index_type != "exact_flat":
+            raise ValueError("local_hybrid_index_type_invalid")
 
         configure_local_bm25(
             normalized.bm25_config,
@@ -145,6 +181,7 @@ def configure_local_hybrid(
             document_count=metadata.document_count,
             embedding_dimension=metadata.embedding_dimension,
             index_fingerprint=metadata.index_fingerprint,
+            faiss_index=faiss_index,
         )
         return metadata
 
@@ -161,9 +198,14 @@ def local_hybrid_connector_version() -> str:
     return f"{LOCAL_HYBRID_CONNECTOR_VERSION}:{metadata.index_fingerprint}"
 
 
-def build_local_hybrid_index(config: LocalHybridConfig) -> LocalHybridIndexMetadata:
+def build_local_hybrid_index(
+    config: LocalHybridConfig,
+    *,
+    resume: bool = False,
+) -> LocalHybridIndexMetadata:
     """Encode the enriched local corpus with resumable batch checkpoints."""
 
+    started = time.perf_counter()
     normalized = _normalize_config(config)
     rows = _read_semantic_rows(normalized.semantic_corpus_path)
     if not rows:
@@ -177,155 +219,156 @@ def build_local_hybrid_index(config: LocalHybridConfig) -> LocalHybridIndexMetad
     embedding_dimension = int(model.get_sentence_embedding_dimension() or 0)
     if embedding_dimension <= 0:
         raise ValueError("local_hybrid_embedding_dimension_invalid")
+    faiss = _load_faiss()
 
     embeddings_path = normalized.semantic_index_dir / _EMBEDDINGS_FILE
     metadata_path = normalized.semantic_index_dir / _METADATA_FILE
-    partial_embeddings_path = (
-        normalized.semantic_index_dir / _PARTIAL_EMBEDDINGS_FILE
-    )
+    faiss_index_path = normalized.semantic_index_dir / _FAISS_INDEX_FILE
+    partial_embeddings_path = normalized.semantic_index_dir / _PARTIAL_EMBEDDINGS_FILE
+    partial_faiss_path = normalized.semantic_index_dir / _PARTIAL_FAISS_INDEX_FILE
     progress_path = normalized.semantic_index_dir / _BUILD_PROGRESS_FILE
     corpus_sha, corpus_size = _sha256_file(normalized.semantic_corpus_path)
-    expected_progress = {
+    expected = {
         "schema_version": _BUILD_SCHEMA_VERSION,
         "semantic_corpus_sha256": corpus_sha,
         "model_fingerprint": model_fingerprint,
         "document_count": len(rows),
         "embedding_dimension": embedding_dimension,
-        "next_row": 0,
+        "hnsw_m": normalized.hnsw_m,
+        "hnsw_ef_construction": normalized.hnsw_ef_construction,
+        "hnsw_ef_search": normalized.hnsw_ef_search,
     }
     progress = _load_build_progress(progress_path)
-    resume_from = 0
-    if (
-        progress is not None
-        and progress.get("schema_version") == _BUILD_SCHEMA_VERSION
-        and progress.get("semantic_corpus_sha256") == corpus_sha
-        and progress.get("model_fingerprint") == model_fingerprint
-        and int(progress.get("document_count") or 0) == len(rows)
-        and int(progress.get("embedding_dimension") or 0) == embedding_dimension
-        and partial_embeddings_path.is_file()
+    if not resume:
+        _discard_partial_build(partial_embeddings_path, partial_faiss_path, progress_path)
+        progress = None
+    elif progress is not None and not _progress_matches(progress, expected):
+        raise ValueError("local_hybrid_resume_configuration_changed")
+    elif resume and progress is None and (
+        partial_embeddings_path.exists() or partial_faiss_path.exists()
     ):
-        try:
-            partial_shape = _embedding_shape(partial_embeddings_path)
-        except (OSError, ValueError):
-            partial_shape = None
-        if partial_shape == (len(rows), embedding_dimension):
-            resume_from = min(
-                max(0, int(progress.get("next_row") or 0)),
-                len(rows),
-            )
-        else:
-            _discard_partial_build(partial_embeddings_path, progress_path)
-    elif progress is not None or partial_embeddings_path.exists():
-        _discard_partial_build(partial_embeddings_path, progress_path)
+        raise ValueError("local_hybrid_resume_progress_missing")
 
-    if resume_from == 0:
-        partial_embeddings_path.unlink(missing_ok=True)
+    peak_memory = _current_rss_bytes()
+    embeddings_complete = bool(progress and progress.get("phase") == "faiss")
+    if embeddings_complete:
+        if _embedding_shape(embeddings_path) != (len(rows), embedding_dimension):
+            raise ValueError("local_hybrid_resume_embeddings_invalid")
+    else:
+        embedding_start = (
+            int(progress.get("next_row") or 0)
+            if progress and progress.get("phase") == "embeddings"
+            else 0
+        )
+        if embedding_start == 0:
+            partial_embeddings_path.unlink(missing_ok=True)
+            memmap = np.lib.format.open_memmap(
+                partial_embeddings_path, mode="w+", dtype=np.float32,
+                shape=(len(rows), embedding_dimension),
+            )
+            memmap.flush()
+            del memmap
+        elif _embedding_shape(partial_embeddings_path) != (
+            len(rows), embedding_dimension
+        ):
+            raise ValueError("local_hybrid_resume_embeddings_invalid")
+
         memmap = np.lib.format.open_memmap(
-            partial_embeddings_path,
-            mode="w+",
-            dtype=np.float32,
+            partial_embeddings_path, mode="r+", dtype=np.float32,
             shape=(len(rows), embedding_dimension),
         )
-        memmap.flush()
-        del memmap
-
-    memmap = np.lib.format.open_memmap(
-        partial_embeddings_path,
-        mode="r+",
-        dtype=np.float32,
-        shape=(len(rows), embedding_dimension),
-    )
-    _write_build_progress(
-        progress_path,
-        {
-            **expected_progress,
-            "next_row": resume_from,
-        },
-    )
-    try:
-        for start in range(resume_from, len(rows), _ENCODE_BATCH_SIZE):
-            end = min(len(rows), start + _ENCODE_BATCH_SIZE)
-            texts = [
-                f"passage: {row['title']}\n{row.get('abstract') or ''}".strip()
-                for row in rows[start:end]
-            ]
-            embeddings = model.encode(
-                texts,
-                batch_size=_ENCODE_BATCH_SIZE,
-                show_progress_bar=False,
-                normalize_embeddings=True,
-                convert_to_numpy=True,
-            )
-            batch = np.asarray(embeddings, dtype=np.float32)
-            if batch.shape != (end - start, embedding_dimension):
-                raise ValueError("local_hybrid_embedding_generation_invalid")
-            memmap[start:end] = batch
-            memmap.flush()
-            _write_build_progress(
-                progress_path,
-                {
-                    **expected_progress,
-                    "next_row": end,
-                },
-            )
-        memmap.flush()
-        del memmap
-        index_fingerprint = _index_fingerprint(
-            corpus_sha=corpus_sha,
-            model_fingerprint=model_fingerprint,
-            shape=(len(rows), embedding_dimension),
+        _write_build_progress(
+            progress_path,
+            {**expected, "phase": "embeddings", "next_row": embedding_start},
         )
-        metadata_payload = {
-            "schema_version": LOCAL_HYBRID_INDEX_SCHEMA_VERSION,
-            "connector_version": LOCAL_HYBRID_CONNECTOR_VERSION,
-            "semantic_corpus_sha256": corpus_sha,
-            "semantic_corpus_size_bytes": corpus_size,
-            "document_count": len(rows),
-            "abstract_document_count": sum(
-                bool(str(row.get("abstract") or "").strip()) for row in rows
-            ),
-            "embedding_dimension": embedding_dimension,
-            "model_path": str(normalized.model_path),
-            "model_fingerprint": model_fingerprint,
-            "index_fingerprint": index_fingerprint,
-            "embedding_dtype": "float32",
-            "query_prefix": "query: ",
-            "passage_prefix": "passage: ",
-            "build_batch_size": _ENCODE_BATCH_SIZE,
-            "resumable_build": True,
-        }
-        temp_metadata = _temporary_path(metadata_path)
         try:
-            temp_metadata.write_text(
-                json.dumps(metadata_payload, ensure_ascii=False, indent=2) + "\n",
-                encoding="utf-8",
-            )
-            os.replace(partial_embeddings_path, embeddings_path)
-            os.replace(temp_metadata, metadata_path)
+            for start in range(embedding_start, len(rows), _ENCODE_BATCH_SIZE):
+                end = min(len(rows), start + _ENCODE_BATCH_SIZE)
+                texts = [
+                    f"passage: {row['title']}\n{row.get('abstract') or ''}".strip()
+                    for row in rows[start:end]
+                ]
+                batch = np.asarray(
+                    model.encode(
+                        texts, batch_size=_ENCODE_BATCH_SIZE, show_progress_bar=False,
+                        normalize_embeddings=True, convert_to_numpy=True,
+                    ),
+                    dtype=np.float32,
+                )
+                if batch.shape != (end - start, embedding_dimension):
+                    raise ValueError("local_hybrid_embedding_generation_invalid")
+                memmap[start:end] = batch
+                memmap.flush()
+                peak_memory = max(peak_memory, _current_rss_bytes())
+                _write_build_progress(
+                    progress_path,
+                    {**expected, "phase": "embeddings", "next_row": end},
+                )
+            memmap.flush()
         finally:
-            temp_metadata.unlink(missing_ok=True)
-        progress_path.unlink(missing_ok=True)
-    finally:
-        try:
-            memmap.flush()
-        except (NameError, AttributeError, ValueError):
-            pass
+            del memmap
+        os.replace(partial_embeddings_path, embeddings_path)
 
-    return LocalHybridIndexMetadata(
-        semantic_corpus_sha256=corpus_sha,
-        semantic_corpus_size_bytes=corpus_size,
-        document_count=len(rows),
-        abstract_document_count=int(
-            sum(bool(str(row.get("abstract") or "").strip()) for row in rows)
-        ),
-        embedding_dimension=embedding_dimension,
-        model_path=str(normalized.model_path),
-        model_fingerprint=model_fingerprint,
-        index_dir=str(normalized.semantic_index_dir),
-        index_fingerprint=index_fingerprint,
-        cache_hit=False,
-        index_load_seconds=0.0,
+    index_start = int(progress.get("next_row") or 0) if progress and progress.get("phase") == "faiss" else 0
+    if index_start == 0:
+        partial_faiss_path.unlink(missing_ok=True)
+        ann_index = faiss.IndexHNSWFlat(
+            embedding_dimension, normalized.hnsw_m, faiss.METRIC_INNER_PRODUCT
+        )
+        ann_index.hnsw.efConstruction = normalized.hnsw_ef_construction
+    else:
+        ann_index = _read_faiss_index(
+            partial_faiss_path, embedding_dimension, index_start
+        )
+    _write_build_progress(progress_path, {**expected, "phase": "faiss", "next_row": index_start})
+    matrix = np.load(embeddings_path, mmap_mode="r")
+    for start in range(index_start, len(rows), _FAISS_BATCH_SIZE):
+        end = min(len(rows), start + _FAISS_BATCH_SIZE)
+        ann_index.add(np.asarray(matrix[start:end], dtype=np.float32))
+        faiss.write_index(ann_index, str(partial_faiss_path))
+        peak_memory = max(peak_memory, _current_rss_bytes())
+        _write_build_progress(progress_path, {**expected, "phase": "faiss", "next_row": end})
+    if int(ann_index.ntotal) != len(rows):
+        raise ValueError("local_hybrid_faiss_document_count_invalid")
+    _set_faiss_ef_search(ann_index, normalized.hnsw_ef_search)
+    os.replace(partial_faiss_path, faiss_index_path)
+    recall, recall_count, ann_query_seconds, exact_query_seconds = _measure_index_recall(
+        ann_index, matrix, normalized.recall_sample_size, normalized.recall_k
     )
+    index_fingerprint = _index_fingerprint(
+        corpus_sha=corpus_sha, model_fingerprint=model_fingerprint,
+        shape=(len(rows), embedding_dimension), hnsw_m=normalized.hnsw_m,
+        hnsw_ef_construction=normalized.hnsw_ef_construction,
+        hnsw_ef_search=normalized.hnsw_ef_search,
+    )
+    build_seconds = time.perf_counter() - started
+    metadata_payload = {
+        **expected,
+        "schema_version": LOCAL_HYBRID_INDEX_SCHEMA_VERSION,
+        "connector_version": LOCAL_HYBRID_CONNECTOR_VERSION,
+        "semantic_corpus_size_bytes": corpus_size,
+        "abstract_document_count": sum(bool(str(row.get("abstract") or "").strip()) for row in rows),
+        "embedding_dimension": embedding_dimension,
+        "model_path": str(normalized.model_path),
+        "index_fingerprint": index_fingerprint,
+        "index_type": "hnsw_ip",
+        "embedding_dtype": "float32",
+        "query_prefix": "query: ",
+        "passage_prefix": "passage: ",
+        "build_batch_size": _ENCODE_BATCH_SIZE,
+        "faiss_batch_size": _FAISS_BATCH_SIZE,
+        "build_seconds": build_seconds,
+        "peak_memory_bytes": peak_memory,
+        "ann_recall_at_k": recall,
+        "recall_query_count": recall_count,
+        "recall_k": normalized.recall_k,
+        "ann_query_seconds": ann_query_seconds,
+        "exact_query_seconds": exact_query_seconds,
+        "resumable_build": True,
+    }
+    _atomic_write_text(metadata_path, json.dumps(metadata_payload, ensure_ascii=False, indent=2) + "\n")
+    progress_path.unlink(missing_ok=True)
+    return _metadata_from_payload(metadata_payload, normalized.semantic_index_dir, cache_hit=False)
 
 
 def search_local_hybrid(
@@ -422,18 +465,36 @@ def _search_semantic(
         show_progress_bar=False,
     )
     query_vector = np.asarray(encoded[0], dtype=np.float32)
-    matrix = np.load(index.embeddings_path, mmap_mode="r")
-    scores = np.asarray(matrix @ query_vector).reshape(-1)
     count = min(max(0, int(limit)), index.document_count)
-    candidate_indices = np.argpartition(-scores, count - 1)[:count]
+    if config.semantic_search_mode == "exact":
+        matrix = np.load(index.embeddings_path, mmap_mode="r")
+        scores = np.asarray(matrix @ query_vector).reshape(-1)
+        candidate_indices = np.argpartition(-scores, count - 1)[:count]
+        scored_indices = [
+            (int(value), float(scores[value])) for value in candidate_indices
+        ]
+    else:
+        if index.faiss_index is None:
+            raise ValueError("local_hybrid_faiss_index_unavailable")
+        distances, indices = index.faiss_index.search(
+            query_vector.reshape(1, -1), count
+        )
+        scored_indices = [
+            (int(value), float(distances[0][offset]))
+            for offset, value in enumerate(indices[0])
+            if int(value) >= 0
+        ]
     rows = index.rows
-    ranked_indices = sorted(
-        (int(value) for value in candidate_indices),
-        key=lambda value: (
-            -float(scores[value]),
-            str(rows[value].get("arxiv_id") or rows[value].get("_id") or ""),
-        ),
-    )
+    ranked_indices = [
+        value
+        for value, _score in sorted(
+            scored_indices,
+            key=lambda item: (
+                -item[1],
+                str(rows[item[0]].get("arxiv_id") or rows[item[0]].get("_id") or ""),
+            ),
+        )
+    ]
     papers = [
         _paper_from_semantic_row(
             rows[value],
@@ -444,7 +505,10 @@ def _search_semantic(
     latency = time.perf_counter() - started
     return ConnectorSearchResult(
         papers=papers,
-        warnings=["local_hybrid_semantic_model"],
+        warnings=[
+            "local_hybrid_semantic_model",
+            f"local_hybrid_semantic_mode:{config.semantic_search_mode}",
+        ],
         latency_seconds=latency,
         diagnostics=ConnectorDiagnostics(latency_seconds=latency),
     )
@@ -519,6 +583,12 @@ def _normalize_config(config: LocalHybridConfig) -> LocalHybridConfig:
         raise ValueError("local_hybrid_candidate_limit_too_small")
     if config.rrf_k <= 0:
         raise ValueError("local_hybrid_rrf_k_invalid")
+    if config.semantic_search_mode not in {"ann", "exact"}:
+        raise ValueError("local_hybrid_semantic_search_mode_invalid")
+    if config.hnsw_m <= 0 or config.hnsw_ef_construction <= 0 or config.hnsw_ef_search <= 0:
+        raise ValueError("local_hybrid_hnsw_parameter_invalid")
+    if config.recall_sample_size < 0 or config.recall_k <= 0:
+        raise ValueError("local_hybrid_recall_parameter_invalid")
     bm25 = config.bm25_config
     return LocalHybridConfig(
         bm25_config=bm25,
@@ -528,6 +598,12 @@ def _normalize_config(config: LocalHybridConfig) -> LocalHybridConfig:
         bm25_candidate_limit=config.bm25_candidate_limit,
         semantic_candidate_limit=config.semantic_candidate_limit,
         rrf_k=config.rrf_k,
+        semantic_search_mode=config.semantic_search_mode,
+        hnsw_m=config.hnsw_m,
+        hnsw_ef_construction=config.hnsw_ef_construction,
+        hnsw_ef_search=config.hnsw_ef_search,
+        recall_sample_size=config.recall_sample_size,
+        recall_k=config.recall_k,
     )
 
 
@@ -538,19 +614,42 @@ def _load_index_metadata(config: LocalHybridConfig) -> LocalHybridIndexMetadata:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if payload.get("schema_version") != LOCAL_HYBRID_INDEX_SCHEMA_VERSION:
         raise ValueError("local_hybrid_index_schema_mismatch")
-    return LocalHybridIndexMetadata(
-        semantic_corpus_sha256=str(payload["semantic_corpus_sha256"]),
-        semantic_corpus_size_bytes=int(payload["semantic_corpus_size_bytes"]),
-        document_count=int(payload["document_count"]),
-        abstract_document_count=int(payload["abstract_document_count"]),
-        embedding_dimension=int(payload["embedding_dimension"]),
-        model_path=str(payload["model_path"]),
-        model_fingerprint=str(payload["model_fingerprint"]),
-        index_dir=str(config.semantic_index_dir),
-        index_fingerprint=str(payload["index_fingerprint"]),
-        cache_hit=True,
-        index_load_seconds=0.0,
-    )
+    return _metadata_from_payload(payload, config.semantic_index_dir, cache_hit=True)
+
+
+def _metadata_from_payload(
+    payload: Mapping[str, Any],
+    index_dir: Path,
+    *,
+    cache_hit: bool,
+) -> LocalHybridIndexMetadata:
+    try:
+        return LocalHybridIndexMetadata(
+            semantic_corpus_sha256=str(payload["semantic_corpus_sha256"]),
+            semantic_corpus_size_bytes=int(payload["semantic_corpus_size_bytes"]),
+            document_count=int(payload["document_count"]),
+            abstract_document_count=int(payload["abstract_document_count"]),
+            embedding_dimension=int(payload["embedding_dimension"]),
+            model_path=str(payload["model_path"]),
+            model_fingerprint=str(payload["model_fingerprint"]),
+            index_dir=str(index_dir),
+            index_fingerprint=str(payload["index_fingerprint"]),
+            index_type=str(payload["index_type"]),
+            hnsw_m=int(payload["hnsw_m"]),
+            hnsw_ef_construction=int(payload["hnsw_ef_construction"]),
+            hnsw_ef_search=int(payload["hnsw_ef_search"]),
+            build_seconds=float(payload["build_seconds"]),
+            peak_memory_bytes=int(payload["peak_memory_bytes"]),
+            ann_recall_at_k=float(payload["ann_recall_at_k"]),
+            recall_query_count=int(payload["recall_query_count"]),
+            recall_k=int(payload["recall_k"]),
+            ann_query_seconds=float(payload["ann_query_seconds"]),
+            exact_query_seconds=float(payload["exact_query_seconds"]),
+            cache_hit=cache_hit,
+            index_load_seconds=0.0,
+        )
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError("local_hybrid_index_metadata_invalid") from exc
 
 
 def _embedding_shape(path: Path) -> tuple[int, int]:
@@ -558,6 +657,66 @@ def _embedding_shape(path: Path) -> tuple[int, int]:
     if array.ndim != 2:
         raise ValueError("local_hybrid_embedding_rank_invalid")
     return int(array.shape[0]), int(array.shape[1])
+
+
+def _load_faiss() -> Any:
+    try:
+        import faiss
+    except ImportError as exc:
+        raise ImportError("faiss_required_for_local_hybrid") from exc
+    return faiss
+
+
+def _read_faiss_index(
+    path: Path,
+    dimension: int,
+    expected_count: int,
+) -> Any:
+    if not path.is_file():
+        raise ValueError("local_hybrid_faiss_index_not_found")
+    index = _load_faiss().read_index(str(path))
+    if int(index.d) != dimension or int(index.ntotal) != expected_count:
+        raise ValueError("local_hybrid_faiss_index_shape_invalid")
+    return index
+
+
+def _set_faiss_ef_search(index: Any, ef_search: int) -> None:
+    if not hasattr(index, "hnsw"):
+        raise ValueError("local_hybrid_faiss_index_type_invalid")
+    index.hnsw.efSearch = ef_search
+
+
+def _measure_index_recall(
+    ann_index: Any,
+    matrix: np.ndarray,
+    sample_size: int,
+    recall_k: int,
+) -> tuple[float, int, float, float]:
+    count = min(max(0, sample_size), int(matrix.shape[0]))
+    k = min(max(1, recall_k), int(matrix.shape[0]))
+    if count == 0:
+        return 0.0, 0, 0.0, 0.0
+    queries = np.asarray(matrix[:count], dtype=np.float32)
+    ann_started = time.perf_counter()
+    _distances, ann_indices = ann_index.search(queries, k)
+    ann_seconds = time.perf_counter() - ann_started
+    exact_started = time.perf_counter()
+    scores = np.asarray(queries @ matrix.T)
+    exact_indices = np.argpartition(-scores, k - 1, axis=1)[:, :k]
+    exact_seconds = time.perf_counter() - exact_started
+    overlap = sum(
+        len(set(map(int, ann_indices[row])) & set(map(int, exact_indices[row])))
+        for row in range(count)
+    )
+    return overlap / (count * k), count, ann_seconds, exact_seconds
+
+
+def _current_rss_bytes() -> int:
+    try:
+        import psutil
+    except ImportError:
+        return 0
+    return int(psutil.Process().memory_info().rss)
 
 
 def _read_semantic_rows(path: Path) -> list[dict[str, Any]]:
@@ -627,6 +786,9 @@ def _index_fingerprint(
     corpus_sha: str,
     model_fingerprint: str,
     shape: tuple[int, int],
+    hnsw_m: int,
+    hnsw_ef_construction: int,
+    hnsw_ef_search: int,
 ) -> str:
     payload = {
         "schema_version": LOCAL_HYBRID_INDEX_SCHEMA_VERSION,
@@ -637,6 +799,10 @@ def _index_fingerprint(
         "dtype": "float32",
         "passage_prefix": "passage: ",
         "query_prefix": "query: ",
+        "index_type": "hnsw_ip",
+        "hnsw_m": hnsw_m,
+        "hnsw_ef_construction": hnsw_ef_construction,
+        "hnsw_ef_search": hnsw_ef_search,
     }
     return hashlib.sha256(
         json.dumps(
@@ -671,6 +837,19 @@ def _temporary_path(path: Path) -> Path:
     return temporary
 
 
+def _atomic_write_text(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = _temporary_path(path)
+    try:
+        temporary.write_text(text, encoding="utf-8")
+        with temporary.open("r+b") as handle:
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
 def _load_build_progress(path: Path) -> dict[str, Any] | None:
     if not path.is_file():
         return None
@@ -696,11 +875,17 @@ def _write_build_progress(path: Path, payload: dict[str, Any]) -> None:
         temporary.unlink(missing_ok=True)
 
 
+def _progress_matches(progress: Mapping[str, Any], expected: Mapping[str, Any]) -> bool:
+    return all(progress.get(key) == value for key, value in expected.items())
+
+
 def _discard_partial_build(
     partial_embeddings_path: Path,
+    partial_faiss_path: Path,
     progress_path: Path,
 ) -> None:
     partial_embeddings_path.unlink(missing_ok=True)
+    partial_faiss_path.unlink(missing_ok=True)
     progress_path.unlink(missing_ok=True)
 
 

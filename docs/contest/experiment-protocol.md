@@ -20,7 +20,7 @@
 .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration hybrid
 ```
 
-`hybrid` 是零外部 API 的本地混合检索，首次运行前必须已生成摘要语料和向量索引。中断后必须复用原 `run-id`：
+`hybrid` 是零外部 API 的本地混合检索，首次运行前必须已用带 arXiv ID 的 Cornell/arXiv 元数据精确生成摘要语料和 Faiss 索引。中断后必须复用原 `run-id`，且配置、数据哈希和索引参数必须完全一致：
 
 ```powershell
 .\scripts\run_contest_benchmark.ps1 `
@@ -33,7 +33,7 @@
 索引构建命令：
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\build_pasa_semantic_corpus.py
+.\.venv\Scripts\python.exe scripts\build_pasa_semantic_corpus.py --metadata datasets\semantic\arxiv_metadata.jsonl
 .\.venv\Scripts\python.exe scripts\build_local_hybrid_index.py
 .\.venv\Scripts\python.exe scripts\check_local_hybrid_search.py --limit 5
 ```
@@ -73,4 +73,6 @@
 - 报告 F1@20、Recall@20、Precision@20、MRR、成功率、平均 API 调用、平均 Token、平均延迟和失败率。
 - `OpenAlex`、`Semantic Scholar`、`PubMed` 只有在相同协议下完成真实运行且无明显可靠性回退时才可加入新候选组。
 - LLM 只有在提供商、模型版本、Token、延迟、回退和独立消融结果齐全时才可列为实测创新点。
-- 不使用 `AutoScholarQuery_test.jsonl` 的 gold 论文作为检索语料，不使用小样本数字代替完整结果。
+- 不使用 `AutoScholarQuery_test.jsonl` 的 gold 论文作为检索语料，不使用标题模糊匹配，不使用小样本数字代替完整结果。
+- 先固定同一批 200 条查询比较 BM25、BM25+Dense、BM25+Dense+Reranker；只有 F1/Recall 有真实提升且资源账本通过，才运行完整 1000 条。
+- 内部 F1/Recall 只用于项目工程比较，不得宣称与赛事官方 scorer 完全一致。

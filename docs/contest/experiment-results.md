@@ -7,8 +7,8 @@
 ## 已验证的工程能力
 
 - PaSa 官方标题库已转换为 569,432 篇本地 JSONL，并用 SQLite FTS5 建立低内存 BM25 索引。
-- 公开 arXiv 摘要数据已严格标题匹配到 31,136 篇 PaSa 论文，生成 `datasets/semantic/pasa_papers_with_abstracts.jsonl`。
-- BGE-small-en-v1.5 向量索引已构建完成：`outputs/benchmark_cache/local_hybrid/embeddings.npy`，形状为 31,136 x 384。
+- 旧的公开 arXiv 摘要数据标题匹配语料为 legacy 产物，原有 31,136 条和对应向量索引不得作为 P0 正式结果。
+- P0 新语料和 Faiss ANN 尚未完成重建；在新语料哈希、索引 Recall、构建耗时、峰值内存和延迟完成审计前，不写入新的正式分数。
 - `local_hybrid` 已接入正式评测链路：本地 BM25 与摘要语义向量分别召回，使用 RRF 融合，再进入去重、规则判断、排序和结构化输出。
 - Benchmark 输出包含逐 query 结果、F1/Precision/Recall/MRR/nDCG、阶段诊断、错误分析和资源账本。
 - 后端 runtime config 和前端源选择已支持 `local_hybrid`，界面中显示为“语义混合”。
@@ -30,7 +30,7 @@
 | hybrid deep + RRF | `contest_sample100_local_hybrid_deep_rrf_v1` | 0.0136 | 0.1139 | 0.0402 | 0.2359 | 0.1276 | 1.213 s | 有效候选：更多候选配合检索融合排序，F1、Recall、MRR 均高于局部基线。 |
 | hybrid deep + RRF + calibrated judgement | `contest_sample100_local_hybrid_deep_rrf_calibrated_v1` | 0.0136 | 0.1139 | 0.0426 | 0.2359 | 0.1276 | 1.221 s | MRR 略高，但 F1/Recall 未超过 `hybrid_deep_rrf`；暂不作为主候选。 |
 
-当前下一轮完整候选配置为 `hybrid_deep_rrf`：`run_profile=high_recall`、`ranking_policy=rrf_fusion`、`max_candidate_papers=300`、BM25/semantic 内部候选各 120、API/LLM 仍为 0。
+旧的 `hybrid_deep_rrf` 只保留为历史诊断配置。P0 和 Faiss 变更后必须先进行固定 200 条资格比较，不能直接恢复旧的完整 1000 条运行。
 
 ## 已完成的完整运行
 
@@ -50,7 +50,7 @@
 
 ## 当前结论
 
-1. `local_hybrid` 相比 `local_bm25` 有稳定提升：F1@20 增加 0.0039，Recall@20 增加 0.0226，MRR 增加 0.0189，平均延迟只增加约 0.004 秒，API 与 LLM 调用仍为 0。
+1. 旧 `local_hybrid` 结果仅代表 legacy 标题匹配语料和全矩阵向量实现，不能作为 P0/Faiss 新方案的正式成绩。
 2. 这说明“摘要语义向量 + BM25 RRF”是有效优化，但提升幅度还不足以称为最终强方案。当前仍有 2,129 个 gold 属于 `not_retrieved`，核心瓶颈仍是初始召回。
 3. 规则 Judgement 仍丢失较多已召回 gold：`local_hybrid` 的 Judgement FN 率为 0.347。下一步应优先调低标题/摘要证据的假阴性，或加入受控 LLM judgement 消融。
 4. `local_bm25 + arXiv` 的旧完整运行未完成，公开 API 出现 429、读取超时和 TLS 握手超时。该目录只保留为可靠性诊断，不得写入质量对比或提交结果。

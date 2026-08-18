@@ -9,9 +9,9 @@
 - Windows 下 benchmark CLI、崩溃恢复存储和 local BM25 缓存已修复并有测试覆盖。
 - PaSa 官方标题库已转换为 `datasets/local_bm25/pasa_papers.jsonl`，共 569,432 篇并保留 `arxiv_id`。
 - 已构建 SQLite FTS5 本地 BM25 索引；`.env` 已配置本地语料，运行时配置可识别 `local_bm25`。
-- 已从公开 arXiv 摘要数据严格标题匹配出 `datasets/semantic/pasa_papers_with_abstracts.jsonl`，共 31,136 篇，全部带摘要。
-- 已构建 BGE-small-en-v1.5 本地向量索引，`outputs/benchmark_cache/local_hybrid/embeddings.npy` 形状为 31,136 x 384。
-- 已接入 `local_hybrid`：BM25 与摘要向量各取候选，RRF 融合后进入原有去重、判断、排序和结构化输出链路。
+- 旧的 31,136 条公开 arXiv 摘要标题匹配语料和对应向量索引已标记为 legacy，不作为新方案正式依据。
+- P0 精确 arXiv ID 语料、Faiss ANN、索引 Recall、构建耗时和峰值内存报告待完成后再勾选。
+- 已接入旧版 `local_hybrid`：BM25 与摘要向量各取候选，RRF 融合后进入原有去重、判断、排序和结构化输出链路；P0/Faiss 版本需要重新验证。
 - 本地 BM25 已增加自然语言查询填充词过滤，避免礼貌语和泛化词主导标题检索；相关测试已通过。
 - 已提供 `scripts/check_local_hybrid_search.py`，可重复检查索引加载、摘要返回、BM25/semantic 来源和前 5 条 gold 命中。
 - 已完成真实 5 条来源消融：`arXiv`、`local_bm25 + arXiv`、`local_bm25 + arXiv + OpenAlex`，并保留配置、指标、逐条结果、失败分析和资源账本。
@@ -45,7 +45,7 @@
 - `local_hybrid` 已经形成可引用的完整工程结果，但 F1@20 仍只有 0.0147，离“可以有竞争力的最终方案”还有差距。
 - `hybrid_deep_rrf` 目前只有 100 条候选实验，不能作为最终成绩；必须跑完 1000 条并通过资源账本后才能引用为主结果。
 - LLM 当前默认 disabled；若要把 LLM 规划作为创新点，必须配置模型并记录版本、Token、延迟和回退。
-- PaSa `id2paper.json` 是标题库；当前摘要来自公开 arXiv 摘要数据的标题严格匹配子集，不能描述为 PaSa 官方完整摘要库。
+- PaSa `id2paper.json` 是论文 ID 与标题库；正式语义摘要必须来自带 arXiv ID 的 Cornell/arXiv 元数据精确关联，不能使用标题匹配或 AutoScholarQuery gold。
 - OpenAlex 在 2026 年 8 月 17 日的小样本中出现 HTTP 429 且未带来新增 gold，当前不作为默认主候选来源。
 - 标题库专用阈值配置在前 5 条有改善，但在第 6 至第 10 条没有 gold 被召回，不能作为泛化证据或默认配置。
 - SciFact 数据包不在本地；它只能作为辅助验证，不应代替 AutoScholarQuery 主评测。
