@@ -124,6 +124,8 @@ class NeuralReranker:
     def _load(self) -> None:
         if self._model is not None:
             return
+        if not self.config.model_path.is_dir():
+            raise OSError(f"neural_reranker_model_missing:{self.config.model_path}")
         import torch
         from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
