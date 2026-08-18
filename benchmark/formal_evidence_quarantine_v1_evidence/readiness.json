@@ -1,0 +1,18 @@
+{
+  "boundary_report_sha256": "531b36b2ac339fe73ac85d9acf89e89fa05fffb65e052b04e4731036716054ff",
+  "controls_ready": true,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_validation_complete": false,
+  "protocol": "formal_evidence_quarantine_v1",
+  "real_human_evidence_present": false,
+  "real_official_scorer_evidence_present": false,
+  "schema_version": "1",
+  "status": "blocked_no_real_formal_evidence"
+}

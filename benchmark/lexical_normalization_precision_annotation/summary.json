@@ -1,0 +1,115 @@
+{
+  "annotation_status": "pending_human_labels",
+  "automatic_metric_count": 0,
+  "blind_public_field_count": 5,
+  "by_dataset": {
+    "auto_dev": 71,
+    "auto_val": 45,
+    "scifact": 84
+  },
+  "by_stratum": {
+    "baseline_only": 48,
+    "normalization_added": 71,
+    "shared_rank_shifted": 81
+  },
+  "cells": [
+    {
+      "dataset": "scifact",
+      "population_count": 204,
+      "sample_count": 28,
+      "stratum": "normalization_added"
+    },
+    {
+      "dataset": "scifact",
+      "population_count": 54,
+      "sample_count": 28,
+      "stratum": "baseline_only"
+    },
+    {
+      "dataset": "scifact",
+      "population_count": 110,
+      "sample_count": 28,
+      "stratum": "shared_rank_shifted"
+    },
+    {
+      "dataset": "auto_dev",
+      "population_count": 39,
+      "sample_count": 28,
+      "stratum": "normalization_added"
+    },
+    {
+      "dataset": "auto_dev",
+      "population_count": 15,
+      "sample_count": 15,
+      "stratum": "baseline_only"
+    },
+    {
+      "dataset": "auto_dev",
+      "population_count": 35,
+      "sample_count": 28,
+      "stratum": "shared_rank_shifted"
+    },
+    {
+      "dataset": "auto_val",
+      "population_count": 15,
+      "sample_count": 15,
+      "stratum": "normalization_added"
+    },
+    {
+      "dataset": "auto_val",
+      "population_count": 5,
+      "sample_count": 5,
+      "stratum": "baseline_only"
+    },
+    {
+      "dataset": "auto_val",
+      "population_count": 25,
+      "sample_count": 25,
+      "stratum": "shared_rank_shifted"
+    }
+  ],
+  "eligible_pair_count": 502,
+  "execution": {
+    "gold_or_qrels_used_for_sampling": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "forbidden_public_field_count": 15,
+  "maximum_sample_count": 200,
+  "package": "lexical_normalization_v1_blinded_precision_audit_v1",
+  "population": {
+    "datasets": {
+      "auto_dev": {
+        "baseline_returned_pair_count": 150,
+        "case_count": 10,
+        "eligible_baseline_only_count": 15,
+        "eligible_normalization_added_count": 39,
+        "eligible_shared_rank_shifted_count": 35,
+        "experiment_returned_pair_count": 174,
+        "shared_below_rank_threshold_count": 100
+      },
+      "auto_val": {
+        "baseline_returned_pair_count": 75,
+        "case_count": 5,
+        "eligible_baseline_only_count": 5,
+        "eligible_normalization_added_count": 15,
+        "eligible_shared_rank_shifted_count": 25,
+        "experiment_returned_pair_count": 85,
+        "shared_below_rank_threshold_count": 45
+      },
+      "scifact": {
+        "baseline_returned_pair_count": 476,
+        "case_count": 50,
+        "eligible_baseline_only_count": 54,
+        "eligible_normalization_added_count": 204,
+        "eligible_shared_rank_shifted_count": 110,
+        "experiment_returned_pair_count": 626,
+        "shared_below_rank_threshold_count": 312
+      }
+    },
+    "eligible_pair_count": 502
+  },
+  "sample_count": 200,
+  "schema_version": "1"
+}

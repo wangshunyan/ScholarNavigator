@@ -1,0 +1,63 @@
+{
+  "artifacts": {
+    "gold_hashes_sha256": "158ce970b26992dc052240c9a71a7d06bab3b6d0daa4d11856309b2eb99d1fe3",
+    "gold_rows_sha256": "429cf7145664b20893df8567d9eed463b8000ce859e4e2c3cc5290042bbefcfe",
+    "query_rows_sha256": "977220ced7655d5874eec07f5225e7bd5bdb9b529c1fbf93184a46224686f412",
+    "summary_sha256": "527a1764c91592a6647e60feb19eb015698b3f42b3902e93592add70feec6e13"
+  },
+  "audit": "autoscholar_gold_identity_regression",
+  "data": {
+    "case_count": 1000,
+    "dataset_sha256": "7d8c7f59b289a54912c38cf204d16dbfec14ca35de850b9978b4051ad43a8b36",
+    "gold_relation_count": 2403,
+    "query_manifest_sha256": "def16ce0f99a567db34e62db283c83ef8c30b200390b6120dd8bbe6cd936eedb"
+  },
+  "duplicates": {
+    "cross_query_repeated_identity_count": 268,
+    "cross_query_repeated_relation_count": 657,
+    "global_repeated_relation_count": 394,
+    "global_unique_identity_count": 2009,
+    "queries_with_duplicate_evaluator_relations": 2,
+    "within_query_duplicate_relation_count": 5
+  },
+  "evaluator_input": {
+    "current_evaluator_relation_denominator": 2403,
+    "safe_deduplicated_query_denominator": 2398,
+    "safe_evaluable_relation_count": 2403,
+    "safe_evaluable_relation_rate": 1.0,
+    "zero_current_evaluable_gold_query_count": 0,
+    "zero_raw_gold_query_count": 0,
+    "zero_safe_evaluable_gold_query_count": 0
+  },
+  "execution": {
+    "effectiveness_metrics_generated": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "retrieval_invoked": false,
+    "snapshot_write_count": 0
+  },
+  "identity": {
+    "identifier_conflict_count": 0,
+    "normalized_title_multiple_identifier_count": 0,
+    "stable_arxiv_relation_count": 2403,
+    "stable_identifier_multiple_title_variant_count": 2,
+    "terminal_counts": {
+      "conservative_title_evidence_evaluable": 0,
+      "identifier_conflict": 0,
+      "identity_ambiguous": 0,
+      "insufficient_information": 0,
+      "stable_identifier_evaluable": 2403
+    }
+  },
+  "missing_field_relation_counts": {
+    "authors": 2403,
+    "doi": 2403,
+    "openalex_id": 2403,
+    "pubmed_id": 2403,
+    "s2orc_corpus_id": 2403,
+    "semantic_scholar_id": 2403,
+    "year": 2403
+  },
+  "official_effectiveness_score": false,
+  "schema_version": "1"
+}

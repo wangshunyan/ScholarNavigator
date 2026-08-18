@@ -1,0 +1,98 @@
+{
+  "package": "lexical_normalization_v1_blinded_precision_audit_v1",
+  "implementation_base_commit": "2c2aee359ce39ccfbf038003bec4ce7e609a2801",
+  "source_experiment_manifest": "benchmark/lexical_normalization_v1_manifest.json",
+  "source_replay": {
+    "run_dir": "outputs/benchmark_runs/lexical_normalization_v1_005794c_replay_r5",
+    "aggregate_sha256": "5d7b58dd433a9641efdc9216f41b98ecf26d6f1da2633d4fdc281fb70f1e48b6",
+    "case_comparison_sha256": "0b8ccb832830242d9481bd3a83e2054857ec0b33177b2be66e96319d53a55dc1",
+    "candidate_diagnostics_sha256": "d671c11c230dc40c0822c1eac598cbd5d8cceafbe356f007453382ed14b2666c"
+  },
+  "scope": {
+    "datasets": [
+      "scifact",
+      "auto_dev",
+      "auto_val"
+    ],
+    "top_k": 20,
+    "network_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0,
+    "gold_or_qrels_used_for_sampling": false,
+    "automatic_relevance_labels": false
+  },
+  "sampling": {
+    "seed": "lexical-normalization-precision-v1-20260721",
+    "maximum_query_paper_pairs": 200,
+    "dataset_order": [
+      "scifact",
+      "auto_dev",
+      "auto_val"
+    ],
+    "stratum_order": [
+      "normalization_added",
+      "baseline_only",
+      "shared_rank_shifted"
+    ],
+    "strata": {
+      "normalization_added": "returned by lexical_normalization_v1 and not by baseline",
+      "baseline_only": "returned by baseline and not by lexical_normalization_v1",
+      "shared_rank_shifted": "returned by both with absolute returned-list rank change at least 5"
+    },
+    "significant_absolute_rank_change": 5,
+    "identity": "production unified paper identity; one item per dataset case and equivalent paper across strategies",
+    "allocation": "balanced water-filling across dataset x stratum cells; allocate one item per non-exhausted cell in fixed order per round until the cap or universe exhaustion",
+    "selection_order": "ascending SHA-256 of seed, dataset, stratum, query fingerprint and canonical paper identity",
+    "display_order": "ascending independent SHA-256 of seed, display namespace, dataset, case and canonical paper identity",
+    "public_sample_id": "sequential SPAR-LX-0001 identifiers assigned only after display randomization; IDs do not encode hidden fields"
+  },
+  "blind_public_fields": [
+    "sample_id",
+    "query",
+    "title",
+    "abstract",
+    "year"
+  ],
+  "forbidden_public_fields": [
+    "strategy",
+    "policy",
+    "rank",
+    "score",
+    "gold",
+    "qrels",
+    "judgement",
+    "case_id",
+    "query_id",
+    "source",
+    "sources",
+    "dataset",
+    "paper_id",
+    "identifiers",
+    "stratum"
+  ],
+  "annotation": {
+    "labels": [
+      "relevant",
+      "partially_relevant",
+      "not_relevant",
+      "insufficient_information"
+    ],
+    "independent_annotator_count": 2,
+    "adjudication_required_on_disagreement": true,
+    "notes_are_optional": true,
+    "relevance_for_primary_precision": [
+      "relevant",
+      "partially_relevant"
+    ],
+    "insufficient_information_handling": "excluded from judged precision and false-admission denominators; always reported separately"
+  },
+  "metrics": {
+    "agreement": "unweighted Cohen's kappa over the four labels before adjudication",
+    "primary_label": "agreed label when annotators agree, otherwise adjudicated label",
+    "sample_precision": "for each strategy, relevant plus partially_relevant sampled returned pairs divided by all sufficiently informed sampled returned pairs",
+    "stratified_precision_estimate": "inverse inclusion probability weighted estimate over the three registered audit strata; reported with sampling-frame coverage and never presented as complete canonical Precision@20",
+    "precision_at_20": "reported only when every returned Top-20 query-paper pair for that strategy has a primary human label; otherwise null with an explicit incomplete-coverage reason",
+    "normalization_added_false_admission_rate": "not_relevant normalization_added pairs divided by sufficiently informed normalization_added pairs",
+    "no_labels_behavior": "emit null metrics and pending status; never infer labels from qrels, ranker, heuristics or an LLM"
+  }
+}

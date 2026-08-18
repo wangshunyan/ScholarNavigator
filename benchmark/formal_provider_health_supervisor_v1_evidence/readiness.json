@@ -1,0 +1,19 @@
+{
+  "controls_ready": true,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_validation_complete": false,
+  "full1000_blocker_cleared": false,
+  "protocol": "formal_provider_health_supervisor_v1",
+  "real_provider_health_observed": false,
+  "real_run_started": false,
+  "scenario_count": 14,
+  "schema_version": "1",
+  "status": "external_provider_health_not_observed"
+}

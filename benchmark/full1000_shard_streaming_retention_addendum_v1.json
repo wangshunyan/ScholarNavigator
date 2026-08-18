@@ -1,0 +1,77 @@
+{
+  "active_shard_window": 4,
+  "addendum_sha256": "cdfbefa6df3b518d5d8422f68b7469bdb27006642a6491707bed8e4c74c55342",
+  "allowed_active_shard_windows": [
+    1,
+    2,
+    4
+  ],
+  "backup_required_bytes": 2119029489664,
+  "backup_required_inodes": 210940,
+  "bindings": {
+    "crash_consistency": "24b1fbc1314275e3bfa56fc431df18a67102dbd90ccf482f5c12fd358356e920",
+    "disaster_recovery": "e6b646df73fee75421e33894a73f60cb6f4e00f509a09a103766f68310a20467",
+    "evidence_revocation": "d86d66bae405f84cd22047edbffae83229e85671cd36102fd7065e9111d5e927",
+    "evidence_transparency": "cfe6cd94bf107bdc7866d2ca577aa2d98e63ac9ae7b318a44f19879ce8c70bed",
+    "execution_plan": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613",
+    "host_attestation": "095bbe731aa461dfa1999080cb916757ecce8f737c19e823aa1173b8663a7681",
+    "launch_control": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1",
+    "multivolume_storage": "ae6ecc5691ce9cde6a0780c4c4276067e1cefb3154ffe3ff3cefac1c54e87e5c",
+    "provider_ingest": "29a4a687f8bec2d9c3f12f264b24e41df2519442182728dc424b101e578e6a77",
+    "resource_accounting": "b465d2e8f555418bb4a6ac492a0879d307830bdd158ef18ff39de481a6c08f97",
+    "storage_governance": "bb78967820aba3c223c0638adbda9b0779cc7cecffcb718fa22a06f352c9d5c1"
+  },
+  "contract": "full1000_shard_streaming_retention_addendum_v1",
+  "default_enabled": false,
+  "formal_validation_complete": false,
+  "http_attempt_upper": 19280,
+  "local_release_requires_verified_backup_and_restore": true,
+  "protocol_sha256": "9fe9d56b2277bf5aa9f29820c8407db0a9f8382e5d6cba6c25d67d7975492780",
+  "query_count": 1000,
+  "request_or_result_semantics_changed": false,
+  "runtime_window_adjustment_allowed": false,
+  "schema_version": "1",
+  "shard_count": 20,
+  "source_commit": "d9c3bc7863fe071fb4285b2b4a90f334cd8bf391",
+  "window_capacity_requirements": {
+    "1": {
+      "active_shard_window": 1,
+      "aggregate_bytes": 2147483648,
+      "aggregate_files": 100,
+      "archive_staging_bytes": 35030827008,
+      "archive_staging_files": 3344,
+      "required_primary_bytes": 82946555904,
+      "required_primary_inodes": 16788,
+      "resident_shard_bytes": 35030827008,
+      "resident_shard_files": 3344,
+      "safety_reserve_bytes": 10737418240,
+      "safety_reserve_inodes": 10000
+    },
+    "2": {
+      "active_shard_window": 2,
+      "aggregate_bytes": 2147483648,
+      "aggregate_files": 100,
+      "archive_staging_bytes": 35030827008,
+      "archive_staging_files": 3344,
+      "required_primary_bytes": 117977382912,
+      "required_primary_inodes": 20132,
+      "resident_shard_bytes": 70061654016,
+      "resident_shard_files": 6688,
+      "safety_reserve_bytes": 10737418240,
+      "safety_reserve_inodes": 10000
+    },
+    "4": {
+      "active_shard_window": 4,
+      "aggregate_bytes": 2147483648,
+      "aggregate_files": 100,
+      "archive_staging_bytes": 35030827008,
+      "archive_staging_files": 3344,
+      "required_primary_bytes": 188039036928,
+      "required_primary_inodes": 26820,
+      "resident_shard_bytes": 140123308032,
+      "resident_shard_files": 13376,
+      "safety_reserve_bytes": 10737418240,
+      "safety_reserve_inodes": 10000
+    }
+  }
+}

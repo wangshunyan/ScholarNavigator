@@ -1,0 +1,46 @@
+{
+  "blockers": [
+    "full1000",
+    "human_precision",
+    "official_scorer"
+  ],
+  "current_evidence_paths": {
+    "evidence_registry_result": "benchmark/evidence_registry_result.json",
+    "freshness_current": "benchmark/validation_evidence_freshness_v1_evidence/current.json",
+    "full1000_dry_run": "benchmark/full1000_execution_readiness_v1_evidence/dry_run.json",
+    "full1000_plan": "benchmark/full1000_execution_plan_v1.json",
+    "human_readiness": "benchmark/human_annotation_delivery_v1_evidence/readiness.json",
+    "scorer_readiness": "benchmark/external_scorer_handoff_v1_evidence/readiness.json",
+    "scorer_synthetic_matrix": "benchmark/external_scorer_handoff_v1_evidence/synthetic_matrix.json"
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "protocol": "formal_validation_clearance_v1",
+  "receipt": {
+    "hash": "sha256_canonical_json_v1",
+    "private_key": "not_used",
+    "protocol": "clearance_receipt_v1",
+    "synthetic_receipts_are_formal": false
+  },
+  "schema_version": "1",
+  "source_commit": "e1e2545cab9d6f2ecf0e95be157d4c1e71376ec8",
+  "states": [
+    "blocked",
+    "cleared",
+    "eligible_for_clearance",
+    "invalid",
+    "partially_satisfied"
+  ],
+  "verification_commands": [
+    "PYTHONPATH=src python scripts/check_formal_validation_clearance.py audit-current",
+    "PYTHONPATH=src python scripts/check_validation_readiness.py verify",
+    "PYTHONPATH=src python scripts/check_validation_freshness.py verify-current",
+    "PYTHONPATH=src python scripts/check_evidence_registry.py check --manifest benchmark/evidence_registry_manifest.json --output outputs/benchmark_runs/evidence_registry_gate"
+  ]
+}

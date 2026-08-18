@@ -1,0 +1,410 @@
+{
+  "blocked_scenario_count": 2,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "passed_scenario_count": 10,
+  "protocol": "formal_provider_pacing_v1",
+  "scenario_count": 12,
+  "scenarios": [
+    {
+      "admitted_attempt_count": 12050,
+      "budget_conserved": true,
+      "completed_attempt_count": 12050,
+      "declaration_versions": {
+        "arxiv": "synthetic-arxiv-v1",
+        "openalex": "synthetic-openalex-v1",
+        "pubmed": "synthetic-pubmed-v1",
+        "semantic_scholar": "synthetic-semantic_scholar-v1"
+      },
+      "duplicate_request_count": 0,
+      "global_concurrency_peak": 10,
+      "intent_coverage_count": 9640,
+      "ledger_entry_count": 12050,
+      "logical_step_count": 2799,
+      "max_wait_logical_steps": 1594,
+      "pause_checkpoint_sha256": null,
+      "profile": "balanced",
+      "request_contract_sha256": "04bb0ed6d51cacfa33f2db303b5df17545f0e9a6d3a77b335f853d56812bafb5",
+      "request_identity_sha256": "e594d5274fd54493cc0cbc79a5a4b588bb0e9ead750aed530d0ad26416dc6064",
+      "request_parameter_mutation_count": 0,
+      "request_set_unchanged": true,
+      "resume_count": 0,
+      "source_admission_counts": {
+        "arxiv": 2410,
+        "openalex": 2410,
+        "pubmed": 4820,
+        "semantic_scholar": 2410
+      },
+      "source_concurrency_peak": {
+        "arxiv": 2,
+        "openalex": 3,
+        "pubmed": 2,
+        "semantic_scholar": 3
+      },
+      "status": "passed",
+      "window_violation_count": 0
+    },
+    {
+      "admitted_attempt_count": 12050,
+      "budget_conserved": true,
+      "completed_attempt_count": 12050,
+      "declaration_versions": {
+        "arxiv": "synthetic-arxiv-v1",
+        "openalex": "synthetic-openalex-v1",
+        "pubmed": "synthetic-pubmed-v1",
+        "semantic_scholar": "synthetic-semantic_scholar-v1"
+      },
+      "duplicate_request_count": 0,
+      "global_concurrency_peak": 9,
+      "intent_coverage_count": 9640,
+      "ledger_entry_count": 12050,
+      "logical_step_count": 6014,
+      "max_wait_logical_steps": 4809,
+      "pause_checkpoint_sha256": null,
+      "profile": "single_source_low_quota",
+      "request_contract_sha256": "04bb0ed6d51cacfa33f2db303b5df17545f0e9a6d3a77b335f853d56812bafb5",
+      "request_identity_sha256": "e594d5274fd54493cc0cbc79a5a4b588bb0e9ead750aed530d0ad26416dc6064",
+      "request_parameter_mutation_count": 0,
+      "request_set_unchanged": true,
+      "resume_count": 0,
+      "source_admission_counts": {
+        "arxiv": 2410,
+        "openalex": 2410,
+        "pubmed": 4820,
+        "semantic_scholar": 2410
+      },
+      "source_concurrency_peak": {
+        "arxiv": 1,
+        "openalex": 3,
+        "pubmed": 2,
+        "semantic_scholar": 3
+      },
+      "status": "passed",
+      "window_violation_count": 0
+    },
+    {
+      "admitted_attempt_count": 12050,
+      "budget_conserved": true,
+      "completed_attempt_count": 12050,
+      "declaration_versions": {
+        "arxiv": "synthetic-arxiv-v1",
+        "openalex": "synthetic-openalex-v1",
+        "pubmed": "synthetic-pubmed-v1",
+        "semantic_scholar": "synthetic-semantic_scholar-v1"
+      },
+      "duplicate_request_count": 0,
+      "global_concurrency_peak": 10,
+      "intent_coverage_count": 9640,
+      "ledger_entry_count": 12050,
+      "logical_step_count": 2799,
+      "max_wait_logical_steps": 1594,
+      "pause_checkpoint_sha256": null,
+      "profile": "burst_exhaustion",
+      "request_contract_sha256": "04bb0ed6d51cacfa33f2db303b5df17545f0e9a6d3a77b335f853d56812bafb5",
+      "request_identity_sha256": "e594d5274fd54493cc0cbc79a5a4b588bb0e9ead750aed530d0ad26416dc6064",
+      "request_parameter_mutation_count": 0,
+      "request_set_unchanged": true,
+      "resume_count": 0,
+      "source_admission_counts": {
+        "arxiv": 2410,
+        "openalex": 2410,
+        "pubmed": 4820,
+        "semantic_scholar": 2410
+      },
+      "source_concurrency_peak": {
+        "arxiv": 2,
+        "openalex": 3,
+        "pubmed": 2,
+        "semantic_scholar": 3
+      },
+      "status": "passed",
+      "window_violation_count": 0
+    },
+    {
+      "admitted_attempt_count": 9828,
+      "budget_conserved": true,
+      "completed_attempt_count": 9828,
+      "declaration_versions": {
+        "arxiv": "synthetic-arxiv-v1",
+        "openalex": "synthetic-openalex-v1",
+        "pubmed": "synthetic-pubmed-v1",
+        "semantic_scholar": "synthetic-semantic_scholar-v1"
+      },
+      "duplicate_request_count": 0,
+      "global_concurrency_peak": 10,
+      "intent_coverage_count": 9640,
+      "ledger_entry_count": 9828,
+      "logical_step_count": 1807,
+      "max_wait_logical_steps": 1783,
+      "pause_checkpoint_sha256": null,
+      "profile": "retry_after",
+      "request_contract_sha256": "04bb0ed6d51cacfa33f2db303b5df17545f0e9a6d3a77b335f853d56812bafb5",
+      "request_identity_sha256": "e594d5274fd54493cc0cbc79a5a4b588bb0e9ead750aed530d0ad26416dc6064",
+      "request_parameter_mutation_count": 0,
+      "request_set_unchanged": true,
+      "resume_count": 0,
+      "source_admission_counts": {
+        "arxiv": 2456,
+        "openalex": 2457,
+        "pubmed": 2452,
+        "semantic_scholar": 2463
+      },
+      "source_concurrency_peak": {
+        "arxiv": 2,
+        "openalex": 3,
+        "pubmed": 2,
+        "semantic_scholar": 3
+      },
+      "status": "passed",
+      "window_violation_count": 0
+    },
+    {
+      "admitted_attempt_count": 12050,
+      "budget_conserved": true,
+      "completed_attempt_count": 12050,
+      "declaration_versions": {
+        "arxiv": "synthetic-arxiv-v1",
+        "openalex": "synthetic-openalex-v1",
+        "pubmed": "synthetic-pubmed-v1",
+        "semantic_scholar": "synthetic-semantic_scholar-v1"
+      },
+      "duplicate_request_count": 0,
+      "global_concurrency_peak": 10,
+      "intent_coverage_count": 9640,
+      "ledger_entry_count": 12050,
+      "logical_step_count": 7635,
+      "max_wait_logical_steps": 6424,
+      "pause_checkpoint_sha256": null,
+      "profile": "persistent_429",
+      "request_contract_sha256": "04bb0ed6d51cacfa33f2db303b5df17545f0e9a6d3a77b335f853d56812bafb5",
+      "request_identity_sha256": "e594d5274fd54493cc0cbc79a5a4b588bb0e9ead750aed530d0ad26416dc6064",
+      "request_parameter_mutation_count": 0,
+      "request_set_unchanged": true,
+      "resume_count": 0,
+      "source_admission_counts": {
+        "arxiv": 2410,
+        "openalex": 2410,
+        "pubmed": 2410,
+        "semantic_scholar": 4820
+      },
+      "source_concurrency_peak": {
+        "arxiv": 2,
+        "openalex": 3,
+        "pubmed": 2,
+        "semantic_scholar": 3
+      },
+      "status": "passed",
+      "window_violation_count": 0
+    },
+    {
+      "admitted_attempt_count": 9852,
+      "budget_conserved": true,
+      "completed_attempt_count": 9852,
+      "declaration_versions": {
+        "arxiv": "synthetic-arxiv-v1",
+        "openalex": "synthetic-openalex-v1",
+        "pubmed": "synthetic-pubmed-v1",
+        "semantic_scholar": "synthetic-semantic_scholar-v1"
+      },
+      "duplicate_request_count": 0,
+      "global_concurrency_peak": 10,
+      "intent_coverage_count": 9640,
+      "ledger_entry_count": 9852,
+      "logical_step_count": 1691,
+      "max_wait_logical_steps": 1654,
+      "pause_checkpoint_sha256": null,
+      "profile": "503_jitter",
+      "request_contract_sha256": "04bb0ed6d51cacfa33f2db303b5df17545f0e9a6d3a77b335f853d56812bafb5",
+      "request_identity_sha256": "e594d5274fd54493cc0cbc79a5a4b588bb0e9ead750aed530d0ad26416dc6064",
+      "request_parameter_mutation_count": 0,
+      "request_set_unchanged": true,
+      "resume_count": 0,
+      "source_admission_counts": {
+        "arxiv": 2462,
+        "openalex": 2460,
+        "pubmed": 2469,
+        "semantic_scholar": 2461
+      },
+      "source_concurrency_peak": {
+        "arxiv": 2,
+        "openalex": 3,
+        "pubmed": 2,
+        "semantic_scholar": 3
+      },
+      "status": "passed",
+      "window_violation_count": 0
+    },
+    {
+      "admitted_attempt_count": 9852,
+      "budget_conserved": true,
+      "completed_attempt_count": 9852,
+      "declaration_versions": {
+        "arxiv": "synthetic-arxiv-v1",
+        "openalex": "synthetic-openalex-v1",
+        "pubmed": "synthetic-pubmed-v1",
+        "semantic_scholar": "synthetic-semantic_scholar-v1"
+      },
+      "duplicate_request_count": 0,
+      "global_concurrency_peak": 10,
+      "intent_coverage_count": 9640,
+      "ledger_entry_count": 9852,
+      "logical_step_count": 1708,
+      "max_wait_logical_steps": 1679,
+      "pause_checkpoint_sha256": null,
+      "profile": "timeout_jitter",
+      "request_contract_sha256": "04bb0ed6d51cacfa33f2db303b5df17545f0e9a6d3a77b335f853d56812bafb5",
+      "request_identity_sha256": "e594d5274fd54493cc0cbc79a5a4b588bb0e9ead750aed530d0ad26416dc6064",
+      "request_parameter_mutation_count": 0,
+      "request_set_unchanged": true,
+      "resume_count": 0,
+      "source_admission_counts": {
+        "arxiv": 2456,
+        "openalex": 2468,
+        "pubmed": 2465,
+        "semantic_scholar": 2463
+      },
+      "source_concurrency_peak": {
+        "arxiv": 2,
+        "openalex": 3,
+        "pubmed": 2,
+        "semantic_scholar": 3
+      },
+      "status": "passed",
+      "window_violation_count": 0
+    },
+    {
+      "admitted_attempt_count": 12050,
+      "budget_conserved": true,
+      "completed_attempt_count": 12050,
+      "declaration_versions": {
+        "arxiv": "synthetic-arxiv-v1",
+        "openalex": "synthetic-openalex-reduced-v1",
+        "pubmed": "synthetic-pubmed-v1",
+        "semantic_scholar": "synthetic-semantic_scholar-v1"
+      },
+      "duplicate_request_count": 0,
+      "global_concurrency_peak": 10,
+      "intent_coverage_count": 9640,
+      "ledger_entry_count": 12050,
+      "logical_step_count": 3734,
+      "max_wait_logical_steps": 2529,
+      "pause_checkpoint_sha256": null,
+      "profile": "dynamic_reduction",
+      "request_contract_sha256": "04bb0ed6d51cacfa33f2db303b5df17545f0e9a6d3a77b335f853d56812bafb5",
+      "request_identity_sha256": "e594d5274fd54493cc0cbc79a5a4b588bb0e9ead750aed530d0ad26416dc6064",
+      "request_parameter_mutation_count": 0,
+      "request_set_unchanged": true,
+      "resume_count": 0,
+      "source_admission_counts": {
+        "arxiv": 2410,
+        "openalex": 2410,
+        "pubmed": 4820,
+        "semantic_scholar": 2410
+      },
+      "source_concurrency_peak": {
+        "arxiv": 2,
+        "openalex": 3,
+        "pubmed": 2,
+        "semantic_scholar": 3
+      },
+      "status": "passed",
+      "window_violation_count": 0
+    },
+    {
+      "admitted_attempt_count": 12050,
+      "budget_conserved": true,
+      "completed_attempt_count": 12050,
+      "declaration_versions": {
+        "arxiv": "synthetic-arxiv-v1",
+        "openalex": "synthetic-openalex-v1",
+        "pubmed": "synthetic-pubmed-v1",
+        "semantic_scholar": "synthetic-semantic_scholar-v1"
+      },
+      "duplicate_request_count": 0,
+      "global_concurrency_peak": 10,
+      "intent_coverage_count": 9640,
+      "ledger_entry_count": 12050,
+      "logical_step_count": 2799,
+      "max_wait_logical_steps": 1594,
+      "pause_checkpoint_sha256": "d30c4e51c030beccad6f7d510e5346cdc83f045d6b4f36999b7f5e1f3bc0232b",
+      "profile": "pause_resume",
+      "request_contract_sha256": "04bb0ed6d51cacfa33f2db303b5df17545f0e9a6d3a77b335f853d56812bafb5",
+      "request_identity_sha256": "e594d5274fd54493cc0cbc79a5a4b588bb0e9ead750aed530d0ad26416dc6064",
+      "request_parameter_mutation_count": 0,
+      "request_set_unchanged": true,
+      "resume_count": 1,
+      "source_admission_counts": {
+        "arxiv": 2410,
+        "openalex": 2410,
+        "pubmed": 4820,
+        "semantic_scholar": 2410
+      },
+      "source_concurrency_peak": {
+        "arxiv": 2,
+        "openalex": 3,
+        "pubmed": 2,
+        "semantic_scholar": 3
+      },
+      "status": "passed",
+      "window_violation_count": 0
+    },
+    {
+      "admitted_attempt_count": 12050,
+      "budget_conserved": true,
+      "completed_attempt_count": 12050,
+      "declaration_versions": {
+        "arxiv": "synthetic-arxiv-v1",
+        "openalex": "synthetic-openalex-v1",
+        "pubmed": "synthetic-pubmed-v1",
+        "semantic_scholar": "synthetic-semantic_scholar-v1"
+      },
+      "duplicate_request_count": 0,
+      "global_concurrency_peak": 10,
+      "intent_coverage_count": 9640,
+      "ledger_entry_count": 12050,
+      "logical_step_count": 7289,
+      "max_wait_logical_steps": 3643,
+      "pause_checkpoint_sha256": null,
+      "profile": "asynchronous_shards",
+      "request_contract_sha256": "04bb0ed6d51cacfa33f2db303b5df17545f0e9a6d3a77b335f853d56812bafb5",
+      "request_identity_sha256": "e594d5274fd54493cc0cbc79a5a4b588bb0e9ead750aed530d0ad26416dc6064",
+      "request_parameter_mutation_count": 0,
+      "request_set_unchanged": true,
+      "resume_count": 0,
+      "source_admission_counts": {
+        "arxiv": 2410,
+        "openalex": 2410,
+        "pubmed": 4820,
+        "semantic_scholar": 2410
+      },
+      "source_concurrency_peak": {
+        "arxiv": 2,
+        "openalex": 3,
+        "pubmed": 2,
+        "semantic_scholar": 3
+      },
+      "status": "passed",
+      "window_violation_count": 0
+    },
+    {
+      "profile": "expired_declaration",
+      "reason_code": "provider_capacity_declaration_expired",
+      "status": "not_ready"
+    },
+    {
+      "profile": "unknown_capacity",
+      "reason_code": "provider_capacity_declarations_missing",
+      "status": "not_ready"
+    }
+  ],
+  "schema_version": "1",
+  "status": "pacing_controls_ready",
+  "synthetic_only": true
+}

@@ -1,0 +1,44 @@
+{
+  "capacity_models": [
+    "fixed_window_token_bucket_v1"
+  ],
+  "challenge_one_time": true,
+  "content_hash_authenticates_declarant": false,
+  "effective_conditions": [
+    "scope_alias_active_and_epoch_within_window"
+  ],
+  "evidence_types": [
+    "operator_verified_provider_contract_v1",
+    "provider_owner_portal_export_v1",
+    "provider_owner_structured_notice_v1"
+  ],
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "http_attempt_upper": 19280,
+  "invalidation_conditions": [
+    "expiry_revocation_scope_or_binding_change"
+  ],
+  "kit_runtime": "python_standard_library_only_python_I_S",
+  "logical_source_request_count": 9640,
+  "protocol": "provider_capacity_declaration_intake_v1",
+  "retry_after_semantics": [
+    "delta_seconds_or_http_date_when_provider_supplies_header"
+  ],
+  "schema_version": "1",
+  "shard_count": 20,
+  "source_commit": "a859a62569e9e3d488e61ecbccfb0656ccfefebd",
+  "source_scopes": {
+    "arxiv": "public_anonymous",
+    "openalex": "openalex_polite_pool_optional",
+    "pubmed": "ncbi_api_key_optional",
+    "semantic_scholar": "semantic_scholar_api_key_optional"
+  },
+  "status": "capacity_intake_controls_ready"
+}

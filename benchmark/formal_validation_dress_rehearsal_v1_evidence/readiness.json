@@ -1,0 +1,24 @@
+{
+  "controls_ready": true,
+  "execution": {
+    "academic_api_request_count": 0,
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_validation_complete": false,
+  "protocol": "formal_validation_dress_rehearsal_v1",
+  "real_blocker_count": 3,
+  "real_blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "rehearsal_report_sha256": "fe07b56679add7175648483f45cc6e72c36b2ad3dd55b9c7521293258c28c523",
+  "schema_version": "1",
+  "status": "real_external_evidence_still_blocked",
+  "synthetic_rehearsal_only": true
+}

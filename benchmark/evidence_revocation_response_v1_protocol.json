@@ -1,0 +1,67 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "paths": {
+    "freshness_contract": "benchmark/validation_evidence_freshness_v1_contract.json",
+    "ledger": "benchmark/evidence_revocation_response_v1_ledger.json",
+    "readiness_contract": "benchmark/validation_readiness_bundle_v1_contract.json"
+  },
+  "propagation": {
+    "active_states": [
+      "revoked",
+      "superseded",
+      "under_investigation"
+    ],
+    "publication_targets": [
+      "clearance_receipt",
+      "release_candidate",
+      "standalone_auditor_bundle",
+      "validation_readiness_bundle"
+    ],
+    "unrelated_evidence_preserved": true
+  },
+  "protocol": "evidence_revocation_response_v1",
+  "protocol_sha256": "55558267bdf7193e5b69905b25b4920f34affbb3c259637f7b0647edbe220c84",
+  "reason_codes": [
+    "content_tampering",
+    "duplicate_or_wrong_publication",
+    "erroneous_extrapolation",
+    "implementation_defect",
+    "input_identity_error",
+    "protocol_error",
+    "sensitive_information_leakage",
+    "stale_dependency",
+    "statistical_error"
+  ],
+  "schema_version": "1",
+  "source_commit": "1fe21cb0c384304b18a0956cb028cc0e7aa971a4",
+  "states": [
+    "active",
+    "under_investigation",
+    "revoked",
+    "superseded",
+    "restored"
+  ],
+  "transitions": {
+    "active": [
+      "revoked",
+      "under_investigation"
+    ],
+    "restored": [],
+    "revoked": [
+      "superseded"
+    ],
+    "superseded": [
+      "restored"
+    ],
+    "under_investigation": [
+      "revoked"
+    ]
+  }
+}

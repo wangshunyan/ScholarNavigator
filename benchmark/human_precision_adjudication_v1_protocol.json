@@ -1,0 +1,70 @@
+{
+  "annotation": {
+    "adjudication_optional_fields": [
+      "rationale"
+    ],
+    "adjudication_required_on_disagreement": true,
+    "annotation_optional_fields": [
+      "notes"
+    ],
+    "annotator_identity_format": "opaque_anon_identifier_v1",
+    "confidence_supported": false,
+    "independent_annotator_count": 2,
+    "labels": [
+      "relevant",
+      "partially_relevant",
+      "not_relevant",
+      "insufficient_information"
+    ]
+  },
+  "contract": "human_precision_adjudication_v1",
+  "digest_algorithms": {
+    "opaque_item_identity": "sha256_utf8_v1",
+    "package_tree": "sorted_relative_path_size_sha256_v1"
+  },
+  "evaluator": {
+    "identity_version": "deduplicated_gold_identity_v2",
+    "official_scorer": false,
+    "statistics_version": "full_swap_precision_annotation_v1"
+  },
+  "exclusions": {
+    "allowed_reasons": [],
+    "expected_count": 0
+  },
+  "package": {
+    "adjudication_template_path": "public/adjudication.jsonl",
+    "annotator_1_template_path": "public/annotator_1.jsonl",
+    "annotator_2_template_path": "public/annotator_2.jsonl",
+    "expected_item_count": 439,
+    "file_count": 10,
+    "item_set_sha256": "f9ce7cd221d8b7f2aa5ebba6a6b8897a7ac9aa1dac4ca8a9c3f7287fbd1a48e1",
+    "manifest_path": "manifest.json",
+    "mapping_path": "private/mapping.json",
+    "package_id": "lexical_normalization_v1_record160_all_top20_changes_v1",
+    "package_sha256": "3e0bdfa73bde29fc4121cd8135b37682b908b2654e80d6b9ce02ddf44b842a45",
+    "package_version": "1",
+    "public_samples_path": "public/blind_samples.jsonl",
+    "required_prior_item_count": 32,
+    "required_prior_item_set_sha256": "9aeb28963542ccefa6f7992caa7fd7e2ec443c55a908b391eb5a064c0b35ca38",
+    "root": "benchmark/lexical_normalization_record160_precision_annotation",
+    "rubric_path": "public/annotation_schema.json"
+  },
+  "prior_package": {
+    "adjudication_template_path": "public/adjudication.jsonl",
+    "annotator_1_template_path": "public/annotator_1.jsonl",
+    "annotator_2_template_path": "public/annotator_2.jsonl",
+    "expected_item_count": 200,
+    "file_count": 10,
+    "item_set_sha256": "55ea843cd45c14e7a296ef1b82e253941071e09e14a16714efdade0ff91408c4",
+    "manifest_path": "manifest.json",
+    "mapping_path": "private/mapping.json",
+    "package_id": "lexical_normalization_v1_blinded_precision_audit_v1",
+    "package_sha256": "63ff322da156c803efcd2e5d3686e64eed018d818097e438a767b189e2593c30",
+    "package_version": "legacy_unversioned",
+    "public_samples_path": "public/blind_samples.jsonl",
+    "root": "benchmark/lexical_normalization_precision_annotation",
+    "rubric_path": "public/annotation_schema.json"
+  },
+  "schema_version": "1",
+  "score_scope": "internal_non_official_human_precision"
+}

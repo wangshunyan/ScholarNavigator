@@ -1,0 +1,44 @@
+{
+  "aggregate_sha256": "9bb22b8696c0228ba6fdd65b0f836479da934b60d06fbfcdec8ba59dcce596ef",
+  "capsule_preflight": {
+    "ephemeral_capsule_sha256": "a0aaf2e6b262213303281d642ed15a93e1cf5a3bf64e39cd77e4eec34e4edc3c",
+    "ephemeral_replay_query_count": 3,
+    "generation_file_upper_per_selected_shard": 315,
+    "protocol_file_limit": 512,
+    "scope": "per_shard_file_limit_plus_ephemeral_export_verify_replay"
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "fixture_only": true,
+  "fixture_results_are_not_formal_evidence_or_quality_statistics": true,
+  "formal_validation_complete": false,
+  "network_status": "network_not_checked",
+  "protocol": "full1000_execution_readiness_v1",
+  "query_count": 1000,
+  "schema_version": "1",
+  "shard_count": 20,
+  "stages": {
+    "capsule_file_limit_preflight": true,
+    "checkpoint_and_aggregate": true,
+    "reproduction_capsule": true,
+    "resource_ledger_conformance": true,
+    "resume_supersession": true,
+    "run_manifest_binding": true,
+    "sharded_execution": true,
+    "top20_delivery_contract": true
+  },
+  "status": "execution_plan_ready_but_network_blocked",
+  "terminal_counts": {
+    "cancelled": 250,
+    "excluded": 250,
+    "failed": 250,
+    "succeeded": 250
+  },
+  "violations": []
+}

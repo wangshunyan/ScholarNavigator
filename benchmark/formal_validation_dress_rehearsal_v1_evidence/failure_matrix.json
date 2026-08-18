@@ -1,0 +1,85 @@
+{
+  "execution": {
+    "academic_api_request_count": 0,
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "protocol": "formal_validation_dress_rehearsal_v1",
+  "real_state_mutation_count": 0,
+  "report_sha256": "2108d8bc42af8df4818f620cf47698fc13fd9804f1a5db374902625d4f4ec7fa",
+  "scenario_count": 16,
+  "scenarios": [
+    {
+      "rejected": true,
+      "scenario": "missing_stage"
+    },
+    {
+      "rejected": true,
+      "scenario": "reordered_stage"
+    },
+    {
+      "rejected": true,
+      "scenario": "cross_commit_mix"
+    },
+    {
+      "rejected": true,
+      "scenario": "cross_protocol_mix"
+    },
+    {
+      "rejected": true,
+      "scenario": "duplicate_intake"
+    },
+    {
+      "rejected": true,
+      "scenario": "duplicate_receipt"
+    },
+    {
+      "rejected": true,
+      "scenario": "old_attempt"
+    },
+    {
+      "rejected": true,
+      "scenario": "partial_human_labels"
+    },
+    {
+      "rejected": true,
+      "scenario": "partial_scorer_output"
+    },
+    {
+      "rejected": true,
+      "scenario": "posthoc_prompt_change"
+    },
+    {
+      "rejected": true,
+      "scenario": "posthoc_threshold_change"
+    },
+    {
+      "rejected": true,
+      "scenario": "posthoc_sample_change"
+    },
+    {
+      "rejected": true,
+      "scenario": "posthoc_statistics_change"
+    },
+    {
+      "rejected": true,
+      "scenario": "posthoc_default_policy_change"
+    },
+    {
+      "rejected": true,
+      "scenario": "revoked_upstream_evidence"
+    },
+    {
+      "rejected": true,
+      "scenario": "synthetic_real_state_pollution"
+    }
+  ],
+  "schema_version": "1",
+  "status": "rehearsal_completed",
+  "synthetic_rehearsal_only": true
+}

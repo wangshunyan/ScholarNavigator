@@ -1,0 +1,14 @@
+# python_dependency_lock_v1
+# group: development
+# environment: python 3.13.5 darwin arm64
+anyio==4.13.0
+certifi==2025.8.3
+h11==0.16.0
+httpcore==1.0.9
+httpx==0.28.1
+idna==3.7
+iniconfig==2.3.0
+packaging==25.0
+pluggy==1.5.0
+pygments==2.19.1
+pytest==9.1.1

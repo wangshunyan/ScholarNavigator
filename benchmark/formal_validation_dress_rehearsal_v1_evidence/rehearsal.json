@@ -1,0 +1,189 @@
+{
+  "cleanup": {
+    "labels_persisted": false,
+    "receipt_persisted": false,
+    "run_artifacts_persisted": false,
+    "temporary_namespace_cleaned": true
+  },
+  "execution": {
+    "academic_api_request_count": 0,
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "handoff_checklist_sha256": "9c93c8c6b8296a3ae225541475f23e62d2dd54a36f2e793481206e611a5ea609",
+  "human_item_count": 471,
+  "namespace": "synthetic_rehearsal_only:",
+  "protocol": "formal_validation_dress_rehearsal_v1",
+  "protocol_sha256": "efc226d54e316d21df46e77a5efa930132fcef0720c42f4b4c8ad47c666fc9e6",
+  "query_count": 1000,
+  "real_blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "real_state_mutation_count": 0,
+  "rehearsal_id": "synthetic_rehearsal_only:14002318d4b673916e005788f60295ac21408f8efa1126577f2b7302e396316e",
+  "report_sha256": "fe07b56679add7175648483f45cc6e72c36b2ad3dd55b9c7521293258c28c523",
+  "schema_version": "1",
+  "scorer_query_count": 1000,
+  "shard_count": 20,
+  "source_commit": "a3ba36422b69294cd70bde83b102bd576a2c4d1d",
+  "stage_count": 12,
+  "stages": [
+    {
+      "index": 0,
+      "name": "preregistration_sealed",
+      "status": "passed",
+      "summary": {
+        "registered_file_count": 15,
+        "seal_sha256": "e9edb66d19a0813d3610ded3652b19fe8a00fe4835c702649b0b0fb6a6c0974d"
+      },
+      "summary_sha256": "3ad62dca4d6202bffe72aec5a5eb5efe50e514421c071028aff3a0e91b5dc14b"
+    },
+    {
+      "index": 1,
+      "name": "launch_authorized",
+      "status": "passed",
+      "summary": {
+        "audit_sha256": "19bf7ce07876cf7378d382e4a2e69b2df649a32ba8a4a74144abfdf8f72bdd9b",
+        "operation_count": 27,
+        "scenario_count": 10
+      },
+      "summary_sha256": "f2ceace2561c566b1401ea91dfc3d3eac02a823b607505a79e10b54ce892b09e"
+    },
+    {
+      "index": 2,
+      "name": "full1000_executed",
+      "status": "passed",
+      "summary": {
+        "aggregate_sha256": "868f704d06283039a97e20df2fa7d9dc4b6aa6c90e0662832e9ef0945fb15a24",
+        "capsule_verified": true,
+        "checkpoint_resume_verified": true,
+        "query_count": 1000,
+        "resource_ledger_verified": true,
+        "shard_count": 20,
+        "top20_delivery_verified": true
+      },
+      "summary_sha256": "7f1e05b825d587c0e5ed97b8ba56ed0783fc0e6b0b41b56449e5329893681231"
+    },
+    {
+      "index": 3,
+      "name": "provider_provenance_verified",
+      "status": "passed",
+      "summary": {
+        "scenario_count": 17,
+        "source_count": 4,
+        "status": "passed"
+      },
+      "summary_sha256": "ee3aee81f6c114feff016d54fcb37dc5b978f4022706de2fcd33b1d31ba4659e"
+    },
+    {
+      "index": 4,
+      "name": "disaster_recovery_verified",
+      "status": "passed",
+      "summary": {
+        "duplicate_request_count": 0,
+        "final_request_count": 1000,
+        "parent_chain_length": 2,
+        "replacement_shard": 15,
+        "scenario_count": 11
+      },
+      "summary_sha256": "7ffd9cea53746d3348bcb258e5bef66fe688a6cba1c397c9ed60d727804a9d60"
+    },
+    {
+      "index": 5,
+      "name": "evidence_intake_locked",
+      "status": "passed",
+      "summary": {
+        "intake_count": 3,
+        "package_count": 1,
+        "submission_count": 2,
+        "unique_intake_count": 3
+      },
+      "summary_sha256": "4b28f05cebb0a9a262b4d3b02d03ed7977a684ab68178af86c8cb95ff21f7e40"
+    },
+    {
+      "index": 6,
+      "name": "unblind_and_scoring_verified",
+      "status": "passed",
+      "summary": {
+        "adjudication_validated": true,
+        "annotator_count": 2,
+        "human_item_count": 471,
+        "scorer_output_sha256": "e00db573c8defe5c89aa6909670fd044a969157568799f0871b9d6297694b4c5",
+        "scorer_query_count": 1000,
+        "scorer_repeat_byte_identical": true,
+        "statistics_persisted": false,
+        "synthetic_metric_values_persisted": false
+      },
+      "summary_sha256": "07c8449d32a27a75166f5aff808cfbaba1fffbfbbffe7a9b0cd2a22dda68d560"
+    },
+    {
+      "index": 7,
+      "name": "quarantine_audited",
+      "status": "passed",
+      "summary": {
+        "intake_count": 5,
+        "intake_ids_sha256": "d03071fb291a13832b4460bc00b46ff4b31f0b9ea8186019f63f017a3c62e273",
+        "synthetic_only": true,
+        "verified_consumption_count": 5
+      },
+      "summary_sha256": "dc6eb3feff7a3bb87c39831a0a6adc1bffb7a5fea261faa660cca671e7f42c5b"
+    },
+    {
+      "index": 8,
+      "name": "freshness_verified",
+      "status": "passed",
+      "summary": {
+        "stale_count": 0,
+        "status": "fresh_with_declared_blockers"
+      },
+      "summary_sha256": "dbfe3de1df21b98b768f26788f813cde83492d6ddba7c6a2c04398db95f6db80"
+    },
+    {
+      "index": 9,
+      "name": "eligible_for_clearance",
+      "status": "passed",
+      "summary": {
+        "blocker_count": 3,
+        "evidence_sha256": "d4cb91c2c70434175fbaba48f06811d855531ce6ec53a1e8d5265c9ee155f9cf",
+        "synthetic_test_only": true
+      },
+      "summary_sha256": "660c0f4f654230638ee7b65d0c4c6e88bb886280e71ced0033b8d260e8bf6f68"
+    },
+    {
+      "index": 10,
+      "name": "test_receipt_issued",
+      "status": "passed",
+      "summary": {
+        "formal_validation_complete": false,
+        "receipt_identity_sha256": "994f83ef1e3107b9f88444d97770e14b0f4c437a97d412e656b4f8ece2398aea",
+        "synthetic_test_only": true
+      },
+      "summary_sha256": "1c7ee8cb7a47b3b7e748ef461471c6507ffc96b95f5d55cb0d8f362abecfe11e"
+    },
+    {
+      "index": 11,
+      "name": "standalone_bundle_verified",
+      "status": "passed",
+      "summary": {
+        "blocker_count": 3,
+        "formal_validation_complete": false,
+        "status": "verified_with_declared_blockers"
+      },
+      "summary_sha256": "980820d59274eb440d1be9765a0ba09a305e535af2dcd9c8dd9e3c9f28989185"
+    }
+  ],
+  "status": "rehearsal_completed",
+  "synthetic_rehearsal_only": true,
+  "test_receipt": {
+    "formal_validation_complete": false,
+    "receipt_identity_sha256": "994f83ef1e3107b9f88444d97770e14b0f4c437a97d412e656b4f8ece2398aea",
+    "synthetic_test_only": true
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "activation_requirement": "all_four_fresh_active_declarations_and_single_use_import_receipt",
+  "addendum_sha256": "6c774f9eeadeca7d0b4be2d92ff0fcd0d68792a7e273db5a0cc63af25564dbba",
+  "contract": "full1000_provider_capacity_intake_addendum_v1",
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "http_attempt_upper": 19280,
+  "intake_protocol_sha256": "63f6072d2e3a65253c308c9c1f6191fa0dcfe408b68488e73ec61edc5e9f5602",
+  "launch_control_sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1",
+  "logical_source_request_count": 9640,
+  "network_status": "not_checked",
+  "pacing_protocol_sha256": "71059ef65106174794358c1646b6a4224613174624a38280ef22e580d3097575",
+  "real_declaration_status": "not_ready_missing_real_declarations",
+  "request_manifest_sha256": "4a281e69e864490b7cb1bf20bc9f8fcb940ce4443e4305751244eaa1bb6bf50f",
+  "request_set_mutated": false,
+  "schema_version": "1",
+  "shard_count": 20,
+  "source_commit": "a859a62569e9e3d488e61ecbccfb0656ccfefebd"
+}

@@ -1,0 +1,136 @@
+{
+  "baseline_profile": {
+    "path": "benchmark/current_rules_regression_baseline.json",
+    "sha256": "393ba0b2f314ce4b0fc792de86e6da67fa97318ffce7f3c42621c3f3e4a29f2f"
+  },
+  "baseline_update": {
+    "approval_token": "PROPOSE_CURRENT_RULES_REGRESSION_BASELINE",
+    "command": "PYTHONPATH=src python scripts/check_current_rules_regression.py propose-baseline --manifest benchmark/current_rules_regression_manifest.json --output-dir <review-dir> --approval-token PROPOSE_CURRENT_RULES_REGRESSION_BASELINE --reason '<auditable reason>'",
+    "manifest_or_baseline_mutation": "never; proposal artifacts require manual review and a separate tracked change"
+  },
+  "canonicalization": {
+    "candidate_identity": "all_stable_identifiers_plus_title_year_fallback",
+    "excluded_config_fields": [
+      "code",
+      "resume_signature",
+      "runtime_code_hash",
+      "started_at"
+    ],
+    "float_policy": "exact_json_number",
+    "path_policy": "repository_relative_when_inside_repository"
+  },
+  "datasets": [
+    {
+      "crosswalk_path": "benchmark/beir_scifact_s2_crosswalk.json",
+      "frozen_hashes": {
+        "config_sha256": "7cf6ef382e9eb46591c83ab7e88218c2500f2a7e0c403d5795c47695f2a13951",
+        "crosswalk_sha256": "ec7406107d13ddfd81ea1eca6f065c85dda25276f4ddb33abd568c5dd9d94d1c",
+        "dataset_sha256": "536e14446a0ba56ed1398ab1055f39fe852686ecad24a6306c80c490fa8e0165",
+        "results_sha256": "d253903221e0ae2498b00e0e747c7ac848da4cea6dd7941d8942535a1ba57d6e",
+        "snapshot_tree_sha256": "834d11ce1cbec500a31e70fc7364f095457b35eececa93a03fb729d994216624"
+      },
+      "expected_profile": {
+        "required_retrieval_key_count": 264,
+        "required_retrieval_keys_sha256": "2b809348c4ae68b2b310195412b9471f4f35d5797e4d5bd1f24722cb28743324",
+        "semantic_config_sha256": "f2a831651b4961512b58f78859f5d54e2ee9e4cf94526c5660bf4b2a61c37581",
+        "semantic_hashes": {
+          "candidate_identity_sha256": "11e4980f4ccaa064e2969ffb903ead919139e8ac4fc8d104ec06d11f75e0387d",
+          "core_metrics_sha256": "898d0e1d2d5377b9dee0ffa5227d5248c0dba224c827eae28e506e471aa32d04",
+          "gold_diagnostics_sha256": "f9d730c1e49d7f1954297636bf6a77b12591f4e26e2f3d35f5875d70053a0c96",
+          "source_terminal_sha256": "11d2f7c65352081da8b2b9a1cc5936378c79adb6a98263cccb6c86174ca978f2"
+        },
+        "summary_metrics": {
+          "candidate_recall": 0.12195121951219512,
+          "case_count": 50,
+          "evaluable_case_count": 41,
+          "f1_at_20": 0.011614401858304297,
+          "recall_at_20": 0.12195121951219512
+        }
+      },
+      "label": "scifact",
+      "run_dir": "outputs/benchmark_runs/semantic_seed_resolution_c144_scifact_baseline_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_scifact_baseline_retrieval",
+      "snapshot_group": "baseline"
+    },
+    {
+      "frozen_hashes": {
+        "config_sha256": "c3c499c667667d989883f26ae48c5a4e3207a22c9511ec3238dd28c22091abd7",
+        "dataset_sha256": "7d8c7f59b289a54912c38cf204d16dbfec14ca35de850b9978b4051ad43a8b36",
+        "results_sha256": "5890cee1980ba5646254a73d9b32d4c5e8b25f461495109262bfa617b8a89455",
+        "snapshot_tree_sha256": "461ae4679d43047825112bd1e2bf7f6b82e9e916b6753072a7e89807837de769"
+      },
+      "expected_profile": {
+        "required_retrieval_key_count": 72,
+        "required_retrieval_keys_sha256": "05901dfec2c68101562de513a9ba8495e3170e866e9d256bbe6beefba932189d",
+        "semantic_config_sha256": "7822b6ecc8404d96acf5fdeeb0f78ce25bb6f1c892fdd2ec803de2eb486066ab",
+        "semantic_hashes": {
+          "candidate_identity_sha256": "d6737a7b537b7c2dac81f71fcf6c4f2b9dccf42a173b99e6bf9c85c2396c3594",
+          "core_metrics_sha256": "e42fd5c09a8df919e0a770fc504be8fc2eb8d76dd0b9edd9003194df3cc25c3a",
+          "gold_diagnostics_sha256": "4402852692678ed1a1c50596cdb4f761756403e2a34340ac0dc2e73531767ce2",
+          "source_terminal_sha256": "b5c6ccc7b256ac4e8cb79f6fbce3e824453217a983a36404a76618d4150e0d5f"
+        },
+        "summary_metrics": {
+          "candidate_recall": 0.15,
+          "case_count": 10,
+          "evaluable_case_count": 10,
+          "f1_at_20": 0.017857142857142856,
+          "recall_at_20": 0.125
+        }
+      },
+      "label": "auto_dev",
+      "run_dir": "outputs/benchmark_runs/semantic_seed_resolution_c144_auto_dev_baseline_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_auto_dev_baseline_retrieval",
+      "snapshot_group": "baseline"
+    },
+    {
+      "frozen_hashes": {
+        "config_sha256": "53891aa4d1607da31a525cd64614e04029525096a244cc566d21f089daaef8ab",
+        "dataset_sha256": "7d8c7f59b289a54912c38cf204d16dbfec14ca35de850b9978b4051ad43a8b36",
+        "results_sha256": "cc036a2ea053b4b07af7a8d0c23b8644d1da4b443528fe5d848de976e0920514",
+        "snapshot_tree_sha256": "08bff793d70c4223c35aa998436ac08963c8f5d8683d03ccf4fd626f8c0857fe"
+      },
+      "expected_profile": {
+        "required_retrieval_key_count": 34,
+        "required_retrieval_keys_sha256": "fda9b143e6b515189f4d69e5ed7a330c49272f3de41fae0edc50ea4ff8b8fe68",
+        "semantic_config_sha256": "902006a6bb1148eb2569c39a4815c09fc41d3deb7b792e8ea47987bc6949820d",
+        "semantic_hashes": {
+          "candidate_identity_sha256": "919fbee537b6903ee181469990bc54f3b7d5a21a945589126603501a89e1d730",
+          "core_metrics_sha256": "194f082532b5cc8b69191637f756484a5ab3a314a9b05e27464571e9d4681d83",
+          "gold_diagnostics_sha256": "7224cf291f6b618b687bb74015e352607701a8eeae098183c383c11aa8fa2e6d",
+          "source_terminal_sha256": "8a58b3902b16aedaeb705d1afcbac1891d6073fcd715475e5be2d871667efabe"
+        },
+        "summary_metrics": {
+          "candidate_recall": 0.2,
+          "case_count": 5,
+          "evaluable_case_count": 5,
+          "f1_at_20": 0.019047619047619046,
+          "recall_at_20": 0.2
+        }
+      },
+      "label": "auto_val",
+      "run_dir": "outputs/benchmark_runs/semantic_seed_resolution_c144_auto_val_baseline_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_auto_val_baseline_retrieval",
+      "snapshot_group": "baseline"
+    }
+  ],
+  "gate": "current_rules_frozen_replay_regression",
+  "implementation_base_commit": "02a50d90143c8c00f84132e32d5f5fd630e879a0",
+  "invariants": {
+    "candidate_identity_set": "exact",
+    "core_metrics": [
+      "candidate_recall",
+      "recall_at_20",
+      "f1_at_20"
+    ],
+    "default_experiment_switches": "off",
+    "external_record_in_gate": false,
+    "gold_diagnostics": "exact_per_query",
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "required_snapshot_keys": "complete_and_exact",
+    "snapshot_write_count": 0,
+    "source_terminal_status": "exact_per_key"
+  },
+  "schema_version": "1",
+  "score_scope": "internal_benchmark_regression_not_official"
+}

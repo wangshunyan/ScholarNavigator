@@ -1,0 +1,123 @@
+{
+  "benchmark": "beir_scifact_local_bm25_v1",
+  "implementation_base_commit": "28db182c2bf62dd2914ff13c5a3f48c4361c5eaa",
+  "dataset_manifest": "benchmark/beir_scifact_manifest.json",
+  "sample_manifest": "benchmark/beir_scifact_sample_manifest.json",
+  "dataset_archive_sha256": "536e14446a0ba56ed1398ab1055f39fe852686ecad24a6306c80c490fa8e0165",
+  "corpus": {
+    "path": "outputs/benchmark_inputs/beir_scifact/extracted/scifact/corpus.jsonl",
+    "size_bytes": 8106566,
+    "sha256": "dec31c8182f3d744c7d2c09423756fd1d17cbef75808db13ba01cc0aab4d1ac6",
+    "document_count": 5183,
+    "fields": {
+      "document_id": "_id",
+      "title": "title",
+      "abstract": "text",
+      "document_id_identity": "s2orc_corpus_id"
+    }
+  },
+  "index": {
+    "implementation": "rank_bm25.BM25Okapi",
+    "parameters": {
+      "k1": 1.5,
+      "b": 0.75,
+      "epsilon": 0.25
+    },
+    "document_text": "title+abstract",
+    "tokenizer": "unicode-word-casefold-v1",
+    "tie_break": "score_desc_then_document_id_ascending",
+    "fingerprint": "9dd424453f4109747e25dcf6bcd4c4c2542bb35d193f59c73cc653d145a3dfc4",
+    "cold_build_seconds_observed": 1.0329365418292582,
+    "cached_load_seconds_observed": 0.5393623749259859
+  },
+  "configuration": {
+    "query_planning_policy": "current_rules",
+    "query_adapter_policy": "adaptive",
+    "run_profile": "balanced",
+    "top_k": 20,
+    "max_candidate_papers": 200,
+    "llm_semantic": false,
+    "query_evolution": false,
+    "refchain": false,
+    "baseline_sources": ["openalex", "arxiv", "semantic_scholar", "pubmed"],
+    "experiment_sources": ["openalex", "arxiv", "semantic_scholar", "pubmed", "local_bm25"],
+    "connector_default_enabled": false,
+    "connector_evaluator_data_access": false
+  },
+  "snapshots": {
+    "seed_source": "outputs/benchmark_snapshots/beir_scifact_corpusid_v2_82fdc73/retrieval",
+    "baseline": {
+      "name": "local_bm25_28db182_scifact_baseline",
+      "file_count": 306,
+      "required_key_count": 262,
+      "success_key_count": 260,
+      "failed_key_count": 2,
+      "directory_content_sha256": "7bc66038037d89363b1eea8a5ad8fe508c341884de04d6c359bcf162a2de1d85"
+    },
+    "experiment": {
+      "name": "local_bm25_28db182_scifact_five_source",
+      "file_count": 407,
+      "required_key_count": 363,
+      "success_key_count": 361,
+      "failed_key_count": 2,
+      "local_bm25_key_count": 101,
+      "directory_content_sha256": "21a3260b120c8aabe832381e6674d90c40f4aa3dc731356b09fb1d97a5fb7cd9"
+    },
+    "external_required_key_parity": true,
+    "external_baseline_only_key_count": 0,
+    "external_experiment_only_key_count": 0
+  },
+  "metrics": {
+    "case_count": 50,
+    "evaluable_query_count": 41,
+    "gold_relation_count": 51,
+    "evaluable_gold_count": 42,
+    "evaluable_unique_paper_count": 39,
+    "baseline": {
+      "candidate_recall": 0.12195121951219512,
+      "candidate_gold_count": 5,
+      "candidate_unique_paper_count": 5,
+      "recall_at_20": 0.12195121951219512,
+      "f1_at_20": 0.011614401858304297,
+      "final_gold_count": 5,
+      "final_unique_paper_count": 5
+    },
+    "experiment": {
+      "candidate_recall": 0.7560975609756098,
+      "candidate_gold_count": 32,
+      "candidate_unique_paper_count": 30,
+      "recall_at_20": 0.4634146341463415,
+      "f1_at_20": 0.04624643649033893,
+      "final_gold_count": 20,
+      "final_unique_paper_count": 19
+    },
+    "paired_query_wins_ties_losses": {
+      "candidate_recall": [26, 15, 0],
+      "recall_at_20": [14, 27, 0],
+      "f1_at_20": [14, 27, 0]
+    }
+  },
+  "local_source_diagnostics": {
+    "returned_candidate_count": 2020,
+    "deduplicated_candidate_count": 1192,
+    "final_returned_candidate_count": 185,
+    "candidate_gold_count": 32,
+    "independent_gold_count": 27,
+    "independent_unique_paper_count": 25,
+    "final_returned_gold_count": 20,
+    "final_returned_unique_paper_count": 19,
+    "weakly_relevant_filtered_gold_count": 6,
+    "irrelevant_outside_top_20_gold_count": 6,
+    "recorded_query_latency_seconds": 2.4883147396613,
+    "network_request_count": 0
+  },
+  "replay": {
+    "execution_http_request_count": 0,
+    "snapshot_write_count": 0,
+    "core_metrics_equal": true,
+    "per_query_metrics_equal": true,
+    "baseline_gold_diagnostics_sha256": "74ff73e21f1ab23eda1374e03673df5027f01f0cbfefbc216e391e4f4c7484",
+    "experiment_gold_diagnostics_sha256": "34651f241a01d97e9eb56c4a27dc024b1c9d972aedf175676ef1806304826746"
+  },
+  "interpretation": "Closed-corpus SciFact result only; not an open-web retrieval score. The two frozen external failures remain failures in both paired groups."
+}

@@ -1,0 +1,141 @@
+{
+  "chains": [
+    {
+      "action_plan": [
+        {
+          "action_id": "build_slot_specific_enrollment_kit",
+          "command": "python scripts/check_formal_backup_member_enrollment.py build-kit --members <2|3|4> --slot <slot> --challenge <opaque-challenge> --output <kit.zip>",
+          "expected_exit_code": 0,
+          "failure_rollback": "discard the unaccepted kit and preserve every existing registry and slot state",
+          "success_criterion": "a verified slot-bound offline kit is produced"
+        },
+        {
+          "action_id": "enroll_and_import_each_real_member",
+          "command": "python scripts/check_formal_backup_member_enrollment.py run-enrollment-dry-run --kit <kit.zip> --target <operator-selected-target> --evidence <capability-evidence.json> --observation-epoch <epoch> --output <member.json>",
+          "expected_exit_code": 0,
+          "failure_rollback": "remove probe residue and do not reserve or activate the slot",
+          "success_criterion": "every required slot has a fresh member package accepted by the existing member-intake gate"
+        }
+      ],
+      "chain_id": "backup_members",
+      "current_missing_inputs": [
+        "qualified_real_backup_member_attestations",
+        "complete_real_slot_coverage_for_one_selected_topology"
+      ],
+      "engineering_gap_count": 0,
+      "input_contract": {
+        "kit_protocol": "formal_backup_member_enrollment_v1",
+        "member_protocol": "formal_backup_set_member_intake_v1",
+        "required_state": "fresh_real_member_attestation_per_slot"
+      },
+      "prohibited_actions": [
+        "automatic_path_scanning",
+        "synthetic_member_promotion",
+        "slot_activation_before_complete_intake",
+        "capacity_or_failure_domain_assumption"
+      ],
+      "state": "engineering_ready_external_input_missing"
+    },
+    {
+      "action_plan": [
+        {
+          "action_id": "qualify_and_assign_three_independent_roles",
+          "command": "python scripts/check_human_annotator_qualification.py build-kit --role <annotator-A|annotator-B|adjudicator> --challenge <opaque-challenge> --output <kit.zip>",
+          "expected_exit_code": 0,
+          "failure_rollback": "revoke the incomplete proposal and leave delivery unopened",
+          "success_criterion": "three fresh conflict-free real qualification submissions are accepted"
+        },
+        {
+          "action_id": "issue_collect_and_adjudicate_complete_blind_work",
+          "command": "python scripts/check_human_annotation_assignment.py prepare --output <assignment.json>",
+          "expected_exit_code": 0,
+          "failure_rollback": "invalidate affected receipts and reject inherited or partial work",
+          "success_criterion": "both locked complete submissions and every real disagreement pass the existing adjudication gate"
+        }
+      ],
+      "chain_id": "human_annotation",
+      "current_missing_inputs": [
+        "three_qualified_independent_real_principals",
+        "complete_locked_real_a_and_b_submissions",
+        "complete_real_disagreement_adjudication"
+      ],
+      "engineering_gap_count": 0,
+      "input_contract": {
+        "assignment_protocol": "human_annotation_assignment_activation_v1",
+        "qualification_protocol": "human_annotator_qualification_intake_v1",
+        "submission_protocol": "human_annotation_submission_intake_v1"
+      },
+      "prohibited_actions": [
+        "synthetic_submission_promotion",
+        "partial_or_common_item_scoring",
+        "cross_role_or_alias_reuse",
+        "unblinding_before_both_submissions_validate"
+      ],
+      "state": "engineering_ready_external_input_missing"
+    },
+    {
+      "action_plan": [
+        {
+          "action_id": "obtain_and_verify_organizer_material",
+          "command": "python scripts/check_official_scorer_intake.py build-kit --challenge <opaque-challenge> --output <kit.zip>",
+          "expected_exit_code": 0,
+          "failure_rollback": "quarantine the rejected package and retain the official blocker",
+          "success_criterion": "the organizer package, input/output contracts, metric namespace and origin evidence all validate"
+        },
+        {
+          "action_id": "run_existing_sandbox_conformance",
+          "command": "python scripts/check_official_scorer_intake.py conformance-dry-run --package <package.zip> --output <report.json>",
+          "expected_exit_code": 0,
+          "failure_rollback": "discard conformance output and do not enter clearance",
+          "success_criterion": "the existing hermetic handoff accepts the package without inferring missing official definitions"
+        }
+      ],
+      "chain_id": "official_scorer",
+      "current_missing_inputs": [
+        "verified_official_package",
+        "official_input_and_output_contracts",
+        "official_metric_namespace",
+        "verified_origin_evidence"
+      ],
+      "engineering_gap_count": 0,
+      "input_contract": {
+        "handoff_protocol": "external_scorer_handoff_v1",
+        "intake_protocol": "official_scorer_package_intake_v1",
+        "official_definition_policy": "unknown_until_organizer_provides_material"
+      },
+      "prohibited_actions": [
+        "official_contract_guessing",
+        "synthetic_scorer_promotion",
+        "malformed_output_repair",
+        "score_generation_before_complete_formal_input"
+      ],
+      "state": "engineering_ready_external_input_missing"
+    }
+  ],
+  "development_freeze": {
+    "allowed_unfreeze_triggers": [
+      "machine_verified_concrete_engineering_defect",
+      "real_external_input_received"
+    ],
+    "decision": "external_action_required",
+    "new_governance_task_allowed": false
+  },
+  "execution": {
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "formal_validation_complete": false,
+  "pack_sha256": "8192062ce55f7094e4c1648f30966addc2e4bb0762283abae12270f055dfa3cd",
+  "protocol": "formal_external_blocker_action_pack_v1",
+  "protocol_sha256": "ce7363c90df7aead18c0740c1fd873cafd3d1f6a8211a43549f378e38594c9a5",
+  "schema_version": "1",
+  "source_commit": "1742e566be0cd5d073023e9813f086d05912fe2b",
+  "status": "external_action_required"
+}

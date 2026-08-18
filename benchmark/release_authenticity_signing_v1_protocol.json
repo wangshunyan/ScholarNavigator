@@ -1,0 +1,77 @@
+{
+  "algorithm": "ssh-ed25519",
+  "artifact_types": [
+    "clearance_receipt",
+    "evidence_transparency_checkpoint",
+    "release_candidate",
+    "standalone_auditor_bundle"
+  ],
+  "canonical_envelope": {
+    "encoding": "UTF-8",
+    "excluded_machine_fields": [
+      "absolute_path",
+      "hostname",
+      "timestamp",
+      "username"
+    ],
+    "formal_blockers_exact": true,
+    "json": "sorted_keys_indent_2_trailing_newline_no_nan",
+    "required_bindings": [
+      "artifact_type_and_version",
+      "artifact_content_sha256",
+      "transparency_root_and_sequence",
+      "code_commit",
+      "readiness_status",
+      "formal_blockers",
+      "algorithm",
+      "key_identity",
+      "namespace",
+      "signing_context",
+      "test_only"
+    ]
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "key_states": [
+    "active",
+    "rotated",
+    "revoked"
+  ],
+  "namespace": "spar-release-authenticity-v1",
+  "protocol": "release_authenticity_signing_v1",
+  "protocol_sha256": "8813a7a77cd0d6288b5e2190960c94bca4b3f9f500e23c3a268dc9ccccc3e3d5",
+  "readiness_statuses": [
+    "candidate_checkpoint_no_public_release",
+    "ready_with_declared_blockers",
+    "verified_with_declared_blockers"
+  ],
+  "real_blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "schema_version": "1",
+  "signing_context": "SPAR release authenticity signing v1",
+  "source_commit": "febdb196486920ae4b856276b3a715d4a4c5e277",
+  "trust_root": {
+    "historical_signature_verification": "allowed_when_key_was_active_at_issuance",
+    "integration_bindings": {
+      "clearance_receipt": "benchmark/formal_validation_clearance_v1_evidence/current.json",
+      "release_candidate": "benchmark/release_candidate_reproducibility_v1_evidence/current.json",
+      "revocation_ledger": "benchmark/evidence_revocation_response_v1_ledger.json",
+      "standalone_auditor_bundle": "benchmark/standalone_auditor_bundle_v1_evidence/readiness.json",
+      "transparency_checkpoint": "benchmark/evidence_transparency_log_v1_checkpoint.json"
+    },
+    "private_key_storage": "operator_supplied_path_never_copied_or_serialized",
+    "real_identity_authentication": "not_provided_until_operator_provisions_real_anchor",
+    "revocation": "revoked_key_cannot_sign_new_release",
+    "rotation": "old_active_key_signed_transition_or_pre_registered_offline_recovery",
+    "test_keys": "test_only_cannot_satisfy_real_release"
+  }
+}

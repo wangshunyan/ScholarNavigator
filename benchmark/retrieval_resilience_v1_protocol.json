@@ -1,0 +1,244 @@
+{
+  "canonicalization": {
+    "excluded_fields": [
+      {
+        "path": "output.latency_seconds",
+        "reason": "wall-clock duration"
+      },
+      {
+        "path": "output.stage_latencies.*",
+        "reason": "wall-clock stage duration"
+      },
+      {
+        "path": "output.budget_status.elapsed_seconds",
+        "reason": "wall-clock budget duration"
+      },
+      {
+        "path": "output.retrieval_outputs.*.latency_seconds",
+        "reason": "wall-clock retrieval duration"
+      },
+      {
+        "path": "output.retrieval_outputs.*.source_stats.*.latency_seconds",
+        "reason": "wall-clock source duration"
+      },
+      {
+        "path": "output.retrieval_outputs.*.source_stats.*.diagnostics.latency_seconds",
+        "reason": "wall-clock connector duration"
+      },
+      {
+        "path": "output.retrieval_outputs.*.source_stats.*.diagnostics.rate_limit_wait_seconds",
+        "reason": "injected retry scheduler duration"
+      },
+      {
+        "path": "output.source_stats.*.latency_seconds",
+        "reason": "wall-clock source duration"
+      },
+      {
+        "path": "output.source_stats.*.diagnostics.latency_seconds",
+        "reason": "wall-clock connector duration"
+      },
+      {
+        "path": "output.source_stats.*.diagnostics.rate_limit_wait_seconds",
+        "reason": "injected retry scheduler duration"
+      },
+      {
+        "path": "output.search_diagnostics.latency_seconds",
+        "reason": "wall-clock connector duration"
+      },
+      {
+        "path": "output.search_diagnostics.rate_limit_wait_seconds",
+        "reason": "injected retry scheduler duration"
+      },
+      {
+        "path": "output.reference_diagnostics.latency_seconds",
+        "reason": "wall-clock connector duration"
+      },
+      {
+        "path": "output.reference_diagnostics.rate_limit_wait_seconds",
+        "reason": "injected retry scheduler duration"
+      },
+      {
+        "path": "events.*.payload.latency_seconds",
+        "reason": "wall-clock semantic-event duration"
+      },
+      {
+        "path": "events.*.payload.rate_limit_wait_seconds",
+        "reason": "injected retry scheduler duration"
+      },
+      {
+        "path": "events.*.payload.timestamp",
+        "reason": "semantic-event wall-clock timestamp"
+      },
+      {
+        "path": "events.*.payload.budget_status.elapsed_seconds",
+        "reason": "wall-clock event budget duration"
+      }
+    ],
+    "policy": "explicit_field_paths_only_unknown_fields_preserved"
+  },
+  "contract": "retrieval_resilience_v1",
+  "execution": {
+    "max_adapter_calls_per_source_per_subquery": 2,
+    "max_physical_requests_per_adapter_call": 2,
+    "search_service_arguments": {
+      "budget": {
+        "max_candidate_papers": 200,
+        "max_latency_seconds": 90.0,
+        "max_llm_calls": 20,
+        "max_search_rounds": 2,
+        "max_total_tokens": 50000
+      },
+      "current_year": 2026,
+      "enable_llm_judgement": false,
+      "enable_llm_query_understanding": false,
+      "enable_query_evolution": false,
+      "enable_refchain": false,
+      "enable_semantic_seed_expansion": false,
+      "enable_synthesis": false,
+      "query": "deterministic multi source retrieval resilience",
+      "query_adapter_policy": "adaptive",
+      "query_planning_policy": "current_rules",
+      "ranking_policy": "current_rules",
+      "run_profile": "balanced",
+      "top_k": 5
+    }
+  },
+  "fixture": {
+    "gold_blind": true,
+    "path": "datasets/eval_fixtures/resilience/four_source_results.json",
+    "sha256": "f3fe9abb29c719c5ce97cb7fadc6dd69f4988819737b7d9999f5c45acba37c37",
+    "size_bytes": 3161
+  },
+  "frozen_baseline_eligibility": {
+    "legacy_audit_path": "benchmark/run_provenance_legacy_audit.json",
+    "sha256": "46197f1665cd827bf386b985b00ae0d8079bcffb1c56e48556953bd926cf084d"
+  },
+  "scenarios": [
+    {
+      "expected_terminal": "partial_failure",
+      "outcomes": {
+        "arxiv": "timeout"
+      },
+      "scenario": "single_source_timeout"
+    },
+    {
+      "expected_terminal": "partial_failure",
+      "outcomes": {
+        "openalex": "rate_limit"
+      },
+      "scenario": "single_source_rate_limit"
+    },
+    {
+      "expected_terminal": "partial_failure",
+      "outcomes": {
+        "semantic_scholar": "connection_failure"
+      },
+      "scenario": "single_source_connection_failure"
+    },
+    {
+      "expected_terminal": "partial_failure",
+      "outcomes": {
+        "pubmed": "malformed_json"
+      },
+      "scenario": "malformed_json_isolated"
+    },
+    {
+      "expected_terminal": "partial_failure",
+      "outcomes": {
+        "openalex": "missing_critical_field"
+      },
+      "scenario": "missing_critical_field_isolated"
+    },
+    {
+      "expected_terminal": "partial_failure",
+      "outcomes": {
+        "arxiv": "invalid_type"
+      },
+      "scenario": "invalid_type_isolated"
+    },
+    {
+      "expected_terminal": "partial_failure",
+      "outcomes": {
+        "semantic_scholar": "pagination_loop"
+      },
+      "scenario": "pagination_loop_bounded"
+    },
+    {
+      "expected_terminal": "completed",
+      "outcomes": {
+        "openalex": "duplicate_records"
+      },
+      "scenario": "duplicate_records_deduplicated"
+    },
+    {
+      "expected_terminal": "completed",
+      "outcomes": {
+        "semantic_scholar": "identity_conflict"
+      },
+      "scenario": "identity_conflict_kept_separate"
+    },
+    {
+      "expected_terminal": "completed",
+      "outcomes": {
+        "pubmed": "empty_response"
+      },
+      "scenario": "empty_response_is_success_empty"
+    },
+    {
+      "expected_terminal": "partial_failure",
+      "outcomes": {
+        "semantic_scholar": "not_started"
+      },
+      "scenario": "missing_snapshot_is_not_started"
+    },
+    {
+      "expected_terminal": "partial_failure",
+      "outcomes": {
+        "arxiv": "timeout",
+        "openalex": "connection_failure"
+      },
+      "scenario": "two_sources_failed"
+    },
+    {
+      "expected_terminal": "partial_failure",
+      "outcomes": {
+        "arxiv": "rate_limit",
+        "openalex": "malformed_json",
+        "semantic_scholar": "timeout"
+      },
+      "scenario": "three_sources_failed"
+    },
+    {
+      "expected_terminal": "all_sources_failed",
+      "outcomes": {
+        "arxiv": "timeout",
+        "openalex": "rate_limit",
+        "pubmed": "unexpected_exception",
+        "semantic_scholar": "connection_failure"
+      },
+      "scenario": "all_sources_failed"
+    },
+    {
+      "expected_terminal": "partial_failure",
+      "outcomes": {
+        "openalex": "partial_then_failure"
+      },
+      "scenario": "source_partial_then_failure"
+    },
+    {
+      "expected_terminal": "partial_failure",
+      "outcomes": {
+        "pubmed": "unexpected_exception"
+      },
+      "scenario": "unexpected_exception_wrapped"
+    }
+  ],
+  "schema_version": "1",
+  "score_scope": "resilience_only_not_quality_or_official_score",
+  "sources": [
+    "openalex",
+    "arxiv",
+    "semantic_scholar",
+    "pubmed"
+  ]
+}

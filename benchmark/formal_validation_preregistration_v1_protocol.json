@@ -1,0 +1,219 @@
+{
+  "allowed_outputs": [
+    "benchmark/formal_validation_preregistration_v1_evidence/readiness.json",
+    "benchmark/formal_validation_preregistration_v1_evidence/simulation.json",
+    "benchmark/formal_validation_preregistration_v1_seal.json"
+  ],
+  "amendments": {
+    "allowed_nonsemantic_prefixes": [
+      "/documentation/"
+    ],
+    "evidence_intake_boundary": "first_validated_real_human_or_official_scorer_artifact",
+    "semantic_change_after_evidence": "invalidates_corresponding_formal_claim",
+    "states": [
+      "sealed",
+      "amended_before_evidence",
+      "invalid_post_evidence_change"
+    ]
+  },
+  "analysis": {
+    "budgets": {
+      "limit_per_source": 20,
+      "max_candidate_papers": 200,
+      "max_latency_seconds": 90.0,
+      "max_llm_calls": 20,
+      "max_search_rounds": 2,
+      "max_subqueries": 3,
+      "max_total_tokens": 50000,
+      "top_k": 20
+    },
+    "deterministic_tiebreak_v2_enabled": false,
+    "evaluator": {
+      "name": "internal_offline_evaluator",
+      "official_scorer": false,
+      "version": "deduplicated_gold_identity_v2"
+    },
+    "execution_profile": "balanced",
+    "experimental_features_enabled": [],
+    "full_rerun_required": true,
+    "prompt": {
+      "manifest_path": "src/scholar_agent/prompts/manifest.json",
+      "manifest_sha256": "0882ddf98e2d00647c8dae979d70a85ea18cf0198c1838f22d1da77d7e411b44",
+      "used": false
+    },
+    "random_seed": 20260722,
+    "sources": [
+      "arxiv",
+      "openalex",
+      "pubmed",
+      "semantic_scholar"
+    ],
+    "strategy": "current_rules"
+  },
+  "analysis_scripts": [
+    {
+      "path": "scripts/check_formal_validation_preregistration.py",
+      "role": "preregistration_cli",
+      "sha256": "9c8af3e79be4423fd66182135d610bee1bfd604c5a91193cbf1085bc10ba3694"
+    },
+    {
+      "path": "src/scholar_agent/evaluation/cluster_significance.py",
+      "role": "cluster_aware_statistics",
+      "sha256": "dd7b458d4b5c3ef86a227b3cfda959a607008ee932ac155b4f087782f2d69adb"
+    },
+    {
+      "path": "src/scholar_agent/evaluation/external_scorer_handoff.py",
+      "role": "external_scorer_handoff",
+      "sha256": "dba6e8b2eb088b28c5235ddc20c20272ef964cb7213fd8b5dacab92f49426c5a"
+    },
+    {
+      "path": "src/scholar_agent/evaluation/formal_evidence_quarantine.py",
+      "role": "formal_evidence_quarantine",
+      "sha256": "9e6a21e497aaaba6e20f3810141052c32b08e64fc5d2f99339f01a872ede1af1"
+    },
+    {
+      "path": "src/scholar_agent/evaluation/formal_validation_clearance.py",
+      "role": "formal_clearance_evaluator",
+      "sha256": "2984c7ec63f25dceffb4159b50d03fa3d04e65ec1675977075bf64cab1ef8e69"
+    },
+    {
+      "path": "src/scholar_agent/evaluation/formal_validation_preregistration.py",
+      "role": "preregistration_implementation",
+      "sha256": "d36fdefa204fe2f96d1af5cff15034c65ac35b26b07bce3ffea5e19dc0c7dffd"
+    },
+    {
+      "path": "src/scholar_agent/evaluation/human_precision_adjudication.py",
+      "role": "human_adjudication_and_statistics",
+      "sha256": "6a8b9f5604ace1ed25172774261bc06bb990ca8575c570e07c7544e2fe63d745"
+    }
+  ],
+  "declaration_boundaries": {
+    "full1000": "no_extrapolation_from_record160_or_partial_queries",
+    "human_precision": "internal_human_result_not_official_score",
+    "official_scorer": "no_official_claim_until_exact_package_schema_namespace_and_direction_are_provided",
+    "partial_or_failed": "retain_all_statuses_and_do_not_analyze_success_only",
+    "quality_metrics_generated_by_this_gate": false
+  },
+  "dependencies": [
+    {
+      "path": "benchmark/experiment_pairing_integrity_v1_protocol.json",
+      "role": "comparison_plan_contract",
+      "sha256": "b6884c80f1910199c0fee516319326d5abb6c699fbe9d2aa8d7e5a76a6767b48"
+    },
+    {
+      "path": "benchmark/external_scorer_handoff_v1_protocol.json",
+      "role": "external_scorer_contract",
+      "sha256": "60adfa40f3ba09d25c980a7614416d947d15393110542048bed1318eed0b69b7"
+    },
+    {
+      "path": "benchmark/formal_evidence_quarantine_v1_protocol.json",
+      "role": "formal_evidence_quarantine_contract",
+      "sha256": "63b9cc16123b63a6b30732878bfed76c03d744d1b0e862c7c9ddd2dca30dc7a4"
+    },
+    {
+      "path": "benchmark/formal_validation_clearance_v1_protocol.json",
+      "role": "formal_clearance_contract",
+      "sha256": "b37118f7741e8132eb3ab1436f7d73aff336d6351d601c8e86cc8f1c691903b5"
+    },
+    {
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "role": "full1000_execution_plan",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    {
+      "path": "benchmark/human_precision_adjudication_v1_protocol.json",
+      "role": "human_adjudication_contract",
+      "sha256": "6d6d29f98f4115ab960afff29e6e00b55c7ef7aba5376524354badb04dd81145"
+    },
+    {
+      "path": "benchmark/lexical_normalization_cluster_significance_manifest.json",
+      "role": "cluster_aware_statistics_contract",
+      "sha256": "c358268c4d7b673910e68af371481f1d182ccb1ef4fb7b15823be29cabc6deb2"
+    },
+    {
+      "path": "benchmark/validation_evidence_freshness_v1_spec.json",
+      "role": "freshness_dependency_spec",
+      "sha256": "628a14189f30bda971a92e593070e88999e9481fff99e561008a08331f547aa5"
+    }
+  ],
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "human_annotation": {
+    "adjudication_required_on_disagreement": true,
+    "allowed_statistics": [
+      "change_only_arm_precision",
+      "change_only_paired_difference",
+      "cohen_kappa",
+      "coverage_rate",
+      "disagreement_rate"
+    ],
+    "coverage_threshold": {
+      "adjudicated_disagreements": "all",
+      "annotator_a": 471,
+      "annotator_b": 471
+    },
+    "expected_item_count": 471,
+    "independent_annotator_count": 2,
+    "labels": [
+      "insufficient_information",
+      "not_relevant",
+      "partially_relevant",
+      "relevant"
+    ],
+    "missing_handling": "incomplete_stage_stops_scoring_and_remains_explicit",
+    "package_composition": {
+      "current_items": 439,
+      "prior_items": 32
+    },
+    "synthetic_or_llm_labels_allowed": false
+  },
+  "official_scorer": {
+    "direction": "unknown",
+    "input_schema": "not_provided",
+    "metric_namespace": "not_provided",
+    "name": "unknown",
+    "output_schema": "not_provided",
+    "version": "unknown"
+  },
+  "population": {
+    "component_count": 1000,
+    "component_identity_sha256": "2266e64bc3bb91c755fd2bba0cb7703eec34a63a7cd2d016e4455c517a7604d3",
+    "exclusion_rules": [],
+    "full_rerun_from_query_zero": true,
+    "input_sha256": "def16ce0f99a567db34e62db283c83ef8c30b200390b6120dd8bbe6cd936eedb",
+    "order_sha256": "1d310756a0a5115ea33aec23939a4e9867302c85750448810252f174e5e74563",
+    "query_count": 1000,
+    "stable_identity_sha256": "31e2daab09e10db78a91d0bf07fd292a9dc2c56ca077bf6c7d92974e81ea7cfb"
+  },
+  "protocol": "formal_validation_preregistration_v1",
+  "protocol_sha256": "aa9f281c9dfe155d19cebc13af16fb350e03ca969fb25211f40e1fc66790a01a",
+  "schema_version": "1",
+  "source_commit": "b983b23f1405a12d51cd78bd7acf53ad8dbfcee3",
+  "statistics": {
+    "analysis_population": "change_only_paired_items",
+    "bootstrap_iterations": 20000,
+    "confidence_interval": "two_sided_percentile",
+    "confidence_level": 0.95,
+    "missing_pairs": "retained_as_explicit_incomplete_and_not_silently_dropped",
+    "multiple_comparison_correction": "holm_bonferroni_fixed_family",
+    "paired_test": "two_sided_cluster_sign_flip",
+    "report_decimal_places": 6,
+    "resampling_unit": "frozen_query_connected_component",
+    "seed": 20260721
+  },
+  "stopping_rules": {
+    "full1000_incomplete": "stop_formal_scoring_if_any_of_1000_queries_lacks_unique_authoritative_terminal_state",
+    "human_incomplete": "stop_human_scoring_until_both_independent_rounds_and_all_required_adjudications_validate",
+    "official_scorer_missing": "keep_official_results_null_until_exact_package_and_schema_are_verified",
+    "partial_source_failure": "retain_query_and_failure_state_without_success_only_filtering",
+    "posthoc_endpoint_or_metric": "forbidden",
+    "unevaluable_item": "retain_with_insufficient_information_or_explicit_missing_status",
+    "unregistered_exclusion": "forbidden"
+  }
+}

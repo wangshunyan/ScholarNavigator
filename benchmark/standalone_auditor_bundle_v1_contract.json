@@ -1,0 +1,47 @@
+{
+  "archive": {
+    "compression": "stored",
+    "fixed_mode": 420,
+    "fixed_timestamp": [
+      1980,
+      1,
+      1,
+      0,
+      0,
+      0
+    ],
+    "max_file_bytes": 1048576,
+    "max_files": 32,
+    "max_total_bytes": 5242880
+  },
+  "execution": {
+    "archive_code_execution_count": 0,
+    "external_file_read_count": 0,
+    "network_request_count": 0,
+    "subprocess_count": 0
+  },
+  "formal_validation_complete": false,
+  "policy": {
+    "default_strategy": "current_rules",
+    "deterministic_tiebreak_v2_default_enabled": false
+  },
+  "protocol": "standalone_auditor_bundle_v1",
+  "required_blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "schema_version": "1",
+  "source_commit": "9617504fe48f4fdddea409f8c65d931c25eade24",
+  "sources": {
+    "claims": "benchmark/validation_readiness_bundle_v1_release/claims.json",
+    "clearance": "benchmark/formal_validation_clearance_v1_evidence/current.json",
+    "evidence_index": "benchmark/validation_readiness_bundle_v1_release/evidence_index.json",
+    "freshness": "benchmark/validation_evidence_freshness_v1_evidence/current.json",
+    "missing_inputs": "benchmark/validation_readiness_bundle_v1_release/missing_inputs.json",
+    "readiness": "benchmark/validation_readiness_bundle_v1_release/readiness.json",
+    "readiness_contract": "benchmark/validation_readiness_bundle_v1_contract.json",
+    "release_bundle": "benchmark/validation_readiness_bundle_v1_release/bundle.json"
+  },
+  "status": "verified_with_declared_blockers"
+}

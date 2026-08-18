@@ -1,0 +1,48 @@
+{
+  "authority": "historical_reference_only_not_checkpoint_or_completion",
+  "by_source": {
+    "arxiv": {
+      "exact_match_count": 252,
+      "historical_orphan_count": 11,
+      "planned_uncovered_count": 2148
+    },
+    "openalex": {
+      "exact_match_count": 53,
+      "historical_orphan_count": 0,
+      "planned_uncovered_count": 2347
+    },
+    "pubmed": {
+      "exact_match_count": 377,
+      "historical_orphan_count": 218,
+      "planned_uncovered_count": 2023
+    },
+    "semantic_scholar": {
+      "exact_match_count": 134,
+      "historical_orphan_count": 48,
+      "planned_uncovered_count": 2266
+    }
+  },
+  "conflict_count": 0,
+  "contract": "formal_network_snapshot_gap_audit_v1",
+  "exact_keys_sha256": "b27d4119187ab6571ed02ceceadee6938e4b06c2ad7aeb17190688433a7641b4",
+  "exact_match_count": 816,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "historical_key_count": 1093,
+  "historical_orphan_count": 277,
+  "historical_orphan_keys_sha256": "e659dfbd4490f4eae378e42ceb0f3716c99564b8cad4ad97d1812f66b983792f",
+  "planned_uncovered_count": 8784,
+  "planned_uncovered_keys_sha256": "1b2a824f7bf2c55dacd1aef8767d7edd3e7d4828c28fac2616d9bb1a4d6db7d1",
+  "planned_unique_snapshot_key_count": 9600,
+  "report_sha256": "d4ef30ceec1832f2e09d5f10e8c228046ddc9c9fee7e54daa9e463d904686523",
+  "schema_version": "1",
+  "snapshot_dir_identity": "c966e8103c0766ba3e2e26857f0e1529be69f6b03c0fd99953e3b45d8b8099ac",
+  "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5",
+  "status": "completed"
+}

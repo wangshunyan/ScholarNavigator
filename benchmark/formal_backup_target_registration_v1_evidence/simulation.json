@@ -1,0 +1,31 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "passed_scenario_count": 12,
+  "protocol": "formal_backup_target_registration_v1",
+  "scenario_count": 12,
+  "scenarios": {
+    "capacity_insufficient": "probe_capacity_insufficient",
+    "cleanup_failure": "probe_residue_detected",
+    "duplicate_device": "duplicate_device_or_filesystem",
+    "duplicate_path": "private_target_invalid",
+    "inode_insufficient": "probe_capacity_insufficient",
+    "missing_path": "registered_path_unavailable",
+    "quota_unknown": "not_available",
+    "read_only": "probe_capability_failed",
+    "revoked": "no_real_registered_candidates",
+    "symlink": "registered_path_alias_or_symlink",
+    "target_replacement": "registration_manifest_probe_drift",
+    "valid_registration": "registered_candidates_ready"
+  },
+  "schema_version": "1",
+  "status": "registered_candidates_ready",
+  "synthetic_only": true
+}

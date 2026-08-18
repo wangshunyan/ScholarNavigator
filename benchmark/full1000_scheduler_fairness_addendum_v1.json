@@ -1,0 +1,30 @@
+{
+  "addendum": "full1000_scheduler_fairness_addendum_v1",
+  "addendum_sha256": "e6fc7041306d26833fa63bf756c622e7f65ed087372f58722b78c9d9242247c1",
+  "execution_plan": {
+    "path": "benchmark/full1000_execution_plan_v1.json",
+    "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+  },
+  "formal_validation_complete": false,
+  "launch_control": {
+    "path": "benchmark/full1000_launch_control_v1_protocol.json",
+    "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+  },
+  "provider_health": {
+    "path": "benchmark/formal_provider_health_supervisor_v1_protocol.json",
+    "sha256": "1b943279958c6b5f586a1ccfbe607d3f021cff7e54a4a271d911f73092eba61e"
+  },
+  "real_execution_started": false,
+  "requirements": {
+    "all_query_source_initial_work_precedes_continuation": true,
+    "budget_and_concurrency_caps_fail_closed": true,
+    "completion_speed_not_a_priority_input": true,
+    "failed_cancelled_queries_remain_in_ordered_coverage": true,
+    "pause_cancel_blocks_admission": true,
+    "resume_preserves_fairness_cursor": true,
+    "scheduler_identity_only_priority": true
+  },
+  "scheduler_protocol_sha256": "801ce45275b5bcd9a7c2818abfe0dc053d95a39ab836fddafe511760ef0af881",
+  "schema_version": "1",
+  "source_commit": "46bd9d27e1a4e98bb4afa78c6bb6cdf77ab5d278"
+}

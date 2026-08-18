@@ -1,0 +1,762 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "invariants": {
+    "duplicate_billing_count": 0,
+    "priority_quality_signal_count": 0,
+    "real_sleep_count": 0,
+    "scheduler_bypass_count": 0,
+    "selective_completion_count": 0
+  },
+  "population": {
+    "query_count": 1000,
+    "query_order_sha256": "1d310756a0a5115ea33aec23939a4e9867302c85750448810252f174e5e74563",
+    "shard_count": 20,
+    "source_count": 4
+  },
+  "protocol": "formal_scheduler_fairness_v1",
+  "scenario_count": 12,
+  "scenarios": [
+    {
+      "audit_chain_valid": true,
+      "coverage": {
+        "authoritative_order_sha256": "7e2658f2a9f4a200e0e1fea8742d9f4b10e63c62f5f51cc7604873b91617f915",
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 0,
+        "status_counts": {
+          "cancelled": 1000
+        },
+        "success_only_filtering": false,
+        "terminal_query_count": 1000
+      },
+      "duplicate_enqueue_count": 0,
+      "ledger_entry_count": 324,
+      "logical_step_count": 27,
+      "metrics": {
+        "attempt_count": 324,
+        "backpressure_activation_count": 0,
+        "concurrency_peak": 12,
+        "first_execution_coverage_rate": 0.324,
+        "max_first_execution_wait_steps": 26,
+        "max_queue_wait_steps": 26,
+        "max_shard_service_interval": 2,
+        "max_source_service_interval": 1,
+        "per_shard_concurrency_peak": {
+          "0": 1,
+          "1": 1,
+          "10": 1,
+          "11": 1,
+          "12": 1,
+          "13": 1,
+          "14": 1,
+          "15": 1,
+          "16": 1,
+          "17": 1,
+          "18": 1,
+          "19": 1,
+          "2": 1,
+          "3": 1,
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "9": 1
+        },
+        "per_source_concurrency_peak": {
+          "arxiv": 3,
+          "openalex": 3,
+          "pubmed": 3,
+          "semantic_scholar": 3
+        },
+        "queue_peak": 4000
+      },
+      "rejected_admission_count": 0,
+      "resume_count": 0,
+      "scenario": "cancel",
+      "scheduler_state": "cancelled",
+      "status": "passed"
+    },
+    {
+      "audit_chain_valid": true,
+      "coverage": {
+        "authoritative_order_sha256": "95a44778e120be0b47ec757d2a1581b65affb0dbd9592c5e55f43d1aaf02e124",
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 0,
+        "status_counts": {
+          "completed": 1000
+        },
+        "success_only_filtering": false,
+        "terminal_query_count": 1000
+      },
+      "duplicate_enqueue_count": 0,
+      "ledger_entry_count": 7000,
+      "logical_step_count": 1000,
+      "metrics": {
+        "attempt_count": 7000,
+        "backpressure_activation_count": 757404,
+        "concurrency_peak": 8,
+        "first_execution_coverage_rate": 1.0,
+        "max_first_execution_wait_steps": 124,
+        "max_queue_wait_steps": 874,
+        "max_shard_service_interval": 9,
+        "max_source_service_interval": 1,
+        "per_shard_concurrency_peak": {
+          "0": 2,
+          "1": 2,
+          "10": 2,
+          "11": 2,
+          "12": 2,
+          "13": 2,
+          "14": 2,
+          "15": 2,
+          "16": 2,
+          "17": 2,
+          "18": 2,
+          "19": 2,
+          "2": 2,
+          "3": 2,
+          "4": 2,
+          "5": 2,
+          "6": 2,
+          "7": 2,
+          "8": 2,
+          "9": 2
+        },
+        "per_source_concurrency_peak": {
+          "arxiv": 3,
+          "openalex": 3,
+          "pubmed": 2,
+          "semantic_scholar": 3
+        },
+        "queue_peak": 4000
+      },
+      "rejected_admission_count": 0,
+      "resume_count": 0,
+      "scenario": "dynamic_backpressure",
+      "scheduler_state": "completed",
+      "status": "passed"
+    },
+    {
+      "audit_chain_valid": true,
+      "coverage": {
+        "authoritative_order_sha256": "95a44778e120be0b47ec757d2a1581b65affb0dbd9592c5e55f43d1aaf02e124",
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 0,
+        "status_counts": {
+          "completed": 1000
+        },
+        "success_only_filtering": false,
+        "terminal_query_count": 1000
+      },
+      "duplicate_enqueue_count": 0,
+      "ledger_entry_count": 4000,
+      "logical_step_count": 5344,
+      "metrics": {
+        "attempt_count": 4000,
+        "backpressure_activation_count": 0,
+        "concurrency_peak": 12,
+        "first_execution_coverage_rate": 1.0,
+        "max_first_execution_wait_steps": 1324,
+        "max_queue_wait_steps": 5325,
+        "max_shard_service_interval": 38,
+        "max_source_service_interval": 15,
+        "per_shard_concurrency_peak": {
+          "0": 2,
+          "1": 2,
+          "10": 2,
+          "11": 2,
+          "12": 2,
+          "13": 2,
+          "14": 2,
+          "15": 2,
+          "16": 2,
+          "17": 2,
+          "18": 2,
+          "19": 2,
+          "2": 2,
+          "3": 2,
+          "4": 2,
+          "5": 2,
+          "6": 2,
+          "7": 2,
+          "8": 2,
+          "9": 2
+        },
+        "per_source_concurrency_peak": {
+          "arxiv": 3,
+          "openalex": 3,
+          "pubmed": 3,
+          "semantic_scholar": 3
+        },
+        "queue_peak": 4000
+      },
+      "rejected_admission_count": 0,
+      "resume_count": 0,
+      "scenario": "extreme_heterogeneous_delay",
+      "scheduler_state": "completed",
+      "status": "passed"
+    },
+    {
+      "audit_chain_valid": true,
+      "coverage": {
+        "authoritative_order_sha256": "95a44778e120be0b47ec757d2a1581b65affb0dbd9592c5e55f43d1aaf02e124",
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 0,
+        "status_counts": {
+          "completed": 1000
+        },
+        "success_only_filtering": false,
+        "terminal_query_count": 1000
+      },
+      "duplicate_enqueue_count": 0,
+      "ledger_entry_count": 6250,
+      "logical_step_count": 873,
+      "metrics": {
+        "attempt_count": 6250,
+        "backpressure_activation_count": 1612504,
+        "concurrency_peak": 12,
+        "first_execution_coverage_rate": 1.0,
+        "max_first_execution_wait_steps": 123,
+        "max_queue_wait_steps": 747,
+        "max_shard_service_interval": 132,
+        "max_source_service_interval": 42,
+        "per_shard_concurrency_peak": {
+          "0": 2,
+          "1": 2,
+          "10": 2,
+          "11": 2,
+          "12": 2,
+          "13": 2,
+          "14": 2,
+          "15": 2,
+          "16": 2,
+          "17": 2,
+          "18": 2,
+          "19": 2,
+          "2": 2,
+          "3": 2,
+          "4": 2,
+          "5": 1,
+          "6": 2,
+          "7": 2,
+          "8": 2,
+          "9": 2
+        },
+        "per_source_concurrency_peak": {
+          "arxiv": 3,
+          "openalex": 3,
+          "pubmed": 3,
+          "semantic_scholar": 3
+        },
+        "queue_peak": 4000
+      },
+      "rejected_admission_count": 0,
+      "resume_count": 0,
+      "scenario": "mixed_failures",
+      "scheduler_state": "completed",
+      "status": "passed"
+    },
+    {
+      "audit_chain_valid": true,
+      "coverage": {
+        "authoritative_order_sha256": "95a44778e120be0b47ec757d2a1581b65affb0dbd9592c5e55f43d1aaf02e124",
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 0,
+        "status_counts": {
+          "completed": 1000
+        },
+        "success_only_filtering": false,
+        "terminal_query_count": 1000
+      },
+      "duplicate_enqueue_count": 0,
+      "ledger_entry_count": 10000,
+      "logical_step_count": 1498,
+      "metrics": {
+        "attempt_count": 10000,
+        "backpressure_activation_count": 3482035,
+        "concurrency_peak": 12,
+        "first_execution_coverage_rate": 1.0,
+        "max_first_execution_wait_steps": 123,
+        "max_queue_wait_steps": 873,
+        "max_shard_service_interval": 134,
+        "max_source_service_interval": 1,
+        "per_shard_concurrency_peak": {
+          "0": 2,
+          "1": 2,
+          "10": 2,
+          "11": 2,
+          "12": 2,
+          "13": 2,
+          "14": 2,
+          "15": 2,
+          "16": 2,
+          "17": 2,
+          "18": 2,
+          "19": 2,
+          "2": 2,
+          "3": 2,
+          "4": 2,
+          "5": 2,
+          "6": 2,
+          "7": 2,
+          "8": 2,
+          "9": 2
+        },
+        "per_source_concurrency_peak": {
+          "arxiv": 3,
+          "openalex": 3,
+          "pubmed": 3,
+          "semantic_scholar": 3
+        },
+        "queue_peak": 4000
+      },
+      "rejected_admission_count": 0,
+      "resume_count": 0,
+      "scenario": "pagination_storm",
+      "scheduler_state": "completed",
+      "status": "passed"
+    },
+    {
+      "audit_chain_valid": true,
+      "coverage": {
+        "authoritative_order_sha256": "95a44778e120be0b47ec757d2a1581b65affb0dbd9592c5e55f43d1aaf02e124",
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 0,
+        "status_counts": {
+          "completed": 1000
+        },
+        "success_only_filtering": false,
+        "terminal_query_count": 1000
+      },
+      "duplicate_enqueue_count": 0,
+      "ledger_entry_count": 4000,
+      "logical_step_count": 334,
+      "metrics": {
+        "attempt_count": 4000,
+        "backpressure_activation_count": 0,
+        "concurrency_peak": 12,
+        "first_execution_coverage_rate": 1.0,
+        "max_first_execution_wait_steps": 83,
+        "max_queue_wait_steps": 333,
+        "max_shard_service_interval": 2,
+        "max_source_service_interval": 1,
+        "per_shard_concurrency_peak": {
+          "0": 1,
+          "1": 1,
+          "10": 1,
+          "11": 1,
+          "12": 1,
+          "13": 1,
+          "14": 1,
+          "15": 1,
+          "16": 1,
+          "17": 1,
+          "18": 1,
+          "19": 1,
+          "2": 1,
+          "3": 1,
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "9": 1
+        },
+        "per_source_concurrency_peak": {
+          "arxiv": 3,
+          "openalex": 3,
+          "pubmed": 3,
+          "semantic_scholar": 3
+        },
+        "queue_peak": 4000
+      },
+      "rejected_admission_count": 0,
+      "resume_count": 1,
+      "scenario": "pause_resume",
+      "scheduler_state": "completed",
+      "status": "passed"
+    },
+    {
+      "audit_chain_valid": true,
+      "coverage": {
+        "authoritative_order_sha256": "95a44778e120be0b47ec757d2a1581b65affb0dbd9592c5e55f43d1aaf02e124",
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 0,
+        "status_counts": {
+          "completed": 1000
+        },
+        "success_only_filtering": false,
+        "terminal_query_count": 1000
+      },
+      "duplicate_enqueue_count": 0,
+      "ledger_entry_count": 5998,
+      "logical_step_count": 1996,
+      "metrics": {
+        "attempt_count": 5998,
+        "backpressure_activation_count": 2469993,
+        "concurrency_peak": 12,
+        "first_execution_coverage_rate": 1.0,
+        "max_first_execution_wait_steps": 246,
+        "max_queue_wait_steps": 1744,
+        "max_shard_service_interval": 509,
+        "max_source_service_interval": 501,
+        "per_shard_concurrency_peak": {
+          "0": 2,
+          "1": 2,
+          "10": 2,
+          "11": 1,
+          "12": 2,
+          "13": 2,
+          "14": 2,
+          "15": 1,
+          "16": 2,
+          "17": 2,
+          "18": 2,
+          "19": 2,
+          "2": 2,
+          "3": 2,
+          "4": 2,
+          "5": 2,
+          "6": 2,
+          "7": 1,
+          "8": 2,
+          "9": 2
+        },
+        "per_source_concurrency_peak": {
+          "arxiv": 3,
+          "openalex": 3,
+          "pubmed": 3,
+          "semantic_scholar": 3
+        },
+        "queue_peak": 4000
+      },
+      "rejected_admission_count": 1,
+      "resume_count": 2,
+      "scenario": "resume_then_redegrade",
+      "scheduler_state": "completed",
+      "status": "passed"
+    },
+    {
+      "audit_chain_valid": true,
+      "coverage": {
+        "authoritative_order_sha256": "95a44778e120be0b47ec757d2a1581b65affb0dbd9592c5e55f43d1aaf02e124",
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 0,
+        "status_counts": {
+          "completed": 1000
+        },
+        "success_only_filtering": false,
+        "terminal_query_count": 1000
+      },
+      "duplicate_enqueue_count": 0,
+      "ledger_entry_count": 7000,
+      "logical_step_count": 998,
+      "metrics": {
+        "attempt_count": 7000,
+        "backpressure_activation_count": 1980535,
+        "concurrency_peak": 12,
+        "first_execution_coverage_rate": 1.0,
+        "max_first_execution_wait_steps": 123,
+        "max_queue_wait_steps": 873,
+        "max_shard_service_interval": 134,
+        "max_source_service_interval": 1,
+        "per_shard_concurrency_peak": {
+          "0": 2,
+          "1": 2,
+          "10": 2,
+          "11": 2,
+          "12": 2,
+          "13": 2,
+          "14": 2,
+          "15": 2,
+          "16": 2,
+          "17": 2,
+          "18": 2,
+          "19": 2,
+          "2": 2,
+          "3": 2,
+          "4": 2,
+          "5": 2,
+          "6": 2,
+          "7": 2,
+          "8": 2,
+          "9": 2
+        },
+        "per_source_concurrency_peak": {
+          "arxiv": 3,
+          "openalex": 3,
+          "pubmed": 3,
+          "semantic_scholar": 3
+        },
+        "queue_peak": 4000
+      },
+      "rejected_admission_count": 0,
+      "resume_count": 0,
+      "scenario": "retry_storm",
+      "scheduler_state": "completed",
+      "status": "passed"
+    },
+    {
+      "audit_chain_valid": true,
+      "coverage": {
+        "authoritative_order_sha256": "95a44778e120be0b47ec757d2a1581b65affb0dbd9592c5e55f43d1aaf02e124",
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 0,
+        "status_counts": {
+          "completed": 1000
+        },
+        "success_only_filtering": false,
+        "terminal_query_count": 1000
+      },
+      "duplicate_enqueue_count": 0,
+      "ledger_entry_count": 4000,
+      "logical_step_count": 1702,
+      "metrics": {
+        "attempt_count": 4000,
+        "backpressure_activation_count": 0,
+        "concurrency_peak": 12,
+        "first_execution_coverage_rate": 1.0,
+        "max_first_execution_wait_steps": 410,
+        "max_queue_wait_steps": 1685,
+        "max_shard_service_interval": 269,
+        "max_source_service_interval": 959,
+        "per_shard_concurrency_peak": {
+          "0": 1,
+          "1": 1,
+          "10": 2,
+          "11": 2,
+          "12": 1,
+          "13": 1,
+          "14": 2,
+          "15": 2,
+          "16": 1,
+          "17": 1,
+          "18": 1,
+          "19": 2,
+          "2": 2,
+          "3": 2,
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 2,
+          "8": 1,
+          "9": 1
+        },
+        "per_source_concurrency_peak": {
+          "arxiv": 3,
+          "openalex": 3,
+          "pubmed": 3,
+          "semantic_scholar": 3
+        },
+        "queue_peak": 4000
+      },
+      "rejected_admission_count": 0,
+      "resume_count": 0,
+      "scenario": "single_slow_shard",
+      "scheduler_state": "completed",
+      "status": "passed"
+    },
+    {
+      "audit_chain_valid": true,
+      "coverage": {
+        "authoritative_order_sha256": "95a44778e120be0b47ec757d2a1581b65affb0dbd9592c5e55f43d1aaf02e124",
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 0,
+        "status_counts": {
+          "completed": 1000
+        },
+        "success_only_filtering": false,
+        "terminal_query_count": 1000
+      },
+      "duplicate_enqueue_count": 0,
+      "ledger_entry_count": 4000,
+      "logical_step_count": 4342,
+      "metrics": {
+        "attempt_count": 4000,
+        "backpressure_activation_count": 0,
+        "concurrency_peak": 12,
+        "first_execution_coverage_rate": 1.0,
+        "max_first_execution_wait_steps": 166,
+        "max_queue_wait_steps": 4329,
+        "max_shard_service_interval": 3014,
+        "max_source_service_interval": 13,
+        "per_shard_concurrency_peak": {
+          "0": 1,
+          "1": 2,
+          "10": 1,
+          "11": 1,
+          "12": 1,
+          "13": 2,
+          "14": 1,
+          "15": 1,
+          "16": 1,
+          "17": 2,
+          "18": 1,
+          "19": 1,
+          "2": 1,
+          "3": 1,
+          "4": 1,
+          "5": 2,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "9": 2
+        },
+        "per_source_concurrency_peak": {
+          "arxiv": 3,
+          "openalex": 3,
+          "pubmed": 3,
+          "semantic_scholar": 3
+        },
+        "queue_peak": 4000
+      },
+      "rejected_admission_count": 0,
+      "resume_count": 0,
+      "scenario": "single_slow_source",
+      "scheduler_state": "completed",
+      "status": "passed"
+    },
+    {
+      "audit_chain_valid": true,
+      "coverage": {
+        "authoritative_order_sha256": "95a44778e120be0b47ec757d2a1581b65affb0dbd9592c5e55f43d1aaf02e124",
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 0,
+        "status_counts": {
+          "completed": 1000
+        },
+        "success_only_filtering": false,
+        "terminal_query_count": 1000
+      },
+      "duplicate_enqueue_count": 0,
+      "ledger_entry_count": 4000,
+      "logical_step_count": 334,
+      "metrics": {
+        "attempt_count": 4000,
+        "backpressure_activation_count": 0,
+        "concurrency_peak": 12,
+        "first_execution_coverage_rate": 1.0,
+        "max_first_execution_wait_steps": 83,
+        "max_queue_wait_steps": 333,
+        "max_shard_service_interval": 2,
+        "max_source_service_interval": 1,
+        "per_shard_concurrency_peak": {
+          "0": 1,
+          "1": 1,
+          "10": 1,
+          "11": 1,
+          "12": 1,
+          "13": 1,
+          "14": 1,
+          "15": 1,
+          "16": 1,
+          "17": 1,
+          "18": 1,
+          "19": 1,
+          "2": 1,
+          "3": 1,
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "9": 1
+        },
+        "per_source_concurrency_peak": {
+          "arxiv": 3,
+          "openalex": 3,
+          "pubmed": 3,
+          "semantic_scholar": 3
+        },
+        "queue_peak": 4000
+      },
+      "rejected_admission_count": 0,
+      "resume_count": 0,
+      "scenario": "uniform_delay",
+      "scheduler_state": "completed",
+      "status": "passed"
+    },
+    {
+      "audit_chain_valid": true,
+      "coverage": {
+        "authoritative_order_sha256": "95a44778e120be0b47ec757d2a1581b65affb0dbd9592c5e55f43d1aaf02e124",
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 0,
+        "status_counts": {
+          "completed": 1000
+        },
+        "success_only_filtering": false,
+        "terminal_query_count": 1000
+      },
+      "duplicate_enqueue_count": 0,
+      "ledger_entry_count": 4000,
+      "logical_step_count": 1000,
+      "metrics": {
+        "attempt_count": 4000,
+        "backpressure_activation_count": 0,
+        "concurrency_peak": 4,
+        "first_execution_coverage_rate": 1.0,
+        "max_first_execution_wait_steps": 249,
+        "max_queue_wait_steps": 999,
+        "max_shard_service_interval": 5,
+        "max_source_service_interval": 1,
+        "per_shard_concurrency_peak": {
+          "0": 1,
+          "1": 1,
+          "10": 1,
+          "11": 1,
+          "12": 1,
+          "13": 1,
+          "14": 1,
+          "15": 1,
+          "16": 1,
+          "17": 1,
+          "18": 1,
+          "19": 1,
+          "2": 1,
+          "3": 1,
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "9": 1
+        },
+        "per_source_concurrency_peak": {
+          "arxiv": 1,
+          "openalex": 1,
+          "pubmed": 1,
+          "semantic_scholar": 1
+        },
+        "queue_peak": 4000
+      },
+      "rejected_admission_count": 0,
+      "resume_count": 0,
+      "scenario": "worker_reduction",
+      "scheduler_state": "completed",
+      "status": "passed"
+    }
+  ],
+  "schema_version": "1",
+  "status": "scheduler_controls_ready"
+}

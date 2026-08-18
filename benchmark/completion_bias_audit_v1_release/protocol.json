@@ -1,0 +1,160 @@
+{
+  "analysis": "completion_bias_audit_v1",
+  "categorical_features": [
+    "has_boolean_operator",
+    "has_parentheses",
+    "has_question_mark",
+    "has_quoted_span",
+    "has_unicode",
+    "has_year_pattern",
+    "token_length_bucket"
+  ],
+  "classifier": {
+    "cross_validation_folds": 5,
+    "feature_set": "all_preregistered_continuous_and_one_hot_categorical",
+    "l2_penalty": 0.01,
+    "learning_rate": 0.05,
+    "maximum_iterations": 160,
+    "permutation_count": 1000,
+    "permutation_semantics": "component_size_stratified_label_pattern_permutation_against_fixed_out_of_fold_scores"
+  },
+  "comparisons": [
+    {
+      "comparison_id": "main160_vs_remaining840",
+      "inferential": true,
+      "left": "included_main_analysis",
+      "right": "not_included_main_analysis"
+    },
+    {
+      "comparison_id": "recorded162_vs_unrecorded838",
+      "inferential": true,
+      "left": "recorded_terminal",
+      "right": "unrecorded"
+    },
+    {
+      "comparison_id": "excluded2_vs_main160",
+      "inferential": false,
+      "left": "excluded_no_successful_source",
+      "right": "included_main_analysis"
+    }
+  ],
+  "continuous_features": [
+    "character_count",
+    "digit_count",
+    "mean_token_length",
+    "non_ascii_count",
+    "normalized_order_position",
+    "punctuation_count",
+    "quote_character_count",
+    "token_count",
+    "unique_token_count",
+    "year_pattern_count"
+  ],
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "retrieval_result_feature_count": 0,
+    "snapshot_read_count": 0,
+    "snapshot_write_count": 0
+  },
+  "feature_semantics": {
+    "boolean_operator_pattern": "case-insensitive standalone AND/OR/NOT plus literal && and ||",
+    "character_count": "Unicode code-point count before normalization",
+    "forbidden_feature_inputs": [
+      "gold",
+      "qrels",
+      "case_id",
+      "target_paper",
+      "retrieval_candidates",
+      "source_output",
+      "source_terminal_state",
+      "ranking",
+      "quality_metric"
+    ],
+    "mean_token_length": "arithmetic mean Unicode code-point length of lexical tokens; zero for no tokens",
+    "normalized_order_position": "zero-based source order divided by 999",
+    "punctuation_count": "count of Unicode characters whose general category starts with P",
+    "query_identity_usage": "dataset stable identifier is used only for exact joins then irreversibly hashed; never emitted or used as a feature",
+    "token_length_bucket": {
+      "long": "token_count >= 21",
+      "medium": "9 <= token_count <= 20",
+      "short": "token_count <= 8"
+    },
+    "token_pattern": "[^\\W_]+ under Unicode semantics",
+    "unicode_pattern": "at least one code point greater than U+007F",
+    "year_pattern": "standalone 19xx or 20xx",
+    "year_pattern_count": "non-overlapping standalone year matches"
+  },
+  "identity": {
+    "component_identity_projection": "sha256('completion-bias-component-v1\\0' + frozen_component_id)[:24]",
+    "expected_component_count": 715,
+    "expected_excluded_count": 2,
+    "expected_main_count": 160,
+    "expected_query_count": 1000,
+    "expected_recorded_count": 162,
+    "query_identity_projection": "sha256('query\\0' + dataset_stable_identifier)",
+    "raw_identifiers_in_output": false
+  },
+  "inputs": {
+    "component_assignments": {
+      "allowed_projection": [
+        "query_id",
+        "component_id",
+        "component_query_count"
+      ],
+      "path": "benchmark/autoscholar_query_independence_baseline/query_assignments.jsonl",
+      "sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5"
+    },
+    "ordered_queries": {
+      "allowed_fields": [
+        "query_id",
+        "query"
+      ],
+      "path": "benchmark/autoscholar_query_planning_input.jsonl",
+      "sha256": "def16ce0f99a567db34e62db283c83ef8c30b200390b6120dd8bbe6cd936eedb"
+    },
+    "record_membership": {
+      "allowed_projection": [
+        "query_identity",
+        "analysis_status",
+        "case_order"
+      ],
+      "path": "benchmark/top20_delivery_fidelity_v1_result/case_diagnostics.jsonl",
+      "sha256": "2844185c7ce66a5d9f7c030d1689b383ad468ed86e087d587b9aca7a5271d927"
+    }
+  },
+  "multiple_comparison": {
+    "alpha": 0.05,
+    "family": "all preregistered continuous and categorical tests across the two inferential comparisons",
+    "method": "Holm-Bonferroni"
+  },
+  "output": {
+    "aggregate": "audit.json",
+    "bundle": "bundle.json",
+    "protocol_copy": "protocol.json",
+    "query_diagnostics": "queries.jsonl",
+    "raw_query_text_in_output": false
+  },
+  "population": {
+    "exclusion_rule": "the two frozen excluded_no_successful_source records remain recorded but outside the 160-query main group",
+    "main_rule": "analysis_status equals included_main_analysis in the frozen delivery diagnostic",
+    "membership_join": "exact opaque query identity only; no text or fuzzy matching",
+    "remaining840": "all ordered queries not in included_main_analysis, including the two frozen excluded records",
+    "unrecorded838": "all ordered queries absent from the 162 frozen record-membership rows"
+  },
+  "protocol_version": "completion-bias-audit-protocol-v1",
+  "random_seed": 20260722,
+  "schema_version": "1",
+  "statistics": {
+    "bootstrap_count": 5000,
+    "categorical_distance": "Jensen-Shannon distance using base-2 logarithms",
+    "confidence_interval": "component bootstrap percentile 95% interval for left-minus-right mean or rate",
+    "continuous_distance": "two-sample empirical Kolmogorov-Smirnov distance",
+    "effect": "left-minus-right mean and pooled-standard-deviation standardized mean difference",
+    "permutation_count": 5000,
+    "permutation_semantics": "shuffle complete label patterns among components with the same query count; preserve component membership and global group counts",
+    "quantiles": "linear interpolation at 0.25, 0.50, and 0.75"
+  }
+}

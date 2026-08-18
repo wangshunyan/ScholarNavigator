@@ -1,0 +1,42 @@
+{
+  "contract": "experiment_pairing_integrity_v1",
+  "schema_version": "1",
+  "comparison_plan_contract": "comparison_plan_v1",
+  "score_scope": "pairing_only_not_quality_or_official_score",
+  "population_policy": "all_queries_including_failed_cancelled_and_predeclared_exclusions",
+  "treatment_allowlist": {
+    "path_kind": "exact_leaf_json_pointer",
+    "allowed_prefix": "/configuration/values/",
+    "broad_parent_paths_forbidden": true,
+    "unknown_fields_forbidden": true
+  },
+  "pairing_statuses": [
+    "succeeded",
+    "failed",
+    "cancelled",
+    "excluded"
+  ],
+  "exit_codes": {
+    "0": "passed",
+    "2": "treatment_or_pairing_violation",
+    "3": "not_ready_or_not_eligible",
+    "4": "usage_error"
+  },
+  "execution": {
+    "gold_accessed": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "frozen_baseline_eligibility": {
+    "path": "benchmark/run_provenance_legacy_audit.json",
+    "sha256": "46197f1665cd827bf386b985b00ae0d8079bcffb1c56e48556953bd926cf084d",
+    "expected_status": "not_eligible"
+  },
+  "evidence_registry_eligibility": {
+    "path": "benchmark/evidence_registry_baseline/registry.json",
+    "sha256": "202ce3fc19ece57f6eee9c996a94811fe4d1d77ca363edad8a9afac2343f3222",
+    "missing_pairing_binding_status": "not_eligible"
+  }
+}

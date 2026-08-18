@@ -1,0 +1,30 @@
+{
+  "checks": {
+    "component_membership_closed": true,
+    "default_experimental_features_disabled": true,
+    "environment_file_not_read": true,
+    "legacy_record_reuse_disabled": true,
+    "minimum_disk_budget_available": true,
+    "network_not_checked": true,
+    "plan_verified": true,
+    "query_identity_and_order_closed": true,
+    "snapshot_parent_exists": true,
+    "snapshot_parent_writable": true
+  },
+  "credential_status": "deferred_to_application_configuration_loader_not_inspected",
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "minimum_free_disk_bytes": 10737418240,
+  "network_status": "network_not_checked",
+  "protocol": "full1000_execution_readiness_v1",
+  "schema_version": "1",
+  "status": "execution_plan_ready_but_network_blocked",
+  "violations": []
+}

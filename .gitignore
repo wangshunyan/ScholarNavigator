@@ -1,0 +1,94 @@
+# === 自定义目录 ===
+database/
+log/
+
+# === Python 编译输出 ===
+__pycache__/
+**/__pycache__/
+**pycache**/
+*.pyc
+*.py[cod]
+*.pyo
+*.pyd
+
+# === 虚拟环境 ===
+venv/
+env/
+.venv/
+.env/
+
+# === Jupyter Notebook Checkpoints ===
+.ipynb_checkpoints/
+
+# === 配置文件/临时文件 ===
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+.DS_Store
+
+# === 本地环境变量文件（如 dotenv）===
+.env
+*.env
+
+# === VSCode/IDE 配置 ===
+.vscode/
+.idea/
+
+# === pip 缓存 / wheel 文件 ===
+*.whl
+pip-wheel-metadata/
+*.egg-info/
+dist/
+build/
+
+# === SQLite 等本地数据库文件 ===
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+*.sql
+
+# === pytest 缓存 ===
+.pytest_cache/
+
+# === mypy 类型检查缓存 ===
+.mypy_cache/
+
+# === Ruff 缓存 ===
+.ruff_cache/
+
+# === Node / Next.js 前端输出 ===
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/dist/
+frontend/.turbo/
+frontend/coverage/
+
+# === 数据缓存与中间产物 ===
+data/cache/
+data/raw/
+data/processed/
+
+# === 实验运行输出 ===
+experiments/runs/
+experiments/logs/
+experiments/outputs/
+outputs/benchmark_runs/
+outputs/benchmark_snapshots/
+outputs/benchmark_cache/
+outputs/benchmark_inputs/beir_scifact/
+
+# Local semantic retrieval assets and downloaded public datasets
+datasets/semantic/
+
+# === coverage 覆盖率文件 ===
+.coverage
+htmlcov/
+
+# === IPython 历史 ===
+~/.ipython/
+"node_modules/" 
+".env" 

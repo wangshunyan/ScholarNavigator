@@ -1,0 +1,62 @@
+{
+  "audit": "autoscholar_query_gold_leakage_v1",
+  "baseline": {
+    "queries_path": "benchmark/autoscholar_query_gold_leakage_baseline/queries.jsonl",
+    "queries_sha256": "74d24f495bd74a85a6f7dd77ddb57acbd5f486305aa6ac112cbfddc02dfa5576",
+    "relations_path": "benchmark/autoscholar_query_gold_leakage_baseline/relations.jsonl",
+    "relations_sha256": "74b217b9cc8a200bce8e7968f67a645241feac76d254464328cb563ae474594e",
+    "summary_path": "benchmark/autoscholar_query_gold_leakage_baseline/summary.json",
+    "summary_sha256": "48e634ccef251f87ad0516e4f709194dc7339063329e864223e8eb3635157166"
+  },
+  "dataset": {
+    "case_count": 1000,
+    "gold_relation_count": 2403,
+    "name": "auto_scholar_query",
+    "path": "benchmark/AutoScholarQuery_test.jsonl",
+    "sha256": "7d8c7f59b289a54912c38cf204d16dbfec14ca35de850b9978b4051ad43a8b36",
+    "split": "test"
+  },
+  "execution": {
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "frozen_replays": {
+    "record160": {
+      "path": "outputs/benchmark_runs/lexical_normalization_record160_813cf3a_r5/case_comparison.jsonl",
+      "sha256": "cc2372e329055fa82750e6bb0eb2bf0f33322c54a389952d032746d6d0a6a5d2"
+    },
+    "small_sets": {
+      "path": "outputs/benchmark_runs/lexical_normalization_v1_005794c_replay_r5/case_comparison.jsonl",
+      "sha256": "0b8ccb832830242d9481bd3a83e2054857ec0b33177b2be66e96319d53a55dc1"
+    }
+  },
+  "gate": "autoscholar_query_gold_leakage_regression",
+  "gold_identity_baseline": {
+    "path": "benchmark/autoscholar_gold_identity_baseline/gold_identity.jsonl",
+    "sha256": "429cf7145664b20893df8567d9eed463b8000ce859e4e2c3cc5290042bbefcfe"
+  },
+  "implementation_base_commit": "802c4891f2c27daf90c4213b4748ea3bcda41b80",
+  "implementation": {
+    "path": "src/scholar_agent/evaluation/query_gold_leakage_audit.py",
+    "sha256": "65986288ce398928b31675b92758ac495e37f0c4ad65eea77425ff050eb20e38"
+  },
+  "protocol": {
+    "path": "benchmark/autoscholar_query_gold_leakage_protocol.json",
+    "sha256": "5e4e01b37bc6dd38a71fd196086f1837089711b0ce426c25f84411cd14cb9d2f"
+  },
+  "scifact": {
+    "crosswalk": {
+      "path": "benchmark/beir_scifact_s2_crosswalk.json",
+      "sha256": "ec7406107d13ddfd81ea1eca6f065c85dda25276f4ddb33abd568c5dd9d94d1c"
+    },
+    "crosswalk_path": "benchmark/beir_scifact_s2_crosswalk.json",
+    "dataset": {
+      "path": "outputs/benchmark_inputs/beir_scifact/scifact.zip",
+      "sha256": "536e14446a0ba56ed1398ab1055f39fe852686ecad24a6306c80c490fa8e0165"
+    },
+    "dataset_path": "outputs/benchmark_inputs/beir_scifact/scifact.zip",
+    "expected_case_count": 50
+  },
+  "schema_version": "1"
+}

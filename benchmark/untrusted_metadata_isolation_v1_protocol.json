@@ -1,0 +1,108 @@
+{
+  "allowed_operations": {
+    "file_reads": [
+      "src/scholar_agent/prompts/llm_constrained_rewrite/system.md",
+      "src/scholar_agent/prompts/llm_constrained_rewrite/user.md",
+      "src/scholar_agent/prompts/llm_query_planning/system.md",
+      "src/scholar_agent/prompts/llm_query_planning/user.md",
+      "src/scholar_agent/prompts/llm_relevance_judging_v1_1/adjudicator_system.md",
+      "src/scholar_agent/prompts/llm_relevance_judging_v1_1/adjudicator_user.md",
+      "src/scholar_agent/prompts/llm_relevance_judging_v1_1/judge_system.md",
+      "src/scholar_agent/prompts/llm_relevance_judging_v1_1/judge_user.md",
+      "src/scholar_agent/prompts/judge_backend_qualification_v1/system.md",
+      "src/scholar_agent/prompts/judge_backend_qualification_v1/user.md",
+      "src/scholar_agent/prompts/manifest.json",
+      "src/scholar_agent/prompts/query_evolution/prompt.md",
+      "src/scholar_agent/prompts/query_understanding/system.md",
+      "src/scholar_agent/prompts/query_understanding/user.md",
+      "src/scholar_agent/prompts/relevance_judgement/system.md",
+      "src/scholar_agent/prompts/relevance_judgement/user.md",
+      "src/scholar_agent/prompts/reranking/prompt.md",
+      "src/scholar_agent/prompts/synthesis/prompt.md"
+    ],
+    "file_writes": [],
+    "llm_requests": 0,
+    "network_requests": 0,
+    "snapshot_writes": 0,
+    "subprocesses": 0,
+    "tool_calls": 0
+  },
+  "contract": "untrusted_metadata_isolation_v1",
+  "display_policy": {
+    "csv_formula_prefixes": [
+      "=",
+      "+",
+      "-",
+      "@"
+    ],
+    "markdown_escape": true,
+    "safe_url_schemes": [
+      "http",
+      "https"
+    ]
+  },
+  "field_limits": {
+    "paper.abstract": 4000,
+    "paper.author": 256,
+    "paper.title": 512,
+    "paper.urls.landing_page": 2048,
+    "paper.urls.pdf": 2048,
+    "paper.venue": 256,
+    "source.error_message": 240
+  },
+  "frozen_baseline_eligibility": {
+    "legacy_audit_path": "benchmark/run_provenance_legacy_audit.json",
+    "legacy_audit_sha256": "46197f1665cd827bf386b985b00ae0d8079bcffb1c56e48556953bd926cf084d",
+    "required_evidence": [
+      "raw_source_fields",
+      "message_role_boundary",
+      "untrusted_metadata_isolation_records"
+    ]
+  },
+  "normalization": {
+    "bidi_controls": "visible_unicode_escape",
+    "control_characters": "visible_unicode_escape",
+    "form": "NFKC",
+    "line_breaks_and_tabs": "single_space",
+    "truncation": "unicode_codepoint_prefix_with_audit"
+  },
+  "prompt_boundary": {
+    "allowed_roles": [
+      "system",
+      "user"
+    ],
+    "envelope_kind": "untrusted_academic_metadata_v1",
+    "metadata_instruction_capability": false,
+    "metadata_role": "untrusted_data",
+    "unknown_response_fields": "reject_batch_and_fallback_to_rules"
+  },
+  "prompt_inputs": {
+    "manifest_sha256": "0882ddf98e2d00647c8dae979d70a85ea18cf0198c1838f22d1da77d7e411b44",
+    "system_sha256": "5e6c2d4c9113162d276b2eab9f4067a061c95dc89881f284f29333745706acfe",
+    "user_sha256": "15266ce7dcab124200931474d653384a0e2d72aee75af7520c59dae24880f42a"
+  },
+  "scenarios": [
+    "instruction_override",
+    "forged_role_or_tool",
+    "xml_markdown_boundary",
+    "sensitive_resource_request",
+    "json_code_fence_escape",
+    "control_bidi_unicode",
+    "oversized_recursive_repetition",
+    "html_script_and_dangerous_url",
+    "csv_formula_prefix",
+    "source_error_injection",
+    "cross_query_state_pollution"
+  ],
+  "schema_version": "1",
+  "score_scope": "metadata_isolation_only_not_quality_or_official_score",
+  "untrusted_fields": [
+    "paper.title",
+    "paper.abstract",
+    "paper.authors[]",
+    "paper.venue",
+    "paper.urls.landing_page",
+    "paper.urls.pdf",
+    "source.error_message"
+  ]
+}

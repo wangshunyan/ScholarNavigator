@@ -1,0 +1,19 @@
+# python_dependency_lock_v1
+# group: runtime
+# environment: python 3.13.5 darwin arm64
+annotated-doc==0.0.4
+annotated-types==0.6.0
+anyio==4.13.0
+click==8.2.1
+fastapi==0.138.0
+h11==0.16.0
+idna==3.7
+numpy==2.4.6
+packaging==25.0
+pydantic==2.11.7
+pydantic-core==2.33.2
+rank-bm25==0.2.2
+starlette==1.2.0
+typing-extensions==4.15.0
+typing-inspection==0.4.2
+uvicorn==0.48.0

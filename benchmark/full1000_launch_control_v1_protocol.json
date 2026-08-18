@@ -1,0 +1,155 @@
+{
+  "activation": {
+    "credential_status": "not_checked",
+    "network_status": "not_checked",
+    "real_launch_allowed_by_this_protocol": false
+  },
+  "audit": {
+    "append_only_hash_chain": true,
+    "allowed_events": [
+      "authorized",
+      "started",
+      "paused",
+      "resumed",
+      "shard_failed",
+      "attempt_superseded",
+      "shard_completed",
+      "aggregate_requested",
+      "cancelled",
+      "revoked"
+    ],
+    "sensitive_values_recorded": false
+  },
+  "authorization": {
+    "allowed_attempt_ids": [
+      "attempt-0",
+      "attempt-1"
+    ],
+    "allowed_shards": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "private_key_used": false,
+    "self_hash_algorithm": "sha256_canonical_json_v1"
+  },
+  "bindings": {
+    "capture_addendum": {
+      "path": "benchmark/full1000_provider_ingest_capture_addendum_v1.json",
+      "sha256": "38d87a09eb5b39ef14b53c26a523c6ade24682b14ce180cfd2b153cde9d7adc2"
+    },
+    "execution_plan": {
+      "embedded_plan_sha256": "a75019fa8a4ed7ad66ffe316793ffd6330613316623b78e35f973260e63cb716",
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    "execution_readiness_protocol": {
+      "path": "benchmark/full1000_execution_readiness_v1_protocol.json",
+      "sha256": "4dc5feaf3f6fc7119a3adcece77b79fb605bcfdde67397f3cbde158a66235873"
+    },
+    "freshness": {
+      "expected_status": "fresh_with_declared_blockers",
+      "path": "benchmark/validation_evidence_freshness_v1_contract.json",
+      "protocol": "validation_evidence_freshness_v1"
+    },
+    "provider_ingest_protocol": {
+      "path": "benchmark/provider_ingest_provenance_v1_protocol.json",
+      "sha256": "29a4a687f8bec2d9c3f12f264b24e41df2519442182728dc424b101e578e6a77"
+    }
+  },
+  "execution_contract": {
+    "configuration_sha256": "657e705f2e49870899a5ccd61be434db80008dfab6a358763a8159726dde987f",
+    "current_rules_only": true,
+    "deterministic_tiebreak_v2_enabled": false,
+    "evaluator_version": "deduplicated_gold_identity_v2",
+    "execution_profile": "balanced",
+    "required_observability": {
+      "atomic_commit_generations": true,
+      "cancellation_events": true,
+      "provider_ingest_provenance_v1": true,
+      "resource_ledger_v1": true,
+      "run_manifest_v1": true,
+      "semantic_events": true
+    }
+  },
+  "launch_command": {
+    "argv_template": [
+      "python",
+      "scripts/run_benchmark.py",
+      "--dataset",
+      "autoscholar_query",
+      "--retrieval-mode",
+      "record-missing",
+      "--query-planning-policy",
+      "current_rules",
+      "--judgement-policy",
+      "current_rules",
+      "--ranking-policy",
+      "current_rules",
+      "--resource-ledger",
+      "--shard-plan",
+      "{sealed_shard_plan}",
+      "--shard-index",
+      "{shard_index}",
+      "--shard-attempt-id",
+      "{attempt_id}",
+      "--snapshot-dir",
+      "{snapshot_directory}",
+      "--output-root",
+      "{authoritative_output_root}"
+    ],
+    "credential_arguments_allowed": false,
+    "execution_via_controlled_launcher_only": true
+  },
+  "output": {
+    "aggregate_directory": "outputs/benchmark_runs/autoscholar_full1000_current_rules_b20b2ad_v1/aggregate",
+    "authoritative_run_root": "outputs/benchmark_runs/autoscholar_full1000_current_rules_b20b2ad_v1",
+    "must_be_empty_before_prepare": true,
+    "snapshot_directory": "outputs/benchmark_snapshots/autoscholar_full1000_current_rules_b20b2ad_v1"
+  },
+  "population": {
+    "query_count": 1000,
+    "query_order_sha256": "1d310756a0a5115ea33aec23939a4e9867302c85750448810252f174e5e74563",
+    "query_stable_identity_sha256": "31e2daab09e10db78a91d0bf07fd292a9dc2c56ca077bf6c7d92974e81ea7cfb",
+    "shard_assignment_sha256": "8b06a6498c18d44a20d9355c0923baaf9be522a2e37213a31a21b3ca86fb2ef6",
+    "shard_count": 20
+  },
+  "protocol": "full1000_launch_control_v1",
+  "protocol_sha256": "1c2f7593b70971f597ab257caaf6a716e95755b8893bccf8ee874beef65fa6ac",
+  "schema_version": "1",
+  "source_commit": "3222b1282e87bf450dc359e17cdae8f6ac361b67",
+  "state_machine": {
+    "initial": "prepared",
+    "states": [
+      "prepared",
+      "authorized",
+      "started",
+      "revoked",
+      "invalid"
+    ],
+    "transitions": [
+      "prepared->authorized",
+      "authorized->started",
+      "prepared->revoked",
+      "authorized->revoked",
+      "started->revoked"
+    ]
+  }
+}

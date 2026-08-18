@@ -1,0 +1,37 @@
+{
+  "artifact_search": {
+    "allow_network": false,
+    "roots": [
+      "pip_cache"
+    ],
+    "wheel_only": true
+  },
+  "authoritative_declarations": {
+    "development": "requirements-dev.txt",
+    "runtime": "requirements.txt"
+  },
+  "environment": {
+    "implementation_name": "cpython",
+    "platform_machine": "arm64",
+    "python_full_version": "3.13.5",
+    "python_version": "3.13",
+    "sys_platform": "darwin"
+  },
+  "formal_validation_complete": false,
+  "gold_or_qrels_loaded": false,
+  "groups": [
+    "runtime",
+    "development"
+  ],
+  "llm_request_count": 0,
+  "lock_outputs": {
+    "development": "requirements-dev.lock",
+    "runtime": "requirements-runtime.lock"
+  },
+  "network_request_count": 0,
+  "protocol": "python_dependency_lock_v1",
+  "quality_metric_count": 0,
+  "release_source_commit": "c9416251d5c3f2b80c97471903d57a5bd273d3a2",
+  "schema_version": "1",
+  "snapshot_write_count": 0
+}

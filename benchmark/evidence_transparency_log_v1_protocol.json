@@ -1,0 +1,55 @@
+{
+  "checkpoint": {
+    "candidate_status": "candidate_checkpoint_no_public_release",
+    "formal_completion": false,
+    "verification_command": "PYTHONPATH=src python scripts/check_evidence_transparency.py verify-log"
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "identity_authentication": "not_provided_hash_chain_proves_content_consistency_not_publisher_identity",
+  "merkle": {
+    "consistency_proof": "full_prefix_leaf_hashes_v1",
+    "empty_root": "sha256_empty_bytes",
+    "leaf": "sha256_0x00_plus_canonical_record",
+    "node": "sha256_0x01_plus_left_plus_right",
+    "split": "largest_power_of_two_less_than_tree_size"
+  },
+  "protocol": "evidence_transparency_log_v1",
+  "protocol_sha256": "528f9580fe22c9cb6b7ccdc673f1f417b5b609c3757bbabe1ce51e67f9916a42",
+  "real_blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "record_contract": {
+    "content_hash": "sha256_canonical_json_with_zeroed_content_sha256",
+    "previous_hash": "previous_record_content_sha256",
+    "rollback": "previously_retired_artifact_digest_forbidden",
+    "same_release_identity_conflict": "forbidden",
+    "sequence": "zero_based_contiguous",
+    "supersession": "prior_release_and_revocation_event_required"
+  },
+  "release_statuses": [
+    "candidate_only",
+    "public_with_declared_blockers",
+    "formal_release"
+  ],
+  "schema_version": "1",
+  "source_commit": "f764eb3c0849c53512f9326d7a83429e1c430a7b",
+  "sources": {
+    "blockers": "benchmark/validation_readiness_bundle_v1_release/missing_inputs.json",
+    "claims": "benchmark/validation_readiness_bundle_v1_release/claims.json",
+    "clearance": "benchmark/formal_validation_clearance_v1_evidence/current.json",
+    "freshness": "benchmark/validation_evidence_freshness_v1_evidence/current.json",
+    "readiness": "benchmark/validation_readiness_bundle_v1_release/readiness.json",
+    "release_candidate": "benchmark/release_candidate_reproducibility_v1_evidence/current.json",
+    "revocation": "benchmark/evidence_revocation_response_v1_ledger.json",
+    "standalone": "benchmark/standalone_auditor_bundle_v1_evidence/readiness.json"
+  }
+}

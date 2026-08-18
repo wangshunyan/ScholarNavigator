@@ -1,0 +1,52 @@
+{
+  "assignment": {
+    "algorithm": "ordered_round_robin_v1",
+    "allowed_inputs": [
+      "stable_query_identity",
+      "global_query_ordinal",
+      "shard_count"
+    ],
+    "forbidden_inputs": [
+      "case_id",
+      "failure_state",
+      "gold",
+      "latency",
+      "quality_metric",
+      "retrieval_result",
+      "target_paper"
+    ]
+  },
+  "attempt_selection": "unique_supersession_tip_without_outcome_selection",
+  "contracts": {
+    "aggregate": "shard_aggregate_v1",
+    "attempt_set": "shard_attempt_set_v1",
+    "plan": "shard_plan_v1"
+  },
+  "contract": "sharded_execution_integrity_v1",
+  "execution": {
+    "gold_accessed": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_codes": {
+    "0": "passed",
+    "2": "partition_or_merge_violation",
+    "3": "not_ready_or_not_eligible",
+    "4": "usage_error"
+  },
+  "merge": {
+    "aggregate_mutates_shards": false,
+    "order": "global_plan_order",
+    "preserved_terminals": [
+      "cancelled",
+      "excluded",
+      "failed",
+      "succeeded"
+    ],
+    "result_based_filtering": false
+  },
+  "schema_version": "1",
+  "score_scope": "partition_and_merge_only_not_quality_or_official_score"
+}

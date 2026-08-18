@@ -1,0 +1,1019 @@
+{
+  "blocked_evidence_ids": [
+    "formal_external_blocker_action_readiness",
+    "formal_backup_compaction_readiness",
+    "formal_backup_set_intake_readiness",
+    "formal_backup_set_readiness",
+    "formal_backup_target_registration_readiness",
+    "formal_backup_member_enrollment_readiness",
+    "evidence_transparency_readiness",
+    "formal_backup_target_readiness",
+    "formal_dress_rehearsal_readiness",
+    "formal_execution_host_attestation",
+    "formal_execution_host_readiness",
+    "formal_provider_health_readiness",
+    "formal_provider_pacing_readiness",
+    "formal_run_storage_readiness",
+    "formal_scheduler_fairness_readiness",
+    "formal_shard_retention_readiness",
+    "formal_validation_roles_readiness",
+    "human_annotation_assignment_readiness",
+    "human_adjudication_activation_readiness",
+    "human_annotation_submission_readiness",
+    "human_annotator_qualification_readiness",
+    "official_scorer_intake_readiness",
+    "portable_execution_site_readiness",
+    "provider_capacity_intake_readiness",
+    "release_authenticity_readiness"
+  ],
+  "claim_component_bindings": {
+    "architecture_formal_external_blocker_action_pack_ready": [
+      "formal_external_blocker_action_pack"
+    ],
+    "architecture_evidence_transparency_controls_ready": [
+      "evidence_transparency_log"
+    ],
+    "architecture_formal_execution_host_controls_ready": [
+      "formal_execution_host_attestation"
+    ],
+    "architecture_formal_multivolume_storage_ready": [
+      "formal_multivolume_storage"
+    ],
+    "architecture_formal_network_request_manifest_ready": [
+      "formal_network_request_manifest"
+    ],
+    "architecture_formal_provider_health_supervisor_ready": [
+      "formal_provider_health_supervisor"
+    ],
+    "architecture_formal_provider_pacing_ready": [
+      "formal_provider_pacing"
+    ],
+    "architecture_formal_run_storage_controls_ready": [
+      "formal_run_storage_governance"
+    ],
+    "architecture_formal_scheduler_fairness_ready": [
+      "formal_scheduler_fairness"
+    ],
+    "architecture_formal_shard_streaming_retention_ready": [
+      "formal_shard_streaming_retention"
+    ],
+    "architecture_formal_validation_dress_rehearsal_ready": [
+      "formal_validation_dress_rehearsal"
+    ],
+    "architecture_formal_validation_separation_of_duties_ready": [
+      "formal_validation_separation_of_duties"
+    ],
+    "architecture_portable_execution_site_controls_ready": [
+      "portable_execution_site_attestation"
+    ],
+    "architecture_provider_capacity_declaration_intake_ready": [
+      "provider_capacity_declaration_intake"
+    ],
+    "architecture_release_authenticity_signing_ready": [
+      "release_authenticity_signing"
+    ],
+    "architecture_formal_backup_target_attestation_ready": [
+      "formal_backup_target_attestation"
+    ],
+    "architecture_formal_backup_compaction_ready": [
+      "formal_backup_compaction"
+    ],
+    "architecture_formal_backup_set_topology_ready": [
+      "formal_backup_set_topology"
+    ],
+    "architecture_formal_backup_set_member_intake_ready": [
+      "formal_backup_set_member_intake"
+    ],
+    "architecture_formal_backup_target_registration_ready": [
+      "formal_backup_target_registration"
+    ],
+    "architecture_formal_backup_member_enrollment_ready": [
+      "formal_backup_member_enrollment"
+    ],
+    "architecture_human_annotation_assignment_activation_ready": [
+      "human_annotation_assignment_activation"
+    ],
+    "architecture_human_adjudication_activation_ready": [
+      "human_adjudication_activation"
+    ],
+    "architecture_human_annotation_submission_intake_ready": [
+      "human_annotation_submission_intake"
+    ],
+    "architecture_human_annotator_qualification_intake_ready": [
+      "human_annotator_qualification_intake"
+    ],
+    "architecture_official_scorer_package_intake_ready": [
+      "official_scorer_package_intake"
+    ]
+  },
+  "components": [
+    {
+      "component_id": "formal_external_blocker_action_pack",
+      "files": [
+        "benchmark/formal_external_blocker_action_pack_v1_evidence/readiness.json",
+        "benchmark/formal_external_blocker_action_pack_v1_pack.json",
+        "benchmark/formal_external_blocker_action_pack_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/formal-external-blocker-action-pack.md",
+        "docs/validation-readiness.md",
+        "scripts/check_external_blocker_actions.py",
+        "src/scholar_agent/evaluation/formal_external_blocker_action_pack.py",
+        "tests/test_formal_external_blocker_action_pack.py"
+      ],
+      "kind": "deterministic_external_input_handoff_and_development_freeze_control"
+    },
+    {
+      "component_id": "change_risk_validation",
+      "files": [
+        "benchmark/change_risk_validation_v1_handoff_checklist.json",
+        "benchmark/change_risk_validation_v1_protocol.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/change-risk-validation.md",
+        "docs/validation-readiness.md",
+        "scripts/check_validation_scope.py",
+        "src/scholar_agent/evaluation/change_risk_validation.py",
+        "tests/test_change_risk_validation.py"
+      ],
+      "kind": "change_risk_classification_and_validation_scope_orchestration"
+    },
+    {
+      "component_id": "evidence_transparency_log",
+      "files": [
+        "benchmark/evidence_transparency_log_v1_checkpoint.json",
+        "benchmark/evidence_transparency_log_v1_evidence/readiness.json",
+        "benchmark/evidence_transparency_log_v1_evidence/simulation.json",
+        "benchmark/evidence_transparency_log_v1_log.json",
+        "benchmark/evidence_transparency_log_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/evidence-transparency-log.md",
+        "scripts/check_evidence_transparency.py",
+        "src/scholar_agent/evaluation/evidence_transparency_log.py"
+      ],
+      "kind": "append_only_public_evidence_consistency_control"
+    },
+    {
+      "component_id": "formal_backup_target_attestation",
+      "files": [
+        "benchmark/formal_backup_target_attestation_v1_evidence/readiness.json",
+        "benchmark/formal_backup_target_attestation_v1_evidence/simulation.json",
+        "benchmark/formal_backup_target_attestation_v1_protocol.json",
+        "benchmark/full1000_backup_target_attestation_addendum_v1.json",
+        "docs/architecture.md",
+        "docs/evaluation.md",
+        "docs/formal-backup-target-attestation.md",
+        "docs/validation-readiness.md",
+        "scripts/check_formal_backup_target.py",
+        "scripts/formal_backup_target_runtime.py",
+        "src/scholar_agent/evaluation/formal_backup_target_attestation.py",
+        "tests/test_formal_backup_target_attestation.py"
+      ],
+      "kind": "full1000_independent_backup_target_capacity_failure_domain_and_launch_import_control"
+    },
+    {
+      "component_id": "formal_backup_compaction",
+      "files": [
+        "benchmark/formal_backup_compaction_v1_evidence/capacity.json",
+        "benchmark/formal_backup_compaction_v1_evidence/readiness.json",
+        "benchmark/formal_backup_compaction_v1_evidence/simulation.json",
+        "benchmark/formal_backup_compaction_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/formal-backup-compaction.md",
+        "docs/validation-readiness.md",
+        "scripts/check_formal_backup_compaction.py",
+        "src/scholar_agent/evaluation/formal_backup_compaction.py",
+        "tests/test_formal_backup_compaction.py"
+      ],
+      "kind": "content_addressed_incremental_backup_compaction_capacity_and_recovery_control"
+    },
+    {
+      "component_id": "formal_backup_set_topology",
+      "files": [
+        "benchmark/formal_backup_set_topology_v1_evidence/capacity.json",
+        "benchmark/formal_backup_set_topology_v1_evidence/readiness.json",
+        "benchmark/formal_backup_set_topology_v1_evidence/simulation.json",
+        "benchmark/formal_backup_set_topology_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/formal-backup-set-topology.md",
+        "docs/validation-readiness.md",
+        "scripts/check_formal_backup_set.py",
+        "src/scholar_agent/evaluation/formal_backup_set_topology.py",
+        "tests/test_formal_backup_set_topology.py"
+      ],
+      "kind": "full1000_multi_target_backup_capacity_topology_and_complete_set_recovery_control"
+    },
+    {
+      "component_id": "formal_backup_set_member_intake",
+      "files": [
+        "benchmark/formal_backup_set_member_intake_v1_evidence/readiness.json",
+        "benchmark/formal_backup_set_member_intake_v1_evidence/simulation.json",
+        "benchmark/formal_backup_set_member_intake_v1_protocol.json",
+        "benchmark/full1000_backup_set_member_intake_addendum_v1.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/formal-backup-set-member-intake.md",
+        "docs/validation-readiness.md",
+        "scripts/check_formal_backup_set_intake.py",
+        "scripts/formal_backup_set_intake_runtime.py",
+        "src/scholar_agent/evaluation/formal_backup_set_member_intake.py",
+        "tests/test_formal_backup_set_member_intake.py"
+      ],
+      "kind": "full1000_real_backup_set_member_slot_intake_activation_and_launch_binding_control"
+    },
+    {
+      "component_id": "formal_backup_member_discovery",
+      "files": [
+        "benchmark/formal_backup_member_discovery_v1_protocol.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/evaluation.md",
+        "docs/formal-backup-member-discovery.md",
+        "scripts/check_formal_backup_member_discovery.py",
+        "src/scholar_agent/evaluation/formal_backup_member_discovery.py",
+        "tests/test_formal_backup_member_discovery.py"
+      ],
+      "kind": "registered_local_backup_target_candidate_discovery_deduplication_and_topology_gap_control"
+    },
+    {
+      "component_id": "formal_backup_target_registration",
+      "files": [
+        "benchmark/formal_backup_target_registration_v1_evidence/readiness.json",
+        "benchmark/formal_backup_target_registration_v1_evidence/simulation.json",
+        "benchmark/formal_backup_target_registration_v1_protocol.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/formal-backup-target-registration.md",
+        "docs/validation-readiness.md",
+        "scripts/check_formal_backup_target_registration.py",
+        "src/scholar_agent/evaluation/formal_backup_target_registration.py",
+        "tests/test_formal_backup_target_registration.py"
+      ],
+      "kind": "explicit_private_backup_target_registration_local_preflight_and_downstream_attestation_control"
+    },
+    {
+      "component_id": "formal_backup_member_enrollment",
+      "files": [
+        "benchmark/formal_backup_member_enrollment_v1_evidence/readiness.json",
+        "benchmark/formal_backup_member_enrollment_v1_evidence/simulation.json",
+        "benchmark/formal_backup_member_enrollment_v1_protocol.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/formal-backup-member-enrollment.md",
+        "docs/validation-readiness.md",
+        "scripts/check_formal_backup_member_enrollment.py",
+        "scripts/formal_backup_member_enrollment_runtime.py",
+        "src/scholar_agent/evaluation/formal_backup_member_enrollment.py",
+        "tests/test_formal_backup_member_enrollment.py"
+      ],
+      "kind": "full1000_end_to_end_offline_backup_member_enrollment_and_slot_intake_handoff"
+    },
+    {
+      "component_id": "formal_execution_host_attestation",
+      "files": [
+        "benchmark/formal_execution_host_attestation_v1_evidence/current_attestation.json",
+        "benchmark/formal_execution_host_attestation_v1_evidence/readiness.json",
+        "benchmark/formal_execution_host_attestation_v1_evidence/simulation.json",
+        "benchmark/formal_execution_host_attestation_v1_protocol.json",
+        "benchmark/full1000_host_attestation_addendum_v1.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/formal-execution-host-attestation.md",
+        "docs/full1000-launch-control.md",
+        "docs/validation-readiness.md",
+        "scripts/check_formal_execution_host.py",
+        "src/scholar_agent/evaluation/formal_execution_host_attestation.py"
+      ],
+      "kind": "formal_execution_host_capability_and_environment_seal"
+    },
+    {
+      "component_id": "human_annotation_assignment_activation",
+      "files": [
+        "benchmark/human_annotation_assignment_activation_v1_evidence/readiness.json",
+        "benchmark/human_annotation_assignment_activation_v1_evidence/simulation.json",
+        "benchmark/human_annotation_assignment_activation_v1_protocol.json",
+        "benchmark/human_annotation_delivery_v1_protocol.json",
+        "benchmark/human_annotator_qualification_intake_v1_protocol.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/evaluation.md",
+        "docs/human-annotation-assignment-activation.md",
+        "docs/validation-readiness.md",
+        "scripts/check_human_annotation_assignment.py",
+        "scripts/human_annotation_assignment_runtime.py",
+        "src/scholar_agent/evaluation/human_annotation_assignment_activation.py",
+        "tests/test_human_annotation_assignment_activation.py"
+      ],
+      "kind": "qualified_human_role_blind_package_assignment_acknowledgement_and_label_intake_activation_control"
+    },
+    {
+      "component_id": "human_annotation_submission_intake",
+      "files": [
+        "benchmark/human_annotation_submission_intake_v1_evidence/readiness.json",
+        "benchmark/human_annotation_submission_intake_v1_evidence/simulation.json",
+        "benchmark/human_annotation_submission_intake_v1_protocol.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/evaluation.md",
+        "docs/human-annotation-submission-intake.md",
+        "docs/validation-readiness.md",
+        "scripts/check_human_annotation_submission.py",
+        "src/scholar_agent/evaluation/human_annotation_submission_intake.py",
+        "tests/test_human_annotation_submission_intake.py"
+      ],
+      "kind": "locked_human_submission_intake_and_complete_blind_adjudication_queue_control"
+    },
+    {
+      "component_id": "human_annotator_qualification_intake",
+      "files": [
+        "benchmark/human_annotator_qualification_intake_v1_evidence/readiness.json",
+        "benchmark/human_annotator_qualification_intake_v1_evidence/simulation.json",
+        "benchmark/human_annotator_qualification_intake_v1_protocol.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/evaluation.md",
+        "docs/human-annotator-qualification-intake.md",
+        "docs/validation-readiness.md",
+        "scripts/check_human_annotator_qualification.py",
+        "scripts/human_annotator_qualification_runtime.py",
+        "src/scholar_agent/evaluation/human_annotator_qualification_intake.py",
+        "tests/test_human_annotator_qualification_intake.py"
+      ],
+      "kind": "anonymous_human_annotator_calibration_conflict_and_role_assignment_intake_control"
+    },
+    {
+      "component_id": "official_scorer_package_intake",
+      "files": [
+        "benchmark/official_scorer_package_intake_v1_evidence/readiness.json",
+        "benchmark/official_scorer_package_intake_v1_evidence/simulation.json",
+        "benchmark/official_scorer_package_intake_v1_protocol.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "docs/architecture.md",
+        "docs/evaluation.md",
+        "docs/official-scorer-package-intake.md",
+        "docs/validation-readiness.md",
+        "scripts/check_official_scorer_intake.py",
+        "scripts/official_scorer_intake_runtime.py",
+        "src/scholar_agent/evaluation/official_scorer_package_intake.py",
+        "tests/test_official_scorer_package_intake.py"
+      ],
+      "kind": "official_scorer_package_schema_namespace_origin_and_sandbox_intake_control"
+    },
+    {
+      "component_id": "formal_multivolume_storage",
+      "files": [
+        "benchmark/formal_multivolume_storage_v1_protocol.json",
+        "benchmark/full1000_multivolume_storage_addendum_v1.json",
+        "benchmark/formal_multivolume_storage_v1_evidence/readiness.json",
+        "benchmark/formal_multivolume_storage_v1_evidence/simulation.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/evaluation.md",
+        "docs/formal-multivolume-storage.md",
+        "docs/validation-readiness.md",
+        "scripts/check_formal_multivolume_storage.py",
+        "src/scholar_agent/evaluation/formal_multivolume_storage.py",
+        "tests/test_formal_multivolume_storage.py"
+      ],
+      "kind": "full1000_multivolume_storage_topology_capacity_and_aggregate_controls"
+    },
+    {
+      "component_id": "formal_network_request_manifest",
+      "files": [
+        "benchmark/formal_network_request_manifest_v1_evidence/bundle.json",
+        "benchmark/formal_network_request_manifest_v1_evidence/intents.jsonl",
+        "benchmark/formal_network_request_manifest_v1_evidence/launch_addendum.json",
+        "benchmark/formal_network_request_manifest_v1_evidence/manifest.json",
+        "benchmark/formal_network_request_manifest_v1_evidence/snapshot_audit.json",
+        "benchmark/formal_network_request_manifest_v1_protocol.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/evaluation.md",
+        "docs/formal-network-request-manifest.md",
+        "docs/full1000-launch-control.md",
+        "docs/validation-readiness.md",
+        "scripts/check_formal_network_request_manifest.py",
+        "src/scholar_agent/agents/retriever.py",
+        "src/scholar_agent/connectors/arxiv.py",
+        "src/scholar_agent/connectors/openalex.py",
+        "src/scholar_agent/connectors/pubmed.py",
+        "src/scholar_agent/connectors/schemas.py",
+        "src/scholar_agent/connectors/semantic_scholar.py",
+        "src/scholar_agent/evaluation/formal_network_request_manifest.py",
+        "tests/test_formal_network_request_manifest.py"
+      ],
+      "kind": "full1000_offline_request_identity_cache_and_snapshot_gap_control"
+    },
+    {
+      "component_id": "formal_provider_health_supervisor",
+      "files": [
+        "benchmark/formal_provider_health_supervisor_v1_evidence/readiness.json",
+        "benchmark/formal_provider_health_supervisor_v1_evidence/simulation.json",
+        "benchmark/formal_provider_health_supervisor_v1_protocol.json",
+        "benchmark/full1000_provider_health_addendum_v1.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/formal-provider-health-supervisor.md",
+        "docs/full1000-launch-control.md",
+        "docs/validation-readiness.md",
+        "scripts/check_formal_provider_health.py",
+        "src/scholar_agent/evaluation/formal_provider_health_supervisor.py"
+      ],
+      "kind": "formal_provider_health_pause_and_resume_control"
+    },
+    {
+      "component_id": "formal_provider_pacing",
+      "files": [
+        "benchmark/formal_network_request_manifest_v1_evidence/intents.jsonl",
+        "benchmark/formal_network_request_manifest_v1_evidence/launch_addendum.json",
+        "benchmark/formal_network_request_manifest_v1_evidence/manifest.json",
+        "benchmark/formal_provider_health_supervisor_v1_protocol.json",
+        "benchmark/formal_provider_pacing_v1_evidence/policy.json",
+        "benchmark/formal_provider_pacing_v1_evidence/readiness.json",
+        "benchmark/formal_provider_pacing_v1_evidence/resume.json",
+        "benchmark/formal_provider_pacing_v1_evidence/simulation.json",
+        "benchmark/formal_provider_pacing_v1_protocol.json",
+        "benchmark/formal_scheduler_fairness_v1_protocol.json",
+        "benchmark/full1000_execution_plan_v1.json",
+        "benchmark/full1000_launch_control_v1_protocol.json",
+        "benchmark/full1000_provider_pacing_addendum_v1.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "benchmark/resource_accounting_integrity_v1_protocol.json",
+        "benchmark/sharded_execution_integrity_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/evaluation.md",
+        "docs/formal-provider-pacing.md",
+        "docs/full1000-launch-control.md",
+        "docs/validation-readiness.md",
+        "scripts/check_formal_provider_pacing.py",
+        "src/scholar_agent/evaluation/formal_provider_pacing.py",
+        "tests/test_formal_provider_pacing.py"
+      ],
+      "kind": "full1000_provider_capacity_declaration_deterministic_pacing_and_resume_control"
+    },
+    {
+      "component_id": "formal_run_storage_governance",
+      "files": [
+        "benchmark/formal_run_storage_governance_v1_evidence/readiness.json",
+        "benchmark/formal_run_storage_governance_v1_evidence/simulation.json",
+        "benchmark/formal_run_storage_governance_v1_plan.json",
+        "benchmark/formal_run_storage_governance_v1_protocol.json",
+        "benchmark/full1000_storage_governance_addendum_v1.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/formal-run-storage-governance.md",
+        "docs/full1000-launch-control.md",
+        "scripts/check_formal_run_storage.py",
+        "src/scholar_agent/evaluation/formal_run_storage_governance.py",
+        "src/scholar_agent/evaluation/provider_ingest_provenance.py"
+      ],
+      "kind": "formal_run_capacity_quota_retention_control"
+    },
+    {
+      "component_id": "formal_scheduler_fairness",
+      "files": [
+        "benchmark/formal_scheduler_fairness_v1_evidence/readiness.json",
+        "benchmark/formal_scheduler_fairness_v1_evidence/simulation.json",
+        "benchmark/formal_scheduler_fairness_v1_protocol.json",
+        "benchmark/full1000_scheduler_fairness_addendum_v1.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/formal-scheduler-fairness.md",
+        "docs/full1000-launch-control.md",
+        "docs/validation-readiness.md",
+        "scripts/check_formal_scheduler_fairness.py",
+        "src/scholar_agent/evaluation/formal_scheduler_fairness.py"
+      ],
+      "kind": "formal_scheduler_fairness_and_backpressure_control"
+    },
+    {
+      "component_id": "formal_shard_streaming_retention",
+      "files": [
+        "benchmark/formal_shard_streaming_retention_v1_evidence/readiness.json",
+        "benchmark/formal_shard_streaming_retention_v1_evidence/simulation.json",
+        "benchmark/formal_shard_streaming_retention_v1_protocol.json",
+        "benchmark/full1000_shard_streaming_retention_addendum_v1.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/evaluation.md",
+        "docs/formal-shard-streaming-retention.md",
+        "docs/validation-readiness.md",
+        "scripts/check_formal_shard_retention.py",
+        "src/scholar_agent/evaluation/formal_shard_streaming_retention.py",
+        "tests/test_formal_shard_streaming_retention.py"
+      ],
+      "kind": "full1000_streaming_shard_archive_eviction_recovery_and_capacity_controls"
+    },
+    {
+      "component_id": "formal_validation_dress_rehearsal",
+      "files": [
+        "benchmark/formal_validation_dress_rehearsal_v1_evidence/failure_matrix.json",
+        "benchmark/formal_validation_dress_rehearsal_v1_evidence/handoff_checklist.json",
+        "benchmark/formal_validation_dress_rehearsal_v1_evidence/readiness.json",
+        "benchmark/formal_validation_dress_rehearsal_v1_evidence/rehearsal.json",
+        "benchmark/formal_validation_dress_rehearsal_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/formal-validation-dress-rehearsal.md",
+        "scripts/check_formal_validation_dress_rehearsal.py",
+        "src/scholar_agent/evaluation/formal_validation_dress_rehearsal.py"
+      ],
+      "kind": "synthetic_formal_validation_end_to_end_rehearsal"
+    },
+    {
+      "component_id": "formal_validation_separation_of_duties",
+      "files": [
+        "benchmark/formal_validation_separation_of_duties_v1_assignments.json",
+        "benchmark/formal_validation_separation_of_duties_v1_evidence/readiness.json",
+        "benchmark/formal_validation_separation_of_duties_v1_evidence/simulation.json",
+        "benchmark/formal_validation_separation_of_duties_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/formal-validation-separation-of-duties.md",
+        "docs/validation-readiness.md",
+        "scripts/check_formal_validation_roles.py",
+        "src/scholar_agent/evaluation/formal_validation_roles.py"
+      ],
+      "kind": "formal_validation_role_separation_and_dual_approval_control"
+    },
+    {
+      "component_id": "portable_execution_site_attestation",
+      "files": [
+        "benchmark/full1000_portable_execution_site_addendum_v1.json",
+        "benchmark/portable_execution_site_attestation_v1_evidence/readiness.json",
+        "benchmark/portable_execution_site_attestation_v1_evidence/simulation.json",
+        "benchmark/portable_execution_site_attestation_v1_protocol.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/evaluation.md",
+        "docs/portable-execution-site-attestation.md",
+        "docs/validation-readiness.md",
+        "scripts/check_portable_execution_site.py",
+        "scripts/portable_execution_site_runtime.py",
+        "src/scholar_agent/evaluation/portable_execution_site_attestation.py",
+        "tests/test_portable_execution_site_attestation.py"
+      ],
+      "kind": "portable_offline_execution_site_capability_attestation_and_launch_import"
+    },
+    {
+      "component_id": "provider_capacity_declaration_intake",
+      "files": [
+        "benchmark/formal_network_request_manifest_v1_evidence/intents.jsonl",
+        "benchmark/formal_network_request_manifest_v1_evidence/manifest.json",
+        "benchmark/formal_provider_pacing_v1_protocol.json",
+        "benchmark/formal_validation_preregistration_v1_protocol.json",
+        "benchmark/full1000_execution_plan_v1.json",
+        "benchmark/full1000_launch_control_v1_protocol.json",
+        "benchmark/full1000_provider_capacity_intake_addendum_v1.json",
+        "benchmark/provider_capacity_declaration_intake_v1_evidence/contract.json",
+        "benchmark/provider_capacity_declaration_intake_v1_evidence/readiness.json",
+        "benchmark/provider_capacity_declaration_intake_v1_evidence/simulation.json",
+        "benchmark/provider_capacity_declaration_intake_v1_protocol.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/evaluation.md",
+        "docs/formal-provider-pacing.md",
+        "docs/provider-capacity-declaration-intake.md",
+        "docs/validation-readiness.md",
+        "scripts/check_provider_capacity_intake.py",
+        "scripts/provider_capacity_declaration_runtime.py",
+        "src/scholar_agent/evaluation/formal_provider_pacing.py",
+        "src/scholar_agent/evaluation/provider_capacity_declaration_intake.py",
+        "tests/test_provider_capacity_declaration_intake.py"
+      ],
+      "kind": "offline_provider_capacity_declaration_kit_challenge_intake_and_pacing_preservation"
+    },
+    {
+      "component_id": "release_authenticity_signing",
+      "files": [
+        "benchmark/release_authenticity_signing_v1_evidence/readiness.json",
+        "benchmark/release_authenticity_signing_v1_protocol.json",
+        "benchmark/release_authenticity_signing_v1_trust_root.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/release-authenticity-signing.md",
+        "docs/validation-readiness.md",
+        "scripts/check_release_authenticity.py",
+        "src/scholar_agent/evaluation/release_authenticity_signing.py"
+      ],
+      "kind": "offline_release_identity_signature_and_trust_root_control"
+    },
+    {
+      "component_id": "human_adjudication_activation",
+      "files": [
+        "benchmark/human_adjudication_activation_v1_evidence/readiness.json",
+        "benchmark/human_adjudication_activation_v1_evidence/simulation.json",
+        "benchmark/human_adjudication_activation_v1_protocol.json",
+        "benchmark/human_annotation_submission_intake_v1_protocol.json",
+        "benchmark/human_precision_adjudication_v1_protocol.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "benchmark/validation_evidence_freshness_v1_addenda.json",
+        "docs/architecture.md",
+        "docs/evaluation.md",
+        "docs/human-adjudication-activation.md",
+        "docs/validation-readiness.md",
+        "scripts/check_human_adjudication_activation.py",
+        "src/scholar_agent/evaluation/human_adjudication_activation.py",
+        "tests/test_human_adjudication_activation.py"
+      ],
+      "kind": "blind_disagreement_adjudication_activation_and_existing_statistics_unlock_control"
+    }
+  ],
+  "evidence_component_bindings": {
+    "formal_external_blocker_action_pack": [
+      "formal_external_blocker_action_pack"
+    ],
+    "formal_external_blocker_action_protocol": [
+      "formal_external_blocker_action_pack"
+    ],
+    "formal_external_blocker_action_readiness": [
+      "formal_external_blocker_action_pack"
+    ],
+    "evidence_transparency_checkpoint": [
+      "evidence_transparency_log"
+    ],
+    "evidence_transparency_protocol": [
+      "evidence_transparency_log"
+    ],
+    "evidence_transparency_readiness": [
+      "evidence_transparency_log"
+    ],
+    "evidence_transparency_simulation": [
+      "evidence_transparency_log"
+    ],
+    "formal_dress_rehearsal_protocol": [
+      "formal_validation_dress_rehearsal"
+    ],
+    "formal_dress_rehearsal_readiness": [
+      "formal_validation_dress_rehearsal"
+    ],
+    "formal_execution_host_addendum": [
+      "formal_execution_host_attestation"
+    ],
+    "formal_execution_host_attestation": [
+      "formal_execution_host_attestation"
+    ],
+    "formal_execution_host_protocol": [
+      "formal_execution_host_attestation"
+    ],
+    "formal_execution_host_readiness": [
+      "formal_execution_host_attestation"
+    ],
+    "formal_execution_host_simulation": [
+      "formal_execution_host_attestation"
+    ],
+    "formal_multivolume_addendum": [
+      "formal_multivolume_storage"
+    ],
+    "formal_multivolume_protocol": [
+      "formal_multivolume_storage"
+    ],
+    "formal_multivolume_readiness": [
+      "formal_multivolume_storage"
+    ],
+    "formal_multivolume_simulation": [
+      "formal_multivolume_storage"
+    ],
+    "formal_network_request_bundle": [
+      "formal_network_request_manifest"
+    ],
+    "formal_network_request_intents": [
+      "formal_network_request_manifest"
+    ],
+    "formal_network_request_launch_addendum": [
+      "formal_network_request_manifest"
+    ],
+    "formal_network_request_manifest": [
+      "formal_network_request_manifest"
+    ],
+    "formal_network_request_protocol": [
+      "formal_network_request_manifest"
+    ],
+    "formal_network_request_snapshot_audit": [
+      "formal_network_request_manifest"
+    ],
+    "formal_provider_health_addendum": [
+      "formal_provider_health_supervisor"
+    ],
+    "formal_provider_health_protocol": [
+      "formal_provider_health_supervisor"
+    ],
+    "formal_provider_health_readiness": [
+      "formal_provider_health_supervisor"
+    ],
+    "formal_provider_health_simulation": [
+      "formal_provider_health_supervisor"
+    ],
+    "formal_provider_pacing_addendum": [
+      "formal_provider_pacing"
+    ],
+    "formal_provider_pacing_policy": [
+      "formal_provider_pacing"
+    ],
+    "formal_provider_pacing_protocol": [
+      "formal_provider_pacing"
+    ],
+    "formal_provider_pacing_readiness": [
+      "formal_provider_pacing"
+    ],
+    "formal_provider_pacing_resume": [
+      "formal_provider_pacing"
+    ],
+    "formal_provider_pacing_simulation": [
+      "formal_provider_pacing"
+    ],
+    "formal_run_storage_addendum": [
+      "formal_run_storage_governance"
+    ],
+    "formal_run_storage_plan": [
+      "formal_run_storage_governance"
+    ],
+    "formal_run_storage_protocol": [
+      "formal_run_storage_governance"
+    ],
+    "formal_run_storage_readiness": [
+      "formal_run_storage_governance"
+    ],
+    "formal_run_storage_simulation": [
+      "formal_run_storage_governance"
+    ],
+    "formal_scheduler_fairness_addendum": [
+      "formal_scheduler_fairness"
+    ],
+    "formal_scheduler_fairness_protocol": [
+      "formal_scheduler_fairness"
+    ],
+    "formal_scheduler_fairness_readiness": [
+      "formal_scheduler_fairness"
+    ],
+    "formal_scheduler_fairness_simulation": [
+      "formal_scheduler_fairness"
+    ],
+    "formal_shard_retention_addendum": [
+      "formal_shard_streaming_retention"
+    ],
+    "formal_shard_retention_protocol": [
+      "formal_shard_streaming_retention"
+    ],
+    "formal_shard_retention_readiness": [
+      "formal_shard_streaming_retention"
+    ],
+    "formal_shard_retention_simulation": [
+      "formal_shard_streaming_retention"
+    ],
+    "formal_validation_roles_assignments": [
+      "formal_validation_separation_of_duties"
+    ],
+    "formal_validation_roles_protocol": [
+      "formal_validation_separation_of_duties"
+    ],
+    "formal_validation_roles_readiness": [
+      "formal_validation_separation_of_duties"
+    ],
+    "formal_validation_roles_simulation": [
+      "formal_validation_separation_of_duties"
+    ],
+    "portable_execution_site_addendum": [
+      "portable_execution_site_attestation"
+    ],
+    "portable_execution_site_protocol": [
+      "portable_execution_site_attestation"
+    ],
+    "portable_execution_site_readiness": [
+      "portable_execution_site_attestation"
+    ],
+    "portable_execution_site_simulation": [
+      "portable_execution_site_attestation"
+    ],
+    "provider_capacity_intake_addendum": [
+      "provider_capacity_declaration_intake"
+    ],
+    "provider_capacity_intake_contract": [
+      "provider_capacity_declaration_intake"
+    ],
+    "provider_capacity_intake_protocol": [
+      "provider_capacity_declaration_intake"
+    ],
+    "provider_capacity_intake_readiness": [
+      "provider_capacity_declaration_intake"
+    ],
+    "provider_capacity_intake_simulation": [
+      "provider_capacity_declaration_intake"
+    ],
+    "release_authenticity_protocol": [
+      "release_authenticity_signing"
+    ],
+    "release_authenticity_readiness": [
+      "release_authenticity_signing"
+    ],
+    "release_authenticity_trust_root": [
+      "release_authenticity_signing"
+    ],
+    "formal_backup_target_addendum": [
+      "formal_backup_target_attestation"
+    ],
+    "formal_backup_target_protocol": [
+      "formal_backup_target_attestation"
+    ],
+    "formal_backup_target_readiness": [
+      "formal_backup_target_attestation"
+    ],
+    "formal_backup_target_simulation": [
+      "formal_backup_target_attestation"
+    ],
+    "formal_backup_compaction_capacity": [
+      "formal_backup_compaction"
+    ],
+    "formal_backup_compaction_protocol": [
+      "formal_backup_compaction"
+    ],
+    "formal_backup_compaction_readiness": [
+      "formal_backup_compaction"
+    ],
+    "formal_backup_compaction_simulation": [
+      "formal_backup_compaction"
+    ],
+    "formal_backup_set_capacity": [
+      "formal_backup_set_topology"
+    ],
+    "formal_backup_set_protocol": [
+      "formal_backup_set_topology"
+    ],
+    "formal_backup_set_readiness": [
+      "formal_backup_set_topology"
+    ],
+    "formal_backup_set_simulation": [
+      "formal_backup_set_topology"
+    ],
+    "formal_backup_set_intake_addendum": [
+      "formal_backup_set_member_intake"
+    ],
+    "formal_backup_set_intake_protocol": [
+      "formal_backup_set_member_intake"
+    ],
+    "formal_backup_set_intake_readiness": [
+      "formal_backup_set_member_intake"
+    ],
+    "formal_backup_set_intake_simulation": [
+      "formal_backup_set_member_intake"
+    ],
+    "formal_backup_target_registration_protocol": [
+      "formal_backup_target_registration"
+    ],
+    "formal_backup_target_registration_readiness": [
+      "formal_backup_target_registration"
+    ],
+    "formal_backup_target_registration_simulation": [
+      "formal_backup_target_registration"
+    ],
+    "formal_backup_member_enrollment_protocol": [
+      "formal_backup_member_enrollment"
+    ],
+    "formal_backup_member_enrollment_readiness": [
+      "formal_backup_member_enrollment"
+    ],
+    "formal_backup_member_enrollment_simulation": [
+      "formal_backup_member_enrollment"
+    ],
+    "human_annotation_assignment_protocol": [
+      "human_annotation_assignment_activation"
+    ],
+    "human_annotation_assignment_readiness": [
+      "human_annotation_assignment_activation"
+    ],
+    "human_annotation_assignment_simulation": [
+      "human_annotation_assignment_activation"
+    ],
+    "human_adjudication_activation_protocol": [
+      "human_adjudication_activation"
+    ],
+    "human_adjudication_activation_readiness": [
+      "human_adjudication_activation"
+    ],
+    "human_adjudication_activation_simulation": [
+      "human_adjudication_activation"
+    ],
+    "human_annotation_submission_protocol": [
+      "human_annotation_submission_intake"
+    ],
+    "human_annotation_submission_readiness": [
+      "human_annotation_submission_intake"
+    ],
+    "human_annotation_submission_simulation": [
+      "human_annotation_submission_intake"
+    ],
+    "human_annotator_qualification_protocol": [
+      "human_annotator_qualification_intake"
+    ],
+    "human_annotator_qualification_readiness": [
+      "human_annotator_qualification_intake"
+    ],
+    "human_annotator_qualification_simulation": [
+      "human_annotator_qualification_intake"
+    ],
+    "official_scorer_intake_protocol": [
+      "official_scorer_package_intake"
+    ],
+    "official_scorer_intake_readiness": [
+      "official_scorer_package_intake"
+    ],
+    "official_scorer_intake_simulation": [
+      "official_scorer_package_intake"
+    ]
+  },
+  "gate_component_bindings": {
+    "formal_external_blocker_actions": [
+      "formal_external_blocker_action_pack"
+    ],
+    "evidence_transparency": [
+      "evidence_transparency_log"
+    ],
+    "formal_execution_host_attestation": [
+      "formal_execution_host_attestation"
+    ],
+    "formal_multivolume_storage": [
+      "formal_multivolume_storage"
+    ],
+    "formal_network_request_manifest": [
+      "formal_network_request_manifest"
+    ],
+    "formal_provider_health_supervisor": [
+      "formal_provider_health_supervisor"
+    ],
+    "formal_provider_pacing": [
+      "formal_provider_pacing"
+    ],
+    "formal_run_storage_governance": [
+      "formal_run_storage_governance"
+    ],
+    "formal_scheduler_fairness": [
+      "formal_scheduler_fairness"
+    ],
+    "formal_shard_streaming_retention": [
+      "formal_shard_streaming_retention"
+    ],
+    "formal_validation_dress_rehearsal": [
+      "formal_validation_dress_rehearsal"
+    ],
+    "formal_validation_roles": [
+      "formal_validation_separation_of_duties"
+    ],
+    "portable_execution_site_attestation": [
+      "portable_execution_site_attestation"
+    ],
+    "provider_capacity_declaration_intake": [
+      "provider_capacity_declaration_intake"
+    ],
+    "release_authenticity_signing": [
+      "release_authenticity_signing"
+    ],
+    "formal_backup_target_attestation": [
+      "formal_backup_target_attestation"
+    ],
+    "formal_backup_compaction": [
+      "formal_backup_compaction"
+    ],
+    "formal_backup_set_topology": [
+      "formal_backup_set_topology"
+    ],
+    "formal_backup_set_member_intake": [
+      "formal_backup_set_member_intake"
+    ],
+    "formal_backup_target_registration": [
+      "formal_backup_target_registration"
+    ],
+    "formal_backup_member_enrollment": [
+      "formal_backup_member_enrollment"
+    ],
+    "human_annotation_assignment_activation": [
+      "human_annotation_assignment_activation"
+    ],
+    "human_adjudication_activation": [
+      "human_adjudication_activation"
+    ],
+    "human_annotation_submission_intake": [
+      "human_annotation_submission_intake"
+    ],
+    "human_annotator_qualification_intake": [
+      "human_annotator_qualification_intake"
+    ],
+    "official_scorer_package_intake": [
+      "official_scorer_package_intake"
+    ]
+  },
+  "protocol": "validation_evidence_freshness_v1_addenda",
+  "schema_version": "1"
+}

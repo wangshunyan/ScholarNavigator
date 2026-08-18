@@ -1,0 +1,21 @@
+{
+  "activation_requirements": {
+    "capture_enabled_explicitly": true,
+    "empty_authoritative_output_root": true,
+    "primary_and_backup_capacity_verified": true,
+    "reserve_commit_release_ledger_enabled": true
+  },
+  "addendum": "full1000_storage_governance_addendum_v1",
+  "addendum_sha256": "00811ec25b561c13281074875e992e94e9667f0aee7e179f3de2cd70a2c376a6",
+  "formal_validation_complete": false,
+  "launch_control": {
+    "path": "benchmark/full1000_launch_control_v1_protocol.json",
+    "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+  },
+  "legacy_launch_authorization_reusable": false,
+  "mutation_policy": "does_not_modify_bound_launch_protocol_or_execution_plan",
+  "schema_version": "1",
+  "source_commit": "fe3ae9c1516661925d0b176837141d6542e7abb0",
+  "storage_plan_sha256": "0649036b8d9797eede6e83c0e7b3c01df5a8d8d388355420f40ca4f6dea0e0f3",
+  "storage_protocol_sha256": "367950b348220a7c52d779611fb10d6da2211884a4e533c74b2befaa955d7bda"
+}

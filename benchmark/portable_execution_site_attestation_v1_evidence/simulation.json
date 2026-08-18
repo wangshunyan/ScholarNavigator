@@ -1,0 +1,79 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "full1000_run_started": false,
+  "passed_count": 10,
+  "protocol": "portable_execution_site_attestation_v1",
+  "scenario_count": 10,
+  "scenarios": [
+    {
+      "expected_status": "execution_site_qualified",
+      "observed_status": "execution_site_qualified",
+      "passed": true,
+      "scenario": "qualified"
+    },
+    {
+      "expected_status": "not_ready_no_qualified_external_site",
+      "observed_status": "not_ready_no_qualified_external_site",
+      "passed": true,
+      "scenario": "primary_insufficient"
+    },
+    {
+      "expected_status": "not_ready_no_qualified_external_site",
+      "observed_status": "not_ready_no_qualified_external_site",
+      "passed": true,
+      "scenario": "backup_insufficient"
+    },
+    {
+      "expected_status": "not_ready_no_qualified_external_site",
+      "observed_status": "not_ready_no_qualified_external_site",
+      "passed": true,
+      "scenario": "same_fault_domain"
+    },
+    {
+      "expected_status": "not_ready_no_qualified_external_site",
+      "observed_status": "not_ready_no_qualified_external_site",
+      "passed": true,
+      "scenario": "quota_unknown"
+    },
+    {
+      "expected_status": "attestation_or_import_violation",
+      "observed_status": "attestation_or_import_violation",
+      "passed": true,
+      "scenario": "challenge_replay"
+    },
+    {
+      "expected_status": "attestation_or_import_violation",
+      "observed_status": "attestation_or_import_violation",
+      "passed": true,
+      "scenario": "cross_commit_reuse"
+    },
+    {
+      "expected_status": "attestation_or_import_violation",
+      "observed_status": "attestation_or_import_violation",
+      "passed": true,
+      "scenario": "kit_tamper"
+    },
+    {
+      "expected_status": "attestation_or_import_violation",
+      "observed_status": "attestation_or_import_violation",
+      "passed": true,
+      "scenario": "mount_identity_replacement"
+    },
+    {
+      "expected_status": "attestation_or_import_violation",
+      "observed_status": "attestation_or_import_violation",
+      "passed": true,
+      "scenario": "topology_drift_after_import"
+    }
+  ],
+  "schema_version": "1",
+  "status": "execution_site_qualified"
+}

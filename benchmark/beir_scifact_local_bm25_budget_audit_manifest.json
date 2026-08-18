@@ -1,0 +1,72 @@
+{
+  "audit": "beir_scifact_local_bm25_query_budget_v1",
+  "implementation_base_commit": "292dbf9999663dacba6aa586dcedb4e6912e0657",
+  "scope": "offline_candidate_upper_bound_not_production_strategy",
+  "dataset": {
+    "name": "beir_scifact",
+    "split": "test",
+    "case_count": 50,
+    "evaluable_query_count": 41,
+    "evaluable_gold_relation_count": 42,
+    "sample_manifest": "benchmark/beir_scifact_sample_manifest.json",
+    "sample_manifest_sha256": "a1c010060078a806cae5f79ee24e565b0546206144f9ac4e9fdc15d432318f9b"
+  },
+  "inputs": {
+    "corpus": "outputs/benchmark_inputs/beir_scifact/extracted/scifact/corpus.jsonl",
+    "corpus_sha256": "dec31c8182f3d744c7d2c09423756fd1d17cbef75808db13ba01cc0aab4d1ac6",
+    "crosswalk": "benchmark/beir_scifact_s2_crosswalk.json",
+    "crosswalk_sha256": "ec7406107d13ddfd81ea1eca6f065c85dda25276f4ddb33abd568c5dd9d94d1c",
+    "frozen_run": "outputs/benchmark_runs/local_bm25_28db182_scifact_five_source_final_replay_r1",
+    "snapshot_dir": "outputs/benchmark_snapshots/local_bm25_28db182_scifact_five_source",
+    "retrieval_directory_content_sha256": "21a3260b120c8aabe832381e6674d90c40f4aa3dc731356b09fb1d97a5fb7cd9",
+    "prior_conversion_audit_reported_snapshot_tree_sha256": "ce58a60bd387a9f020985f449313975dcfe9bb344b06c7367308b3150b1ce624"
+  },
+  "bm25": {
+    "implementation": "rank_bm25.BM25Okapi",
+    "parameters": {
+      "k1": 1.5,
+      "b": 0.75,
+      "epsilon": 0.25
+    },
+    "tokenizer": "unicode-word-casefold-v1",
+    "document_fields": ["title", "abstract"],
+    "tie_break": "score_desc_then_s2orc_corpus_id_ascending"
+  },
+  "frozen_budget": {
+    "adapter_policy": "adaptive",
+    "per_executed_list_limit": 20,
+    "local_source_merged_limit": 200,
+    "global_candidate_limit": 200,
+    "depths": [20, 50, 100, 200]
+  },
+  "audit_scopes": {
+    "current_adapter_budget": {
+      "lists": "all logically executed frozen local_bm25 calls in recorded order",
+      "per_list_prefix": 20,
+      "merge": "stable list order then unified identity deduplication",
+      "cap": 200
+    },
+    "original_query_top_200": {
+      "lists": "one full-corpus ranking from the original EvalQuery.query text",
+      "per_list_prefix": 200,
+      "merge": "single list",
+      "cap": 200
+    },
+    "all_subqueries_merge_top_200": {
+      "lists": "all logically executed safe_original current_rules subquery lists in frozen order",
+      "per_list_prefix": 200,
+      "merge": "stable list order then unified identity deduplication",
+      "cap": 200
+    }
+  },
+  "invariants": {
+    "gold_usage": "offline matching only after all three candidate scopes are built",
+    "query_text_mutation": false,
+    "production_connector_invoked": false,
+    "production_code_modified": false,
+    "network_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0,
+    "oracle_metrics_are_deployable_scores": false
+  }
+}

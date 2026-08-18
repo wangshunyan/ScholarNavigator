@@ -1,0 +1,43 @@
+{
+  "bindings": {
+    "backup_set_member_intake": {
+      "path": "benchmark/formal_backup_set_member_intake_v1_protocol.json",
+      "sha256": "7c3a68a8e59237fc00093928eb8c1368d8fc194de04397a341cc3d6c95a90d44"
+    },
+    "backup_set_topology": {
+      "path": "benchmark/formal_backup_set_topology_v1_protocol.json",
+      "sha256": "c810a5bdd64dbcf2739aef02c92ef156c246cbf0224303bf5a8e05a504b610ae"
+    },
+    "backup_target_attestation": {
+      "path": "benchmark/formal_backup_target_attestation_v1_protocol.json",
+      "sha256": "2cf63cbfed4e602f8e2ace4f766be80e7298f3819570bcb4f64c1bfa745b87a3"
+    }
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "policy": {
+    "candidate_is_qualified_member": false,
+    "enumeration": "explicit_registered_targets_only",
+    "identity_authentication": false,
+    "member_counts": [
+      2,
+      3,
+      4
+    ],
+    "network_or_account_scan": false,
+    "output_absolute_paths": false,
+    "registration_or_activation_side_effect": false,
+    "unknown_evidence_policy": "not_available_fail_closed"
+  },
+  "protocol": "formal_backup_member_discovery_v1",
+  "protocol_sha256": "0a8cdc270b9e34dc93e94c5a680e05ca528d211611edac446a16775a222741be",
+  "registered_targets": [],
+  "schema_version": "1",
+  "source_commit": "014f0b68c3c88d40194f13f68496999e0f998b20"
+}

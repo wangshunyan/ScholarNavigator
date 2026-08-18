@@ -1,0 +1,129 @@
+{
+  "bindings": {
+    "execution_plan": {
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    "launch_control": {
+      "path": "benchmark/full1000_launch_control_v1_protocol.json",
+      "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+    },
+    "pacing_protocol": {
+      "path": "benchmark/formal_provider_pacing_v1_protocol.json",
+      "sha256": "71059ef65106174794358c1646b6a4224613174624a38280ef22e580d3097575"
+    },
+    "preregistration": {
+      "path": "benchmark/formal_validation_preregistration_v1_protocol.json",
+      "sha256": "b2ab16003cc843657896cda863deaab39bfb80f2b098e8eaf24e718304e8920a"
+    },
+    "request_intents": {
+      "path": "benchmark/formal_network_request_manifest_v1_evidence/intents.jsonl",
+      "sha256": "981d26367e41c56b287bb9293dc39674e90291042ae4440e0aa17da59107e47c"
+    },
+    "request_manifest": {
+      "path": "benchmark/formal_network_request_manifest_v1_evidence/manifest.json",
+      "sha256": "4a281e69e864490b7cb1bf20bc9f8fcb940ce4443e4305751244eaa1bb6bf50f"
+    }
+  },
+  "capacity_contract": {
+    "capacity_models": [
+      "fixed_window_token_bucket_v1"
+    ],
+    "challenge_max_age_seconds": 604800,
+    "declaration_protocol": "provider_capacity_declaration_v1",
+    "evidence_types": [
+      "operator_verified_provider_contract_v1",
+      "provider_owner_portal_export_v1",
+      "provider_owner_structured_notice_v1"
+    ],
+    "effective_conditions": [
+      "scope_alias_active_and_epoch_within_window"
+    ],
+    "invalidation_conditions": [
+      "expiry_revocation_scope_or_binding_change"
+    ],
+    "lifecycle_states": [
+      "active",
+      "revoked"
+    ],
+    "numeric_fields": [
+      "requests_per_second",
+      "requests_per_minute",
+      "burst",
+      "max_concurrency",
+      "cooldown_seconds"
+    ],
+    "retry_after_semantics": [
+      "delta_seconds_or_http_date_when_provider_supplies_header"
+    ],
+    "units": {
+      "burst": "requests",
+      "cooldown_seconds": "seconds",
+      "max_concurrency": "requests",
+      "requests_per_minute": "requests_per_minute",
+      "requests_per_second": "requests_per_second"
+    }
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "intake_policy": {
+    "challenge_consumption": "append_only_single_use_per_source",
+    "declaration_authentication": "hash_proves_content_integrity_not_declarant_identity",
+    "forbidden_contents": [
+      "absolute_path",
+      "credential",
+      "endpoint",
+      "environment_value",
+      "query_text",
+      "request_header",
+      "url_parameter"
+    ],
+    "import_effect": "sending_timing_and_concurrency_only",
+    "real_readiness": "all_four_fresh_active_declarations_required",
+    "unknown_policy": "not_available_fail_closed"
+  },
+  "population": {
+    "http_attempt_upper": 19280,
+    "logical_source_request_count": 9640,
+    "query_count": 1000,
+    "shard_count": 20,
+    "sources": [
+      "openalex",
+      "arxiv",
+      "semantic_scholar",
+      "pubmed"
+    ]
+  },
+  "protocol": "provider_capacity_declaration_intake_v1",
+  "protocol_sha256": "63f6072d2e3a65253c308c9c1f6191fa0dcfe408b68488e73ec61edc5e9f5602",
+  "schema_version": "1",
+  "source_commit": "a859a62569e9e3d488e61ecbccfb0656ccfefebd",
+  "source_scopes": {
+    "arxiv": "public_anonymous",
+    "openalex": "openalex_polite_pool_optional",
+    "pubmed": "ncbi_api_key_optional",
+    "semantic_scholar": "semantic_scholar_api_key_optional"
+  },
+  "synthetic_scenarios": {
+    "names": [
+      "qualified_four_sources",
+      "single_source_missing",
+      "expired",
+      "unit_mismatch",
+      "burst_conflict",
+      "zero_concurrency",
+      "scope_drift",
+      "challenge_replay",
+      "declaration_tamper",
+      "dynamic_reduction",
+      "revoked"
+    ],
+    "test_only": true
+  }
+}

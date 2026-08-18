@@ -1,0 +1,30 @@
+{
+  "activation_requirements": {
+    "all_volume_capacity_reports_qualified": true,
+    "backup_failure_domains_verified": true,
+    "fresh_multivolume_topology": true,
+    "migration_via_verified_backup_restore_only": true,
+    "resume_binding_immutable": true
+  },
+  "addendum": "full1000_multivolume_storage_addendum_v1",
+  "addendum_sha256": "647d38fa5ff3498b0bc534b8634d83ff631b7e28fd341b1c75d018b9ff13bb6a",
+  "formal_validation_complete": false,
+  "host_attestation": {
+    "path": "benchmark/formal_execution_host_attestation_v1_protocol.json",
+    "sha256": "095bbe731aa461dfa1999080cb916757ecce8f737c19e823aa1173b8663a7681"
+  },
+  "launch_control": {
+    "path": "benchmark/full1000_launch_control_v1_protocol.json",
+    "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+  },
+  "legacy_single_volume_authorization_reusable": false,
+  "protocol": "formal_multivolume_storage_v1",
+  "protocol_sha256": "1fb5cc36a4db72dd65d06dd5033a06077f89cd3c6879e6d24731a77f870f452e",
+  "real_run_started": false,
+  "schema_version": "1",
+  "source_commit": "58114d2b6c00ffbdb87a6f89ab618b653833e15f",
+  "storage_governance": {
+    "path": "benchmark/formal_run_storage_governance_v1_protocol.json",
+    "sha256": "bb78967820aba3c223c0638adbda9b0779cc7cecffcb718fa22a06f352c9d5c1"
+  }
+}

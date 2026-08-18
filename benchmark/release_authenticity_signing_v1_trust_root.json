@@ -1,0 +1,10 @@
+{
+  "formal_validation_complete": false,
+  "keys": [],
+  "protocol": "release_authenticity_signing_v1",
+  "schema_version": "1",
+  "source_commit": "febdb196486920ae4b856276b3a715d4a4c5e277",
+  "status": "not_ready_missing_real_trust_anchor",
+  "transitions": [],
+  "trust_root_sha256": "6f02c4bf1753bd139f380e2ee9313538997f7af2866d41770f66a0bb7081fa10"
+}

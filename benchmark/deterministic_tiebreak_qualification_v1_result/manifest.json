@@ -1,0 +1,32 @@
+{
+  "analysis": "deterministic_tiebreak_qualification_v1",
+  "files": {
+    "aggregate": {
+      "path": "aggregate.json",
+      "sha256": "787b29002a7d9fd1b6403b88981f3ececc93bd6f40696786e80ab2015ead8c48",
+      "size": 5204
+    },
+    "candidate_diagnostics": {
+      "path": "candidate_diagnostics.jsonl",
+      "sha256": "4ccfb66737a030f7b23ce8253b5b28bd2d064bc59bcac964850a8e906d153141",
+      "size": 3084327
+    },
+    "case_diagnostics": {
+      "path": "case_diagnostics.jsonl",
+      "sha256": "41cb7212dc1ab68b65979f39d455e3ee049ab2939aa9f94db97a2080f8cb79b3",
+      "size": 177378
+    },
+    "protocol": {
+      "path": "protocol.json",
+      "sha256": "e2957ed20b2ab153ab6ff246d7adbfa067fe87e869ed82458eb07beb6f45a196",
+      "size": 5907
+    },
+    "tie_groups": {
+      "path": "tie_groups.jsonl",
+      "sha256": "833f9d899bcf01f36ce3e026617ab7458b07b1f75599e5a570ddd5a87c876108",
+      "size": 555
+    }
+  },
+  "schema_version": "1",
+  "status": "qualified_for_review"
+}

@@ -1,0 +1,123 @@
+{
+  "bindings": {
+    "crash_consistency": {
+      "path": "benchmark/crash_consistency_v1_protocol.json",
+      "sha256": "24b1fbc1314275e3bfa56fc431df18a67102dbd90ccf482f5c12fd358356e920"
+    },
+    "disaster_recovery": {
+      "path": "benchmark/formal_run_disaster_recovery_v1_protocol.json",
+      "sha256": "e6b646df73fee75421e33894a73f60cb6f4e00f509a09a103766f68310a20467"
+    },
+    "execution_plan": {
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    "launch_control": {
+      "path": "benchmark/full1000_launch_control_v1_protocol.json",
+      "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+    },
+    "provider_capture_addendum": {
+      "path": "benchmark/full1000_provider_ingest_capture_addendum_v1.json",
+      "sha256": "38d87a09eb5b39ef14b53c26a523c6ade24682b14ce180cfd2b153cde9d7adc2"
+    },
+    "provider_ingest": {
+      "path": "benchmark/provider_ingest_provenance_v1_protocol.json",
+      "sha256": "29a4a687f8bec2d9c3f12f264b24e41df2519442182728dc424b101e578e6a77"
+    },
+    "resource_accounting": {
+      "path": "benchmark/resource_accounting_integrity_v1_protocol.json",
+      "sha256": "b465d2e8f555418bb4a6ac492a0879d307830bdd158ef18ff39de481a6c08f97"
+    }
+  },
+  "capacity": {
+    "backup_atomic_staging_multiplier": 1,
+    "credit_for_compression_or_sparse_files": 0,
+    "credit_for_future_cleanup": 0,
+    "required_observations": [
+      "backup.available_bytes",
+      "backup.available_inodes",
+      "backup.filesystem_quota_bytes",
+      "primary.available_bytes",
+      "primary.available_inodes",
+      "primary.filesystem_quota_bytes"
+    ],
+    "requirements": {
+      "backup": {
+        "bytes": 2119029489664,
+        "inodes": 210940
+      },
+      "primary": {
+        "bytes": 713501442048,
+        "inodes": 76980
+      }
+    },
+    "safety_reserve_bytes": 10737418240,
+    "verification": "statvfs_or_equivalent_plus_explicit_filesystem_quota"
+  },
+  "capture_limit": {
+    "default_enabled": false,
+    "formal_plan_enabled": true,
+    "max_archive_bytes_per_generation": 536870912,
+    "max_response_bytes": 33554432,
+    "oversize_behavior": "capture_size_exceeded_attempt_terminal_no_truncation_no_parser_success",
+    "source": "existing_provider_ingest_verifier_hard_limits"
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "population": {
+    "http_attempt_upper": 19280,
+    "query_count": 1000,
+    "selected_generation_upper": 1040,
+    "shard_count": 20
+  },
+  "protocol": "formal_run_storage_governance_v1",
+  "protocol_sha256": "367950b348220a7c52d779611fb10d6da2211884a4e533c74b2befaa955d7bda",
+  "quotas": {
+    "aggregate": {
+      "max_bytes": 2147483648,
+      "max_files": 100
+    },
+    "backup_chain": {
+      "max_bytes": 2108292071424,
+      "max_files": 200940
+    },
+    "committed_generation": {
+      "max_bytes": 671088640,
+      "max_files": 64
+    },
+    "provider_response": {
+      "max_bytes": 33554432,
+      "max_files": 1
+    },
+    "run": {
+      "max_bytes": 702764023808,
+      "max_files": 66980
+    },
+    "shard": {
+      "max_bytes": 35030827008,
+      "max_files": 3344
+    }
+  },
+  "retention": {
+    "backup_chain_retained_restore_points": 2,
+    "cleanup_requires_verified_backup": true,
+    "never_delete": [
+      "active_resume_generation",
+      "authoritative_resource_ledger",
+      "final_selected_attempt",
+      "operation_audit_chain",
+      "provider_raw_response",
+      "transparency_log_referenced_artifact"
+    ],
+    "superseded_generation_window": 2,
+    "temporary_cleanup": "verified_uncommitted_only"
+  },
+  "schema_version": "1",
+  "source_commit": "fe3ae9c1516661925d0b176837141d6542e7abb0"
+}

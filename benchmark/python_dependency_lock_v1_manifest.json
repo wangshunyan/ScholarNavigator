@@ -1,0 +1,1050 @@
+{
+  "declarations": [
+    {
+      "declaration": "httpx==0.28.1",
+      "group": "development",
+      "line": 2,
+      "marker": null,
+      "name": "httpx",
+      "version": "0.28.1"
+    },
+    {
+      "declaration": "pytest==9.1.1",
+      "group": "development",
+      "line": 3,
+      "marker": null,
+      "name": "pytest",
+      "version": "9.1.1"
+    },
+    {
+      "declaration": "fastapi==0.138.0",
+      "group": "runtime",
+      "line": 2,
+      "marker": null,
+      "name": "fastapi",
+      "version": "0.138.0"
+    },
+    {
+      "declaration": "packaging==25.0",
+      "group": "runtime",
+      "line": 3,
+      "marker": null,
+      "name": "packaging",
+      "version": "25.0"
+    },
+    {
+      "declaration": "pydantic==2.11.7",
+      "group": "runtime",
+      "line": 4,
+      "marker": null,
+      "name": "pydantic",
+      "version": "2.11.7"
+    },
+    {
+      "declaration": "rank-bm25==0.2.2",
+      "group": "runtime",
+      "line": 5,
+      "marker": null,
+      "name": "rank-bm25",
+      "version": "0.2.2"
+    },
+    {
+      "declaration": "uvicorn==0.48.0",
+      "group": "runtime",
+      "line": 6,
+      "marker": null,
+      "name": "uvicorn",
+      "version": "0.48.0"
+    }
+  ],
+  "dependency_cycles": [],
+  "development_direct": [
+    "httpx==0.28.1",
+    "pytest==9.1.1"
+  ],
+  "development_only_package_count": 7,
+  "environment": {
+    "implementation_name": "cpython",
+    "platform_machine": "arm64",
+    "python_full_version": "3.13.5",
+    "python_version": "3.13",
+    "sys_platform": "darwin"
+  },
+  "excluded_markers": [
+    {
+      "group": "development",
+      "parent": "anyio",
+      "requirement": "exceptiongroup>=1.0.2; python_version < \"3.11\""
+    },
+    {
+      "group": "development",
+      "parent": "anyio",
+      "requirement": "trio>=0.32.0; extra == \"trio\""
+    },
+    {
+      "group": "development",
+      "parent": "anyio",
+      "requirement": "typing_extensions>=4.5; python_version < \"3.13\""
+    },
+    {
+      "group": "development",
+      "parent": "httpcore",
+      "requirement": "anyio<5.0,>=4.0; extra == \"asyncio\""
+    },
+    {
+      "group": "development",
+      "parent": "httpcore",
+      "requirement": "h2<5,>=3; extra == \"http2\""
+    },
+    {
+      "group": "development",
+      "parent": "httpcore",
+      "requirement": "socksio==1.*; extra == \"socks\""
+    },
+    {
+      "group": "development",
+      "parent": "httpcore",
+      "requirement": "trio<1.0,>=0.22.0; extra == \"trio\""
+    },
+    {
+      "group": "development",
+      "parent": "httpx",
+      "requirement": "brotli; platform_python_implementation == \"CPython\" and extra == \"brotli\""
+    },
+    {
+      "group": "development",
+      "parent": "httpx",
+      "requirement": "brotlicffi; platform_python_implementation != \"CPython\" and extra == \"brotli\""
+    },
+    {
+      "group": "development",
+      "parent": "httpx",
+      "requirement": "click==8.*; extra == \"cli\""
+    },
+    {
+      "group": "development",
+      "parent": "httpx",
+      "requirement": "h2<5,>=3; extra == \"http2\""
+    },
+    {
+      "group": "development",
+      "parent": "httpx",
+      "requirement": "pygments==2.*; extra == \"cli\""
+    },
+    {
+      "group": "development",
+      "parent": "httpx",
+      "requirement": "rich<14,>=10; extra == \"cli\""
+    },
+    {
+      "group": "development",
+      "parent": "httpx",
+      "requirement": "socksio==1.*; extra == \"socks\""
+    },
+    {
+      "group": "development",
+      "parent": "httpx",
+      "requirement": "zstandard>=0.18.0; extra == \"zstd\""
+    },
+    {
+      "group": "development",
+      "parent": "pluggy",
+      "requirement": "pre-commit; extra == \"dev\""
+    },
+    {
+      "group": "development",
+      "parent": "pluggy",
+      "requirement": "pytest-benchmark; extra == \"testing\""
+    },
+    {
+      "group": "development",
+      "parent": "pluggy",
+      "requirement": "pytest; extra == \"testing\""
+    },
+    {
+      "group": "development",
+      "parent": "pluggy",
+      "requirement": "tox; extra == \"dev\""
+    },
+    {
+      "group": "development",
+      "parent": "pygments",
+      "requirement": "colorama>=0.4.6; extra == \"windows-terminal\""
+    },
+    {
+      "group": "development",
+      "parent": "pytest",
+      "requirement": "argcomplete; extra == \"dev\""
+    },
+    {
+      "group": "development",
+      "parent": "pytest",
+      "requirement": "attrs>=19.2; extra == \"dev\""
+    },
+    {
+      "group": "development",
+      "parent": "pytest",
+      "requirement": "colorama>=0.4; sys_platform == \"win32\""
+    },
+    {
+      "group": "development",
+      "parent": "pytest",
+      "requirement": "exceptiongroup>=1; python_version < \"3.11\""
+    },
+    {
+      "group": "development",
+      "parent": "pytest",
+      "requirement": "hypothesis>=3.56; extra == \"dev\""
+    },
+    {
+      "group": "development",
+      "parent": "pytest",
+      "requirement": "mock; extra == \"dev\""
+    },
+    {
+      "group": "development",
+      "parent": "pytest",
+      "requirement": "requests; extra == \"dev\""
+    },
+    {
+      "group": "development",
+      "parent": "pytest",
+      "requirement": "setuptools; extra == \"dev\""
+    },
+    {
+      "group": "development",
+      "parent": "pytest",
+      "requirement": "tomli>=1; python_version < \"3.11\""
+    },
+    {
+      "group": "development",
+      "parent": "pytest",
+      "requirement": "xmlschema; extra == \"dev\""
+    },
+    {
+      "group": "runtime",
+      "parent": "annotated-types",
+      "requirement": "typing-extensions>=4.0.0; python_version < \"3.9\""
+    },
+    {
+      "group": "runtime",
+      "parent": "anyio",
+      "requirement": "exceptiongroup>=1.0.2; python_version < \"3.11\""
+    },
+    {
+      "group": "runtime",
+      "parent": "anyio",
+      "requirement": "trio>=0.32.0; extra == \"trio\""
+    },
+    {
+      "group": "runtime",
+      "parent": "anyio",
+      "requirement": "typing_extensions>=4.5; python_version < \"3.13\""
+    },
+    {
+      "group": "runtime",
+      "parent": "click",
+      "requirement": "colorama; platform_system == \"Windows\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "email-validator>=2.0.0; extra == \"all\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "email-validator>=2.0.0; extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "email-validator>=2.0.0; extra == \"standard-no-fastapi-cloud-cli\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "fastapi-cli[standard-no-fastapi-cloud-cli]>=0.0.8; extra == \"standard-no-fastapi-cloud-cli\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "fastapi-cli[standard]>=0.0.8; extra == \"all\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "fastapi-cli[standard]>=0.0.8; extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "fastar>=0.9.0; extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "httpx<1.0.0,>=0.23.0; extra == \"all\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "httpx<1.0.0,>=0.23.0; extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "httpx<1.0.0,>=0.23.0; extra == \"standard-no-fastapi-cloud-cli\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "itsdangerous>=1.1.0; extra == \"all\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "jinja2>=3.1.5; extra == \"all\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "jinja2>=3.1.5; extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "jinja2>=3.1.5; extra == \"standard-no-fastapi-cloud-cli\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "pydantic-extra-types>=2.0.0; extra == \"all\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "pydantic-extra-types>=2.0.0; extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "pydantic-extra-types>=2.0.0; extra == \"standard-no-fastapi-cloud-cli\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "pydantic-settings>=2.0.0; extra == \"all\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "pydantic-settings>=2.0.0; extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "pydantic-settings>=2.0.0; extra == \"standard-no-fastapi-cloud-cli\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "python-multipart>=0.0.18; extra == \"all\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "python-multipart>=0.0.18; extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "python-multipart>=0.0.18; extra == \"standard-no-fastapi-cloud-cli\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "pyyaml>=5.3.1; extra == \"all\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "uvicorn[standard]>=0.12.0; extra == \"all\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "uvicorn[standard]>=0.12.0; extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "fastapi",
+      "requirement": "uvicorn[standard]>=0.12.0; extra == \"standard-no-fastapi-cloud-cli\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pydantic",
+      "requirement": "email-validator>=2.0.0; extra == \"email\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pydantic",
+      "requirement": "tzdata; (python_version >= \"3.9\" and platform_system == \"Windows\") and extra == \"timezone\""
+    },
+    {
+      "group": "runtime",
+      "parent": "rank-bm25",
+      "requirement": "pytest; extra == \"dev\""
+    },
+    {
+      "group": "runtime",
+      "parent": "starlette",
+      "requirement": "httpx<0.29.0,>=0.27.0; extra == \"full\""
+    },
+    {
+      "group": "runtime",
+      "parent": "starlette",
+      "requirement": "itsdangerous; extra == \"full\""
+    },
+    {
+      "group": "runtime",
+      "parent": "starlette",
+      "requirement": "jinja2; extra == \"full\""
+    },
+    {
+      "group": "runtime",
+      "parent": "starlette",
+      "requirement": "python-multipart>=0.0.18; extra == \"full\""
+    },
+    {
+      "group": "runtime",
+      "parent": "starlette",
+      "requirement": "pyyaml; extra == \"full\""
+    },
+    {
+      "group": "runtime",
+      "parent": "starlette",
+      "requirement": "typing-extensions>=4.10.0; python_version < \"3.13\""
+    },
+    {
+      "group": "runtime",
+      "parent": "uvicorn",
+      "requirement": "colorama>=0.4; sys_platform == \"win32\" and extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "uvicorn",
+      "requirement": "httptools>=0.6.3; extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "uvicorn",
+      "requirement": "python-dotenv>=0.13; extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "uvicorn",
+      "requirement": "pyyaml>=5.1; extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "uvicorn",
+      "requirement": "typing-extensions>=4.0; python_version < \"3.11\""
+    },
+    {
+      "group": "runtime",
+      "parent": "uvicorn",
+      "requirement": "uvloop>=0.15.1; (sys_platform != \"win32\" and (sys_platform != \"cygwin\" and platform_python_implementation != \"PyPy\")) and extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "uvicorn",
+      "requirement": "watchfiles>=0.20; extra == \"standard\""
+    },
+    {
+      "group": "runtime",
+      "parent": "uvicorn",
+      "requirement": "websockets>=10.4; extra == \"standard\""
+    }
+  ],
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "lock_qualified": true,
+  "offline_artifacts": {
+    "artifact_count": 0,
+    "artifacts": [],
+    "missing": [
+      {
+        "name": "annotated-doc",
+        "version": "0.0.4"
+      },
+      {
+        "name": "annotated-types",
+        "version": "0.6.0"
+      },
+      {
+        "name": "anyio",
+        "version": "4.13.0"
+      },
+      {
+        "name": "certifi",
+        "version": "2025.8.3"
+      },
+      {
+        "name": "click",
+        "version": "8.2.1"
+      },
+      {
+        "name": "fastapi",
+        "version": "0.138.0"
+      },
+      {
+        "name": "h11",
+        "version": "0.16.0"
+      },
+      {
+        "name": "httpcore",
+        "version": "1.0.9"
+      },
+      {
+        "name": "httpx",
+        "version": "0.28.1"
+      },
+      {
+        "name": "idna",
+        "version": "3.7"
+      },
+      {
+        "name": "iniconfig",
+        "version": "2.3.0"
+      },
+      {
+        "name": "numpy",
+        "version": "2.4.6"
+      },
+      {
+        "name": "packaging",
+        "version": "25.0"
+      },
+      {
+        "name": "pluggy",
+        "version": "1.5.0"
+      },
+      {
+        "name": "pydantic",
+        "version": "2.11.7"
+      },
+      {
+        "name": "pydantic-core",
+        "version": "2.33.2"
+      },
+      {
+        "name": "pygments",
+        "version": "2.19.1"
+      },
+      {
+        "name": "pytest",
+        "version": "9.1.1"
+      },
+      {
+        "name": "rank-bm25",
+        "version": "0.2.2"
+      },
+      {
+        "name": "starlette",
+        "version": "1.2.0"
+      },
+      {
+        "name": "typing-extensions",
+        "version": "4.15.0"
+      },
+      {
+        "name": "typing-inspection",
+        "version": "0.4.2"
+      },
+      {
+        "name": "uvicorn",
+        "version": "0.48.0"
+      }
+    ],
+    "qualified": false,
+    "required_package_count": 23
+  },
+  "offline_install_qualified": false,
+  "package_count": 23,
+  "packages": [
+    {
+      "dependencies": [],
+      "direct_groups": [],
+      "groups": [
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "annotated-doc>=0.0.2"
+      ],
+      "license": "MIT",
+      "name": "annotated-doc",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "22b9b9289b9adf7758daa28a02327e3a129a5415487f01467a3fdd49edd9d535"
+      },
+      "version": "0.0.4"
+    },
+    {
+      "dependencies": [],
+      "direct_groups": [],
+      "groups": [
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "annotated-types>=0.6.0"
+      ],
+      "license": "unknown",
+      "name": "annotated-types",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "f4aa2697cfd7e3482bb84d486b31c5d79818007ae34654b77d58d1fe9145fbbc"
+      },
+      "version": "0.6.0"
+    },
+    {
+      "dependencies": [
+        "idna"
+      ],
+      "direct_groups": [],
+      "groups": [
+        "development",
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "anyio",
+        "anyio<5,>=3.6.2"
+      ],
+      "license": "MIT",
+      "name": "anyio",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "1741187e23e5993470989376264b4dc4983518d9e5d301e1cce5a6cfba45be33"
+      },
+      "version": "4.13.0"
+    },
+    {
+      "dependencies": [],
+      "direct_groups": [],
+      "groups": [
+        "development"
+      ],
+      "incoming_requirements": [
+        "certifi"
+      ],
+      "license": "MPL-2.0",
+      "name": "certifi",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "7d4fe31b1a0d378b7d208c91cbde318ec44cb414e1739cb0f30b1880fa02345d"
+      },
+      "version": "2025.8.3"
+    },
+    {
+      "dependencies": [],
+      "direct_groups": [],
+      "groups": [
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "click>=7.0"
+      ],
+      "license": "BSD-3-Clause",
+      "name": "click",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "748d4c6e11d32e8283dad3420869f1f6b2b6828936dc70cdca515e2ca74b4a29"
+      },
+      "version": "8.2.1"
+    },
+    {
+      "dependencies": [
+        "annotated-doc",
+        "pydantic",
+        "starlette",
+        "typing-extensions",
+        "typing-inspection"
+      ],
+      "direct_groups": [
+        "runtime"
+      ],
+      "groups": [
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "fastapi==0.138.0"
+      ],
+      "license": "MIT",
+      "name": "fastapi",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "2e3ab9c009bd1ae818de320164dac550b4b4e19f1b2a326bd5af46e4e5543ed6"
+      },
+      "version": "0.138.0"
+    },
+    {
+      "dependencies": [],
+      "direct_groups": [],
+      "groups": [
+        "development",
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "h11>=0.16",
+        "h11>=0.8"
+      ],
+      "license": "MIT",
+      "name": "h11",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "28f326098ac09fcba79b8f180f96087c841fe2456215cb7b872a9c7d5cd19d64"
+      },
+      "version": "0.16.0"
+    },
+    {
+      "dependencies": [
+        "certifi",
+        "h11"
+      ],
+      "direct_groups": [],
+      "groups": [
+        "development"
+      ],
+      "incoming_requirements": [
+        "httpcore==1.*"
+      ],
+      "license": "BSD-3-Clause",
+      "name": "httpcore",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "fe2d4fda6199128978779e0cf27f3c045c531863fcdd987eacc74f3a18d41c21"
+      },
+      "version": "1.0.9"
+    },
+    {
+      "dependencies": [
+        "anyio",
+        "certifi",
+        "httpcore",
+        "idna"
+      ],
+      "direct_groups": [
+        "development"
+      ],
+      "groups": [
+        "development"
+      ],
+      "incoming_requirements": [
+        "httpx==0.28.1"
+      ],
+      "license": "BSD-3-Clause",
+      "name": "httpx",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "febb9b0f8f3e80d57c8199c304f35c4336e8581d1d18d7983c92766b82793b25"
+      },
+      "version": "0.28.1"
+    },
+    {
+      "dependencies": [],
+      "direct_groups": [],
+      "groups": [
+        "development",
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "idna",
+        "idna>=2.8"
+      ],
+      "license": "unknown",
+      "name": "idna",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "3a2c4293e74a2d990fcbe31fbe23a688fbf02753b62bff2ba82ac58c2feec72e"
+      },
+      "version": "3.7"
+    },
+    {
+      "dependencies": [],
+      "direct_groups": [],
+      "groups": [
+        "development"
+      ],
+      "incoming_requirements": [
+        "iniconfig>=1.0.1"
+      ],
+      "license": "MIT",
+      "name": "iniconfig",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "40d773f84e4e112f495bbf4f1be9cbd2d456c0aeb6ef5311f75d1bf322f2165b"
+      },
+      "version": "2.3.0"
+    },
+    {
+      "dependencies": [],
+      "direct_groups": [],
+      "groups": [
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "numpy"
+      ],
+      "license": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+      "name": "numpy",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "b082c52ccbe3b880bae177c35171b52ed6c947f3ad71e3762f2723f60a411de0"
+      },
+      "version": "2.4.6"
+    },
+    {
+      "dependencies": [],
+      "direct_groups": [
+        "runtime"
+      ],
+      "groups": [
+        "development",
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "packaging==25.0",
+        "packaging>=22"
+      ],
+      "license": "unknown",
+      "name": "packaging",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "aff32167c8c9371e6cdff5b4d7d134360bc26c2f585008c0decaa92c1547adbc"
+      },
+      "version": "25.0"
+    },
+    {
+      "dependencies": [],
+      "direct_groups": [],
+      "groups": [
+        "development"
+      ],
+      "incoming_requirements": [
+        "pluggy<2,>=1.5"
+      ],
+      "license": "MIT",
+      "name": "pluggy",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "2ba3438f6dddd75934c3f6b907982eca8e3472419fd264d42dddf4741e653680"
+      },
+      "version": "1.5.0"
+    },
+    {
+      "dependencies": [
+        "annotated-types",
+        "pydantic-core",
+        "typing-extensions",
+        "typing-inspection"
+      ],
+      "direct_groups": [
+        "runtime"
+      ],
+      "groups": [
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "pydantic==2.11.7",
+        "pydantic>=2.9.0"
+      ],
+      "license": "MIT",
+      "name": "pydantic",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "f791b40bde997db7ff175b238bff97d50cf9505a8aa307e0bf791d57ed1ae282"
+      },
+      "version": "2.11.7"
+    },
+    {
+      "dependencies": [
+        "typing-extensions"
+      ],
+      "direct_groups": [],
+      "groups": [
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "pydantic-core==2.33.2"
+      ],
+      "license": "MIT",
+      "name": "pydantic-core",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "efc941a0e673e0acdfcf3ff2308fea147305b36484dd58275a97863ed8f270ab"
+      },
+      "version": "2.33.2"
+    },
+    {
+      "dependencies": [],
+      "direct_groups": [],
+      "groups": [
+        "development"
+      ],
+      "incoming_requirements": [
+        "pygments>=2.7.2"
+      ],
+      "license": "BSD-2-Clause",
+      "name": "pygments",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "4068e1464b2b7e9fc8f9e40dbdd34a562a91e77f07ff497ec78ef71ea3beaf13"
+      },
+      "version": "2.19.1"
+    },
+    {
+      "dependencies": [
+        "iniconfig",
+        "packaging",
+        "pluggy",
+        "pygments"
+      ],
+      "direct_groups": [
+        "development"
+      ],
+      "groups": [
+        "development"
+      ],
+      "incoming_requirements": [
+        "pytest==9.1.1"
+      ],
+      "license": "MIT",
+      "name": "pytest",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "c5d032518012789cabc870d46589aca3aeda36cf9fa4399ee88bda3d10438451"
+      },
+      "version": "9.1.1"
+    },
+    {
+      "dependencies": [
+        "numpy"
+      ],
+      "direct_groups": [
+        "runtime"
+      ],
+      "groups": [
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "rank-bm25==0.2.2"
+      ],
+      "license": "Apache2.0",
+      "name": "rank-bm25",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "1de65ad7ae030a81c3006d546f1939bf15dc1e3b45728c469a9c4097b08840e8"
+      },
+      "version": "0.2.2"
+    },
+    {
+      "dependencies": [
+        "anyio"
+      ],
+      "direct_groups": [],
+      "groups": [
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "starlette>=0.46.0"
+      ],
+      "license": "BSD-3-Clause",
+      "name": "starlette",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "f33f04dc10761d3dc58e4e4585820d795b417f8de5a7cbf6b7042fb95fc51325"
+      },
+      "version": "1.2.0"
+    },
+    {
+      "dependencies": [],
+      "direct_groups": [],
+      "groups": [
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "typing-extensions!=4.7.0,>=4.6.0",
+        "typing-extensions>=4.12.0",
+        "typing-extensions>=4.12.2",
+        "typing-extensions>=4.8.0"
+      ],
+      "license": "PSF-2.0",
+      "name": "typing-extensions",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "c138378fe8f18934ac99de060535c53ec6c13aeed65e94c32641da7ee3192a72"
+      },
+      "version": "4.15.0"
+    },
+    {
+      "dependencies": [
+        "typing-extensions"
+      ],
+      "direct_groups": [],
+      "groups": [
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "typing-inspection>=0.4.0",
+        "typing-inspection>=0.4.2"
+      ],
+      "license": "MIT",
+      "name": "typing-inspection",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "61096cd0bfe3c7040b6f98c22b02d190fe01936d0ff7616c5134fed02891953a"
+      },
+      "version": "0.4.2"
+    },
+    {
+      "dependencies": [
+        "click",
+        "h11"
+      ],
+      "direct_groups": [
+        "runtime"
+      ],
+      "groups": [
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "uvicorn==0.48.0"
+      ],
+      "license": "BSD-3-Clause",
+      "name": "uvicorn",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "4be5af0825c0d9985da009715036e5b140603bd0debed272c7f6cc82a95d87e4"
+      },
+      "version": "0.48.0"
+    }
+  ],
+  "protocol": "python_dependency_lock_v1",
+  "runtime_package_count": 16,
+  "runtime_requires_dist": [
+    "fastapi==0.138.0",
+    "packaging==25.0",
+    "pydantic==2.11.7",
+    "rank-bm25==0.2.2",
+    "uvicorn==0.48.0"
+  ],
+  "schema_version": "1",
+  "source_commit": "c9416251d5c3f2b80c97471903d57a5bd273d3a2",
+  "status": "not_ready_missing_verified_version_or_artifact"
+}

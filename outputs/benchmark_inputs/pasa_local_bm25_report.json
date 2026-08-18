@@ -1,0 +1,12 @@
+{
+  "input_path": "datasets\\pasa\\paper_database\\id2paper.json",
+  "zip_member": null,
+  "output_path": "datasets\\local_bm25\\pasa_papers.jsonl",
+  "identity": "arxiv_id",
+  "input_records": 569432,
+  "output_records": 569432,
+  "skipped_records": 0,
+  "duplicate_records": 0,
+  "skip_reasons": {},
+  "output_sha256": "9d408d59f302b60c10e859c02c0f39d5d793bc718aeac7bcef668d87036b1395"
+}

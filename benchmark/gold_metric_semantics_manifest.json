@@ -1,0 +1,60 @@
+{
+  "baseline": {
+    "duplicate_rows_path": "benchmark/gold_metric_semantics_v2_baseline/duplicate_relations.jsonl",
+    "duplicate_rows_sha256": "4eecc9428e068d95bd6df07a89c170856d3018b6893da45c61984cf6c79e15f2",
+    "query_rows_path": "benchmark/gold_metric_semantics_v2_baseline/full1000_query_denominators.jsonl",
+    "query_rows_sha256": "2078c67b39ff22927b90af968776ed2e6e4aa3d46677440ec70c3e87065a778d",
+    "replay_rows_path": "benchmark/gold_metric_semantics_v2_baseline/frozen_replay_cases.jsonl",
+    "replay_rows_sha256": "3f5029ff45687bfb74bbd8cd115e68137c0d851c9c9ba7fd8be42beed3f03c1a",
+    "summary_path": "benchmark/gold_metric_semantics_v2_baseline/summary.json",
+    "summary_sha256": "e98051281b594df31ddf6823911b13a7df7b82eb7495c26e2248475955fa3fc4"
+  },
+  "gate": "deduplicated_gold_metric_semantics_regression",
+  "implementation_base_commit": "33fb3db42f3551641c483d322496c8988e95a1b1",
+  "input_sha256": {
+    "audit_implementation_sha256": "1a19125756faeecd9c66e92cd6166af648cdc24120bfa034b68f2131dac05a44",
+    "current_rules_manifest_sha256": "912a1488bc562dd6df44a248ea4d97199181ef207e561089f926c298194b337f",
+    "current_rules_reconstruction_sha256": "6cda1dcc0e556c8b84dce035baa03c0538ca7a35b2af1bd768e6240284de791a",
+    "evaluation_schema_sha256": "9f5e72f2533a56cfbb8467b8a3114d819ec51a778257dbfee2026f1a5b0f30be",
+    "identity_implementation_sha256": "af52ba53c2e559ae87dac83373f0fc2bfeb38d9351ccfb75d7463d1caa2a1dc8",
+    "identity_manifest_sha256": "0b6cb12e2ba47cea1f89ec17512606a9d68bb923b2f089c1cdd2951904ca94ba",
+    "metrics_implementation_sha256": "1d5fb765f8c6b38b83b64e3792227f98a2d1dd17bdf75256c3615c75b326dd8f"
+  },
+  "inputs": {
+    "audit_implementation_path": "src/scholar_agent/evaluation/gold_metric_semantics.py",
+    "current_rules_manifest_path": "benchmark/current_rules_regression_manifest.json",
+    "current_rules_reconstruction_path": "src/scholar_agent/evaluation/current_rules_regression.py",
+    "evaluation_schema_path": "src/scholar_agent/core/evaluation_schemas.py",
+    "identity_implementation_path": "src/scholar_agent/core/identity.py",
+    "identity_manifest_path": "benchmark/autoscholar_gold_identity_manifest.json",
+    "metrics_implementation_path": "src/scholar_agent/evaluation/metrics.py"
+  },
+  "metric_versions": {
+    "current_internal": "deduplicated_gold_identity_v2",
+    "legacy": "legacy_gold_records_v1"
+  },
+  "official_scorer": false,
+  "protected_historical_artifacts": {
+    "current_rules_regression_baseline": {
+      "path": "benchmark/current_rules_regression_baseline.json",
+      "sha256": "393ba0b2f314ce4b0fc792de86e6da67fa97318ffce7f3c42621c3f3e4a29f2f"
+    },
+    "gold_identity_hashes_v1": {
+      "path": "benchmark/autoscholar_gold_identity_baseline/gold_hashes.jsonl",
+      "sha256": "158ce970b26992dc052240c9a71a7d06bab3b6d0daa4d11856309b2eb99d1fe3"
+    },
+    "gold_identity_queries_v1": {
+      "path": "benchmark/autoscholar_gold_identity_baseline/query_identity.jsonl",
+      "sha256": "977220ced7655d5874eec07f5225e7bd5bdb9b529c1fbf93184a46224686f412"
+    },
+    "gold_identity_relations_v1": {
+      "path": "benchmark/autoscholar_gold_identity_baseline/gold_identity.jsonl",
+      "sha256": "429cf7145664b20893df8567d9eed463b8000ce859e4e2c3cc5290042bbefcfe"
+    },
+    "gold_identity_summary_v1": {
+      "path": "benchmark/autoscholar_gold_identity_baseline/summary.json",
+      "sha256": "527a1764c91592a6647e60feb19eb015698b3f42b3902e93592add70feec6e13"
+    }
+  },
+  "schema_version": "1"
+}

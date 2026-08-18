@@ -1,0 +1,30 @@
+{
+  "contract": "crash_consistency_v1",
+  "fault_scenarios": [
+    "before_stage_create",
+    "after_stage_create",
+    "mid_write",
+    "flush_failure",
+    "fsync_failure",
+    "checkpoint_committed_manifest_missing",
+    "manifest_written_completion_missing",
+    "before_replace",
+    "after_replace",
+    "disk_full",
+    "permission_denied",
+    "after_commit_marker"
+  ],
+  "frozen_baseline_eligibility": {
+    "legacy_audit_path": "benchmark/run_provenance_legacy_audit.json",
+    "sha256": "46197f1665cd827bf386b985b00ae0d8079bcffb1c56e48556953bd926cf084d"
+  },
+  "persistence": {
+    "authoritative_directory": ".run_commits/generations",
+    "commit_marker": "COMMITTED",
+    "completion_marker": "RUN_COMPLETED",
+    "same_directory_staging": true,
+    "top_level_files_are_compatibility_views": true
+  },
+  "schema_version": "1",
+  "score_scope": "persistence_only_not_quality_or_official_score"
+}

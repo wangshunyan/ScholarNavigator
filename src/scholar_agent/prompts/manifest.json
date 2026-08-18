@@ -1,0 +1,59 @@
+{
+  "query_understanding": {
+    "version": "1.0.0",
+    "runtime_enabled": true,
+    "system": "query_understanding/system.md",
+    "user": "query_understanding/user.md"
+  },
+  "relevance_judgement": {
+    "version": "1.0.0",
+    "runtime_enabled": true,
+    "system": "relevance_judgement/system.md",
+    "user": "relevance_judgement/user.md"
+  },
+  "llm_query_planning": {
+    "version": "1.0.0",
+    "runtime_enabled": true,
+    "system": "llm_query_planning/system.md",
+    "user": "llm_query_planning/user.md"
+  },
+  "llm_constrained_rewrite": {
+    "version": "1.0.0",
+    "runtime_enabled": true,
+    "system": "llm_constrained_rewrite/system.md",
+    "user": "llm_constrained_rewrite/user.md"
+  },
+  "llm_relevance_judge_v1_1": {
+    "version": "1.1.0",
+    "runtime_enabled": true,
+    "system": "llm_relevance_judging_v1_1/judge_system.md",
+    "user": "llm_relevance_judging_v1_1/judge_user.md"
+  },
+  "llm_relevance_adjudicator_v1_1": {
+    "version": "1.1.0",
+    "runtime_enabled": true,
+    "system": "llm_relevance_judging_v1_1/adjudicator_system.md",
+    "user": "llm_relevance_judging_v1_1/adjudicator_user.md"
+  },
+  "judge_backend_qualification_v1": {
+    "version": "1.0.0",
+    "runtime_enabled": true,
+    "system": "judge_backend_qualification_v1/system.md",
+    "user": "judge_backend_qualification_v1/user.md"
+  },
+  "query_evolution": {
+    "version": "0.1.0",
+    "runtime_enabled": false,
+    "prompt": "query_evolution/prompt.md"
+  },
+  "reranking": {
+    "version": "0.1.0",
+    "runtime_enabled": false,
+    "prompt": "reranking/prompt.md"
+  },
+  "synthesis": {
+    "version": "0.1.0",
+    "runtime_enabled": false,
+    "prompt": "synthesis/prompt.md"
+  }
+}

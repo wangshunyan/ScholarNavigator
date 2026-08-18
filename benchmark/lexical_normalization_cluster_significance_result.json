@@ -1,0 +1,94 @@
+{
+  "analysis": "lexical_normalization_v1_cluster_significance_v1",
+  "artifact_determinism": {
+    "byte_identical": true,
+    "paired_components_sha256": "cd59714c45cbcb505298ac69811eba04aae0933a0566c7715d128d8816842741",
+    "paired_queries_sha256": "6c460988df165db2cde7d2359392e573f6b42eb08322daa02f4f9d94c984cbb4",
+    "statistics_sha256": "aba389050055044287d8048041ded2601bdc370afc703c187f83a5cfb6439aa0"
+  },
+  "cluster_views": {
+    "existing65_decontaminated": {
+      "component_count": 41,
+      "f1_at_20": {
+        "bootstrap_ci_95": [0.0, 0.006968641114982578],
+        "mean_difference": 0.0023228803716608595,
+        "p_value_two_sided": 1.0
+      },
+      "included_query_count": 41,
+      "recall_at_20": {
+        "bootstrap_ci_95": [0.0, 0.07317073170731707],
+        "mean_difference": 0.024390243902439025,
+        "p_value_two_sided": 1.0
+      }
+    },
+    "existing65_full": {
+      "component_count": 55,
+      "f1_at_20": {
+        "bootstrap_ci_95": [0.0, 0.008225108225108226],
+        "mean_difference": 0.003246753246753247,
+        "p_value_two_sided": 0.495875206239688
+      },
+      "included_query_count": 56,
+      "recall_at_20": {
+        "bootstrap_ci_95": [0.0, 0.06363636363636363],
+        "mean_difference": 0.022727272727272728,
+        "p_value_two_sided": 0.5070746462676866
+      }
+    },
+    "record160_decontaminated": {
+      "component_count": 88,
+      "f1_at_20": {
+        "bootstrap_ci_95": [0.0, 0.0032467532467532465],
+        "mean_difference": 0.0010822510822510823,
+        "p_value_two_sided": 1.0
+      },
+      "included_query_count": 88,
+      "recall_at_20": {
+        "bootstrap_ci_95": [0.0, 0.03409090909090909],
+        "mean_difference": 0.011363636363636364,
+        "p_value_two_sided": 1.0
+      }
+    },
+    "record160_full": {
+      "component_count": 134,
+      "f1_at_20": {
+        "bootstrap_ci_95": [0.0, 0.0033759772565742714],
+        "mean_difference": 0.0013326226012793177,
+        "p_value_two_sided": 0.49687515624218787
+      },
+      "included_query_count": 160,
+      "recall_at_20": {
+        "bootstrap_ci_95": [0.0, 0.026119402985074626],
+        "mean_difference": 0.009328358208955223,
+        "p_value_two_sided": 0.4937753112344383
+      }
+    }
+  },
+  "interpretation": {
+    "candidate_recall_difference_all_views": 0.0,
+    "cluster_aware_conclusion_changed_from_query_level": false,
+    "default_remains_off": true,
+    "human_precision_required_before_default_on": true,
+    "internal_metrics_only": true,
+    "reason": "Positive Recall@20/F1@20 point estimates remain sparse and every cluster-aware 95% interval includes zero; two-sided sign-flip tests provide no evidence beyond component-level sign variation.",
+    "warning": "Non-significance is not evidence of no effect."
+  },
+  "large_cluster_sensitivity": {
+    "largest_record160_component_query_count": 14,
+    "largest_record160_component_recall_difference": 0.0,
+    "record160_recall_maximum_absolute_contribution_share": 0.8,
+    "record160_recall_nonzero_component_count": 2
+  },
+  "metric_version": "deduplicated_gold_identity_v2",
+  "power_planning": {
+    "alpha": 0.05,
+    "estimated_power_at_715_frozen_components": 0.8527416653129579,
+    "future_component_count": 715,
+    "future_query_count": 1000,
+    "minimum_detectable_absolute_recall_lift": 0.01,
+    "pilot_component_difference_sd": 0.08888784655369612,
+    "required_component_count_for_80_percent_power": 621,
+    "structural_effective_sample_size": 98.56100926473488
+  },
+  "schema_version": "1"
+}

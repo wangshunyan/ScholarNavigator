@@ -1,0 +1,183 @@
+{
+  "analysis": "source_reliability_diagnostics_v1",
+  "analysis_population": {
+    "excluded_case_count": 2,
+    "exclusion_rule": "reuse the frozen Record160 excluded_no_successful_source rule exactly; no post-hoc exclusion is allowed",
+    "main_case_count": 160,
+    "record_case_count": 162,
+    "selection_prohibitions": [
+      "gold",
+      "qrels",
+      "case_id",
+      "target_paper",
+      "quality_score",
+      "observed_failure_or_yield"
+    ]
+  },
+  "bootstrap": {
+    "confidence_level": 0.95,
+    "iterations": 20000,
+    "method": "percentile_resampling_of_frozen_query_connected_components_with_replacement",
+    "seed": 20260722,
+    "statistic": "equal mean of per-query parsed records per authoritative successful request",
+    "stream_derivation": "base seed XOR first 64 bits of SHA-256(source NUL successful_request_yield)"
+  },
+  "execution": {
+    "gold_access": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "failure_taxonomy": {
+    "precedence": [
+      "snapshot_missing",
+      "parse_failure",
+      "http_failure",
+      "transport_failure",
+      "provider_failure",
+      "unknown_failure"
+    ],
+    "rules": {
+      "http_failure": "audited error/status metadata contains an HTTP status or explicit 4xx/5xx marker",
+      "parse_failure": "audited error/status metadata contains schema, parse, decode, malformed, validation, JSON, XML, or payload-shape evidence",
+      "provider_failure": "audited error/status metadata identifies provider/source failure without transport, HTTP, or parse evidence",
+      "snapshot_missing": "a frozen logical call declares a Snapshot key that is absent or unreadable",
+      "transport_failure": "audited error/status metadata contains timeout, DNS, TLS, socket, connection, or network evidence",
+      "unknown_failure": "a failed Snapshot or terminal has no stronger auditable category"
+    },
+    "partial_failure": "at least one authoritative successful request and at least one failed request for the same query and source",
+    "redaction": "only normalized category, stable hashes, counts, and enumerated status are emitted; raw error text is never emitted"
+  },
+  "frozen_input": {
+    "component_assignments": {
+      "path": "benchmark/autoscholar_query_independence_baseline/query_assignments.jsonl",
+      "sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5"
+    },
+    "config_sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+    "record_results_sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+    "run_dir": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1",
+    "snapshot_dir": "outputs/benchmark_snapshots/autoscholar_current_rules_full1000_3cd47c1",
+    "observed_snapshot_key_count": 1093,
+    "snapshot_file_count": 1934,
+    "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5"
+  },
+  "funnel": {
+    "counting_unit": "unified paper identity within query and source unless the field explicitly names requests or parsed records",
+    "stages": [
+      "logical_request",
+      "authoritative_snapshot",
+      "raw_provider_record",
+      "parsed_record",
+      "canonical_identity",
+      "source_unique_identity",
+      "global_unique_identity",
+      "budget_retained_identity",
+      "constraint_survivor",
+      "top20_identity"
+    ],
+    "stage_evidence": {
+      "authoritative_snapshot": "Snapshot key and validated retrieval Snapshot entry",
+      "budget_retained_identity": "identity remains after the existing global 200-candidate source-coverage budget",
+      "canonical_identity": "production unified identity profile built from a parsed Paper",
+      "constraint_survivor": "identity has a non-irrelevant production current_rules judgement in initial_judged",
+      "global_unique_identity": "identity appears after production cross-source unified identity deduplication and before the global candidate budget",
+      "logical_request": "frozen initial_retrieval diagnostic call",
+      "parsed_record": "validated Paper records stored in the retrieval Snapshot response",
+      "raw_provider_record": "only counted when a frozen artifact explicitly records pre-parser provider record count; otherwise unknown",
+      "source_unique_identity": "production unified identity deduplication over successful parsed records attributed to that source",
+      "top20_identity": "identity appears in frozen final_returned and retains the source in its merged provenance"
+    },
+    "loss_rate": "known loss divided by the immediately preceding known stage; null when either side is unknown",
+    "missing_value": "unknown; never impute zero",
+    "top_k": 20
+  },
+  "implementation_base_commit": "6358c12ceb448c95780c99b446bc15dc40a606db",
+  "query_structure": {
+    "boolean_operator": "case-insensitive standalone AND, OR, or NOT",
+    "length_buckets_codepoints": [
+      "0_80",
+      "81_160",
+      "161_320",
+      "321_plus"
+    ],
+    "quote_characters": "ASCII single/double quotes and Unicode curly single/double quotes",
+    "reporting": "for each predeclared stratum and source report query count, failed query count/rate, legal-empty query count/rate, and unknown count",
+    "unicode_classes": [
+      "ascii_only",
+      "non_ascii_letter",
+      "non_ascii_nonletter"
+    ],
+    "unicode_class_precedence": "ascii_only when all code points are ASCII; otherwise non_ascii_letter when any non-ASCII Unicode letter exists; otherwise non_ascii_nonletter",
+    "year_pattern": "standalone 1900-2099"
+  },
+  "reconstruction": {
+    "candidate_limit": 200,
+    "judgement_policy": "current_rules",
+    "required_exact_stages": [
+      "initial_deduplicated",
+      "initial_judged",
+      "initial_reranked",
+      "final_returned"
+    ],
+    "result_policy": "highly_and_partial",
+    "source_path": "reuse source_fusion_ablation_v1 production canonicalization, unified identity deduplication, source-coverage truncation, judgement, reranking, and selection",
+    "top_k": 20
+  },
+  "request_accounting": {
+    "authoritative_denominator": "unique query/source/Snapshot key",
+    "duplicate_reference_rule": "repeat references to the same key are reported but the response is consumed once for funnel counts",
+    "duplicate_violation": "duplicate consumption is a violation only when it changes parsed, canonical, unique, or Top-20 counts",
+    "no_key_terminal": "preserve frozen not_started/timeout/failure evidence without inventing a Snapshot response",
+    "shared_key_across_queries": "account independently per opaque query; never merge populations"
+  },
+  "schema_version": "1",
+  "silent_loss_invariants": [
+    "parsed records cannot exceed an explicitly known raw provider count",
+    "canonical identities cannot exceed parsed records",
+    "source unique identities cannot exceed canonical identities",
+    "global unique, budget-retained, and Top-20 source identities must trace to a canonical source identity",
+    "a failed-only query/source cannot expose parsed or Top-20 records",
+    "a legal-empty success cannot expose parsed records",
+    "unknown schema or parser evidence cannot be silently classified as legal empty",
+    "duplicate Snapshot references cannot multiply response records"
+  ],
+  "sources": [
+    "openalex",
+    "arxiv",
+    "semantic_scholar",
+    "pubmed"
+  ],
+  "state_classification": {
+    "productive_precedence": [
+      "contributed_top20",
+      "valid_not_top20",
+      "global_budget_loss",
+      "dedup_loss",
+      "constraint_loss",
+      "canonicalization_or_identity_loss",
+      "raw_nonempty_zero_valid",
+      "legal_empty_response"
+    ],
+    "request_states": [
+      "not_started",
+      "snapshot_missing",
+      "transport_failure",
+      "http_failure",
+      "provider_failure",
+      "parse_failure",
+      "unknown_failure",
+      "success"
+    ],
+    "unknown_rule": "when frozen evidence cannot distinguish adjacent stages or a failure category, emit unknown and preserve all known counts"
+  },
+  "statistical_unit": {
+    "component_effect": "query-equal mean within each frozen connected component",
+    "estimand": "equal mean over frozen connected components",
+    "membership": "reuse component_id from the frozen query assignment file without recomputation"
+  },
+  "warnings": [
+    "Availability, record yield, identity coverage, and Top-20 contribution do not establish relevance, Precision, Recall, or an official score.",
+    "Frozen failures remain in the fixed 160-query population and are never used for post-hoc filtering.",
+    "Missing pre-parser evidence is reported as unknown and never reconstructed from parsed papers."
+  ]
+}

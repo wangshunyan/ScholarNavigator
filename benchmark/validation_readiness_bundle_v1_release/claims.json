@@ -1,0 +1,752 @@
+{
+  "claim_count": 53,
+  "claim_evidence_coverage_count": 53,
+  "claim_evidence_coverage_rate": 1.0,
+  "claim_sources": [
+    {
+      "document_id": "architecture",
+      "path": "docs/architecture.md",
+      "sha256": "c53be1255961c85123fdecd9f7939ea705927b8593f4d834bcccde53d40b5798",
+      "size": 61960
+    },
+    {
+      "document_id": "contest_requirements",
+      "path": "docs/contest/requirements.md",
+      "sha256": "24197215df7917178a7789ecc59bfde365c9ae7b4ddaa782dcc40f03b7fd2cf0",
+      "size": 2085
+    },
+    {
+      "document_id": "evaluation",
+      "path": "docs/evaluation.md",
+      "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e",
+      "size": 126329
+    },
+    {
+      "document_id": "readme",
+      "path": "README.md",
+      "sha256": "a734fd418fed4a7a7c22000129b0b841055e5ff3a183e221e4a1453cbc63a9cc",
+      "size": 606
+    }
+  ],
+  "claims": [
+    {
+      "boundary": "The production default remains original_index_v1; qualification does not enable v2.",
+      "claim_id": "architecture_default_policy_isolation",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "evidence_registry_gate",
+        "tiebreak_aggregate",
+        "top20_delivery_aggregate"
+      ],
+      "scope": "engineering_capability",
+      "statement": "current_rules is the only registered default and deterministic_tiebreak_v2 remains disabled by default.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The empty real ledger and synthetic incidents prove revocation propagation controls only; they do not alter historical conclusions or formal blockers.",
+      "claim_id": "architecture_evidence_revocation_controls_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "evidence_revocation_ledger",
+        "evidence_revocation_protocol",
+        "evidence_revocation_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Evidence revocation, downstream claim rollback, publication invalidation, and fully gated restoration are controlled by an append-only deterministic ledger.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The current checkpoint is candidate-only with zero public releases; the hash chain proves content and prefix consistency, not publisher identity, retrieval quality, or formal completion.",
+      "claim_id": "architecture_evidence_transparency_controls_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "evidence_transparency_checkpoint",
+        "evidence_transparency_protocol",
+        "evidence_transparency_readiness",
+        "evidence_transparency_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Readiness, standalone, release-candidate, revocation and future clearance summaries have a deterministic append-only evidence log with Merkle inclusion and consistency proofs.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Synthetic conformance proves only the isolated handoff mechanism; the missing official package/schema and incomplete Full1000 input remain formal blockers.",
+      "claim_id": "architecture_external_scorer_handoff_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "external_scorer_readiness",
+        "external_scorer_synthetic_matrix"
+      ],
+      "scope": "engineering_capability",
+      "statement": "The immutable canonical handoff, hermetic scorer subprocess, strict output validation, and deterministic rerun chain are verified with preregistered synthetic scorer packages.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The capacity reduction is a deterministic worst-case engineering bound with zero compression, sparse-file, future-deduplication or future-cleanup credit; no real backup target is qualified and no formal blocker is removed.",
+      "claim_id": "architecture_formal_backup_compaction_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_backup_compaction_capacity",
+        "formal_backup_compaction_protocol",
+        "formal_backup_compaction_readiness",
+        "formal_backup_compaction_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Full1000 content-addressed incremental backup compaction preserves historical roots and lowers the auditable worst-case backup bound while retaining complete recovery semantics.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The standard-library kit only produces a candidate for the existing member-intake gate; it authenticates neither devices nor operators, writes no real registry, activates no slot or set, and removes no formal blocker.",
+      "claim_id": "architecture_formal_backup_member_enrollment_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_backup_member_enrollment_protocol",
+        "formal_backup_member_enrollment_readiness",
+        "formal_backup_member_enrollment_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Operators can use a path-private, pure-standard-library kit to carry an explicitly selected backup target through local probing and exact backup-set slot binding into a member package ready for the existing intake gate.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The standard-library slot kits and synthetic activation matrix prove intake, replay protection, duplicate-capacity rejection and complete-set recovery controls only; no real member is qualified, hashes do not authenticate ownership, and no formal blocker is removed.",
+      "claim_id": "architecture_formal_backup_set_member_intake_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_backup_set_intake_addendum",
+        "formal_backup_set_intake_protocol",
+        "formal_backup_set_intake_readiness",
+        "formal_backup_set_intake_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Real backup target attestations can be received incrementally into exact Full1000 backup-set slots and activated only after every member remains fresh, unique, recovery-verified and topology-bound.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The multi-target split is a deterministic worst-case infrastructure control with per-member staging and index overhead; it provides no member redundancy, qualifies no real target, and removes no formal blocker.",
+      "claim_id": "architecture_formal_backup_set_topology_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_backup_set_capacity",
+        "formal_backup_set_protocol",
+        "formal_backup_set_readiness",
+        "formal_backup_set_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Full1000 compacted backups can be deterministically split across two, three, or four independently attested members while preserving complete-set recovery, unique shard coverage, and ledger conservation.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The standard-library kit and synthetic matrix prove only collection, validation, replay protection, and launch-chain binding; no real backup target or failure-domain ownership is authenticated and no formal blocker is removed.",
+      "claim_id": "architecture_formal_backup_target_attestation_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_backup_target_addendum",
+        "formal_backup_target_protocol",
+        "formal_backup_target_readiness",
+        "formal_backup_target_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Full1000 independent backup targets can be qualified offline with exact capacity, inode, quota, atomicity, recovery, anti-alias, one-time challenge, and failure-domain controls.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The registration file remains operator-private and untracked; a registered candidate is not an attested or activated member, unknown quota and failure-domain evidence remains fail-closed, and no formal blocker is removed.",
+      "claim_id": "architecture_formal_backup_target_registration_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_backup_target_registration_protocol",
+        "formal_backup_target_registration_readiness",
+        "formal_backup_target_registration_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Operators can explicitly register exact local backup paths for privacy-preserving preflight and hand registered candidates to the existing target-attestation and member-intake chain without scanning unregistered storage.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Only temporary synthetic evidence exercises the controls; no real label or official scorer evidence is present and no formal blocker is removed.",
+      "claim_id": "architecture_formal_evidence_quarantine_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_evidence_quarantine_protocol",
+        "formal_evidence_quarantine_readiness"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Formal evaluation evidence has a fail-closed intake, consumer boundary, and post-hoc contamination gate.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The control plane and synthetic profiles are verified, but the current observed host is insufficient or incomplete and does not qualify Full1000 activation or clear any formal blocker.",
+      "claim_id": "architecture_formal_execution_host_controls_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_execution_host_addendum",
+        "formal_execution_host_attestation",
+        "formal_execution_host_protocol",
+        "formal_execution_host_readiness",
+        "formal_execution_host_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Future Full1000 launch authorization requires a fresh, exact-commit host attestation covering storage, atomic persistence, resource limits and isolation prerequisites.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The action pack only proves that the three existing intake chains are reachable, fresh and externally blocked; it supplies no real member, label, score, or formal completion evidence.",
+      "claim_id": "architecture_formal_external_blocker_action_pack_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_external_blocker_action_pack",
+        "formal_external_blocker_action_protocol",
+        "formal_external_blocker_action_readiness"
+      ],
+      "scope": "engineering_capability",
+      "statement": "The remaining backup-member, human-annotation and official-scorer inputs have one deterministic offline action handoff and a machine-enforced external-action development freeze.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Synthetic storage conformance does not qualify this host, start Full1000, or prove retrieval quality.",
+      "claim_id": "architecture_formal_multivolume_storage_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_multivolume_addendum",
+        "formal_multivolume_protocol",
+        "formal_multivolume_readiness",
+        "formal_multivolume_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Full1000 multi-volume shard topology, per-volume capacity, resume, migration, and aggregate controls are implemented and deterministically exercised offline.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The manifest freezes request intent and historical Snapshot gaps only; no network was checked, no request was sent, no query was completed, and no relevance or official score is established.",
+      "claim_id": "architecture_formal_network_request_manifest_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_network_request_bundle",
+        "formal_network_request_launch_addendum",
+        "formal_network_request_manifest",
+        "formal_network_request_protocol",
+        "formal_network_request_snapshot_audit"
+      ],
+      "scope": "engineering_capability",
+      "statement": "The production Full1000 request-construction path deterministically closes 1000 queries, 2410 subqueries, 9640 logical source requests and the 19280-attempt theoretical upper bound.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The 1000-query fake-adapter matrix verifies health-state, pause and resume mechanics only; no real provider health has been observed, no quality result is produced, and the control does not clear any formal blocker.",
+      "claim_id": "architecture_formal_provider_health_supervisor_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_provider_health_addendum",
+        "formal_provider_health_protocol",
+        "formal_provider_health_readiness",
+        "formal_provider_health_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Future Full1000 runs have preregistered, result-independent provider health supervision with fail-closed pause, in-flight drain, complete checkpoint and fresh-evidence resume controls.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Synthetic capacity profiles prove pacing control semantics only; real provider capacities remain not_available and block activation.",
+      "claim_id": "architecture_formal_provider_pacing_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_provider_pacing_addendum",
+        "formal_provider_pacing_policy",
+        "formal_provider_pacing_protocol",
+        "formal_provider_pacing_readiness",
+        "formal_provider_pacing_resume",
+        "formal_provider_pacing_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Full1000 provider pacing controls deterministically preserve all 9,640 frozen request intents while enforcing source capacity, concurrency, backoff, pause, and resume invariants.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The 1000-query fake-adapter exercise proves disaster-recovery mechanics only; no real run or backup exists and Full1000 remains incomplete.",
+      "claim_id": "architecture_formal_run_disaster_recovery_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_run_disaster_recovery_protocol",
+        "formal_run_disaster_recovery_readiness",
+        "formal_run_disaster_recovery_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "New-format Full1000 runs have deterministic incremental backup, atomic off-site restore, zero-duplicate resume, and committed-attempt recovery controls.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Injected capacity proves storage-control behavior only; actual primary/backup bytes, inodes and filesystem quotas remain unverified and Full1000 remains incomplete.",
+      "claim_id": "architecture_formal_run_storage_controls_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_run_storage_addendum",
+        "formal_run_storage_plan",
+        "formal_run_storage_protocol",
+        "formal_run_storage_readiness",
+        "formal_run_storage_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Future Full1000 runs have deterministic response, generation, shard, run and backup-chain quotas with fail-closed low-space, retention and single-writer controls.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The deterministic 1000-query load matrix verifies scheduling fairness, backpressure, coverage and accounting mechanics only; the real run has not started, no quality result is produced, and no formal blocker is cleared.",
+      "claim_id": "architecture_formal_scheduler_fairness_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_scheduler_fairness_addendum",
+        "formal_scheduler_fairness_protocol",
+        "formal_scheduler_fairness_readiness",
+        "formal_scheduler_fairness_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Future Full1000 runs have identity-only fair admission, bounded source and shard concurrency, deterministic continuation backpressure, complete terminal coverage and cursor-preserving resume controls.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The current primary disk qualifies for the preregistered residency windows, but backup capacity, quota, inodes and independent failure-domain evidence remain unavailable; this control does not start Full1000 or prove retrieval quality.",
+      "claim_id": "architecture_formal_shard_streaming_retention_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_shard_retention_addendum",
+        "formal_shard_retention_protocol",
+        "formal_shard_retention_readiness",
+        "formal_shard_retention_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Full1000 shard streaming archive, verified local eviction, restoration and mixed aggregate controls are implemented and deterministically exercised offline.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The state machine is verified, but current real evidence remains incomplete; synthetic transitions and receipts cannot remove any formal blocker.",
+      "claim_id": "architecture_formal_validation_clearance_gated",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_validation_clearance_current",
+        "formal_validation_clearance_protocol"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Formal validation clearance is controlled by strict machine-evidence predicates and a fail-closed receipt state machine.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The rehearsal uses synthetic-only inputs and test-only clearance; it persists no labels, scorer values, receipt, or run artifact and cannot satisfy any real external blocker.",
+      "claim_id": "architecture_formal_validation_dress_rehearsal_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_dress_rehearsal_protocol",
+        "formal_dress_rehearsal_readiness"
+      ],
+      "scope": "engineering_capability",
+      "statement": "The preregistration, Full1000 execution, human adjudication, scorer sandbox, quarantine, freshness, clearance, revocation, and standalone handoff gates form a deterministic synthetic end-to-end rehearsal.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Preregistration proves analysis-plan integrity only; it generates no quality metric, human judgment, or official score and does not clear any external blocker.",
+      "claim_id": "architecture_formal_validation_preregistered",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_preregistration_protocol",
+        "formal_preregistration_readiness",
+        "formal_preregistration_seal",
+        "formal_preregistration_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "The formal validation population, execution policy, human review rules, statistical methods, stopping conditions, and declaration boundaries are deterministically sealed before real external evidence intake.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Synthetic opaque identities verify control mechanics only; no real role assignment or real two-person approval exists, and no formal blocker is removed.",
+      "claim_id": "architecture_formal_validation_separation_of_duties_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "formal_validation_roles_assignments",
+        "formal_validation_roles_protocol",
+        "formal_validation_roles_readiness",
+        "formal_validation_roles_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Formal validation launch, evidence intake, dual annotation, adjudication, clearance, release signing and revocation use role-bound append-only authorization with forbidden combinations and two independent approval domains.",
+      "status": "verified"
+    },
+    {
+      "boundary": "This proves only immutable offline planning and a fake-adapter execution chain; network availability is not checked and the Full1000 baseline remains incomplete.",
+      "claim_id": "architecture_full1000_execution_plan_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "full1000_execution_dry_run",
+        "full1000_execution_plan",
+        "full1000_execution_preflight",
+        "full1000_execution_protocol",
+        "full1000_execution_verification"
+      ],
+      "scope": "engineering_capability",
+      "statement": "The frozen Full1000 query-only population has an immutable sharded execution plan and a deterministic zero-network fake-adapter preflight.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Synthetic operations prove only launch-control mechanics; network, credentials, and the formal run remain externally blocked, and Full1000 is still incomplete.",
+      "claim_id": "architecture_full1000_launch_control_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "full1000_launch_control_protocol",
+        "full1000_launch_control_readiness",
+        "full1000_launch_control_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "The frozen Full1000 execution plan is protected by deterministic two-stage authorization and append-only operational audit controls.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The synthetic matrix proves only blind disagreement issuance, locked adjudication intake and delegation to the existing change-only scorer; no real label, Precision, kappa or official result exists, and all formal blockers remain.",
+      "claim_id": "architecture_human_adjudication_activation_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "human_adjudication_activation_protocol",
+        "human_adjudication_activation_readiness",
+        "human_adjudication_activation_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Complete A/B submissions can be issued as a blind all-and-only-disagreements adjudication task, validated without overwriting original judgments, and unlocked only through the existing change-only cluster-aware scorer.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Synthetic issuance proves assignment, blinding and acknowledgement controls only; no real qualified principal, real package receipt, label, Precision or official result exists, and all formal blockers remain.",
+      "claim_id": "architecture_human_annotation_assignment_activation_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "human_annotation_assignment_protocol",
+        "human_annotation_assignment_readiness",
+        "human_annotation_assignment_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Qualified annotator-A, annotator-B and adjudicator roles can be bound to isolated offline bundles through one-time challenges, append-only issuance events and three-party acknowledgement locking.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Synthetic recovery proves only package delivery and import integrity; no real labels, Precision, agreement, or official score are produced.",
+      "claim_id": "architecture_human_annotation_delivery_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "human_annotation_delivery_dry_run",
+        "human_annotation_delivery_readiness"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Two complete 471-item blind annotator packages, isolated aliases, locked export, and deterministic operator recovery are ready for offline delivery.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Synthetic locked submissions prove intake, role binding and complete disagreement-queue controls only; no real label, statistic, adjudication decision, Precision or official result exists, and all formal blockers remain.",
+      "claim_id": "architecture_human_annotation_submission_intake_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "human_annotation_submission_protocol",
+        "human_annotation_submission_readiness",
+        "human_annotation_submission_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Complete locked A/B exports can be bound to acknowledged assignments and converted through the operator-only mapping into an all-and-only-disagreements blind adjudication queue.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Synthetic calibration proves only qualification intake and role-conflict controls; no real principal assignment, 471-item distribution, label, Precision or official result exists, and all formal blockers remain.",
+      "claim_id": "architecture_human_annotator_qualification_intake_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "human_annotator_qualification_protocol",
+        "human_annotator_qualification_readiness",
+        "human_annotator_qualification_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Annotator-A, annotator-B and adjudicator qualifications can be collected through deterministic offline kits with opaque identities, synthetic rubric calibration, conflict declarations and fail-closed role assignment.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The standard-library kit and synthetic matrix prove intake and sandbox conformance only; no official package, Schema, metric namespace, score or authenticated organizer identity is present, and all three formal blockers remain.",
+      "claim_id": "architecture_official_scorer_package_intake_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "official_scorer_intake_protocol",
+        "official_scorer_intake_readiness",
+        "official_scorer_intake_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Future official scorer packages, I/O schemas, metric namespaces and origin evidence can be received offline, structurally verified and exercised through the existing hermetic scorer sandbox.",
+      "status": "verified"
+    },
+    {
+      "boundary": "These are engineering integrity checks and do not establish retrieval quality.",
+      "claim_id": "architecture_offline_integrity_gates",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "constraint_decision_manifest",
+        "ranking_decision_manifest",
+        "source_reliability_manifest",
+        "tiebreak_manifest",
+        "top20_delivery_manifest"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Tracked offline gates can verify reconstruction, decision traceability, source accounting, tie stability, and delivery integrity.",
+      "status": "verified"
+    },
+    {
+      "boundary": "The real 23-wheel set is absent and remains not qualified; temporary synthetic wheels prove only the intake and installer mechanics.",
+      "claim_id": "architecture_offline_wheelhouse_intake",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "offline_wheelhouse_manifest",
+        "offline_wheelhouse_release_review",
+        "offline_wheelhouse_synthetic",
+        "offline_wheelhouse_verification"
+      ],
+      "scope": "internal_validation",
+      "statement": "The offline wheelhouse intake validates exact locked wheels, supply-chain metadata, and deterministic offline installation without downloading artifacts.",
+      "status": "internal_only"
+    },
+    {
+      "boundary": "The standard-library kit and synthetic site matrix prove the offline collection and import controls only; no real external site is qualified, no host identity is authenticated, and no formal blocker is removed.",
+      "claim_id": "architecture_portable_execution_site_controls_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "portable_execution_site_addendum",
+        "portable_execution_site_protocol",
+        "portable_execution_site_readiness",
+        "portable_execution_site_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Candidate Full1000 sites can be attested without a repository or network through a deterministic standard-library kit, one-time challenge, per-volume fail-closed probe, and launch-bound import receipt.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Synthetic declarations prove intake, replay protection, and request preservation only; all four real declarations remain missing and launch stays blocked.",
+      "claim_id": "architecture_provider_capacity_declaration_intake_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "provider_capacity_intake_addendum",
+        "provider_capacity_intake_contract",
+        "provider_capacity_intake_protocol",
+        "provider_capacity_intake_readiness",
+        "provider_capacity_intake_simulation"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Provider capacity owners have a deterministic standard-library offline declaration kit, one-time challenge intake, and pacing-preserving import gate for all four Full1000 sources.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Synthetic responses prove only parser-pre capture and replay integrity; Record160/162 remain ineligible and Full1000 remains incomplete.",
+      "claim_id": "architecture_provider_ingest_provenance_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "provider_ingest_capture_addendum",
+        "provider_ingest_fixture_matrix",
+        "provider_ingest_frozen_audit",
+        "provider_ingest_protocol"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Future new-format runs can bind exact provider response bytes, parser replay, pagination, and resource-ledger conservation to committed provenance artifacts.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Compatibility governance proves engineering contract stability only; it defines neither an official schema nor quality metrics.",
+      "claim_id": "architecture_public_contract_compatibility",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "public_contract_baseline",
+        "public_contract_current",
+        "public_contract_protocol"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Public evaluation-facing API, CLI, frontend consumer, and machine artifact contracts are governed by a deterministic versioned compatibility gate.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Exact installed-metadata closure is verified, but the complete local wheelhouse and dual isolated installation proof are absent; historical release evidence and formal blockers remain unchanged.",
+      "claim_id": "architecture_python_dependency_lock",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "python_dependency_lock_manifest",
+        "python_dependency_lock_offline_install",
+        "python_dependency_lock_release_review",
+        "python_dependency_lock_verification"
+      ],
+      "scope": "internal_diagnostic",
+      "statement": "Python runtime and development dependencies have exact environment-bound declarations and a deterministic installed-metadata closure.",
+      "status": "internal_only"
+    },
+    {
+      "boundary": "OpenSSH Ed25519 and test-only keys verify the signing, rotation and revocation mechanics only; no real organization trust anchor or signer is registered, candidate artifacts remain unsigned, and no formal blocker is cleared.",
+      "claim_id": "architecture_release_authenticity_signing_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "release_authenticity_protocol",
+        "release_authenticity_readiness",
+        "release_authenticity_trust_root"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Release-facing checkpoints, standalone bundles, release candidates and future clearance receipts have a canonical OpenSSH signing envelope and append-only public trust-root control.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Frontend reproducibility is qualified, but the complete release candidate remains not qualified because Python direct requirements are not precisely locked; this is not a quality or official validation claim.",
+      "claim_id": "architecture_release_candidate_reproducibility",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "frontend_reproducible_build_protocol",
+        "frontend_reproducible_build_qualification",
+        "frontend_reproducible_release_contract",
+        "release_candidate_contract",
+        "release_candidate_python_lock",
+        "release_candidate_reproducibility"
+      ],
+      "scope": "internal_diagnostic",
+      "statement": "The fixed-source offline release gate now produces byte-identical frontend archives across isolated source parents while preserving the historical path-drift evidence.",
+      "status": "internal_only"
+    },
+    {
+      "boundary": "The archive proves a closed publication hash chain and declared boundaries, not publisher identity, unpublished evidence contents, retrieval quality, human Precision, or an official score.",
+      "claim_id": "architecture_standalone_auditor_bundle_ready",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "standalone_auditor_bundle_contract",
+        "standalone_auditor_bundle_readiness"
+      ],
+      "scope": "engineering_capability",
+      "statement": "A deterministic evidence archive can be verified outside the repository with a Python-standard-library single-file verifier under isolated mode.",
+      "status": "verified"
+    },
+    {
+      "boundary": "Freshness verifies dependency closure and rerun scope only; it does not recompute evidence, alter historical conclusions, or remove formal blockers.",
+      "claim_id": "architecture_validation_evidence_freshness",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "validation_freshness_current",
+        "validation_freshness_synthetic_impact"
+      ],
+      "scope": "engineering_capability",
+      "statement": "Tracked readiness evidence, gates, and claims have precise semantic dependencies and deterministic stale-impact propagation.",
+      "status": "verified"
+    },
+    {
+      "blocker_id": "full1000_incomplete",
+      "boundary": "The 160-query prefix must never be presented as a completed 1000-query run.",
+      "claim_id": "contest_full1000_completion",
+      "document_id": "contest_requirements",
+      "evidence_ids": [
+        "full1000_resume_summary"
+      ],
+      "scope": "formal_validation_requirement",
+      "statement": "A complete Full1000 baseline is not yet available.",
+      "status": "blocked"
+    },
+    {
+      "blocker_id": "human_precision_missing",
+      "boundary": "No numerical Precision or agreement value may be inferred from empty templates.",
+      "claim_id": "contest_human_precision",
+      "document_id": "evaluation",
+      "evidence_ids": [
+        "human_precision_pending"
+      ],
+      "scope": "formal_validation_requirement",
+      "statement": "Real independent human Precision labels and adjudication are not complete.",
+      "status": "blocked"
+    },
+    {
+      "blocker_id": "official_scorer_schema_missing",
+      "boundary": "Internal metrics and delivery checks must not be described as official scores.",
+      "claim_id": "contest_official_scorer_alignment",
+      "document_id": "contest_requirements",
+      "evidence_ids": [
+        "official_scorer_blocked"
+      ],
+      "scope": "formal_validation_requirement",
+      "statement": "Official scorer/schema alignment remains blocked because the exact official semantics are unavailable.",
+      "status": "blocked"
+    },
+    {
+      "boundary": "The audit uses only preregistered pre-retrieval features and cannot infer any unfinished-query retrieval outcome or quality.",
+      "claim_id": "evaluation_record160_extrapolation_boundary",
+      "document_id": "architecture",
+      "evidence_ids": [
+        "completion_bias_aggregate",
+        "completion_bias_manifest"
+      ],
+      "scope": "internal_validation",
+      "statement": "Record160 findings are restricted to the frozen 160-query main-analysis population because Record162 is a source-order prefix with substantial component coverage gaps.",
+      "status": "internal_only"
+    },
+    {
+      "boundary": "Record160 is a partial, order-biased internal sample and is not Full1000.",
+      "claim_id": "evaluation_record160_population",
+      "document_id": "evaluation",
+      "evidence_ids": [
+        "source_reliability_aggregate",
+        "top20_delivery_aggregate"
+      ],
+      "scope": "internal_validation",
+      "statement": "The frozen prefix has 162 terminal query records, of which 160 enter the main internal analysis and 2 are excluded by the pre-existing no-successful-source rule.",
+      "status": "internal_only"
+    },
+    {
+      "boundary": "Funnel counts describe availability and pipeline loss, not relevance or source quality.",
+      "claim_id": "evaluation_source_diagnostics",
+      "document_id": "evaluation",
+      "evidence_ids": [
+        "source_reliability_aggregate",
+        "source_reliability_manifest"
+      ],
+      "scope": "internal_diagnostic",
+      "statement": "The source reliability funnel is exactly reconstructed from 1,093 observed Snapshot keys for 160 included queries.",
+      "status": "internal_only"
+    },
+    {
+      "boundary": "The ablation describes identity coverage and ranking stability only, never relevance.",
+      "claim_id": "evaluation_source_fusion_coverage",
+      "document_id": "evaluation",
+      "evidence_ids": [
+        "source_fusion_aggregate",
+        "source_fusion_manifest"
+      ],
+      "scope": "internal_diagnostic",
+      "statement": "Four-source full, leave-one-source-out, and single-source coverage diagnostics are reproducible for the frozen Record160 population.",
+      "status": "internal_only"
+    },
+    {
+      "boundary": "Delivery fidelity proves transport preservation only; unsupported exports remain explicit.",
+      "claim_id": "evaluation_top20_delivery",
+      "document_id": "evaluation",
+      "evidence_ids": [
+        "top20_delivery_aggregate",
+        "top20_delivery_manifest"
+      ],
+      "scope": "internal_validation",
+      "statement": "The supported API, JSON, JSONL, pagination, and frontend paths preserve 1,396 frozen final results across 160 included queries.",
+      "status": "internal_only"
+    },
+    {
+      "boundary": "Startup instructions alone establish no validation or quality claim.",
+      "claim_id": "readme_operational_entrypoint",
+      "document_id": "readme",
+      "evidence_ids": [
+        "evidence_registry_gate"
+      ],
+      "scope": "operational_documentation",
+      "statement": "The README is covered as operational setup documentation, not as validation evidence.",
+      "status": "not_applicable"
+    }
+  ],
+  "document_coverage": {
+    "architecture": 45,
+    "contest_requirements": 2,
+    "evaluation": 5,
+    "readme": 1
+  },
+  "protocol": "validation_readiness_bundle_v1",
+  "schema_version": "1",
+  "status_counts": {
+    "blocked": 3,
+    "internal_only": 8,
+    "not_applicable": 1,
+    "verified": 41
+  }
+}

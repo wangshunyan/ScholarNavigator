@@ -1,0 +1,27 @@
+{
+  "aggregate_sha256": "87d3a4612b1795586d6844ac28c35b80ece339ae8df7523aa611fb62ff353680",
+  "analysis": "completion_bias_audit_v1",
+  "files": {
+    "audit.json": {
+      "sha256": "87d3a4612b1795586d6844ac28c35b80ece339ae8df7523aa611fb62ff353680",
+      "size": 51646
+    },
+    "protocol.json": {
+      "sha256": "d2ec17c54190104b8165aa13990e534b2ba1b517a23a48f16acd2712965af7d8",
+      "size": 5964
+    },
+    "queries.jsonl": {
+      "sha256": "c5bd52bcf172f68bfab2b80cfc83d7f994d38eb5b54eca3bc154a7deef7ecdf5",
+      "size": 700471
+    }
+  },
+  "input_hashes": {
+    "component_assignments": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5",
+    "ordered_queries": "def16ce0f99a567db34e62db283c83ef8c30b200390b6120dd8bbe6cd936eedb",
+    "record_membership": "2844185c7ce66a5d9f7c030d1689b383ad468ed86e087d587b9aca7a5271d927"
+  },
+  "protocol_version": "completion-bias-audit-protocol-v1",
+  "query_diagnostics_sha256": "c5bd52bcf172f68bfab2b80cfc83d7f994d38eb5b54eca3bc154a7deef7ecdf5",
+  "schema_version": "1",
+  "status": "completed"
+}

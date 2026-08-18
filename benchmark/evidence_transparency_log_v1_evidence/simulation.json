@@ -1,0 +1,71 @@
+{
+  "accepted_scenario_count": 4,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "identity_authentication": "not_provided_hash_chain_proves_content_consistency_not_publisher_identity",
+  "protocol": "evidence_transparency_log_v1",
+  "rejected_scenario_count": 8,
+  "report_sha256": "2cf5639b294d77789e91d06fc3189aba408c7750f05f318a8da0a8b3f1b10d69",
+  "scenario_count": 12,
+  "scenarios": [
+    {
+      "accepted": true,
+      "scenario": "normal_append"
+    },
+    {
+      "accepted": true,
+      "scenario": "cross_version_release"
+    },
+    {
+      "accepted": true,
+      "scenario": "legal_revocation_supersession"
+    },
+    {
+      "accepted": true,
+      "scenario": "inclusion_and_consistency_proofs"
+    },
+    {
+      "accepted": false,
+      "scenario": "history_deletion"
+    },
+    {
+      "accepted": false,
+      "scenario": "same_release_identity_conflict"
+    },
+    {
+      "accepted": false,
+      "scenario": "log_fork"
+    },
+    {
+      "accepted": false,
+      "scenario": "blocker_hidden"
+    },
+    {
+      "accepted": false,
+      "scenario": "stale_hidden"
+    },
+    {
+      "accepted": false,
+      "scenario": "active_incident_hidden"
+    },
+    {
+      "accepted": false,
+      "scenario": "old_root_or_evidence_rollback"
+    },
+    {
+      "accepted": false,
+      "scenario": "forged_clearance_receipt"
+    }
+  ],
+  "schema_version": "1",
+  "status": "transparency_controls_ready",
+  "synthetic_artifacts_persisted": false,
+  "synthetic_only": true
+}

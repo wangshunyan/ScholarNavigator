@@ -1,0 +1,121 @@
+{
+  "archive": {
+    "aggregate_reads_authoritative_hashes_only": true,
+    "cross_filesystem_atomic_rename_required": false,
+    "required_roles": [
+      "generation",
+      "manifest",
+      "operation_audit_chain",
+      "provider_raw_response",
+      "resource_ledger",
+      "semantic_events",
+      "top20_results"
+    ],
+    "restore_drill_required": true,
+    "staging_bytes": 35030827008,
+    "staging_files": 3344
+  },
+  "bindings": {
+    "crash_consistency": {
+      "path": "benchmark/crash_consistency_v1_protocol.json",
+      "sha256": "24b1fbc1314275e3bfa56fc431df18a67102dbd90ccf482f5c12fd358356e920"
+    },
+    "disaster_recovery": {
+      "path": "benchmark/formal_run_disaster_recovery_v1_protocol.json",
+      "sha256": "e6b646df73fee75421e33894a73f60cb6f4e00f509a09a103766f68310a20467"
+    },
+    "evidence_revocation": {
+      "path": "benchmark/evidence_revocation_response_v1_protocol.json",
+      "sha256": "d86d66bae405f84cd22047edbffae83229e85671cd36102fd7065e9111d5e927"
+    },
+    "evidence_transparency": {
+      "path": "benchmark/evidence_transparency_log_v1_protocol.json",
+      "sha256": "cfe6cd94bf107bdc7866d2ca577aa2d98e63ac9ae7b318a44f19879ce8c70bed"
+    },
+    "execution_plan": {
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    "host_attestation": {
+      "path": "benchmark/formal_execution_host_attestation_v1_protocol.json",
+      "sha256": "095bbe731aa461dfa1999080cb916757ecce8f737c19e823aa1173b8663a7681"
+    },
+    "launch_control": {
+      "path": "benchmark/full1000_launch_control_v1_protocol.json",
+      "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+    },
+    "multivolume_storage": {
+      "path": "benchmark/formal_multivolume_storage_v1_protocol.json",
+      "sha256": "ae6ecc5691ce9cde6a0780c4c4276067e1cefb3154ffe3ff3cefac1c54e87e5c"
+    },
+    "provider_ingest": {
+      "path": "benchmark/provider_ingest_provenance_v1_protocol.json",
+      "sha256": "29a4a687f8bec2d9c3f12f264b24e41df2519442182728dc424b101e578e6a77"
+    },
+    "resource_accounting": {
+      "path": "benchmark/resource_accounting_integrity_v1_protocol.json",
+      "sha256": "b465d2e8f555418bb4a6ac492a0879d307830bdd158ef18ff39de481a6c08f97"
+    },
+    "storage_governance": {
+      "path": "benchmark/formal_run_storage_governance_v1_protocol.json",
+      "sha256": "bb78967820aba3c223c0638adbda9b0779cc7cecffcb718fa22a06f352c9d5c1"
+    }
+  },
+  "capacity": {
+    "aggregate_bytes": 2147483648,
+    "aggregate_files": 100,
+    "backup_required_bytes": 2119029489664,
+    "backup_required_inodes": 210940,
+    "compression_credit_bytes": 0,
+    "current_primary_available_bytes": 587336777728,
+    "future_cleanup_credit_bytes": 0,
+    "safety_reserve_bytes": 10737418240,
+    "safety_reserve_inodes": 10000,
+    "shard_max_bytes": 35030827008,
+    "shard_max_files": 3344
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "policy": {
+    "active_shard_window": 4,
+    "allowed_active_shard_windows": [
+      1,
+      2,
+      4
+    ],
+    "default_enabled": false,
+    "runtime_window_adjustment_allowed": false,
+    "window_limits_residency_only": true
+  },
+  "population": {
+    "http_attempt_upper": 19280,
+    "queries_per_shard": 50,
+    "query_count": 1000,
+    "shard_count": 20
+  },
+  "protocol": "formal_shard_streaming_retention_v1",
+  "protocol_sha256": "9fe9d56b2277bf5aa9f29820c8407db0a9f8382e5d6cba6c25d67d7975492780",
+  "release": {
+    "append_only_eviction_receipt": true,
+    "delete_interruption_preserves_authority": true,
+    "required_conditions": [
+      "archive_inventory_complete",
+      "backup_failure_domain_qualified",
+      "backup_file_hashes_verified",
+      "backup_parent_chain_verified",
+      "committed_generation_chain_verified",
+      "restore_drill_verified",
+      "selected_final_attempt_unique",
+      "transparency_and_revocation_path_unreferenced"
+    ],
+    "single_copy_eviction_forbidden": true
+  },
+  "schema_version": "1",
+  "source_commit": "d9c3bc7863fe071fb4285b2b4a90f334cd8bf391"
+}

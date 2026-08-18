@@ -1,0 +1,383 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "invariants": {
+    "duplicate_committed_queries": 0,
+    "duplicate_ledger_entries": 0,
+    "new_work_after_pause_required": 0,
+    "quality_or_result_signal_count": 0,
+    "selective_query_filtering": 0
+  },
+  "population": {
+    "query_count": 1000,
+    "query_order_sha256": "1d310756a0a5115ea33aec23939a4e9867302c85750448810252f174e5e74563",
+    "shard_count": 20
+  },
+  "protocol": "formal_provider_health_supervisor_v1",
+  "scenario_count": 14,
+  "scenarios": [
+    {
+      "audit_chain_valid": true,
+      "audit_event_count": 19,
+      "coverage": {
+        "aggregate_eligible": false,
+        "committed_query_count": 0,
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 1000,
+        "status_counts": {},
+        "success_only_filtering": false
+      },
+      "expected_state": "paused",
+      "in_flight_count": 0,
+      "ledger_entry_count": 9,
+      "observed_state": "paused",
+      "reason_codes": [
+        "global_degraded_source_count"
+      ],
+      "rejected_start_count": 0,
+      "resume_count": 0,
+      "scenario": "all_sources_failed",
+      "status": "passed",
+      "total_attempts": 9
+    },
+    {
+      "audit_chain_valid": true,
+      "audit_event_count": 41,
+      "coverage": {
+        "aggregate_eligible": false,
+        "committed_query_count": 0,
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 1000,
+        "status_counts": {},
+        "success_only_filtering": false
+      },
+      "expected_state": "paused",
+      "in_flight_count": 0,
+      "ledger_entry_count": 20,
+      "observed_state": "paused",
+      "reason_codes": [
+        "attempt_budget_burn_without_commit"
+      ],
+      "rejected_start_count": 0,
+      "resume_count": 0,
+      "scenario": "attempt_budget_burn",
+      "status": "passed",
+      "total_attempts": 20
+    },
+    {
+      "audit_chain_valid": true,
+      "audit_event_count": 8,
+      "coverage": {
+        "aggregate_eligible": false,
+        "committed_query_count": 0,
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 1000,
+        "status_counts": {},
+        "success_only_filtering": false
+      },
+      "expected_state": "paused",
+      "in_flight_count": 0,
+      "ledger_entry_count": 3,
+      "new_operation_blocked": true,
+      "observed_state": "paused",
+      "reason_codes": [
+        "storage_capacity_failure"
+      ],
+      "rejected_start_count": 1,
+      "resume_count": 0,
+      "scenario": "in_flight_drain",
+      "status": "passed",
+      "total_attempts": 3
+    },
+    {
+      "all_terminal_states_retained": true,
+      "audit_chain_valid": true,
+      "audit_event_count": 1015,
+      "coverage": {
+        "aggregate_eligible": true,
+        "committed_query_count": 1000,
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 0,
+        "status_counts": {
+          "completed": 989,
+          "source_failure": 11
+        },
+        "success_only_filtering": false
+      },
+      "expected_state": "healthy",
+      "historical_failure_count_preserved": true,
+      "in_flight_count": 0,
+      "ledger_entry_count": 6,
+      "observed_state": "healthy",
+      "reason_codes": [
+        "source_pause:arxiv"
+      ],
+      "rejected_start_count": 0,
+      "resume_count": 1,
+      "scenario": "pause_resume_full_coverage",
+      "status": "passed",
+      "total_attempts": 6
+    },
+    {
+      "audit_chain_valid": true,
+      "audit_event_count": 2,
+      "coverage": {
+        "aggregate_eligible": false,
+        "committed_query_count": 0,
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 1000,
+        "status_counts": {},
+        "success_only_filtering": false
+      },
+      "expected_state": "paused",
+      "in_flight_count": 0,
+      "ledger_entry_count": 0,
+      "observed_state": "paused",
+      "reason_codes": [
+        "provenance_write_failure"
+      ],
+      "rejected_start_count": 0,
+      "resume_count": 0,
+      "scenario": "provenance_write_failure",
+      "status": "passed",
+      "total_attempts": 0
+    },
+    {
+      "audit_chain_valid": true,
+      "audit_event_count": 28,
+      "coverage": {
+        "aggregate_eligible": false,
+        "committed_query_count": 0,
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 1000,
+        "status_counts": {},
+        "success_only_filtering": false
+      },
+      "expected_state": "paused",
+      "in_flight_count": 0,
+      "ledger_entry_count": 12,
+      "observed_state": "paused",
+      "reason_codes": [
+        "source_pause:arxiv"
+      ],
+      "rejected_start_count": 0,
+      "resume_count": 1,
+      "scenario": "resume_then_redegrade",
+      "status": "passed",
+      "total_attempts": 12
+    },
+    {
+      "audit_chain_valid": true,
+      "audit_event_count": 6,
+      "coverage": {
+        "aggregate_eligible": false,
+        "committed_query_count": 0,
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 1000,
+        "status_counts": {},
+        "success_only_filtering": false
+      },
+      "expected_state": "degraded",
+      "in_flight_count": 0,
+      "ledger_entry_count": 3,
+      "observed_state": "degraded",
+      "reason_codes": [],
+      "rejected_start_count": 0,
+      "resume_count": 0,
+      "scenario": "single_source_degraded",
+      "status": "passed",
+      "total_attempts": 3
+    },
+    {
+      "audit_chain_valid": true,
+      "audit_event_count": 2,
+      "coverage": {
+        "aggregate_eligible": false,
+        "committed_query_count": 0,
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 1000,
+        "status_counts": {},
+        "success_only_filtering": false
+      },
+      "expected_state": "paused",
+      "in_flight_count": 0,
+      "ledger_entry_count": 0,
+      "observed_state": "paused",
+      "reason_codes": [
+        "storage_capacity_failure"
+      ],
+      "rejected_start_count": 0,
+      "resume_count": 0,
+      "scenario": "storage_capacity_drop",
+      "status": "passed",
+      "total_attempts": 0
+    },
+    {
+      "audit_chain_valid": true,
+      "audit_event_count": 21,
+      "coverage": {
+        "aggregate_eligible": false,
+        "committed_query_count": 0,
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 1000,
+        "status_counts": {},
+        "success_only_filtering": false
+      },
+      "expected_state": "paused",
+      "in_flight_count": 0,
+      "ledger_entry_count": 10,
+      "observed_state": "paused",
+      "reason_codes": [
+        "source_pause:pubmed"
+      ],
+      "rejected_start_count": 0,
+      "resume_count": 0,
+      "scenario": "successful_without_progress",
+      "status": "passed",
+      "total_attempts": 10
+    },
+    {
+      "audit_chain_valid": true,
+      "audit_event_count": 13,
+      "coverage": {
+        "aggregate_eligible": false,
+        "committed_query_count": 0,
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 1000,
+        "status_counts": {},
+        "success_only_filtering": false
+      },
+      "expected_state": "paused",
+      "in_flight_count": 0,
+      "ledger_entry_count": 6,
+      "observed_state": "paused",
+      "reason_codes": [
+        "source_pause:arxiv"
+      ],
+      "rejected_start_count": 0,
+      "resume_count": 0,
+      "scenario": "sustained_429",
+      "status": "passed",
+      "total_attempts": 6
+    },
+    {
+      "audit_chain_valid": true,
+      "audit_event_count": 13,
+      "coverage": {
+        "aggregate_eligible": false,
+        "committed_query_count": 0,
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 1000,
+        "status_counts": {},
+        "success_only_filtering": false
+      },
+      "expected_state": "paused",
+      "in_flight_count": 0,
+      "ledger_entry_count": 6,
+      "observed_state": "paused",
+      "reason_codes": [
+        "source_pause:arxiv"
+      ],
+      "rejected_start_count": 0,
+      "resume_count": 0,
+      "scenario": "sustained_503",
+      "status": "passed",
+      "total_attempts": 6
+    },
+    {
+      "audit_chain_valid": true,
+      "audit_event_count": 13,
+      "coverage": {
+        "aggregate_eligible": false,
+        "committed_query_count": 0,
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 1000,
+        "status_counts": {},
+        "success_only_filtering": false
+      },
+      "expected_state": "paused",
+      "in_flight_count": 0,
+      "ledger_entry_count": 6,
+      "observed_state": "paused",
+      "reason_codes": [
+        "source_pause:arxiv"
+      ],
+      "rejected_start_count": 0,
+      "resume_count": 0,
+      "scenario": "sustained_timeout",
+      "status": "passed",
+      "total_attempts": 6
+    },
+    {
+      "audit_chain_valid": true,
+      "audit_event_count": 19,
+      "coverage": {
+        "aggregate_eligible": false,
+        "committed_query_count": 0,
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 1000,
+        "status_counts": {},
+        "success_only_filtering": false
+      },
+      "expected_state": "paused",
+      "in_flight_count": 0,
+      "ledger_entry_count": 9,
+      "observed_state": "paused",
+      "reason_codes": [
+        "global_degraded_source_count"
+      ],
+      "rejected_start_count": 0,
+      "resume_count": 0,
+      "scenario": "three_sources_degraded",
+      "status": "passed",
+      "total_attempts": 9
+    },
+    {
+      "audit_chain_valid": true,
+      "audit_event_count": 1024,
+      "coverage": {
+        "aggregate_eligible": true,
+        "committed_query_count": 1000,
+        "duplicate_query_count": 0,
+        "expected_query_count": 1000,
+        "missing_query_count": 0,
+        "status_counts": {
+          "completed": 1000
+        },
+        "success_only_filtering": false
+      },
+      "expected_state": "healthy",
+      "in_flight_count": 0,
+      "ledger_entry_count": 12,
+      "observed_state": "healthy",
+      "reason_codes": [],
+      "rejected_start_count": 0,
+      "resume_count": 0,
+      "scenario": "transient_jitter",
+      "status": "passed",
+      "total_attempts": 12
+    }
+  ],
+  "schema_version": "1",
+  "status": "supervisor_controls_ready"
+}

@@ -1,0 +1,77 @@
+{
+  "active_shard_window": 4,
+  "backup_available_bytes": "not_available",
+  "backup_available_inodes": "not_available",
+  "backup_failure_domain_independent": "not_available",
+  "controls_default_enabled": false,
+  "current_primary_available_bytes": 587336777728,
+  "current_primary_qualified": true,
+  "current_primary_required_bytes": 188039036928,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_run_started": false,
+  "formal_validation_complete": false,
+  "full1000_blocker_cleared": false,
+  "missing_backup_fields": [
+    "backup.available_bytes",
+    "backup.available_inodes",
+    "backup.failure_domain_independent",
+    "backup.filesystem_quota_bytes"
+  ],
+  "protocol": "formal_shard_streaming_retention_v1",
+  "schema_version": "1",
+  "status": "not_ready_missing_qualified_backup",
+  "window_capacity": {
+    "1": {
+      "active_shard_window": 1,
+      "aggregate_bytes": 2147483648,
+      "aggregate_files": 100,
+      "archive_staging_bytes": 35030827008,
+      "archive_staging_files": 3344,
+      "current_primary_available_bytes": 587336777728,
+      "current_primary_qualified": true,
+      "required_primary_bytes": 82946555904,
+      "required_primary_inodes": 16788,
+      "resident_shard_bytes": 35030827008,
+      "resident_shard_files": 3344,
+      "safety_reserve_bytes": 10737418240,
+      "safety_reserve_inodes": 10000
+    },
+    "2": {
+      "active_shard_window": 2,
+      "aggregate_bytes": 2147483648,
+      "aggregate_files": 100,
+      "archive_staging_bytes": 35030827008,
+      "archive_staging_files": 3344,
+      "current_primary_available_bytes": 587336777728,
+      "current_primary_qualified": true,
+      "required_primary_bytes": 117977382912,
+      "required_primary_inodes": 20132,
+      "resident_shard_bytes": 70061654016,
+      "resident_shard_files": 6688,
+      "safety_reserve_bytes": 10737418240,
+      "safety_reserve_inodes": 10000
+    },
+    "4": {
+      "active_shard_window": 4,
+      "aggregate_bytes": 2147483648,
+      "aggregate_files": 100,
+      "archive_staging_bytes": 35030827008,
+      "archive_staging_files": 3344,
+      "current_primary_available_bytes": 587336777728,
+      "current_primary_qualified": true,
+      "required_primary_bytes": 188039036928,
+      "required_primary_inodes": 26820,
+      "resident_shard_bytes": 140123308032,
+      "resident_shard_files": 13376,
+      "safety_reserve_bytes": 10737418240,
+      "safety_reserve_inodes": 10000
+    }
+  }
+}

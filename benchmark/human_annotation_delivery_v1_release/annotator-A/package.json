@@ -1,0 +1,17 @@
+{
+  "annotator_id": "anon-delivery-A",
+  "contract": "human_annotation_delivery_v1",
+  "item_count": 471,
+  "items_sha256": "ab8d2bd43941485e534bba93bf22f60f0efd5e0f870a0d57f9b5c52e49bf6b53",
+  "labels": [
+    "relevant",
+    "partially_relevant",
+    "not_relevant",
+    "insufficient_information"
+  ],
+  "package_id": "record160-471-A",
+  "package_sha256": "a776b0323023736b43cbb456d4205280936e4245bac2874ab545d2364d0e27fe",
+  "rubric_sha256": "b6ce3491d5024b6b245f922221f7e8ec7f7546baa6ef57bf7ca38d3eebb9d0b5",
+  "schema_version": "1",
+  "side": "A"
+}

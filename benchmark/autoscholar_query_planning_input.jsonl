@@ -1,0 +1,1000 @@
+{"query":"Can you tell me some papers about hybrid architectures in reconstruction-based techniques?","query_id":"AutoScholarQuery_test_0"}
+{"query":"Are there any studies that analysed the use of target networks for Deep Q-learning?","query_id":"AutoScholarQuery_test_1"}
+{"query":"Any resources providing information about attempts to detect or calibrate biases automatically in peer reviews?","query_id":"AutoScholarQuery_test_2"}
+{"query":"What papers are the foundation models for the Natural Language Processing (NLP) field based on?","query_id":"AutoScholarQuery_test_3"}
+{"query":"Could you list the papers that explored identifying optimal interventions through sequential experimentation in causal bandits and causal reinforcement learning?","query_id":"AutoScholarQuery_test_4"}
+{"query":"Could you provide me some studies that focused on white-box scenarios for cyber-security in machine learning?","query_id":"AutoScholarQuery_test_5"}
+{"query":"Which papers generalize the coordinate definition of the field to cases where the parameters of a viewing ray are used?","query_id":"AutoScholarQuery_test_6"}
+{"query":"Which works develop suitable approximations of the predictive distribution or parts of the integral for uncertainties in deep learning?","query_id":"AutoScholarQuery_test_7"}
+{"query":"Which studies have proposed using voxel for spatial geometry and texture modeling in 3D scene representation?","query_id":"AutoScholarQuery_test_8"}
+{"query":"Which studies present issues about the stationary distribution of rewards over contexts?","query_id":"AutoScholarQuery_test_9"}
+{"query":"Which work first implemented token-level edit operation prediction in Seq2Edit methods?","query_id":"AutoScholarQuery_test_10"}
+{"query":"Could you provide me a study about generating sign pose sequences from gloss sequences by employing VQ-VAE?","query_id":"AutoScholarQuery_test_11"}
+{"query":"Who proposed source-free universal domain adaptation (SF-UniDA)?","query_id":"AutoScholarQuery_test_12"}
+{"query":"What works aim to study the policies or features that remain stable across the different training tasks?","query_id":"AutoScholarQuery_test_13"}
+{"query":"Could you provide me some works about fine-tuning LLMs to better response to visual instructions?","query_id":"AutoScholarQuery_test_14"}
+{"query":"Could you mention some works that classify unsupervised segmentation into two categories: clustering based on invariance and clustering using pre-trained models?","query_id":"AutoScholarQuery_test_15"}
+{"query":"Could you provide me examples of the development of more sophisticated feature extractors that enhance Point Cloud processing?","query_id":"AutoScholarQuery_test_16"}
+{"query":"What are the papers related to face reenactment, specifically aimed at transferring facial expressions and movements?","query_id":"AutoScholarQuery_test_17"}
+{"query":"What papers propose the use of spatiotemporal transformer for BEV generation?","query_id":"AutoScholarQuery_test_18"}
+{"query":"Can you name some works that extend Global Descent for deep learning architectures?","query_id":"AutoScholarQuery_test_19"}
+{"query":"Could you provide me large multimodal models (LMMs) references?","query_id":"AutoScholarQuery_test_20"}
+{"query":"Could you provide me studies about achieving local editing by involving semantic masks as intermediate representations?","query_id":"AutoScholarQuery_test_21"}
+{"query":"Which works propose methods for feature matching by detecting and describing keypoints on images?","query_id":"AutoScholarQuery_test_22"}
+{"query":"Which work first demonstrated the possibility of reconstructing accurate 3D full-body motion using only six IMUs?","query_id":"AutoScholarQuery_test_23"}
+{"query":"Could you provide me a work that extended the minimax method to deep neural networks?","query_id":"AutoScholarQuery_test_24"}
+{"query":"Any works that have commented on the challenge of training the PRM due to expensive human-annotated datasets?","query_id":"AutoScholarQuery_test_25"}
+{"query":"Which papers are known for initially representing 3D scenes with a set of 3D Gaussians?","query_id":"AutoScholarQuery_test_26"}
+{"query":"Which works proposed architectures for group equivariance in image classification?","query_id":"AutoScholarQuery_test_27"}
+{"query":"What papers mention the increased computational complexity and decreased utility due to DPSGD?","query_id":"AutoScholarQuery_test_28"}
+{"query":"In which studies has it been demonstrated that multi-modal models are vulnerable to adversarial attacks?","query_id":"AutoScholarQuery_test_29"}
+{"query":"Could you provide me studies that expound the impossibility of identifying latent factors for i.i.d. nonlinearly-dependent data without labels or assumptions about the data generating process?","query_id":"AutoScholarQuery_test_30"}
+{"query":"Could you provide me an example where an open-source model was introduced for input-output unsafety detection for LLMs?","query_id":"AutoScholarQuery_test_31"}
+{"query":"What papers focused on source data estimation or self-training for pinhole images in the context of SFUDA?","query_id":"AutoScholarQuery_test_32"}
+{"query":"Can you provide some works about predicting the contact map, the distance map and/or the torsion angles between protein residues?","query_id":"AutoScholarQuery_test_33"}
+{"query":"What paper explored the application of VLMs, specifically CLIP, for BEV retrieval tasks?","query_id":"AutoScholarQuery_test_34"}
+{"query":"Could you list research that demonstrated the advantages of Quantization-Aware Training (QAT), which can enable the model to learn better representations for low-bit weights?","query_id":"AutoScholarQuery_test_35"}
+{"query":"What are the researches that have explored the application of Crypto-based Private Learning in privacy-preserving machine learning?","query_id":"AutoScholarQuery_test_36"}
+{"query":"Any works that focus on augmenting sparse inputs with synthetically generated views?","query_id":"AutoScholarQuery_test_37"}
+{"query":"Which work introduces Point-E, a language-guided DM?","query_id":"AutoScholarQuery_test_38"}
+{"query":"Which papers discuss the practical applicability of black-box and transfer-based threat model, and the related security and safety risks?","query_id":"AutoScholarQuery_test_39"}
+{"query":"What studies develop hierarchical models in relation to diffusion models?","query_id":"AutoScholarQuery_test_40"}
+{"query":"What are the papers that analyze the limitations of simple random walks on the clique expansion of the hypergraph?","query_id":"AutoScholarQuery_test_41"}
+{"query":"Which study explicitly determines and measures the faithfulness of explanations in LLMs?","query_id":"AutoScholarQuery_test_42"}
+{"query":"Which study argued on the difficulties of implementing a GAN-like procedure using the dual form of UOT?","query_id":"AutoScholarQuery_test_43"}
+{"query":"What studies deal with standard feature selection that selects the same subset of features for each data sample?","query_id":"AutoScholarQuery_test_44"}
+{"query":"What works are related to the use of commonsense knowledge in Knowledge Graphs?","query_id":"AutoScholarQuery_test_45"}
+{"query":"What works discuss the lack of robustness in NLP benchmarks?","query_id":"AutoScholarQuery_test_46"}
+{"query":"Which papers examined pretraining on scientific text corpora?","query_id":"AutoScholarQuery_test_47"}
+{"query":"Which studies apply model-agnostic meta learning (MAML) to deep anomaly detector models?","query_id":"AutoScholarQuery_test_48"}
+{"query":"What works have proposed guidelines for documenting ML datasets?","query_id":"AutoScholarQuery_test_49"}
+{"query":"Which papers focused on locally aligning fixed patches with textual words?","query_id":"AutoScholarQuery_test_50"}
+{"query":"What is the fundamental work on fully convolutional networks (FCNs) used for deep learning-based semantic segmentation?","query_id":"AutoScholarQuery_test_51"}
+{"query":"Which works focused on ray-based rendering for novel view synthesis approach?","query_id":"AutoScholarQuery_test_52"}
+{"query":"Which papers contribute to the advancement of model-based reinforcement learning through the study of the world model?","query_id":"AutoScholarQuery_test_53"}
+{"query":"Could you provide me some studies proposing models for learning latent graphs?","query_id":"AutoScholarQuery_test_54"}
+{"query":"Which study proposed a method that works only on toy images of up to 333 objects on a black background?","query_id":"AutoScholarQuery_test_55"}
+{"query":"Any work about applying re-reading prompt to improve reasoning tasks of LLM?","query_id":"AutoScholarQuery_test_56"}
+{"query":"What studies introduce the unsupervised disentanglement score called Distortion?","query_id":"AutoScholarQuery_test_57"}
+{"query":"Which research leveraged large language models like GPT-3 to learn a proxy reward function while avoiding the need for many expert demonstrations?","query_id":"AutoScholarQuery_test_58"}
+{"query":"What papers used a predefined set of names for enhancing cross-style transfer?","query_id":"AutoScholarQuery_test_59"}
+{"query":"Which studies have recently been working on the integration of visual perception and large language models?","query_id":"AutoScholarQuery_test_60"}
+{"query":"What papers introduced the fast gradient sign method (FGSM) and the basic iterative method (BIM) for adversarial attacks?","query_id":"AutoScholarQuery_test_61"}
+{"query":"Any works talked about the use of meta-gradients to learn a combination of hyperparameters?","query_id":"AutoScholarQuery_test_62"}
+{"query":"Are there any works that improve cost-effectiveness, performance, and data generation quality in the prompting framework of large language models?","query_id":"AutoScholarQuery_test_63"}
+{"query":"In which paper the term FPE was formalised for general function approximators?","query_id":"AutoScholarQuery_test_64"}
+{"query":"Which works focus on modelling the annotator distribution?","query_id":"AutoScholarQuery_test_65"}
+{"query":"Which studies designed a siamese network framework using AlexNet for feature extraction in visual object tracking?","query_id":"AutoScholarQuery_test_66"}
+{"query":"What graph analysis model is tested in the benchmark?","query_id":"AutoScholarQuery_test_67"}
+{"query":"Any research focused on the memorization risks during the fine-tuning stage?","query_id":"AutoScholarQuery_test_68"}
+{"query":"Could you provide me some studies about reducing the gradient misestimation by approximating discrete quantization with a differentiable function?","query_id":"AutoScholarQuery_test_69"}
+{"query":"Could you provide me some works about optimizing batch processing for LLMs?","query_id":"AutoScholarQuery_test_70"}
+{"query":"Which study extended the capabilities of LLMs to the field of multi-modality?","query_id":"AutoScholarQuery_test_71"}
+{"query":"What research has been done on finding optimal interventions using observational data?","query_id":"AutoScholarQuery_test_72"}
+{"query":"What papers are about prototypical adaptation methods?","query_id":"AutoScholarQuery_test_73"}
+{"query":"Could you name the works that applied CLIP for zero-shot AD, scoring the anomalies by comparing the alignment of test images with the correct text of normal samples?","query_id":"AutoScholarQuery_test_74"}
+{"query":"What papers illustrate recent neural scene representations methods that try to optimize poses with differentiable rendering in Structure-from-Motion research?","query_id":"AutoScholarQuery_test_75"}
+{"query":"Could you provide me some works that investigate the interplay between weight loss landscape and adversarial robustness?","query_id":"AutoScholarQuery_test_76"}
+{"query":"Which works employed a dynamic weighting transformer for integration in MMEA?","query_id":"AutoScholarQuery_test_77"}
+{"query":"Which works have been conducted on memory methods for object navigation tasks?","query_id":"AutoScholarQuery_test_78"}
+{"query":"Which study presents the use of synthetic captions for training BLIP and BLIP2 models?","query_id":"AutoScholarQuery_test_79"}
+{"query":"Could you provide me some works about multi-agent debating frameworks?","query_id":"AutoScholarQuery_test_80"}
+{"query":"Which research provide examples of multimodal-conditional image synthesis systems?","query_id":"AutoScholarQuery_test_81"}
+{"query":"Which studies showed successful results using group-level persona variables?","query_id":"AutoScholarQuery_test_82"}
+{"query":"Could you provide me with works that discuss the problem of performance degradation when distilling larger LMs, especially when the student is of small scale?","query_id":"AutoScholarQuery_test_83"}
+{"query":"Could you provide me some works about generative methods for transferable adversarial attacks?","query_id":"AutoScholarQuery_test_84"}
+{"query":"What is the key work on Trust Region Policy Optimization?","query_id":"AutoScholarQuery_test_85"}
+{"query":"What works focus on spatial feature transformation for BEV feature generation?","query_id":"AutoScholarQuery_test_86"}
+{"query":"What work used a modified VQ-GAN for isolated word sign language video generation?","query_id":"AutoScholarQuery_test_87"}
+{"query":"What papers propose the use of FP8 for accelerated inference?","query_id":"AutoScholarQuery_test_88"}
+{"query":"Who analysed the NTK spectrum for shallow ReLU networks under the uniform and nonuniform distributions?","query_id":"AutoScholarQuery_test_89"}
+{"query":"Which works explored the theoretical analysis of the NTK spectrum via random matrix theory?","query_id":"AutoScholarQuery_test_90"}
+{"query":"Any research work about directly predicting CNN classifier accuracy by deriving distribution distance features between training and test images with a linear regression model?","query_id":"AutoScholarQuery_test_91"}
+{"query":"What works feature insightful discussions on preconditioning?","query_id":"AutoScholarQuery_test_92"}
+{"query":"Which paper introduced Vector Quantized Variational Autoencoders (VQ-VAE)?","query_id":"AutoScholarQuery_test_93"}
+{"query":"Which research introduced a graph generation method for query structure prediction in parsing?","query_id":"AutoScholarQuery_test_94"}
+{"query":"Could you provide some works about deep AD approaches that employ a self-supervised loss function to train the detector and score anomalies?","query_id":"AutoScholarQuery_test_95"}
+{"query":"What studies have proposed methods to facilitate better model and AI service documentation?","query_id":"AutoScholarQuery_test_96"}
+{"query":"Which study offers a lightweight, subject-driven personalization for text-to-image diffusion models?","query_id":"AutoScholarQuery_test_97"}
+{"query":"What works present operators of tensor decomposition composed of fast Fourier / trigonometric transforms?","query_id":"AutoScholarQuery_test_98"}
+{"query":"What paper describes the dataset MiniWoB++, where sequences of low-level UI commands describe multi-step tasks?","query_id":"AutoScholarQuery_test_99"}
+{"query":"Which paper proposed improving the anomaly score for reconstruction-based techniques via constructing a score that integrates reconstruction error and discriminator loss?","query_id":"AutoScholarQuery_test_100"}
+{"query":"What work proposes to model speech based on HuBERT codes or semantic tokens?","query_id":"AutoScholarQuery_test_101"}
+{"query":"What research works talk about using Inverse Propensity Score (IPS) and Self-Normalized IPS (SNIPS) methods to tackle selection bias on data?","query_id":"AutoScholarQuery_test_102"}
+{"query":"What paper introduced the Segment Anything Model (SAM) which is a foundational model for image segmentation?","query_id":"AutoScholarQuery_test_103"}
+{"query":"Which publications contain the principal components of latent space obtained by performing PCA as global meaningful perturbations?","query_id":"AutoScholarQuery_test_104"}
+{"query":"What studies introduced mask classification-based methods for instance-level segmentation?","query_id":"AutoScholarQuery_test_105"}
+{"query":"What studies extensively examined the MMD two-sample test?","query_id":"AutoScholarQuery_test_106"}
+{"query":"What works are related to 3D Gaussian Splatting for 3D reconstruction?","query_id":"AutoScholarQuery_test_107"}
+{"query":"Can you specify the studies about using prompt and fine-tuning techniques for adapting VLMs to a new downstream task?","query_id":"AutoScholarQuery_test_108"}
+{"query":"What works propose 2D-to-3D pose lifting task and regress the 3D keypoints based on a convolutional neural network from 2D keypoints?","query_id":"AutoScholarQuery_test_109"}
+{"query":"What researches have created evaluation data for individual tasks in Indic languages?","query_id":"AutoScholarQuery_test_110"}
+{"query":"What are some classic methods for learning latent graphs?","query_id":"AutoScholarQuery_test_111"}
+{"query":"Which paper introduced the method known as CoT prompting?","query_id":"AutoScholarQuery_test_112"}
+{"query":"Which works assumed Gaussian noise in RGB space for pixel-wise uncertainty in the context of NeRF?","query_id":"AutoScholarQuery_test_113"}
+{"query":"What papers explored using diffusion models within the realm of reinforcement learning?","query_id":"AutoScholarQuery_test_114"}
+{"query":"Could you provide me works that touch upon one-class classification approaches for video anomaly detection?","query_id":"AutoScholarQuery_test_115"}
+{"query":"Which studies have focused on the protein docking technique?","query_id":"AutoScholarQuery_test_116"}
+{"query":"What are some works in vision that stress the importance of data selection in supervised or semi-supervised setting?","query_id":"AutoScholarQuery_test_117"}
+{"query":"What works adopted large language models (LLMs) for a cost-effective generation of Counterfactually Augmented Data (CAD)?","query_id":"AutoScholarQuery_test_118"}
+{"query":"Which studies demonstrated that vector arithmetic on latent space leads to the semantic arithmetic on the image space?","query_id":"AutoScholarQuery_test_119"}
+{"query":"Which research papers cover the challenges of covariate shift and causal confusion in behavior cloning?","query_id":"AutoScholarQuery_test_120"}
+{"query":"What papers focus on the concept of equivariance in Convolutional Neural Networks (CNNs)?","query_id":"AutoScholarQuery_test_121"}
+{"query":"What papers discuss the definitions and concepts of Pseudo-Global Stability in regards to Differential Privacy?","query_id":"AutoScholarQuery_test_122"}
+{"query":"Which works focus on predicting model generalization error?","query_id":"AutoScholarQuery_test_123"}
+{"query":"Which study proposed the Subformer model with shared middle layers and embedding factorization?","query_id":"AutoScholarQuery_test_124"}
+{"query":"What studies have proven Generation-Augmented Retrieval effective in question answering and passage retrieval?","query_id":"AutoScholarQuery_test_125"}
+{"query":"What paper introduces the Mirror Descent Modified Policy Iteration (MD-MPI) framework?","query_id":"AutoScholarQuery_test_126"}
+{"query":"What papers provide linear convergence guarantees of NPG and PMD in softmax tabular policy settings by adding regularization?","query_id":"AutoScholarQuery_test_127"}
+{"query":"Which papers established a basis of ARA using language models based on deep neural networks?","query_id":"AutoScholarQuery_test_128"}
+{"query":"Which works proposed a simple approach based on the statistics of the dataset for response length prediction?","query_id":"AutoScholarQuery_test_129"}
+{"query":"Can you mention publications that implemented transformers in 2D-to-3D pose lifting?","query_id":"AutoScholarQuery_test_130"}
+{"query":"Can you provide an example of a paper that presents self-tuning algorithms?","query_id":"AutoScholarQuery_test_131"}
+{"query":"Which papers talk about using LLMs to interpret themselves or other ML models by providing numerical importances for their inputs?","query_id":"AutoScholarQuery_test_132"}
+{"query":"Could you provide me studies about knowledge distillation methods for semantic segmentation focusing on preserving structural semantic relations?","query_id":"AutoScholarQuery_test_133"}
+{"query":"What works have focused on evaluating API-use scenarios based on a separate LLM to assess the quality of examples?","query_id":"AutoScholarQuery_test_134"}
+{"query":"Any works about user-annotations based image animation?","query_id":"AutoScholarQuery_test_135"}
+{"query":"What works conducted studies on LegalBERT and CaseLaw-BERT that focused on the legal domain?","query_id":"AutoScholarQuery_test_136"}
+{"query":"Are there any works that created datasets and systems for tasks related to information time-tracking?","query_id":"AutoScholarQuery_test_137"}
+{"query":"Could you provide me studies about anomaly detection in federated learning particularly related to network security?","query_id":"AutoScholarQuery_test_138"}
+{"query":"What research focused on 3D instance segmentation with only 3D box annotation requirements?","query_id":"AutoScholarQuery_test_139"}
+{"query":"Are there any papers that investigate the need for an initially annotated fraction of data to bootstrap an active learning method?","query_id":"AutoScholarQuery_test_140"}
+{"query":"Can you provide works that evaluate RL agents by changing the initial states in the same environment?","query_id":"AutoScholarQuery_test_141"}
+{"query":"Which research paper introduced the DenseCL method that applies contrastive learning on patches with highest similarity?","query_id":"AutoScholarQuery_test_142"}
+{"query":"Which work outlines a way to calculate adversarial perturbations during training by first randomly perturbing the initial point then applying a single step of projected gradient descent?","query_id":"AutoScholarQuery_test_143"}
+{"query":"Could you provide some works that discuss multimodal prompting methods?","query_id":"AutoScholarQuery_test_144"}
+{"query":"Which work proposes reweighting different activation channels based on the global context of the input samples?","query_id":"AutoScholarQuery_test_145"}
+{"query":"What works focused on MAML and its variants?","query_id":"AutoScholarQuery_test_146"}
+{"query":"What research papers have addressed issues of equivariance by customizing kernel designs in the context of kernel methods and Gaussian processes (GPs)?","query_id":"AutoScholarQuery_test_147"}
+{"query":"What studies have leveraged extensive image-text pair datasets to broaden the detection vocabulary in Open-vocabulary detection?","query_id":"AutoScholarQuery_test_148"}
+{"query":"Could you mention research that addresses MMS approximations for suodular and subadditive valuations?","query_id":"AutoScholarQuery_test_149"}
+{"query":"Which works can you provide that are focused on creating evaluation data on Indic languages?","query_id":"AutoScholarQuery_test_150"}
+{"query":"What work highlights the disconnect between benchmark results and real world impacts in NLP?","query_id":"AutoScholarQuery_test_151"}
+{"query":"What work applied CLIP to dense prediction tasks?","query_id":"AutoScholarQuery_test_152"}
+{"query":"Which papers have proposed for extracting the specific style from reference images?","query_id":"AutoScholarQuery_test_153"}
+{"query":"What papers studied the construction of diffusion models for discrete categorical data using a categorical noise process?","query_id":"AutoScholarQuery_test_154"}
+{"query":"Which works combine external knowledge from KGs into LLMs during the prompting stage?","query_id":"AutoScholarQuery_test_155"}
+{"query":"What works have concentrated on generating free-form natural language explanations (NLEs) for justifying model predictions?","query_id":"AutoScholarQuery_test_156"}
+{"query":"What work proposes the intrinsic local dimension estimation scheme for the latent manifold through the robust rank estimate?","query_id":"AutoScholarQuery_test_157"}
+{"query":"Which paper first used the term hypercolumn in the context of neural network features?","query_id":"AutoScholarQuery_test_158"}
+{"query":"Could you provide me some studies that used NeRFs for novel view synthesis and 3D scene reconstruction?","query_id":"AutoScholarQuery_test_159"}
+{"query":"Could you provide me some works that incorporate ideas from multicalibration to improve conditional coverage?","query_id":"AutoScholarQuery_test_160"}
+{"query":"Which papers have achieved progress in the field of graph contrastive learning?","query_id":"AutoScholarQuery_test_161"}
+{"query":"Can you provide existing research that used contrastive methods in representation learning?","query_id":"AutoScholarQuery_test_162"}
+{"query":"What works introduced methodologies involving the learning of kernels to detect illuminant chromaticity?","query_id":"AutoScholarQuery_test_163"}
+{"query":"Could you tell me what studies propose to bridge vision and language modalities through visual prompt generators?","query_id":"AutoScholarQuery_test_164"}
+{"query":"Could you provide me some studies about sign language translation and production using RWTH-Phoenix dataset?","query_id":"AutoScholarQuery_test_165"}
+{"query":"Which work talked about ODIN, a method where two networks jointly optimize the segmentation masks and representation of objects?","query_id":"AutoScholarQuery_test_166"}
+{"query":"Which works proposed modifications for discrete-time models, such as recurrent neural networks to handle irregular time series data?","query_id":"AutoScholarQuery_test_167"}
+{"query":"Could you mention a study that generates diverse reasoning paths using CoT?","query_id":"AutoScholarQuery_test_168"}
+{"query":"Could you provide me studies where the solution of the reverse-time SDE is theoretically derived?","query_id":"AutoScholarQuery_test_169"}
+{"query":"Could you provide me some researches about extensions for population-based training?","query_id":"AutoScholarQuery_test_170"}
+{"query":"Any studies that focused on the problem of proving structured queries to knowledge base?","query_id":"AutoScholarQuery_test_171"}
+{"query":"Which paper improved the scene text editing performance by incorporating stroke-level information?","query_id":"AutoScholarQuery_test_172"}
+{"query":"Which works implement the conceptual design of complex-valued activations for object binding in synchrony-based models?","query_id":"AutoScholarQuery_test_173"}
+{"query":"Which works have implemented different kernels at various regions of the DP pair for single-task based deblurring?","query_id":"AutoScholarQuery_test_174"}
+{"query":"Where does the ControlNet, a finetuning model for synthetic face generation, discussed?","query_id":"AutoScholarQuery_test_175"}
+{"query":"Which works considered the physical world and social norms for affordance inference?","query_id":"AutoScholarQuery_test_176"}
+{"query":"Can you mention some studies that have explored quantization as a means of compressing the parameters of LLMs for efficient inference?","query_id":"AutoScholarQuery_test_177"}
+{"query":"Could you provide me with some works on memorization study that involve finding training dataset documents related to the output?","query_id":"AutoScholarQuery_test_178"}
+{"query":"Which references provided a dataset facilitating entity embedding through linked images?","query_id":"AutoScholarQuery_test_179"}
+{"query":"What works have studied sampling for regret minimization in the framework of Unsupervised Environment Design?","query_id":"AutoScholarQuery_test_180"}
+{"query":"Which works used middle-layer LLM outputs and inserted them into the VPG to identify differences between images?","query_id":"AutoScholarQuery_test_181"}
+{"query":"Which works achieve high identity preservation in personalized generation through massive datasets and expensive hardware resources?","query_id":"AutoScholarQuery_test_182"}
+{"query":"Are there any studies about efficient selection of source tasks in NLP?","query_id":"AutoScholarQuery_test_183"}
+{"query":"What works discuss transformer-based methods for 3D instance segmentation?","query_id":"AutoScholarQuery_test_184"}
+{"query":"Which work explores model calibration for Uncertainty Estimation in the context of multiple-choice question answering?","query_id":"AutoScholarQuery_test_185"}
+{"query":"Could you provide me some studies that explored policy optimization via backpropagating through the dynamics model?","query_id":"AutoScholarQuery_test_186"}
+{"query":"Which study proposed a complete graph kernel based on homomorphism counts in the context of graph learning tasks?","query_id":"AutoScholarQuery_test_187"}
+{"query":"Which study developed a Jacobi diffusion process for discrete data diffusion models?","query_id":"AutoScholarQuery_test_188"}
+{"query":"What research introduced DPMs and linked the generative model to a denoising diffusion model?","query_id":"AutoScholarQuery_test_189"}
+{"query":"Which studies focused on structured neural networks embedding principles like equivariance, Euclidean symmetry and periodicity?","query_id":"AutoScholarQuery_test_190"}
+{"query":"Which study proposed the use of memorization as a metric in CoreSet selection?","query_id":"AutoScholarQuery_test_191"}
+{"query":"Which papers discussed Parameter-efficient fine-tuning (PEFT) methods for reducing storage requirements in large-scale PLMs?","query_id":"AutoScholarQuery_test_192"}
+{"query":"What studies compare using a large web corpus versus Wikipedia?","query_id":"AutoScholarQuery_test_193"}
+{"query":"Are there any studies that discuss about learning 'subspace juntas', functions of an unknown low-dimensional subspace?","query_id":"AutoScholarQuery_test_194"}
+{"query":"Which work attempted to explore the inner modeling of hierarchical Transformer-based backbone?","query_id":"AutoScholarQuery_test_195"}
+{"query":"Which works on deep learning are primarily used as losses to train generative models?","query_id":"AutoScholarQuery_test_196"}
+{"query":"Which references discussed the empirical observation of oversmoothing issue in attention-based GNNs such as GATs or transformers?","query_id":"AutoScholarQuery_test_197"}
+{"query":"Which researchers proposed altering the memory-computation trade-off of the neural architecture for improving computational speed in neural scene representations?","query_id":"AutoScholarQuery_test_198"}
+{"query":"What are the recent works that employed clustering for personalized Federated Learning?","query_id":"AutoScholarQuery_test_199"}
+{"query":"What research demonstrated that the Felzenswalb algorithm can generate useful geometric segment clusters in the ScanNet dataset?","query_id":"AutoScholarQuery_test_200"}
+{"query":"Which studies showed the success of Diffusion Models in the field of image synthesis?","query_id":"AutoScholarQuery_test_201"}
+{"query":"Which researches focused on batchifying queries in few-shot settings for LLMs?","query_id":"AutoScholarQuery_test_202"}
+{"query":"What are the papers that applied zero/few-shot learning using large language models?","query_id":"AutoScholarQuery_test_203"}
+{"query":"Which works have achieved impressive results in the field of image generation using Diffusion Probabilistic Models?","query_id":"AutoScholarQuery_test_204"}
+{"query":"Which work resulted in the creation of the BLOOM model and ROOTS corpus as part of open science community initiatives?","query_id":"AutoScholarQuery_test_205"}
+{"query":"Could you detail any works about answering questions given counterfactual conditions?","query_id":"AutoScholarQuery_test_206"}
+{"query":"Which works focused on leveraging the internal states of LLMs to study hallucinated content?","query_id":"AutoScholarQuery_test_207"}
+{"query":"Can you provide references for grouping-based methods of 3D instance segmentation?","query_id":"AutoScholarQuery_test_208"}
+{"query":"In which studies has the focus been on translating natural language proofs into formal representations?","query_id":"AutoScholarQuery_test_209"}
+{"query":"Which works extend the concept of estimating a transformation between two point clouds into finding an ideal set of primitives to represent a shape collection?","query_id":"AutoScholarQuery_test_210"}
+{"query":"Which works achieved impressive results in scene understanding using multi-modal models?","query_id":"AutoScholarQuery_test_211"}
+{"query":"Who are the researchers that attempted to close the gap between QM calculations and ML potentials?","query_id":"AutoScholarQuery_test_212"}
+{"query":"Any references that applied DDPM based on PVCNNs on the point-voxel representation of 3D shapes?","query_id":"AutoScholarQuery_test_213"}
+{"query":"What papers discussed multi-modal models?","query_id":"AutoScholarQuery_test_214"}
+{"query":"Which paper provides a thorough discussion on quantisation-aware training?","query_id":"AutoScholarQuery_test_215"}
+{"query":"What works propose the usage of vector-quantized variational autoencoder and point-based diffusion model in the context of LiDAR scene generation?","query_id":"AutoScholarQuery_test_216"}
+{"query":"What papers proposed IL+RL methods that initialize policy search methods with policies trained via behavioral cloning?","query_id":"AutoScholarQuery_test_217"}
+{"query":"Could you provide some studies about LiDAR perception techniques using active learning and domain adaptation methods?","query_id":"AutoScholarQuery_test_218"}
+{"query":"Which studies used deep learning in vision tasks like classification and object detection?","query_id":"AutoScholarQuery_test_219"}
+{"query":"Which works construct a generalized decoding model capable of predicting pixel-level segmentation and language tokens?","query_id":"AutoScholarQuery_test_220"}
+{"query":"What works showed that tighter dynamic regret rates are possible in non-stationary multi-armed bandits?","query_id":"AutoScholarQuery_test_221"}
+{"query":"What work combines an original NeRF with an edited NeRF generated using text-based SDS?","query_id":"AutoScholarQuery_test_222"}
+{"query":"What works establish the first connection between replicability and differential privacy in the context of PAC learning?","query_id":"AutoScholarQuery_test_223"}
+{"query":"Could you provide me some works that focus on specific applications such as dialogue, structured knowledge grounding, or chain-of-thought reasoning?","query_id":"AutoScholarQuery_test_224"}
+{"query":"What papers are about updating text generation metrics?","query_id":"AutoScholarQuery_test_225"}
+{"query":"Which work provided upper and lower bounds on optimal regret based on a variant of the DEC?","query_id":"AutoScholarQuery_test_226"}
+{"query":"Which papers propose graph-based approaches for capturing longer-term dependencies in 3D human pose forecasting?","query_id":"AutoScholarQuery_test_227"}
+{"query":"Could you provide me with the works using unified maximum likelihood estimation and object retrieval to support various tasks?","query_id":"AutoScholarQuery_test_228"}
+{"query":"Which works classify samples as hard based on the presence of large gradient norm and large norm of error vectors?","query_id":"AutoScholarQuery_test_229"}
+{"query":"What work uses meta-learning methods in the field of knowledge editing?","query_id":"AutoScholarQuery_test_230"}
+{"query":"What are some studies that discuss non-linear front-door adjustment?","query_id":"AutoScholarQuery_test_231"}
+{"query":"What works apply the mentioned technique to the first-order methods?","query_id":"AutoScholarQuery_test_232"}
+{"query":"What papers explored the combination of GANs and implicit neural representation for 3D-aware image synthesis?","query_id":"AutoScholarQuery_test_233"}
+{"query":"Could you provide me some research that demonstrated zero-shot cross-lingual transfer?","query_id":"AutoScholarQuery_test_234"}
+{"query":"What papers discuss the application of non-Euclidean diffusion equation leading to a scheme with adaptive spatial derivatives?","query_id":"AutoScholarQuery_test_235"}
+{"query":"Which paper used mutual information for invariant representation learning outside of RL?","query_id":"AutoScholarQuery_test_236"}
+{"query":"Which paper introduces DataComp, a benchmark for designing better pre-training datasets for CLIP?","query_id":"AutoScholarQuery_test_237"}
+{"query":"What paper advances the representative Seq2Edit model, GECToR, by improving its multi-round correction?","query_id":"AutoScholarQuery_test_238"}
+{"query":"Which works discuss provably efficient algorithms in the context of function approximation in linear mixture MDPs?","query_id":"AutoScholarQuery_test_239"}
+{"query":"Could you provide me some critiques on benchmarks in NLP about annotation artifacts?","query_id":"AutoScholarQuery_test_240"}
+{"query":"What studies presented method for selecting single target-state pair with stochastic batch acquisition in a BOED setting?","query_id":"AutoScholarQuery_test_241"}
+{"query":"Which work introduced API specially designed for content moderation in vast amounts of data?","query_id":"AutoScholarQuery_test_242"}
+{"query":"What is the research paper that discusses instruction tuning?","query_id":"AutoScholarQuery_test_243"}
+{"query":"Which work proposed the method of calculating the inner integral of Sampled Policy Gradients (SPG) using a Q-network?","query_id":"AutoScholarQuery_test_244"}
+{"query":"Which work applied perturbations to word embeddings in the NLP domain?","query_id":"AutoScholarQuery_test_245"}
+{"query":"What studies have considered extending beta diffusion to encompass the exponential family?","query_id":"AutoScholarQuery_test_246"}
+{"query":"What papers explored metrics that either emphasize a single dimension or lack human relevance?","query_id":"AutoScholarQuery_test_247"}
+{"query":"Are there any studies that provide convergence guarantees for PFL with the bounded gradients assumption on heterogeneous data?","query_id":"AutoScholarQuery_test_248"}
+{"query":"Can you give examples of research that altered the parameter of the transition function (like gravity strength or the weight of the ball) for RL agent evaluation?","query_id":"AutoScholarQuery_test_249"}
+{"query":"What subsequent work improved the complexities of the method developed by bib.bib60?","query_id":"AutoScholarQuery_test_250"}
+{"query":"What works proposed methods based on the primary form of the Optimal Transport problem?","query_id":"AutoScholarQuery_test_251"}
+{"query":"Could you provide me some works that focus on aligning the learning trajectories for emulating long-range training dynamics of real data when performing dataset condensation?","query_id":"AutoScholarQuery_test_252"}
+{"query":"Which studies succeeded in addressing regression tasks through deep learning?","query_id":"AutoScholarQuery_test_253"}
+{"query":"What works exist that provide corrective measures for issues concerning the RP gradient?","query_id":"AutoScholarQuery_test_254"}
+{"query":"What works have been done to extract answers from question-specific subgraphs generated with text corpora?","query_id":"AutoScholarQuery_test_255"}
+{"query":"Which works propose methods to handle continuous treatments in the back-door adjustment?","query_id":"AutoScholarQuery_test_256"}
+{"query":"Can you identify any papers that analysed the use of target networks with linear function approximation, needed in theoretical properties of target networks?","query_id":"AutoScholarQuery_test_257"}
+{"query":"Which works adapt diffusion models to condition generation on protein pockets?","query_id":"AutoScholarQuery_test_258"}
+{"query":"What are some of the works that provide a detailed analysis of the stationary distribution of SGD iterations with a constant learning rate?","query_id":"AutoScholarQuery_test_259"}
+{"query":"What works measure bias based on the difference in ground-truth object-group co-occurrences in the training set and test set co-occurrences predicted by a model?","query_id":"AutoScholarQuery_test_260"}
+{"query":"What works are there on incorporating interactive discussions and human collaboration into LLM-based evaluation methodologies?","query_id":"AutoScholarQuery_test_261"}
+{"query":"What works made advancements in achieving certified robustness with state-of-the-art randomized ablation?","query_id":"AutoScholarQuery_test_262"}
+{"query":"Which works perform multi-view refinement with flow or dense features in Structure-from-Motion (SfM)?","query_id":"AutoScholarQuery_test_263"}
+{"query":"Could you give me examples of research achieving progress in sentiment analysis using multi-modal models?","query_id":"AutoScholarQuery_test_264"}
+{"query":"Which works propose techniques for improving the quality of image-text datasets in multimodal networks?","query_id":"AutoScholarQuery_test_265"}
+{"query":"In what works can I find large-scale unsupervised pre-training on unstructured text for multilingual corpora?","query_id":"AutoScholarQuery_test_266"}
+{"query":"Which papers focus on broader applications of NeRF, including generative modeling, video synthesis, and scene editing?","query_id":"AutoScholarQuery_test_267"}
+{"query":"What studies considered to initialise the vertices of the graphs with random labels in graph embedding?","query_id":"AutoScholarQuery_test_268"}
+{"query":"What studies removed the strong assumptions about knowledge of non-stationarity in non-contextual bandits?","query_id":"AutoScholarQuery_test_269"}
+{"query":"What is the standout example of point-based methodologies that transformed the direct processing of Point Cloud?","query_id":"AutoScholarQuery_test_270"}
+{"query":"Could you provide me some works about studying a special case of fractionally subadditive valuations?","query_id":"AutoScholarQuery_test_271"}
+{"query":"Which works explored ad-hoc teamwork and zero-shot coordination in AI?","query_id":"AutoScholarQuery_test_272"}
+{"query":"What works explored the constraint of Neural Differential Equations by expensive training and prediction times?","query_id":"AutoScholarQuery_test_273"}
+{"query":"What work is the only public simulator that supports differentiable simulation for in-graph acceleration?","query_id":"AutoScholarQuery_test_274"}
+{"query":"What studies work on body motion conditioned on text descriptions?","query_id":"AutoScholarQuery_test_275"}
+{"query":"Which study examines users' discomfort or concern due to the lack of responsibility in LLMs' recommendations for emotional support response?","query_id":"AutoScholarQuery_test_276"}
+{"query":"Which reference is about the TorchGeo, a Python library for the integration of remote sensing datasets into the PyTorch deep learning ecosystem?","query_id":"AutoScholarQuery_test_277"}
+{"query":"Which studies have investigated factors like loss function, surrogate gradient estimation, and batch normalization that affect the learning behavior in direct training of SNNs?","query_id":"AutoScholarQuery_test_278"}
+{"query":"Could you provide me works that exemplified an asymmetric discussion mechanism with different LLMs and using a weighted voting mechanism?","query_id":"AutoScholarQuery_test_279"}
+{"query":"What references proposed methods to discover the global semantic structure underlying the whole dataset, shed light on graph contrastive learning?","query_id":"AutoScholarQuery_test_280"}
+{"query":"Could you mention research studies that utilized features for minimizing the surrogate models in dataset distillation?","query_id":"AutoScholarQuery_test_281"}
+{"query":"Could you name the papers where the research focus on the L2 convergence rate for KRR, and it can be easily extended to [ℋ]γ,γ≥0 convergence rate?","query_id":"AutoScholarQuery_test_282"}
+{"query":"What work used MCP when evaluating InstructGPT?","query_id":"AutoScholarQuery_test_283"}
+{"query":"What studies in medical VLMs use diffusion-based methods in report-to-CXR generation task?","query_id":"AutoScholarQuery_test_284"}
+{"query":"Which works initially proposed generating test cases and corresponding accurate assert statements with Transformer models?","query_id":"AutoScholarQuery_test_285"}
+{"query":"Which paper carried out an extensive empirical study which shows significant improvement in model performance by implementing SWAG with multiple randomly initialized models?","query_id":"AutoScholarQuery_test_286"}
+{"query":"What works have developed algorithms to solve the sparse coding problem?","query_id":"AutoScholarQuery_test_287"}
+{"query":"What studies used concept activation vectors and multimodal models to annotate concepts for CBMs?","query_id":"AutoScholarQuery_test_288"}
+{"query":"Any works that discuss learning the GAN fingerprints towards image attribution?","query_id":"AutoScholarQuery_test_289"}
+{"query":"What works used pretrained GAN generators and text encoders to optimize images based on textual prompts?","query_id":"AutoScholarQuery_test_290"}
+{"query":"What research proposed GroundingSAM, a combination of GroundingDINO and SAM for generating segmentation masks?","query_id":"AutoScholarQuery_test_291"}
+{"query":"What research is done about 3D diffusion models involving meshes?","query_id":"AutoScholarQuery_test_292"}
+{"query":"Which papers deal with the utilization of context to rewrite the conversation into a standalone query in CQR models?","query_id":"AutoScholarQuery_test_293"}
+{"query":"In what work was PoseNet’s innovative transfer learning first introduced?","query_id":"AutoScholarQuery_test_294"}
+{"query":"Which studies describe model structures that implicitly generate reasoning processes?","query_id":"AutoScholarQuery_test_295"}
+{"query":"What studies investigated phenomenon on invariant representations in the context of algorithmic fairness?","query_id":"AutoScholarQuery_test_296"}
+{"query":"Any studies showcase the potential of non-attention architectures in language modeling?","query_id":"AutoScholarQuery_test_297"}
+{"query":"What papers proposed iterative methods for transferable adversarial attacks?","query_id":"AutoScholarQuery_test_298"}
+{"query":"Which papers proposed datasets for open domain question answering (QA) for English and other languages?","query_id":"AutoScholarQuery_test_299"}
+{"query":"What research work focuses on a criterion, named difference of confidences (DoC), which estimates and reflects model accuracy?","query_id":"AutoScholarQuery_test_300"}
+{"query":"What studies introduced the mask-reconstruction paradigm for unimodal pretraining?","query_id":"AutoScholarQuery_test_301"}
+{"query":"Are there any studies that suggest the algorithm they propose cannot be directly applied to model-free reinforcement learning settings?","query_id":"AutoScholarQuery_test_302"}
+{"query":"Are there any studies that used meta-learning for updating the knowledge in LLMs through varying their parameters?","query_id":"AutoScholarQuery_test_303"}
+{"query":"Which works were proposed that consider networks of weights matrices with bounded norms?","query_id":"AutoScholarQuery_test_304"}
+{"query":"Which study proposed the method PixSfM for feature-metric keypoint adjustment and bundle adjustment in SfM?","query_id":"AutoScholarQuery_test_305"}
+{"query":"What papers studied unbalanced optimal transport (UOT) using methods that estimate UOT potentials on discrete space?","query_id":"AutoScholarQuery_test_306"}
+{"query":"What works used open-loop imitation learning for predicting the behavior of the ego vehicle in autonomous driving?","query_id":"AutoScholarQuery_test_307"}
+{"query":"Which works formulates medical VQA datasets based on MIMIC-CXR?","query_id":"AutoScholarQuery_test_308"}
+{"query":"Can you name some studies that propose different metrics to prune networks at initialization?","query_id":"AutoScholarQuery_test_309"}
+{"query":"What papers reviewed when focusing on methods for quantifying aleatoric segmentation uncertainty?","query_id":"AutoScholarQuery_test_310"}
+{"query":"What papers outlined the studies on how to select the firing threshold to cover all the features in an ANN?","query_id":"AutoScholarQuery_test_311"}
+{"query":"What papers express key concerns about the validity of performance measurements obtained with various NLP benchmarks?","query_id":"AutoScholarQuery_test_312"}
+{"query":"Please provide papers advocating the use of scratchpads in Large Language Models.","query_id":"AutoScholarQuery_test_313"}
+{"query":"Which studies look at the convergence rates for PMD-type methods for Lipschitz and smooth policies?","query_id":"AutoScholarQuery_test_314"}
+{"query":"What papers discuss mitigation methods for temporal adaptation?","query_id":"AutoScholarQuery_test_315"}
+{"query":"What are the papers that introduce various learning objectives to tackle data heterogeneity in Federated Learning?","query_id":"AutoScholarQuery_test_316"}
+{"query":"Could you provide me some works that use complex-valued activations with real-valued weights and a gating mechanism?","query_id":"AutoScholarQuery_test_317"}
+{"query":"Which studies highlight the benefit of capturing long-distance relations in Graph Neural Networks (GNNs) by stacking more feature aggregation layers or unrolling various fixed point iterations?","query_id":"AutoScholarQuery_test_318"}
+{"query":"Could you mention some studies about learning-based MVS approaches?","query_id":"AutoScholarQuery_test_319"}
+{"query":"Which works opted to incorporate the backbone into the network's training process to form an end-to-end TAD framework?","query_id":"AutoScholarQuery_test_320"}
+{"query":"Which works are referred when discussing previous benchmarks for solving math word problems?","query_id":"AutoScholarQuery_test_321"}
+{"query":"Are there works that use image groupings and pairs for disentanglement?","query_id":"AutoScholarQuery_test_322"}
+{"query":"Could you provide me some examples of research that discusses the application of data augmentations in the latent space?","query_id":"AutoScholarQuery_test_323"}
+{"query":"Which works make a formal equivalence between differential privacy and replicability for finite domains?","query_id":"AutoScholarQuery_test_324"}
+{"query":"Could you find any works that proposed methods applicable to online non-parametric regression tasks?","query_id":"AutoScholarQuery_test_325"}
+{"query":"Which studies introduced text-to-SQL datasets associated with MIMIC-III and eICU?","query_id":"AutoScholarQuery_test_326"}
+{"query":"Are there any works that used hypernetworks in Meta-SL?","query_id":"AutoScholarQuery_test_327"}
+{"query":"Which researches have covered the attributes of non-functional requirements in terms of time/space performance?","query_id":"AutoScholarQuery_test_328"}
+{"query":"Could you provide examples of works about certified defenses focused on unimodal models?","query_id":"AutoScholarQuery_test_329"}
+{"query":"What are the early efforts that expanded traditional KG representation learning methods for single-modal knowledge graphs?","query_id":"AutoScholarQuery_test_330"}
+{"query":"Could you provide me the work that incorporated PEFT-based layer adaptation to the shared attention and FFN modules in transformers?","query_id":"AutoScholarQuery_test_331"}
+{"query":"What papers proposed domain adaptation (DA) methods?","query_id":"AutoScholarQuery_test_332"}
+{"query":"Which studies proposed the use of a seq2seq architecture and a progressive transformer for Sign Language Production (SLP)?","query_id":"AutoScholarQuery_test_333"}
+{"query":"What work stored manual edits in a memory module to amend the output of LLMs?","query_id":"AutoScholarQuery_test_334"}
+{"query":"What researches have been conducted about privacy-preserving learning with learning invariant representations?","query_id":"AutoScholarQuery_test_335"}
+{"query":"What research papers have explored multimodal tasks within UI contexts?","query_id":"AutoScholarQuery_test_336"}
+{"query":"What studies focus on the different techniques utilized to fine-tune the pre-trained models?","query_id":"AutoScholarQuery_test_337"}
+{"query":"Which works discussed the relation between sinusoidal networks and networks with Fourier feature transformations?","query_id":"AutoScholarQuery_test_338"}
+{"query":"Could you provide me some works that enhance unimodal language models with retrieval?","query_id":"AutoScholarQuery_test_339"}
+{"query":"Which works have utilized instructional videos for online learning, especially in the medical field?","query_id":"AutoScholarQuery_test_340"}
+{"query":"Who designed attentional GNNs by discretizing parabolic diffusion-type PDEs?","query_id":"AutoScholarQuery_test_341"}
+{"query":"Which studies investigated zero-shot NAS methods aiming to reduce search costs?","query_id":"AutoScholarQuery_test_342"}
+{"query":"Which papers approach the studies about adversarial attacks?","query_id":"AutoScholarQuery_test_343"}
+{"query":"What papers give an account of the datasets developed for the vision-based 3D Semantic Occupancy Prediction?","query_id":"AutoScholarQuery_test_344"}
+{"query":"Which studies surpassed traditional image compression standards by using neural image compression methods?","query_id":"AutoScholarQuery_test_345"}
+{"query":"Which research works have explored the organizational structures required to facilitate the development of research communities around under-represented languages?","query_id":"AutoScholarQuery_test_346"}
+{"query":"Which studies proposed a homotopy algorithm in the context of a response vector parameterized with a real value?","query_id":"AutoScholarQuery_test_347"}
+{"query":"What works proposed kernel-based distillation methods?","query_id":"AutoScholarQuery_test_348"}
+{"query":"What research allows direct NeRF editing by changing a reference image in 2D space?","query_id":"AutoScholarQuery_test_349"}
+{"query":"What works focus on obtaining strong visual representations through self-supervised training on large-scale image data?","query_id":"AutoScholarQuery_test_350"}
+{"query":"Can you refer any works that are used rounding or merging strategies to produce long feature tracks?","query_id":"AutoScholarQuery_test_351"}
+{"query":"What is the research proposing a two-step approach involving foreground-background separation and text spatial alignment for scene text editing?","query_id":"AutoScholarQuery_test_352"}
+{"query":"Could you provide me some works about zero-shot classification?","query_id":"AutoScholarQuery_test_353"}
+{"query":"What research extended the work of Zaheer et al. by using hierarchical clustering to obtain fine-grained pseudo-labels?","query_id":"AutoScholarQuery_test_354"}
+{"query":"Which paper discussed about the retrieval augmented generation (RAG) solutions?","query_id":"AutoScholarQuery_test_355"}
+{"query":"Which paper uses an Iterative Dataset Update(IDU) strategy to edit NeRF’s image dataset?","query_id":"AutoScholarQuery_test_356"}
+{"query":"What studies showed that maximum distance from a dataset to its subset was an effective measure of risk for instance optimality?","query_id":"AutoScholarQuery_test_357"}
+{"query":"Which studies reported that the performance of LLMs declines as the proportion of noise in the retrieval context increases?","query_id":"AutoScholarQuery_test_358"}
+{"query":"What works have used hypercolumns for tasks like keypoint detection, segmentation and semantic correspondence?","query_id":"AutoScholarQuery_test_359"}
+{"query":"Which papers mentioned about automatic learning of prompts, often termed as 'Prompt Learning'?","query_id":"AutoScholarQuery_test_360"}
+{"query":"What paper uses dynamically-updatable tree-sketches in the context of Kronecker regression?","query_id":"AutoScholarQuery_test_361"}
+{"query":"Which references mentioned that the estimation of a policy gradient in policy-gradient approaches requires more data than in their benchmarks?","query_id":"AutoScholarQuery_test_362"}
+{"query":"Can you provide some examples of studies that used differentiable simulation for efficient co-optimization of soft robots?","query_id":"AutoScholarQuery_test_363"}
+{"query":"Which studies have examined the Polyak-Lojasiewicz (PL) inequality, a generalization of strong-convexity?","query_id":"AutoScholarQuery_test_364"}
+{"query":"Which works have explored self-consistency techniques for refining language models in post-hoc correction?","query_id":"AutoScholarQuery_test_365"}
+{"query":"Could you provide me some studies that attempted to mitigate bias found in in-context learning by utilizing outputs distribution obtained from content-free texts?","query_id":"AutoScholarQuery_test_366"}
+{"query":"What papers propose a reduction from list-global stability to pseudo-global stability via correlated sampling in finite domains?","query_id":"AutoScholarQuery_test_367"}
+{"query":"Which works provide a categorization of existing graph OOD generalization methodologies?","query_id":"AutoScholarQuery_test_368"}
+{"query":"What studies are about Mixture of Experts, a technique used to improve robustness and overall accuracy in ensemble learning?","query_id":"AutoScholarQuery_test_369"}
+{"query":"Can you indicate which studies have investigated the trade-off between personalization and performance?","query_id":"AutoScholarQuery_test_370"}
+{"query":"Which paper proposed the ROAR algorithm for finding the closest and robust counterfactuals?","query_id":"AutoScholarQuery_test_371"}
+{"query":"Which studies deal with aligning visual features with pre-trained LLMs for multimodal comprehension tasks?","query_id":"AutoScholarQuery_test_372"}
+{"query":"Which studies have designed additional supervision signals or training processes for models in context of CoT reasoning?","query_id":"AutoScholarQuery_test_373"}
+{"query":"What works present the intervention technique of steering model output?","query_id":"AutoScholarQuery_test_374"}
+{"query":"What research papers focus on minimizing the surrogate models learned from synthetic and original datasets in dataset distillation using matching gradients?","query_id":"AutoScholarQuery_test_375"}
+{"query":"What works study the geometry of embeddings that decomposes the shifted pointwise mutual information matrix?","query_id":"AutoScholarQuery_test_376"}
+{"query":"Are there any papers that use MIAs to assess whether a given data point was used to train an LLM?","query_id":"AutoScholarQuery_test_377"}
+{"query":"What research directly trains sparse GANs from scratch?","query_id":"AutoScholarQuery_test_378"}
+{"query":"Could you name any studies that focus on report-to-CXR generation?","query_id":"AutoScholarQuery_test_379"}
+{"query":"What paper provides a connection between the matrix mechanism and the line of work about generating differentially private synthetic data?","query_id":"AutoScholarQuery_test_380"}
+{"query":"What works employed human pose estimation using 3D shape rendering from multiple views?","query_id":"AutoScholarQuery_test_381"}
+{"query":"Which studies regarded Kernel ridge regression as a special kind of spectral regularization algorithm?","query_id":"AutoScholarQuery_test_382"}
+{"query":"Which paper first proposed Graph Contrastive Learning (GCL) with random edge dropping and feature masking as data augmentations?","query_id":"AutoScholarQuery_test_383"}
+{"query":"What studies have suggested the usage of produced clusters for multi-document summarization?","query_id":"AutoScholarQuery_test_384"}
+{"query":"Which research gave regret bounds for a E2D that incorporates randomized estimators, but not optimism?","query_id":"AutoScholarQuery_test_385"}
+{"query":"What studies introduced strategies to improve the computational and parameter efficiency of transformers by refining parameter-sharing mechanisms?","query_id":"AutoScholarQuery_test_386"}
+{"query":"Could you provide me with research papers about learning a disentangled representation for RL?","query_id":"AutoScholarQuery_test_387"}
+{"query":"Which studies treated Transformer-based backbones as a 'black box'? ","query_id":"AutoScholarQuery_test_388"}
+{"query":"Which studies first used CLIP to optimize an underlying 3D representation in text-guided 3D generation?","query_id":"AutoScholarQuery_test_389"}
+{"query":"What papers mention the vulnerability of DNNs to common corruptions, random noises, and adversarial perturbations?","query_id":"AutoScholarQuery_test_390"}
+{"query":"Are there any studies regarding the creation of evaluation benchmarks for Natural Language Generation (NLG) on Indic languages?","query_id":"AutoScholarQuery_test_391"}
+{"query":"Which work first initiated the efforts to manipulate Neural Radiance Fields (NeRFs)?","query_id":"AutoScholarQuery_test_392"}
+{"query":"Could you refer me to some studies that use score-based models for graph generation?","query_id":"AutoScholarQuery_test_393"}
+{"query":"Could you provide some studies about unfaithful hallucination?","query_id":"AutoScholarQuery_test_394"}
+{"query":"Any works that introduced a method of learning policy by simulating states via the dynamics model?","query_id":"AutoScholarQuery_test_395"}
+{"query":"Which research made a claim that oversmoothing is asymptotically inevitable in GATs?","query_id":"AutoScholarQuery_test_396"}
+{"query":"Which work considers a different approach to limiting the amount of predicted information within learning-augmented paging?","query_id":"AutoScholarQuery_test_397"}
+{"query":"What work demonstrates the use of transformers in 3D pose estimation task?","query_id":"AutoScholarQuery_test_398"}
+{"query":"Are there any studies using a sequence-encoding VQ-VAE to learn the discrete codebook of listener motion?","query_id":"AutoScholarQuery_test_399"}
+{"query":"What paper presents a form of data augmentation for training CLIP models?","query_id":"AutoScholarQuery_test_400"}
+{"query":"Can you indicate some works that use 2D diffusion models to generate multi-view images then use them for 3D reconstruction with NeRF?","query_id":"AutoScholarQuery_test_401"}
+{"query":"Which works propose consistency-based methods for detecting non-factual generations in LLM generated content?","query_id":"AutoScholarQuery_test_402"}
+{"query":"Can you list the works that followed the concept of neural fields for 3D scene and object representation?","query_id":"AutoScholarQuery_test_403"}
+{"query":"Who uses similarities between word sense definitions to approximate human judgments on semantic proximity?","query_id":"AutoScholarQuery_test_404"}
+{"query":"Could you provide me some works about human-curated instruction datasets in languages outside of English?","query_id":"AutoScholarQuery_test_405"}
+{"query":"Who are the pioneer researchers in providing different contexts for a single visual concept using multiple images as part of personalized visual content generation?","query_id":"AutoScholarQuery_test_406"}
+{"query":"Are there any studies in sports video understanding which involves benchmarks for spatio-temporal reasoning?","query_id":"AutoScholarQuery_test_407"}
+{"query":"Could you provide me some studies of the use of beam search on KGs using LLMs to dynamically extract the most relevant reasoning paths?","query_id":"AutoScholarQuery_test_408"}
+{"query":"What research observed the detrimental effect of adding irrelevant noise to the context on model performance?","query_id":"AutoScholarQuery_test_409"}
+{"query":"What papers explored hallucination source and detection in Linguistically-Informed Language Models (LLMs)?","query_id":"AutoScholarQuery_test_410"}
+{"query":"Could you provide me some works that provide convergence guarantees of stochastic methods for solving quasi-strongly monotone Variational inequality problems (VIPs)?","query_id":"AutoScholarQuery_test_411"}
+{"query":"What references were made to works related to transformer-based models in hierarchical classification research?","query_id":"AutoScholarQuery_test_412"}
+{"query":"Which paper tackles the problem of registration of two scene fragments captured from two 3D viewpoints with low overlap?","query_id":"AutoScholarQuery_test_413"}
+{"query":"Which studies have leveraged object template information for identifying potential object locations?","query_id":"AutoScholarQuery_test_414"}
+{"query":"Which paper is about the Transformers architecture that most recent large language models (LLM) are based on?","query_id":"AutoScholarQuery_test_415"}
+{"query":"Which studies highlight that increased model capacity is needed to achieve robustness against adversarial examples?","query_id":"AutoScholarQuery_test_416"}
+{"query":"Could you provide me some works that apply Gaussian corruptions to token-vector embeddings in diffusion models?","query_id":"AutoScholarQuery_test_417"}
+{"query":"Could you list down studies that convert building footprint extraction into roof segmentation and roof-to-footprint offset estimation tasks?","query_id":"AutoScholarQuery_test_418"}
+{"query":"Which paper proposed a Mixed Integer Linear Programming based method to relax GNN certification?","query_id":"AutoScholarQuery_test_419"}
+{"query":"What works discuss initializations from the optimization perspective?","query_id":"AutoScholarQuery_test_420"}
+{"query":"In which work is explained how LLMs have also been trained on instruction datasets, meaning they can generate text using a custom instruction prompt?","query_id":"AutoScholarQuery_test_421"}
+{"query":"Could you provide me studies that apply CoT prompting for multiple reasoning traces and diversifying reasoning paths?","query_id":"AutoScholarQuery_test_422"}
+{"query":"Which research papers employ recurrent attention for routing but not for inferring slots?","query_id":"AutoScholarQuery_test_423"}
+{"query":"Which papers talk about the upper bounds for general activation functions?","query_id":"AutoScholarQuery_test_424"}
+{"query":"Can you provide the references of studies that have employed diffusion models for text-driven image editing?","query_id":"AutoScholarQuery_test_425"}
+{"query":"Which are the studies that have done efforts via multi-task learning in personalized Federated Learning?","query_id":"AutoScholarQuery_test_426"}
+{"query":"What studies discuss the field of 'learning from human feedback'?","query_id":"AutoScholarQuery_test_427"}
+{"query":"What work discusses the limitation of how answer generation can be updated based on retrievd documents?","query_id":"AutoScholarQuery_test_428"}
+{"query":"What study proposed a hierarchical transformer architecture that unifies semantic tokens and stacked hierarchical acoustic tokens within one stage?","query_id":"AutoScholarQuery_test_429"}
+{"query":"What are some existing methods proposed for Federated Domain Generalization?","query_id":"AutoScholarQuery_test_430"}
+{"query":"Which papers present locate-then-edit methods for knowledge editing?","query_id":"AutoScholarQuery_test_431"}
+{"query":"What are some works that have focused on how LLMs can be connected to visual foundation models?","query_id":"AutoScholarQuery_test_432"}
+{"query":"Could you provide me some works that reveal the limitations of LLMs' ability in providing emotional support?","query_id":"AutoScholarQuery_test_433"}
+{"query":"Could you provide me some studies about Neural Radiance Field (NeRF)?","query_id":"AutoScholarQuery_test_434"}
+{"query":"Could you provide me some studies about imitation learning methods that doesn't strictly fit into IDM or GAIL based approaches?","query_id":"AutoScholarQuery_test_435"}
+{"query":"Which research proposed discrete adaptations of the diffusion model in the context of text generation?","query_id":"AutoScholarQuery_test_436"}
+{"query":"Could you provide me some works where human feedback was utilised to finetune large language models?","query_id":"AutoScholarQuery_test_437"}
+{"query":"What papers study the integration of visual encoding modules, like ViT, with LLMs such as LLaMa?","query_id":"AutoScholarQuery_test_438"}
+{"query":"Which study was the first to consider the problem of differentially private submodular maximization in the context of CPPP?","query_id":"AutoScholarQuery_test_439"}
+{"query":"What research papers proposed using attention mechanisms to combine optical flow and deformable convolution for feature alignment?","query_id":"AutoScholarQuery_test_440"}
+{"query":"Which paper suggested that LLMs internally need to infer latent variables for better prediction in the context of in-context learning?","query_id":"AutoScholarQuery_test_441"}
+{"query":"Are there any works on analytical reconstruction attacks which recursively reconstruct activation maps layer per layer?","query_id":"AutoScholarQuery_test_442"}
+{"query":"What is the first work that proposed a question-answering dataset that requires the model to perform counterfactual reasoning?","query_id":"AutoScholarQuery_test_443"}
+{"query":"Which works focus on neural architecture search (NAS) for discovering optimal network structures?","query_id":"AutoScholarQuery_test_444"}
+{"query":"Which works have used pre-computing or post-computing methods for feature aggregation in GNN models?","query_id":"AutoScholarQuery_test_445"}
+{"query":"Could you provide me some works about the problem of exploding variance of the RP gradients due to the chaotic nature of environments?","query_id":"AutoScholarQuery_test_446"}
+{"query":"What research introduced methods that adapt the training procedure of the classifier itself?","query_id":"AutoScholarQuery_test_447"}
+{"query":"Which works look at achieving ϵ-optimal reward in non-convex settings?","query_id":"AutoScholarQuery_test_448"}
+{"query":"Which work proposed the Mirror Learning algorithm?","query_id":"AutoScholarQuery_test_449"}
+{"query":"What works have explored video human-object interaction detection?","query_id":"AutoScholarQuery_test_450"}
+{"query":"What are some representative works about graph embedding-based methods?","query_id":"AutoScholarQuery_test_451"}
+{"query":"What are some works related to the Mean Teacher paradigm?","query_id":"AutoScholarQuery_test_452"}
+{"query":"Could you provide me studies where they utilized self-supervision and few-shot prompting to address the scalability of large language model tool-use?","query_id":"AutoScholarQuery_test_453"}
+{"query":"What papers depict studies of sample complexity of posterior sampling in tabular settings?","query_id":"AutoScholarQuery_test_454"}
+{"query":"Can you provide the studies that use additional guiding signals to incorporate explicit control in conditional diffusion models?","query_id":"AutoScholarQuery_test_455"}
+{"query":"What research papers discuss memory-based methods as a knowledge editing paradigm?","query_id":"AutoScholarQuery_test_456"}
+{"query":"Any studies about generating adversarial examples in textual domains?","query_id":"AutoScholarQuery_test_457"}
+{"query":"What work highlights computational challenges and memory issues in bi-level optimization-based methods?","query_id":"AutoScholarQuery_test_458"}
+{"query":"Which works describe FL strategies for handling communication burden issues?","query_id":"AutoScholarQuery_test_459"}
+{"query":"What papers discussed handcrafted prompts for specific tasks?","query_id":"AutoScholarQuery_test_460"}
+{"query":"What are some works that have advanced image editing methods achieving more accurate attribute modification textually?","query_id":"AutoScholarQuery_test_461"}
+{"query":"Which research papers studied methods based on model mixture for Full Model Personalization?","query_id":"AutoScholarQuery_test_462"}
+{"query":"Can you mention studies that are trained on massive pairs of images and captions, enabling them to generate detailed image content conditioned on textual instruction?","query_id":"AutoScholarQuery_test_463"}
+{"query":"What studies further propagated the token-level edit operation approach proposed by LaserTagger?","query_id":"AutoScholarQuery_test_464"}
+{"query":"Which paper first introduced the concept of fully unsupervised anomaly detection?","query_id":"AutoScholarQuery_test_465"}
+{"query":"Which study introduced a metric based on the sample influence score of the optimal empirical risk in CoreSet selection?","query_id":"AutoScholarQuery_test_466"}
+{"query":"What papers study hallucination issues in MLLMs?","query_id":"AutoScholarQuery_test_467"}
+{"query":"What works learn disentangled representations from time-series data?","query_id":"AutoScholarQuery_test_468"}
+{"query":"Could you provide some examples of diffusion models that involve different number of denoising steps and parameterization of transformation?","query_id":"AutoScholarQuery_test_469"}
+{"query":"Which works use consistency between model generated content and external information for factuality detection in LLM?","query_id":"AutoScholarQuery_test_470"}
+{"query":"Which papers discussed the use of gradient guidance to increase the occurrence of a desired attribute in discrete generative models?","query_id":"AutoScholarQuery_test_471"}
+{"query":"Which works experimentally proved that adding Gaussian noise during training increases adversarial robustness?","query_id":"AutoScholarQuery_test_472"}
+{"query":"Could you name some studies that have explored the influence of asking LLMs to respond as a particular person?","query_id":"AutoScholarQuery_test_473"}
+{"query":"What papers provide a discussion or implementation of the method of 'prompting'?","query_id":"AutoScholarQuery_test_474"}
+{"query":"Are there any studies that have applied large-scale pre-trained models to the UCDR task?","query_id":"AutoScholarQuery_test_475"}
+{"query":"What work is similar to the researcher's use of context distillation in knowledge editing?","query_id":"AutoScholarQuery_test_476"}
+{"query":"Which studies focused on vision-based GUI navigation using GPT-4V?","query_id":"AutoScholarQuery_test_477"}
+{"query":"Could you provide me the works that introduced policy-based methods for performing adaptive experimentation?","query_id":"AutoScholarQuery_test_478"}
+{"query":"Which works focus on developing more effective pretraining losses beyond the autoregressive or masked language modeling objectives?","query_id":"AutoScholarQuery_test_479"}
+{"query":"Are there any works on multilingual ARA models?","query_id":"AutoScholarQuery_test_480"}
+{"query":"Are there studies adapting popular uncertainty tools in Bayesian Uncertainty Estimation literature to generative LLMs?","query_id":"AutoScholarQuery_test_481"}
+{"query":"Could you provide me some works about knowledge retrieval from prompts?","query_id":"AutoScholarQuery_test_482"}
+{"query":"What studies have been conducted on multilingual Large Language Models (LLMs) with a focus on hundreds of languages?","query_id":"AutoScholarQuery_test_483"}
+{"query":"Could you provide me some works about visual pretraining that emphasized contrastive learning?","query_id":"AutoScholarQuery_test_484"}
+{"query":"What studies have focused on architectures that exhibit combinatorial generalization such as transformers, graph neural networks, and bilinear models?","query_id":"AutoScholarQuery_test_485"}
+{"query":"What paper proposed the averaged stochastic approximation (NASA) to obtain a better rate for non-convex objectives?","query_id":"AutoScholarQuery_test_486"}
+{"query":"Which papers concentrate on decomposing complex questions into sub-questions?","query_id":"AutoScholarQuery_test_487"}
+{"query":"Which paper proposed multi-channel equivariant graph networks?","query_id":"AutoScholarQuery_test_488"}
+{"query":"Can you name the papers where VeRA, the method that reduces the number of parameters with the help of random projections, is mentioned?","query_id":"AutoScholarQuery_test_489"}
+{"query":"Any studies about prompt fine-tuning for vision models to adapt image models from one image task to another?","query_id":"AutoScholarQuery_test_490"}
+{"query":"Can you mention some sequence models proposing the use of multiple time scales, akin to the multi-rate mechanism in this study?","query_id":"AutoScholarQuery_test_491"}
+{"query":"What works propose strategies for face capture that are more easily accessible and convenient for daily users?","query_id":"AutoScholarQuery_test_492"}
+{"query":"Which early works employed ConvNets and inverse perspective mapping (IPM) for mapping features from perspective view to BEV view?","query_id":"AutoScholarQuery_test_493"}
+{"query":"What researches made use of auxiliary data such as human-annotated attribute information, text description or knowledge graph in Zero-Shot Learning (ZSL)?","query_id":"AutoScholarQuery_test_494"}
+{"query":"What research papers prioritize salient weights for PTQ in LLMs?","query_id":"AutoScholarQuery_test_495"}
+{"query":"Any studies showing that LLM hidden states can effectively represent a task defined by input-output pairs?","query_id":"AutoScholarQuery_test_496"}
+{"query":"What studies gave rise to prompt-based learning in LLMs?","query_id":"AutoScholarQuery_test_497"}
+{"query":"What studies apply slot attention for object discovery?","query_id":"AutoScholarQuery_test_498"}
+{"query":"What works proposed method for experimental design for causal discovery in a non-BOED setting in the presence of cycles?","query_id":"AutoScholarQuery_test_499"}
+{"query":"What study employs a contextual word retrieval task where the model is tasked with finding corresponding words and sentences across parallel corpora?","query_id":"AutoScholarQuery_test_500"}
+{"query":"Which work leverages graph generation as the training objective in generative self-supervised learning?","query_id":"AutoScholarQuery_test_501"}
+{"query":"Could you provide me some studies that propose non-parametric approaches to post-hoc calibration methods?","query_id":"AutoScholarQuery_test_502"}
+{"query":"Could you provide me some studies about object hallucination in MLLMs?","query_id":"AutoScholarQuery_test_503"}
+{"query":"Which studies proposed methods for learning 3D-aware image and geometry generation with implicit neural radiance fields as generators?","query_id":"AutoScholarQuery_test_504"}
+{"query":"Could you provide me some studies on global stability that contributed to the Probably Eventually Correct (PEC) learning model?","query_id":"AutoScholarQuery_test_505"}
+{"query":"Which studies have aimed at generalization to underrepresented languages in LLM-based evaluation methodologies?","query_id":"AutoScholarQuery_test_506"}
+{"query":"What studies have aimed to capture functional requirements in software development by generating code-like outlines using in-context learning?","query_id":"AutoScholarQuery_test_507"}
+{"query":"Could you provide me some references that evaluate the ability of LMs to reason about emerging entities?","query_id":"AutoScholarQuery_test_508"}
+{"query":"What papers are about utilizing machine-learned predictions for designing efficient offline algorithms?","query_id":"AutoScholarQuery_test_509"}
+{"query":"Could you provide me a work that introduced EL2N score as a measure of importance in CoreSet selection?","query_id":"AutoScholarQuery_test_510"}
+{"query":"Which works proposed reinforcement learning methods to tackle challenges of behavior cloning in autonomous driving?","query_id":"AutoScholarQuery_test_511"}
+{"query":"Which paper involves the use of the Faster-RCNN model in Vision-Language Pre-training?","query_id":"AutoScholarQuery_test_512"}
+{"query":"What works examined training agents through reinforcement learning on the MiniWob web environment?","query_id":"AutoScholarQuery_test_513"}
+{"query":"What works proposed hierarchical BERT models designed for extractive summarization?","query_id":"AutoScholarQuery_test_514"}
+{"query":"Which work related to the researcher's work examines tasks like distilling a persona-conditioned language model?","query_id":"AutoScholarQuery_test_515"}
+{"query":"Could you provide me studies focused on the grounding capabilities of LVLMs?","query_id":"AutoScholarQuery_test_516"}
+{"query":"Which work is related to private prediction?","query_id":"AutoScholarQuery_test_517"}
+{"query":"Which studies incorporated the use of diffusion models in their work?","query_id":"AutoScholarQuery_test_518"}
+{"query":"What work proposed a method of retraining classifiers on 're-weighting' data to reduce reliance on spurious features?","query_id":"AutoScholarQuery_test_519"}
+{"query":"Could you provide me research that allows for controlled text-based scene editing by finetuning an image diffusion model?","query_id":"AutoScholarQuery_test_520"}
+{"query":"Could you provide me some work that applied transformer or its variants into TAD head?","query_id":"AutoScholarQuery_test_521"}
+{"query":"What papers have incorporated the use of NLEs in fields beyond NLP, such as in computer vision, medical field, and self-driving cars?","query_id":"AutoScholarQuery_test_522"}
+{"query":"Which research proposes to enhance the reasoning process in LLMs by framing thoughts as graphs?","query_id":"AutoScholarQuery_test_523"}
+{"query":"Any studies arguing for centering language models’ evaluation on how models will be used in practice?","query_id":"AutoScholarQuery_test_524"}
+{"query":"Could you name some studies employing distributional semantic models such as count-based or Word2Vec approaches for the LSC task?","query_id":"AutoScholarQuery_test_525"}
+{"query":"Which works addressed the issue of inadequate data quality in large corpora and extended cleaning efforts?","query_id":"AutoScholarQuery_test_526"}
+{"query":"Can you provide papers that discussed the concept of latent embeddings?","query_id":"AutoScholarQuery_test_527"}
+{"query":"What kinds of researches have been conducted using reinforcement learning to train policies for adaptive experimental design?","query_id":"AutoScholarQuery_test_528"}
+{"query":"Which research investigations in language finetuning consider data selection as crucial?","query_id":"AutoScholarQuery_test_529"}
+{"query":"What works covered methods that factor in agreement between positive pixel pairs for dense predictions?","query_id":"AutoScholarQuery_test_530"}
+{"query":"Could you name some research papers that utilized pre-trained text-to-image diffusion models and SMPL models for avatar generation?","query_id":"AutoScholarQuery_test_531"}
+{"query":"What research proposed multi-plane images for novel-view synthesis?","query_id":"AutoScholarQuery_test_532"}
+{"query":"What are some studies that have used data statistics, representations, logits, and embedding to avoid exposing privacy in Federated Learning?","query_id":"AutoScholarQuery_test_533"}
+{"query":"What are the key works in the field of diffusion models which are a class of generative probabilistic models?","query_id":"AutoScholarQuery_test_534"}
+{"query":"Are there any works that reported that the volume of input knowledge for each query in ICL is constrained by the maximum input length of PLMs?","query_id":"AutoScholarQuery_test_535"}
+{"query":"Can you name works that have used specific methodology like Android’s View Hierarchy, Regions of Interest, or screenshots for representing interfaces?","query_id":"AutoScholarQuery_test_536"}
+{"query":"Which papers demonstrate that language models can map conceptual domains onto grounded world representations?","query_id":"AutoScholarQuery_test_537"}
+{"query":"What are the task-informed models such as XL-LEXEME based on?","query_id":"AutoScholarQuery_test_538"}
+{"query":"Any studies that employ the Masked Language Model to obtain corrections in GEC tasks?","query_id":"AutoScholarQuery_test_539"}
+{"query":"Could you provide me the works on finding architectures with high accuracy on clean examples not considering their robustness?","query_id":"AutoScholarQuery_test_540"}
+{"query":"What does paper `bib.bib31` propose?","query_id":"AutoScholarQuery_test_541"}
+{"query":"Who looked at prompting closed-source LLMs to leverage their reasoning and planning abilities for web tasks through in-context learning and self-refine?","query_id":"AutoScholarQuery_test_542"}
+{"query":"Which research papers introduced initial vision-language pre-training models?","query_id":"AutoScholarQuery_test_543"}
+{"query":"What studies have explored incorporating additional conditioning, to generate images with precise control?","query_id":"AutoScholarQuery_test_544"}
+{"query":"Which studies primarily improve ACI by setting the learning rate adaptively?","query_id":"AutoScholarQuery_test_545"}
+{"query":"In what papers do the researchers use the dual potentials to recover the OT map?","query_id":"AutoScholarQuery_test_546"}
+{"query":"What paper proposed an unsupervised global disentanglement score called Distortion?","query_id":"AutoScholarQuery_test_547"}
+{"query":"Any works achieve higher accuracy on low-textured regions with the help of Transformer in semi-dense matching methods?","query_id":"AutoScholarQuery_test_548"}
+{"query":"Which work is related to the theoretical foundations and implementation of Proximal Policy Optimization?","query_id":"AutoScholarQuery_test_549"}
+{"query":"What research papers utilized the embedding-based metrics which make use of PLM embeddings like BERT?","query_id":"AutoScholarQuery_test_550"}
+{"query":"What etudies are on Transformer-based models for speech that have been used to test their brain alignment for speech-evoked brain activity?","query_id":"AutoScholarQuery_test_551"}
+{"query":"Could you name some research papers on exploratory attacks to achieve different attack goals such as link re-identification, property inference, membership inference, and model stealing?","query_id":"AutoScholarQuery_test_552"}
+{"query":"What studies introduce methods to reduce the learning time by reducing the communication overheads of Federated Learning?","query_id":"AutoScholarQuery_test_553"}
+{"query":"What works represent the approach of contrastive learning for image-text pre-training?","query_id":"AutoScholarQuery_test_554"}
+{"query":"Are there any methods using hierarchical Reinforcement Learning to decompose complex tasks into sub-tasks?","query_id":"AutoScholarQuery_test_555"}
+{"query":"Can you give examples of research that aligns the source and target point clouds with an orientation estimation module before using a teacher-student model and a DGCNN backbone to find the correspondence?","query_id":"AutoScholarQuery_test_556"}
+{"query":"What works discuss defense mechanisms that generate adversarially perturbed images to improve neural network's robustness?","query_id":"AutoScholarQuery_test_557"}
+{"query":"In what studies LMMs directly reason over embedded visual features?","query_id":"AutoScholarQuery_test_558"}
+{"query":"Could you give me some references about adversarial learning approach in domain adaptation?","query_id":"AutoScholarQuery_test_559"}
+{"query":"What works proposed methods to improve computational efficiency by reducing the number of times the underlying field needs to be evaluated in the context of neural scene representations?","query_id":"AutoScholarQuery_test_560"}
+{"query":"Which paper uses counterfactual explanations in explainable recommender systems?","query_id":"AutoScholarQuery_test_561"}
+{"query":"Can you name the methods that tackle the high-dimensional importance weight estimation problem?","query_id":"AutoScholarQuery_test_562"}
+{"query":"Which works have pioneered in text-editing as a category of generative data augmentation?","query_id":"AutoScholarQuery_test_563"}
+{"query":"Which papers proposed an algorithm to handle non-stationary MDPs with linear mixture function approximation of both transitions and rewards?","query_id":"AutoScholarQuery_test_564"}
+{"query":"What studies discuss solutions involving interpolation between LR and RP gradients?","query_id":"AutoScholarQuery_test_565"}
+{"query":"Which works have implemented multimodal understanding and generative capacities across modalities?","query_id":"AutoScholarQuery_test_566"}
+{"query":"What research conducted studies on zero-shot tasks on images using foundation models?","query_id":"AutoScholarQuery_test_567"}
+{"query":"What paper used shifted window attention to enable information propagation in the area of action recongnition?","query_id":"AutoScholarQuery_test_568"}
+{"query":"What works have explored the field of zero-shot segmentation recently?","query_id":"AutoScholarQuery_test_569"}
+{"query":"Could you provide me the research where local visual features aligned with textual concepts in CLIP were revealed?","query_id":"AutoScholarQuery_test_570"}
+{"query":"Could you provide me some works about localization strategies using region-proposal detector or a segmentation network in vision-language models?","query_id":"AutoScholarQuery_test_571"}
+{"query":"Any research on probablistic personalized page rank (ProPPR) models?","query_id":"AutoScholarQuery_test_572"}
+{"query":"Which studies offer solutions to deal with accuracy loss when a sub-model is sent to slower devices?","query_id":"AutoScholarQuery_test_573"}
+{"query":"What paper proposed SuperGLUE after seeing that many models were surpassing non-expert humans on GLUE?","query_id":"AutoScholarQuery_test_574"}
+{"query":"Who is responsible for the best-known result for the MMS approximation in additive valuations, 3/4+3/3836?","query_id":"AutoScholarQuery_test_575"}
+{"query":"Which works pioneered the use of Hessian-based influence functions to understand how training data affects a model's prediction?","query_id":"AutoScholarQuery_test_576"}
+{"query":"What work has used self-supervised pre-training to design a flexible reward function by utilizing a broad dataset of human videos and a small dataset of robot videos?","query_id":"AutoScholarQuery_test_577"}
+{"query":"Could you provide some works where delayed feedback is studied in stochastic settings for UCB-based methods?","query_id":"AutoScholarQuery_test_578"}
+{"query":"Which papers discuss solutions to commonsense reasoning problems?","query_id":"AutoScholarQuery_test_579"}
+{"query":"Could you name some works where diffusion models were applied to represent 3D scenes and motion sequences?","query_id":"AutoScholarQuery_test_580"}
+{"query":"Where is the concept of Generative Adversarial Networks (GANs) introduced?","query_id":"AutoScholarQuery_test_581"}
+{"query":"Any works about searching for the optimal scaling factor in the context of quantization-aware training?","query_id":"AutoScholarQuery_test_582"}
+{"query":"Who applied the mutual information in the context of maximising similarity between successive observations for representation learning?","query_id":"AutoScholarQuery_test_583"}
+{"query":"Are there any studies that have explored teacher assistant-based and student-friendly distillation to alleviate the problem of performance degradation in larger LMs?","query_id":"AutoScholarQuery_test_584"}
+{"query":"What works used data-driven approaches in AutoRL methods to learn various algorithmic components?","query_id":"AutoScholarQuery_test_585"}
+{"query":"What works have modified compressed sensing approaches to include a cross-validation step?","query_id":"AutoScholarQuery_test_586"}
+{"query":"Are there works that investigate the implementation of gradient descent and stochastic gradient descent based on the Polyak-Lojasiewicz (PL) assumption?","query_id":"AutoScholarQuery_test_587"}
+{"query":"Which work used counterfactual interventions to determine the unfaithfulness of explanations of a LLM's predictions?","query_id":"AutoScholarQuery_test_588"}
+{"query":"Which work was the first to propose Generation-Augmented Retrieval in question answering?","query_id":"AutoScholarQuery_test_589"}
+{"query":"What studies discuss the introduction of large-scale continuous sign language datasets?","query_id":"AutoScholarQuery_test_590"}
+{"query":"What papers proposed architectural modifications to recurrence equations for irregular time series data?","query_id":"AutoScholarQuery_test_591"}
+{"query":"Could you provide me with the papers that proposed using graph homomorphism counts for feature embedding in learning tasks?","query_id":"AutoScholarQuery_test_592"}
+{"query":"Which research applied inversion attacks to models across different domains like computational genetics, computer vision, and NLP?","query_id":"AutoScholarQuery_test_593"}
+{"query":"Which works expanded on the contrastive methods of representation learning by integrating additional views into the mutual information maximization objective?","query_id":"AutoScholarQuery_test_594"}
+{"query":"Can you provide me studies about decomposing MOCO problems into a series of single-objective combinatorial optimization problems?","query_id":"AutoScholarQuery_test_595"}
+{"query":"Which papers focused on the calibration of classifiers in foundation models for natural language processing?","query_id":"AutoScholarQuery_test_596"}
+{"query":"Which works have been established for regret minimization in two types of MDPs under linear function approximation?","query_id":"AutoScholarQuery_test_597"}
+{"query":"What works have focused on integrating constraints into sequential decision problems?","query_id":"AutoScholarQuery_test_598"}
+{"query":"What work analysed VAE-based disentanglement techniques on correlated data?","query_id":"AutoScholarQuery_test_599"}
+{"query":"Could you provide me some studies that investigate where factual information is stored in transformers?","query_id":"AutoScholarQuery_test_600"}
+{"query":"What publications discuss the usage of Bayesian neural network in enhancing the efficiency of FL?","query_id":"AutoScholarQuery_test_601"}
+{"query":"What papers delved into the conformal prediction methods for drug property prediction?","query_id":"AutoScholarQuery_test_602"}
+{"query":"What papers evaluated Generation-Augmented Retrieval in passage retrieval and fine-tuning?","query_id":"AutoScholarQuery_test_603"}
+{"query":"Can you provide any works that adopted transition sampling for long-term generation of motion?","query_id":"AutoScholarQuery_test_604"}
+{"query":"Which work is the only one investigating training a hypernetwork end-to-end to arbitrarily modify the weights of a policy in meta-RL?","query_id":"AutoScholarQuery_test_605"}
+{"query":"Can you mention some studies that combined 3D Gaussian Splatting with diffusion models for efficient text-to-3D generation?","query_id":"AutoScholarQuery_test_606"}
+{"query":"Does there exist a work which demonstrates that the PAC-Bayes framework can't be used to derive distribution-free PAC learning bounds for classes that have infinite Littlestone dimension?","query_id":"AutoScholarQuery_test_607"}
+{"query":"What works tackle the problem of designing data augmentations for graph classification?","query_id":"AutoScholarQuery_test_608"}
+{"query":"In what papers are the singular vectors of the first weight matrix proposed as global disentangled perturbations?","query_id":"AutoScholarQuery_test_609"}
+{"query":"Which works propose alternate perspectives of robustness in explanations?","query_id":"AutoScholarQuery_test_610"}
+{"query":"Which references explore reproducibility in optimization?","query_id":"AutoScholarQuery_test_611"}
+{"query":"What research have used normalizing flows in molecular structure design?","query_id":"AutoScholarQuery_test_612"}
+{"query":"Could you provide me some studies of zero-order methods applying strategies that the more expensive oracles are used infrequently?","query_id":"AutoScholarQuery_test_613"}
+{"query":"What work adds a buffer of demonstrations to the RL framework?","query_id":"AutoScholarQuery_test_614"}
+{"query":"What works are amongst the most influential in relation to U-Net?","query_id":"AutoScholarQuery_test_615"}
+{"query":"What studies discuss the issue of undefined importance weights in disjoint source and target?","query_id":"AutoScholarQuery_test_616"}
+{"query":"What works emphasize that an LLM's acquired knowledge should mirror established facts?","query_id":"AutoScholarQuery_test_617"}
+{"query":"What work propose the task of emotional support conversation and release the corresponding dataset?","query_id":"AutoScholarQuery_test_618"}
+{"query":"Which papers discussed the task of temporal or timeline summarization?","query_id":"AutoScholarQuery_test_619"}
+{"query":"Can you name the studies that provided allocation algorithms that guarantee ex-ante and EF1 ex-post for additive valuations?","query_id":"AutoScholarQuery_test_620"}
+{"query":"What works used text-based language models to predict text-evoked and speech-evoked brain activity?","query_id":"AutoScholarQuery_test_621"}
+{"query":"Could you list the studies that discuss the strong correlation between the supervised disentanglement score and the global-basis-compatibility?","query_id":"AutoScholarQuery_test_622"}
+{"query":"What works initially used a one-time retrieval method but faced knowledge omissions issues in handling knowledge-sensitive tasks?","query_id":"AutoScholarQuery_test_623"}
+{"query":"Can you provide scholarly works that discuss domain-specific knowledge in Knowledge Graphs?","query_id":"AutoScholarQuery_test_624"}
+{"query":"Are there any research papers studying VR HMD settings using public datasets such as AMASS?","query_id":"AutoScholarQuery_test_625"}
+{"query":"What research paper is related to and compared with the one in this section, where it considers CT model with latent variables, subsections, and an additional loss term for the integration error?","query_id":"AutoScholarQuery_test_626"}
+{"query":"Can you provide studies that used transformer-based architectures to tackle German sign language production?","query_id":"AutoScholarQuery_test_627"}
+{"query":"Are there any references showing that the chain-of-thoughts generated by LLMs are often arbitrary or contradictory?","query_id":"AutoScholarQuery_test_628"}
+{"query":"Which paper applied the Gumbel-Softmax relaxation within gradient-based BOED for contextual optimization?","query_id":"AutoScholarQuery_test_629"}
+{"query":"Which papers used the BookCorpus, also known as the Toronto Books Corpus, for pretraining?","query_id":"AutoScholarQuery_test_630"}
+{"query":"Which papers discussed strategies to adjust the spatiotemporal resolution as a way to fine-tune TAD models?","query_id":"AutoScholarQuery_test_631"}
+{"query":"What previous works have analyzed errors in model’s reasoning in black-box LLMs?","query_id":"AutoScholarQuery_test_632"}
+{"query":"Could you point me to some papers that discuss the HiPPO framework and its applications in time-series modelling?","query_id":"AutoScholarQuery_test_633"}
+{"query":"What research has been done in using Deep Neural Networks and graph representations with reinforcement learning in resolving propositional logic problems?","query_id":"AutoScholarQuery_test_634"}
+{"query":"Which paper first tackled the pose estimation of novel objects without CAD models using RGB images?","query_id":"AutoScholarQuery_test_635"}
+{"query":"Can you cite works that have automated QA in online courses?","query_id":"AutoScholarQuery_test_636"}
+{"query":"Which studies looked at robustness of MRL to distributional shifts?","query_id":"AutoScholarQuery_test_637"}
+{"query":"Which studies have transferred the knowledge from pre-trained vision-language models to object detectors?","query_id":"AutoScholarQuery_test_638"}
+{"query":"Could you provide me some work where the concept of LoRA is proposed?","query_id":"AutoScholarQuery_test_639"}
+{"query":"Any links to studies considering a single update at each client and focusing on random walks?","query_id":"AutoScholarQuery_test_640"}
+{"query":"Which study introduced the Neural Tangent Kernel (NTK)?","query_id":"AutoScholarQuery_test_641"}
+{"query":"Has anyone tried to generalize the feature embedding approach to adaptive features?","query_id":"AutoScholarQuery_test_642"}
+{"query":"Who proposed property-aware relation networks (PAR) in the context of few-shot learning?","query_id":"AutoScholarQuery_test_643"}
+{"query":"What study models reasoning procedures as BFS or DFS search on reasoning trees?","query_id":"AutoScholarQuery_test_644"}
+{"query":"Which studies focus on evaluation of a targeted update in knowledge updating?","query_id":"AutoScholarQuery_test_645"}
+{"query":"What works describe the role of the Neural Tangent Kernel in the density of neural networks?","query_id":"AutoScholarQuery_test_646"}
+{"query":"What studies analyze the effect of multiple regularizations employed in deep learning, like weight decay, early stopping, or drop-outs, on the generalization abilities?","query_id":"AutoScholarQuery_test_647"}
+{"query":"Could you provide me some studies that relate to early works on aligning text and image embeddings?","query_id":"AutoScholarQuery_test_648"}
+{"query":"Which paper introduced joint differential privacy (JDP)?","query_id":"AutoScholarQuery_test_649"}
+{"query":"Which research papers explored the implementation of state space models-based architectures?","query_id":"AutoScholarQuery_test_650"}
+{"query":"Which papers propose goal-driven forecasting to predict goal locations for future human walking trajectories?","query_id":"AutoScholarQuery_test_651"}
+{"query":"Could you list the works exploring the methodologies to effectively utilize the inherent prior knowledge within CAD?","query_id":"AutoScholarQuery_test_652"}
+{"query":"Which papers discuss the concept of semantic meaning and algebraic structure of popular embeddings?","query_id":"AutoScholarQuery_test_653"}
+{"query":"Which works illustrate that transformer-based LLMs have been trained on diverse, large-scale datasets to simultaneously learn several language understanding tasks?","query_id":"AutoScholarQuery_test_654"}
+{"query":"What studies discuss techniques for data efficiency in deep learning?","query_id":"AutoScholarQuery_test_655"}
+{"query":"Could you provide me some works that focus on improving the quality of input reconstruction?","query_id":"AutoScholarQuery_test_656"}
+{"query":"Could you provide me some works about model averaging methods that are further related to federated learning and ensemble methods?","query_id":"AutoScholarQuery_test_657"}
+{"query":"Are there studies focused on mitigation of hallucinations during the pre-training stage by the process of dataset curating and cleaning?","query_id":"AutoScholarQuery_test_658"}
+{"query":"Could you provide examples of image-text datasets that have their own preprocessing techniques?","query_id":"AutoScholarQuery_test_659"}
+{"query":"Which works consider the instruction-following abilities of LLMs?","query_id":"AutoScholarQuery_test_660"}
+{"query":"Could you point out the studies which discusses the high variance problem of likelihood-ratio gradient?","query_id":"AutoScholarQuery_test_661"}
+{"query":"What papers have introduced single-camera methods for egocentric pose estimation?","query_id":"AutoScholarQuery_test_662"}
+{"query":"Which works propose a novel framework or expand the idea to obtain complex and difficult instructions gradually?","query_id":"AutoScholarQuery_test_663"}
+{"query":"Could you provide me some studies that have applied the concept of teacher-student network?","query_id":"AutoScholarQuery_test_664"}
+{"query":"What papers extended the methods to address pose estimation for novel objects or low-textured objects?","query_id":"AutoScholarQuery_test_665"}
+{"query":"What studies propose generative adversarial networks for 3D shape generation?","query_id":"AutoScholarQuery_test_666"}
+{"query":"What paper demonstrated that a model trained on synthetic captions can perform better than one trained on human-provided captions?","query_id":"AutoScholarQuery_test_667"}
+{"query":"Are there any studies that added a few trainable parameters representing new knowledge to LLMs, while keeping the original parameters frozen?","query_id":"AutoScholarQuery_test_668"}
+{"query":"Can you provide references where global non-convex optimization is applied in machine learning?","query_id":"AutoScholarQuery_test_669"}
+{"query":"Which works are known for tackling various tasks simultaneously in the field of vision-language models?","query_id":"AutoScholarQuery_test_670"}
+{"query":"What datasets are used for knowledge editing?","query_id":"AutoScholarQuery_test_671"}
+{"query":"What works proposed a method to learn a linear subspace for the disentanglement of written text from visual components?","query_id":"AutoScholarQuery_test_672"}
+{"query":"Could you provide me some studies about the use of case-based reasoning?","query_id":"AutoScholarQuery_test_673"}
+{"query":"Any existing research on generating the 3D human avatars with predefined parametric human templates?","query_id":"AutoScholarQuery_test_674"}
+{"query":"What papers provided a theoratical analysis of the mechanism with respect to mean squared error of the noise?","query_id":"AutoScholarQuery_test_675"}
+{"query":"Which papers propose solutions for panel detection in comic understanding?","query_id":"AutoScholarQuery_test_676"}
+{"query":"What studies reported varying performance of LLMs when generating different types of reasoning processes?","query_id":"AutoScholarQuery_test_677"}
+{"query":"Which papers propose heuristic-based uncertainty metrics for generative Large Language Models (LLMs) considering machine translation?","query_id":"AutoScholarQuery_test_678"}
+{"query":"Which studies focus on 3D pose estimation task through a single RGB image input?","query_id":"AutoScholarQuery_test_679"}
+{"query":"Which papers propose methods for audio-visual segmentation task?","query_id":"AutoScholarQuery_test_680"}
+{"query":"Which works are variants of the FedAvg algorithm aimed to resolve the minimization problem in federated learning?","query_id":"AutoScholarQuery_test_681"}
+{"query":"What was the research that put forward a data augmentation-dependent method for contrastive learning for object-centric representations?","query_id":"AutoScholarQuery_test_682"}
+{"query":"Which studies focus on table-based EHR question answering?","query_id":"AutoScholarQuery_test_683"}
+{"query":"Can you provide examples of studies about the methodology of studying games that gradually change over time?","query_id":"AutoScholarQuery_test_684"}
+{"query":"Are there any studies where the shuffling-based method was applied to FL?","query_id":"AutoScholarQuery_test_685"}
+{"query":"Can you list the research works where the number of timesteps used to train SNNs have been reduced?","query_id":"AutoScholarQuery_test_686"}
+{"query":"Could you mention the studies that focused on lifting 2D pre-trained models to create 3D models from textual prompts?","query_id":"AutoScholarQuery_test_687"}
+{"query":"Which studies have discussed a two-step approach for Temporal Action Detection (TAD)?","query_id":"AutoScholarQuery_test_688"}
+{"query":"Could you provide me the study that constructed the emrKBQA dataset for patient-specific QA on MIMIC-III?","query_id":"AutoScholarQuery_test_689"}
+{"query":"What research papers are provided for additive valuations with binary marginals?","query_id":"AutoScholarQuery_test_690"}
+{"query":"What research studies propose changing the weight in convolutional layers according to input features using the attention mechanism?","query_id":"AutoScholarQuery_test_691"}
+{"query":"Can you inform me about papers which suggested that pretraining on domain-specific text can enhance language model performance on related tasks?","query_id":"AutoScholarQuery_test_692"}
+{"query":"Which papers have discussed Bound Propagation methods and analyzed the output bounds based on input bounds?","query_id":"AutoScholarQuery_test_693"}
+{"query":"What studies present the application of the measurement theory concepts to NLP where desirable model capabilities are unobservable constructs?","query_id":"AutoScholarQuery_test_694"}
+{"query":"Any works about continual pretraining for encoder-decoder LMs?","query_id":"AutoScholarQuery_test_695"}
+{"query":"Which study proposed to minimize a robust loss and find worst-case perturbation during training with projected gradient descent?","query_id":"AutoScholarQuery_test_696"}
+{"query":"Which works have investigated the advantages of decoupling policy and value functions for generalization in RL?","query_id":"AutoScholarQuery_test_697"}
+{"query":"Which work considered the notion of envy-freeness up to any item (EFX) in fractionally subadditive valuations?","query_id":"AutoScholarQuery_test_698"}
+{"query":"Which papers demonstrate story generation strategies for better coherency in story-telling using language models?","query_id":"AutoScholarQuery_test_699"}
+{"query":"Which studies utilized the concept of query for different applications like detection of different objects, video instance segmentation, multiple object tracking, and video object detection?","query_id":"AutoScholarQuery_test_700"}
+{"query":"Can you list some research papers that adopted a similar formulation for advertising?","query_id":"AutoScholarQuery_test_701"}
+{"query":"What papers use LLM to retrieve reasoning paths from KGs based on relation 'plans' grounded by KGs?","query_id":"AutoScholarQuery_test_702"}
+{"query":"What study focused on examining node classification performance of one-layer GATs on a random graph model?","query_id":"AutoScholarQuery_test_703"}
+{"query":"What works proposed variants on normalisation, which is complementary to unit scaling?","query_id":"AutoScholarQuery_test_704"}
+{"query":"Which papers introduced algorithms regarding distributed optimization in a full participation setting using deterministic methods?","query_id":"AutoScholarQuery_test_705"}
+{"query":"Which works used alignment approaches to capture the feature of domain invariant characteristics?","query_id":"AutoScholarQuery_test_706"}
+{"query":"Which works extended the binary meta-learners in the CATE's estimation without a thorough theoretical analysis of their behaviour?","query_id":"AutoScholarQuery_test_707"}
+{"query":"Can you specify the papers that introduced novel pre-training tasks for transformer-based pre-trained models?","query_id":"AutoScholarQuery_test_708"}
+{"query":"Can you provide me some studies that use clustering or topic modeling to identify aspects in documents?","query_id":"AutoScholarQuery_test_709"}
+{"query":"What studies utilized VGG, ResNet, LSTM, and customized loss functions to enhance vision tasks in deep learning?","query_id":"AutoScholarQuery_test_710"}
+{"query":"What works are about data-driven LiDAR simulators?","query_id":"AutoScholarQuery_test_711"}
+{"query":"Can you specify some multimodal pretraining methods that require paired or interleaved data?","query_id":"AutoScholarQuery_test_712"}
+{"query":"What references mention the use of generative adversarial networks (GANs) in recent advancements in reconstruction from fMRI techniques?","query_id":"AutoScholarQuery_test_713"}
+{"query":"Which papers discuss the two mainstream approaches for multi-hop KGQA: Semantic Parsing and Information Retrieval?","query_id":"AutoScholarQuery_test_714"}
+{"query":"Which publications introduced the maximum entropy exploration (maxEnt) framework?","query_id":"AutoScholarQuery_test_715"}
+{"query":"What papers recently gave attention to maximum entropy policies in the context of reinforcement learning (RL)?","query_id":"AutoScholarQuery_test_716"}
+{"query":"Which research papers have introduced more sophisticated network structures for the mapping between hazy and clear images in the context of image dehazing?","query_id":"AutoScholarQuery_test_717"}
+{"query":"Which papers discuss that Large Language Models (LLMs) memorize data both from their original large training corpora and smaller private datasets used for downstream tasks?","query_id":"AutoScholarQuery_test_718"}
+{"query":"Which papers exploited feature-space/n-gram discrepancy measures for selecting data in domain adaptation setting?","query_id":"AutoScholarQuery_test_719"}
+{"query":"Any works that employed a consistency-based method for confidence estimation?","query_id":"AutoScholarQuery_test_720"}
+{"query":"Could you mention a study that proposed to decouple the bi-level optimization of dataset condensation?","query_id":"AutoScholarQuery_test_721"}
+{"query":"What research papers have been involved in the use of kernel fusion for efficient inference techniques in large language models (LLMs)?","query_id":"AutoScholarQuery_test_722"}
+{"query":"What works used Moore-Lewis selection in selection of examples?","query_id":"AutoScholarQuery_test_723"}
+{"query":"Which work first introduced the wait-k policy for simultaneous text translation?","query_id":"AutoScholarQuery_test_724"}
+{"query":"In which study did the researchers design the Poolingformer technique?","query_id":"AutoScholarQuery_test_725"}
+{"query":"Which works studied the offline total variation denoising problem?","query_id":"AutoScholarQuery_test_726"}
+{"query":"Who initially introduced the Diffusion Generative Model?","query_id":"AutoScholarQuery_test_727"}
+{"query":"What studies have applied machine learning models for connectivity analysis on brain networks?","query_id":"AutoScholarQuery_test_728"}
+{"query":"Could you provide me some works that involve the application of contrastive learning in diverse data modalities?","query_id":"AutoScholarQuery_test_729"}
+{"query":"What work introduced a K-Planes decomposition technique designed to reconstruct static 3D scenes and dynamic 4D videos?","query_id":"AutoScholarQuery_test_730"}
+{"query":"In which papers did the researchers discuss the KRR in misspecified case?","query_id":"AutoScholarQuery_test_731"}
+{"query":"Which papers implemented neural networks like CNNs and RNNs to enhance co-embedding methods?","query_id":"AutoScholarQuery_test_732"}
+{"query":"Which papers approached the problem of Source-free Unsupervised Domain Adaptation (SFUDA) in the absence of source domain data?","query_id":"AutoScholarQuery_test_733"}
+{"query":"Could you provide me some works about training convolutional networks for 6D Pose Estimation?","query_id":"AutoScholarQuery_test_734"}
+{"query":"Could you provide studies about ensemble methods for yielding pixel-wise uncertainty estimates?","query_id":"AutoScholarQuery_test_735"}
+{"query":"What papers propose certified defenses which conduct a layer-by-layer analysis to derive the certified robustness guarantee of an unimodal model?","query_id":"AutoScholarQuery_test_736"}
+{"query":"Could you provide me some studies that have addressed self-consistency in Large Language Models?","query_id":"AutoScholarQuery_test_737"}
+{"query":"What datasets contain scenes where multiple people are performing various actions concurrently?","query_id":"AutoScholarQuery_test_738"}
+{"query":"What papers are about analyzing and understanding conventions in overcoming coordination problems?","query_id":"AutoScholarQuery_test_739"}
+{"query":"Could you give an example of research papers on techniques for distinguishing uncertain areas as the dimension of the goal space increases, in the field of curriculum goal generation?","query_id":"AutoScholarQuery_test_740"}
+{"query":"What are some studies about Operator Learning that leverage the Fourier transform?","query_id":"AutoScholarQuery_test_741"}
+{"query":"What work proposed the eNCE method and identified its limitations?","query_id":"AutoScholarQuery_test_742"}
+{"query":"Which publications use autoregressive models for molecular structure design?","query_id":"AutoScholarQuery_test_743"}
+{"query":"Could you provide me some studies exploring to make Gaussian diffusion faster and more data efficient in training?","query_id":"AutoScholarQuery_test_744"}
+{"query":"What research discusses the advantages of the PRM over the ORM in providing detailed feedback to enhance generators?","query_id":"AutoScholarQuery_test_745"}
+{"query":"What research studies constructed datasets targeting multiple image issues and proposed context schemes to better understand interleaved inputs?","query_id":"AutoScholarQuery_test_746"}
+{"query":"Can you name some studies that tackled the objective mismatch issue in RLHF learning schemes?","query_id":"AutoScholarQuery_test_747"}
+{"query":"Can you provide papers that discuss the important role of the noise distribution choice in success of Noise-contrastive estimation?","query_id":"AutoScholarQuery_test_748"}
+{"query":"Which paper introduced the slot attention for object-centric learning?","query_id":"AutoScholarQuery_test_749"}
+{"query":"Can you show me some papers that focus on improving sample efficiency with sub-optimal external policies?","query_id":"AutoScholarQuery_test_750"}
+{"query":"Which works studied the concept of co-training involving separate models to generate improved pseudolabels?","query_id":"AutoScholarQuery_test_751"}
+{"query":"Can you provide references regarding data-driven approaches for stereo-matching?","query_id":"AutoScholarQuery_test_752"}
+{"query":"What papers focus on developing kernel methods for learning molecular potentials?","query_id":"AutoScholarQuery_test_753"}
+{"query":"What early works utilize CNN-based image translation in portrait and face relighting?","query_id":"AutoScholarQuery_test_754"}
+{"query":"Which papers discuss the application of specific criteria to remove weights in post-hoc pruning?","query_id":"AutoScholarQuery_test_755"}
+{"query":"Can you identify any works that aimed to improve computationally efficient FL with personalized local models using quantization and model parameter decoupling?","query_id":"AutoScholarQuery_test_756"}
+{"query":"Which papers explore the application of parameter-efficient fine-tuning methods, such as Prefix-Tuning and LoRA?","query_id":"AutoScholarQuery_test_757"}
+{"query":"Could you tell me about the studies that have proposed goal-driven clustering for personalising the grouping of text corpora?","query_id":"AutoScholarQuery_test_758"}
+{"query":"Are there any studies that used a few-shot manner to train the CDR model?","query_id":"AutoScholarQuery_test_759"}
+{"query":"Can you list any studies that utilize differentiable logical rule learning","query_id":"AutoScholarQuery_test_760"}
+{"query":"What studies provide insight into provably efficient exploration techniques in RL?","query_id":"AutoScholarQuery_test_761"}
+{"query":"What work proposed a term-graph rewriting system for marginalizing a log joint density with conjugacy?","query_id":"AutoScholarQuery_test_762"}
+{"query":"What studies discuss about adversarial attacks as potential safety risks in machine learning models?","query_id":"AutoScholarQuery_test_763"}
+{"query":"Which works used a simple peak detection algorithm to extract atomic coordinates from the generated voxel grids similar to the method used in the current study?","query_id":"AutoScholarQuery_test_764"}
+{"query":"Which work focuses on 'Cause on Tape' (CoT) explanations where the explanation precedes the answer?","query_id":"AutoScholarQuery_test_765"}
+{"query":"Which works have introduced domain adversarial methods to learn domain-invariant embeddings across the source domain and the target domain in unsupervised graph domain adaption problem?","query_id":"AutoScholarQuery_test_766"}
+{"query":"Which work first incorporated Differentiable Inductive Logic Programming to RL domain?","query_id":"AutoScholarQuery_test_767"}
+{"query":"What papers propose 3D pretraining methods utilizing local augmentations?","query_id":"AutoScholarQuery_test_768"}
+{"query":"Can you name the studies that looked at CVaR optimization using PG?","query_id":"AutoScholarQuery_test_769"}
+{"query":"Are there any studies about the policy update of AMPO to mirror descent algorithm based on value iteration and Bellman operators?","query_id":"AutoScholarQuery_test_770"}
+{"query":"What papers have examined the effect of smaller design decisions like the loss function or policy regularization?","query_id":"AutoScholarQuery_test_771"}
+{"query":"Any works that developed representations of statistical and causal dependencies between latent factors and auxiliary variables?","query_id":"AutoScholarQuery_test_772"}
+{"query":"What studies have demonstrated the effectiveness of contrastive methods in learning useful representations for downstream tasks?","query_id":"AutoScholarQuery_test_773"}
+{"query":"What research introduces competition-level problems integrating mathematical logic and background knowledge?","query_id":"AutoScholarQuery_test_774"}
+{"query":"Could you provide examples of studies that use dense voxel grids in conjunction with shallow multilayer perceptrons to expedite 3D reconstruction?","query_id":"AutoScholarQuery_test_775"}
+{"query":"Could you provide me some studies about meta-learning in DG strategies?","query_id":"AutoScholarQuery_test_776"}
+{"query":"What research study discusses protein docking methods such as EquiDock without prior knowledge of the epitope and the paratope?","query_id":"AutoScholarQuery_test_777"}
+{"query":"Could you provide me some papers that investigated adversarial perturbations in MRI and CT image reconstruction?","query_id":"AutoScholarQuery_test_778"}
+{"query":"Can you provide some studies dealing with the strong quadratic cost in Optimal Transport?","query_id":"AutoScholarQuery_test_779"}
+{"query":"Which paper proposed a fully differentiable equivariant model that can predict coordinates of docked poses?","query_id":"AutoScholarQuery_test_780"}
+{"query":"Which studies have explored improved choices for the matrices in the continual counting context?","query_id":"AutoScholarQuery_test_781"}
+{"query":"Which works are about using dynamic computation graph by skipping different blocks based on samples?","query_id":"AutoScholarQuery_test_782"}
+{"query":"Could you provide me some works that discuss improving model's robustness through data augmentation?","query_id":"AutoScholarQuery_test_783"}
+{"query":"What research has been done on the interaction between the Bregman projected policy class and the expected Lipschitz and smooth policies?","query_id":"AutoScholarQuery_test_784"}
+{"query":"Can you give me examples of LLM papers that use the MCP approach for evaluation?","query_id":"AutoScholarQuery_test_785"}
+{"query":"In what papers were methods described that locate and edit the parameters and neurons in the LLMs in light of specific knowledge?","query_id":"AutoScholarQuery_test_786"}
+{"query":"What study proposed the method PatchFlow to solve the technical challenge of per-view detection of feature points in SfM?","query_id":"AutoScholarQuery_test_787"}
+{"query":"Which papers discuss the use of Visual Instruction Fine-tuning in Large Multimodal Models?","query_id":"AutoScholarQuery_test_788"}
+{"query":"What papers have employed use of persona prompts in LLMs?","query_id":"AutoScholarQuery_test_789"}
+{"query":"Which work introduced the notion of (ρ,μ)-competitiveness?","query_id":"AutoScholarQuery_test_790"}
+{"query":"What research investigates higher-order grammatical feature representation across languages using probing classifiers trained on mBERT embeddings?","query_id":"AutoScholarQuery_test_791"}
+{"query":"Which studies explored techniques in learning process design to address biases and instability in in-context learning?","query_id":"AutoScholarQuery_test_792"}
+{"query":"Which works have studied the underlying representations in diffusion models and proposed using them for various downstream tasks?","query_id":"AutoScholarQuery_test_793"}
+{"query":"What studies proposed gradient-guided autoregressive models by using the decoder’s activations as a gradient-friendly latent space?","query_id":"AutoScholarQuery_test_794"}
+{"query":"Which research papers report on response-based distillation methods for object detection?","query_id":"AutoScholarQuery_test_795"}
+{"query":"Are there any studies based on using pre-trained language model agents for role-play in text-based games?","query_id":"AutoScholarQuery_test_796"}
+{"query":"Which works combined models used for ARA with tradition linguistic features?","query_id":"AutoScholarQuery_test_797"}
+{"query":"Which paper distills pre-trained Stable Diffusion using Score Distillation Sampling (SDS) to extract a Neural Radiance Field (NeRF) from a given text prompt?","query_id":"AutoScholarQuery_test_798"}
+{"query":"What papers focus on extending the signal-prediction framework to forecast aggregation settings?","query_id":"AutoScholarQuery_test_799"}
+{"query":"Which works were pertinent in the development of the Large Multimodal Models?","query_id":"AutoScholarQuery_test_800"}
+{"query":"Are there any articles proposing methods to evaluate the complexity of the hierarchical structure of a graph?","query_id":"AutoScholarQuery_test_801"}
+{"query":"Which papers discuss the role of Transformers in the field of NLP?","query_id":"AutoScholarQuery_test_802"}
+{"query":"Which papers describe the basic annotation approach in creating NLI data?","query_id":"AutoScholarQuery_test_803"}
+{"query":"Could you provide references about the PixelHelp dataset which includes task goals and step-by-step instructions for Android?","query_id":"AutoScholarQuery_test_804"}
+{"query":"What studies utilize first-order logic to inspect and improve model's logical consistency in synthetic compositional reasoning tasks?","query_id":"AutoScholarQuery_test_805"}
+{"query":"Which studies propose interpolation-based mixup methods for graph augmentations?","query_id":"AutoScholarQuery_test_806"}
+{"query":"What research provided theoretical studies on the convergence of the LocalSGDM algorithm?","query_id":"AutoScholarQuery_test_807"}
+{"query":"What works present GALOIS framework and its sketch setting?","query_id":"AutoScholarQuery_test_808"}
+{"query":"Can you provide me some researches that support sensor simulation in the context of autonomous driving perception?","query_id":"AutoScholarQuery_test_809"}
+{"query":"What are some of the recent research papers that achieved success in solving downstream language tasks using finetuning methods?","query_id":"AutoScholarQuery_test_810"}
+{"query":"Who proposed a GNN framework arising from a mixture of parabolic and hyperbolic PDEs on graphs with convolutional coupling operators?","query_id":"AutoScholarQuery_test_811"}
+{"query":"Which works have utilized gating in classical recurrent neural network (RNN) architectures such as LSTM and GRU?","query_id":"AutoScholarQuery_test_812"}
+{"query":"Can you provide papers that explored novel ways of training CNNs for FGVC?","query_id":"AutoScholarQuery_test_813"}
+{"query":"What studies proposed deep learning models for protein sequence design using structure-based generative models?","query_id":"AutoScholarQuery_test_814"}
+{"query":"Which work proposed the model-free algorithm MOFFLE for low-nonnegative-rank MDPs in the field of reward-free reinforcement learning?","query_id":"AutoScholarQuery_test_815"}
+{"query":"What papers utilize the Monte Carlo Dropout method in variational Bayesian methods for approximating the intractable integrals arising in Bayesian inference?","query_id":"AutoScholarQuery_test_816"}
+{"query":"Which studies extended the work of cage-based deformation in NeRF editing?","query_id":"AutoScholarQuery_test_817"}
+{"query":"What studies discuss the training of Pre-trained Language Models(PLMs) for predicting masked words?","query_id":"AutoScholarQuery_test_818"}
+{"query":"What research focused on constructing a purpose-driven affordance dataset?","query_id":"AutoScholarQuery_test_819"}
+{"query":"What works have been done in the field of image editing in computer vision?","query_id":"AutoScholarQuery_test_820"}
+{"query":"Could you provide me some works that focus on source domain data estimation in the context of SFUDA?","query_id":"AutoScholarQuery_test_821"}
+{"query":"Which work combines the semantic and instance segmentation tasks effectively?","query_id":"AutoScholarQuery_test_822"}
+{"query":"Which studies presented automatic machine learning (AutoML) approaches?","query_id":"AutoScholarQuery_test_823"}
+{"query":"Which papers discussed federated learning in the context of autonomous driving?","query_id":"AutoScholarQuery_test_824"}
+{"query":"Could you provide me studies that propose approaches to unite segmentation datasets from multiple domains?","query_id":"AutoScholarQuery_test_825"}
+{"query":"Which papers have investigated the simplicity bias in Deep Neural Networks (DNNs)?","query_id":"AutoScholarQuery_test_826"}
+{"query":"What works propose to utilize the MVS approach using cost volume for better occlusion handling in generalizable view synthesis?","query_id":"AutoScholarQuery_test_827"}
+{"query":"Which papers discuss earlier datasets focused on sign language recognition using isolated signs?","query_id":"AutoScholarQuery_test_828"}
+{"query":"Any works that propose a view synthesis framework using two images with small overlapped regions?","query_id":"AutoScholarQuery_test_829"}
+{"query":"Which papers proposed a multi-stage language model for TTS with phonemes as input and acoustic tokens as output?","query_id":"AutoScholarQuery_test_830"}
+{"query":"Any studies about enhancing PLMs through pretraining on domain-relevant documents?","query_id":"AutoScholarQuery_test_831"}
+{"query":"What research works give a gradient-based approach to interpretability methods?","query_id":"AutoScholarQuery_test_832"}
+{"query":"Which works have utilized the relationship between multiple images and between network layers in FGVC?","query_id":"AutoScholarQuery_test_833"}
+{"query":"Which research proposed the Conditional Mutual Information (CMI) approach for learning disentangled representations?","query_id":"AutoScholarQuery_test_834"}
+{"query":"Could you provide me some studies about delayed sampling which uses automatic marginalization to improve inference?","query_id":"AutoScholarQuery_test_835"}
+{"query":"Can you name some studies that use Recurrent Neural Network or Graph Neural Network for improving the geometry shapes of building extraction results?","query_id":"AutoScholarQuery_test_836"}
+{"query":"What studies examined the performance issues in machine translation models?","query_id":"AutoScholarQuery_test_837"}
+{"query":"Which studies are about leveraging demonstrations into the policy-update steps of Reinforcement Learning?","query_id":"AutoScholarQuery_test_838"}
+{"query":"Can you cite the research papers that investigated the use of six IMUs for full-body motion estimation?","query_id":"AutoScholarQuery_test_839"}
+{"query":"Which work marked a significant development in Vision-Language Pre-training (VLP) and has trained encoders on a large amount of data?","query_id":"AutoScholarQuery_test_840"}
+{"query":"What papers are about contextualized models for encoding word meaning in the LSC task?","query_id":"AutoScholarQuery_test_841"}
+{"query":"Could you mention any works that proposed the concept of learning EBM by using a ConvNet as the energy function?","query_id":"AutoScholarQuery_test_842"}
+{"query":"Which investigation proposes a method that mitigates the issue of model bias and generalization in zero-/few-shot anomaly detection?","query_id":"AutoScholarQuery_test_843"}
+{"query":"Who introduced the approach of dataset condensation that leverages gradient-based hyper-parameter optimization?","query_id":"AutoScholarQuery_test_844"}
+{"query":"What works have used frame averaging to produce equivariant output from non-equivariant architecture backbones?","query_id":"AutoScholarQuery_test_845"}
+{"query":"What papers focus on HMT techniques using depth sensors?","query_id":"AutoScholarQuery_test_846"}
+{"query":"What study modifies questions and answers by counterfactual presupposition in VQAv2 for a new challenging scenario for complementary MLLMs?","query_id":"AutoScholarQuery_test_847"}
+{"query":"Can you mention any work about Out-of-distribution (OOD) generalization on graphs?","query_id":"AutoScholarQuery_test_848"}
+{"query":"Can you tell me about the studies that propose tuning methods for CLIP?","query_id":"AutoScholarQuery_test_849"}
+{"query":"Which research papers focus on addressing label-shift scenarios with open-set domain adaptation (OSDA), partial-set domain adaptation (PDA), and open-partial-set domain adaptation (OPDA)?","query_id":"AutoScholarQuery_test_850"}
+{"query":"What research studies use hard pseudolabels from teachers to train student models in the outcontext of low-resource semi-supervised sequence generation?","query_id":"AutoScholarQuery_test_851"}
+{"query":"What papers dealt with the classical transduction setting, a special case of semi-supervised learning?","query_id":"AutoScholarQuery_test_852"}
+{"query":"Which papers introduce an asymmetric mechanism within the Multi-Agent Debate framework?","query_id":"AutoScholarQuery_test_853"}
+{"query":"Which works applied data augmentation strategy or generative adversarial networks (GANs) in Domain Generalization (DG) to handle the domain shift?","query_id":"AutoScholarQuery_test_854"}
+{"query":"Are there any references that proposed the first general gradient inversion method?","query_id":"AutoScholarQuery_test_855"}
+{"query":"Can you give examples of studies that have provided physics questions in multiple-choice format and require multistep reasoning?","query_id":"AutoScholarQuery_test_856"}
+{"query":"Are there any studies on vision-language models that train to generate text autoregressively?","query_id":"AutoScholarQuery_test_857"}
+{"query":"Which work leveraged orthogonal transformations to avoid the direct computation of Jacobian determinants?","query_id":"AutoScholarQuery_test_858"}
+{"query":"What studies contribute to formality in cross-style learning?","query_id":"AutoScholarQuery_test_859"}
+{"query":"Can you provide some references that introduce code filtering strategies where functional correctness prediction is achieved without code execution?","query_id":"AutoScholarQuery_test_860"}
+{"query":"Could you provide examples of research employ additional convolutional modules to learn a hierarchical feature space?","query_id":"AutoScholarQuery_test_861"}
+{"query":"Could you provide me some studies that focus on modelling the user's state alongside the strategies in ESC systems?","query_id":"AutoScholarQuery_test_862"}
+{"query":"Are there any studies on decoupling the modeling of the environment using a semantic map from the end-to-end network?","query_id":"AutoScholarQuery_test_863"}
+{"query":"Could you provide the study that reevaluated the methods of [bib.bibx36] and reported small robustness gains compared to adversarial training?","query_id":"AutoScholarQuery_test_864"}
+{"query":"Which papers discuss multi-agent autonomous driving simulators which use real driving data to initialize scenarios and logged behavior?","query_id":"AutoScholarQuery_test_865"}
+{"query":"What studies used cross-entropy method for both optimization and sampling in standard RL?","query_id":"AutoScholarQuery_test_866"}
+{"query":"What work can recover Lipschitz contextual bandits, despite having suboptimal dynamic regret bounds?","query_id":"AutoScholarQuery_test_867"}
+{"query":"What works are about text/speech balloon detection in manga?","query_id":"AutoScholarQuery_test_868"}
+{"query":"What works have explored prompting and style conversion for generative data augmentation in low-resource NLP?","query_id":"AutoScholarQuery_test_869"}
+{"query":"Can you cite studies showcasing the effectiveness of LLM-powered data augmentation in cross-lingual commonsense reasoning?","query_id":"AutoScholarQuery_test_870"}
+{"query":"Could you provide me the work that conducted analysis on the embedding layer of mT5 and XLM-R?","query_id":"AutoScholarQuery_test_871"}
+{"query":"Which works use Graph Neural Networks and Recurrent Neural Networks to update encodings in temporal graph learning?","query_id":"AutoScholarQuery_test_872"}
+{"query":"Which papers solved classification and detection problems in LiDAR perception using deep learning?","query_id":"AutoScholarQuery_test_873"}
+{"query":"Could you provide the work that developed an off-policy algorithm capable of computing the inner integral analytically?","query_id":"AutoScholarQuery_test_874"}
+{"query":"What works propose to make use of loss functions to handle known symmetries in object pose prediction?","query_id":"AutoScholarQuery_test_875"}
+{"query":"Which studies evaluated the generalization of an RL agent by training and testing them in totally different environments?","query_id":"AutoScholarQuery_test_876"}
+{"query":"Which work showed that the ranking of attention scores computed by a GAT layer is unconditioned on the query node?","query_id":"AutoScholarQuery_test_877"}
+{"query":"What studies introduced a strategy for normalizing multi-modal attributes to ensure consistency across modalities?","query_id":"AutoScholarQuery_test_878"}
+{"query":"Which papers have created datasets to support research in human behavior understanding?","query_id":"AutoScholarQuery_test_879"}
+{"query":"What work demonstrated the faster learning and better generalization when NTK-target alignment is high?","query_id":"AutoScholarQuery_test_880"}
+{"query":"What research has been conducted on Memory-efficient training methods for reducing the memory footprint during the training process?","query_id":"AutoScholarQuery_test_881"}
+{"query":"What research focuses on distilling reasoning processes?","query_id":"AutoScholarQuery_test_882"}
+{"query":"What research focuses on manipulating visual features to target the issue of image-text isolation?","query_id":"AutoScholarQuery_test_883"}
+{"query":"Which studies focused on bottom-up methods in instance segmentation in 3D perception?","query_id":"AutoScholarQuery_test_884"}
+{"query":"Any work discusses unigram similarity metrics related to the downstream performance?","query_id":"AutoScholarQuery_test_885"}
+{"query":"What papers incorporate rationalization methodologies into supervised NLI models to enhance their resilience against adversarial datasets?","query_id":"AutoScholarQuery_test_886"}
+{"query":"What studies provide solutions for feature matching in low-textured regions using dense or semi-dense matching methods?","query_id":"AutoScholarQuery_test_887"}
+{"query":"Who has defined simplicity bias based on the number of linear components to define a decision boundary and studied its effects?","query_id":"AutoScholarQuery_test_888"}
+{"query":"Which works proposed the extension of 3D Gaussian Splatting technique to dynamic scenes?","query_id":"AutoScholarQuery_test_889"}
+{"query":"Any works discussed about the introduction of additional layers into the model architecture instead of updating a large number of model parameters?","query_id":"AutoScholarQuery_test_890"}
+{"query":"Which publications discuss HMT methods utilizing ego-centric views?","query_id":"AutoScholarQuery_test_891"}
+{"query":"Which studies focus on the integration of contrastive signals in dataset condensation?","query_id":"AutoScholarQuery_test_892"}
+{"query":"Which studies focused on using synthetic data to create new datasets or augment existing ones?","query_id":"AutoScholarQuery_test_893"}
+{"query":"Which works employed contrastive learning for graph representation learning?","query_id":"AutoScholarQuery_test_894"}
+{"query":"What papers leverage pre-trained object detection models to extract image regional features offline for training multi-modal transformers?","query_id":"AutoScholarQuery_test_895"}
+{"query":"Which study formally introduced reward-free exploration for tabular MDP?","query_id":"AutoScholarQuery_test_896"}
+{"query":"What research proposed the gradient-sliding method for addressing separated structure in optimization problems?","query_id":"AutoScholarQuery_test_897"}
+{"query":"Any studies that work on alignment of LLMs evaluators to human evaluation standards?","query_id":"AutoScholarQuery_test_898"}
+{"query":"Which works offer end-to-end methods for multimodal Language Models?","query_id":"AutoScholarQuery_test_899"}
+{"query":"Could you tell me the works related to representer point selection for estimating training data influence?","query_id":"AutoScholarQuery_test_900"}
+{"query":"Which works are responsible for the introduction of unsupervised models for perceptual grouping?","query_id":"AutoScholarQuery_test_901"}
+{"query":"Can you name some examples of projects that integrated machine learning, particularly LLMs, into automated theorem proving?","query_id":"AutoScholarQuery_test_902"}
+{"query":"Could you provide me some works centered on multilingual machine translation?","query_id":"AutoScholarQuery_test_903"}
+{"query":"What studies have used techniques like residual structure, skip connection, and dropout in basic CNN frameworks for image restoration?","query_id":"AutoScholarQuery_test_904"}
+{"query":"Are there studies which focus on refining generated code through iterative reviews and improvements based on execution results?","query_id":"AutoScholarQuery_test_905"}
+{"query":"Which works have been done on representation learning on hypergraphs?","query_id":"AutoScholarQuery_test_906"}
+{"query":"Which studies showed that the fine-tuning of large vision-language foundational models with a few examples from the target dataset can enhance performance?","query_id":"AutoScholarQuery_test_907"}
+{"query":"Could you provide me some examples of works that introduced a parallel iterative routing?","query_id":"AutoScholarQuery_test_908"}
+{"query":"Which papers extended the ideas from non-stationary multi-armed bandits to various contextual bandit settings?","query_id":"AutoScholarQuery_test_909"}
+{"query":"What papers discussed techniques on disentanglement based on Variation Autoencoder (VAE)?","query_id":"AutoScholarQuery_test_910"}
+{"query":"Which papers cover the convergence of PFL on homogeneous data?","query_id":"AutoScholarQuery_test_911"}
+{"query":"What papers made advancements with hybrid pose-based methods in deep learning?","query_id":"AutoScholarQuery_test_912"}
+{"query":"What prior works discussed random walk-based unsupervised representation learning methods?","query_id":"AutoScholarQuery_test_913"}
+{"query":"Which research provides learning methods for object-level anomaly detection during meta-training?","query_id":"AutoScholarQuery_test_914"}
+{"query":"Which papers proposed the Preference Ranking Optimization as an alternative to PPO?","query_id":"AutoScholarQuery_test_915"}
+{"query":"Any works about combining NeRFs by inserting objects into pre-existing NeRF scenes?","query_id":"AutoScholarQuery_test_916"}
+{"query":"What studies require an additional boundedness assumption when fρ* falls into a less-smooth interpolation space?","query_id":"AutoScholarQuery_test_917"}
+{"query":"Which research papers adopted a 3D-Unet architecture to produce video volumes directly from an input image?","query_id":"AutoScholarQuery_test_918"}
+{"query":"Who first explored the food bank problem in the context of additive valuations?","query_id":"AutoScholarQuery_test_919"}
+{"query":"Which paper proposed an enhanced Key-Value Memory neural network for Information Retrieval-based methods?","query_id":"AutoScholarQuery_test_920"}
+{"query":"What works studied enabling more robust operation for certain tasks through recovering explicit localization information in model representations?","query_id":"AutoScholarQuery_test_921"}
+{"query":"Are there any existing datasets that concentrate on the novel use of word meanings and omit conventional examples?","query_id":"AutoScholarQuery_test_922"}
+{"query":"Which papers present the use of ordinary and partial differential equations in designing, interpreting, and analyzing graph machine learning architectures?","query_id":"AutoScholarQuery_test_923"}
+{"query":"Which papers focus on distributed optimization using stochastic methods through client sampling?","query_id":"AutoScholarQuery_test_924"}
+{"query":"What work explores learning an anomaly detector in the feature space with a category-agnostic model?","query_id":"AutoScholarQuery_test_925"}
+{"query":"Which papers propose first-order methods for efficiently solving min-max optimization problems in Weak Minty Variational Inequalities?","query_id":"AutoScholarQuery_test_926"}
+{"query":"Could you tell me which papers introduced RL from AI Feedback training approach in the context of RLHF?","query_id":"AutoScholarQuery_test_927"}
+{"query":"Which works propose methods for character re-identification in manga?","query_id":"AutoScholarQuery_test_928"}
+{"query":"Which papers discuss the RP gradient based on the reparameterization trick?","query_id":"AutoScholarQuery_test_929"}
+{"query":"Which work showed that simple classifiers can detect images created by a single category of networks?","query_id":"AutoScholarQuery_test_930"}
+{"query":"Which research introduced acoustic tokens into semantic token modeling and proposed a multi-stage generative framework in speech language models?","query_id":"AutoScholarQuery_test_931"}
+{"query":"What studies proposed Stochastic Gradient Descent Ascent (SGDA) algorithms to address stochastic minimax optimization problems?","query_id":"AutoScholarQuery_test_932"}
+{"query":"Could you provide me the studies of part correspondence?","query_id":"AutoScholarQuery_test_933"}
+{"query":"Which studies fall under the category of sparse-point annotation methods in weakly supervised 3D instance segmentation?","query_id":"AutoScholarQuery_test_934"}
+{"query":"Any studies about anomaly score improvement in reconstruction-based techniques by combining forecasting error and reconstruction probability?","query_id":"AutoScholarQuery_test_935"}
+{"query":"Can you provide works that used feature-based distillation methods in object detection?","query_id":"AutoScholarQuery_test_936"}
+{"query":"Which papers provide a comprehensive overview of transfer learning?","query_id":"AutoScholarQuery_test_937"}
+{"query":"Could you tell me some studies that implemented honesty-based fine-tuning and trained LLMs to admit limitations?","query_id":"AutoScholarQuery_test_938"}
+{"query":"Could you tell me which paper proposed the fixed pre-decision module to bridge the gap between SimulMT and SimulST?","query_id":"AutoScholarQuery_test_939"}
+{"query":"Which papers discuss the use of barriers or immediate switching between the objective and constraint in CMDP framework?","query_id":"AutoScholarQuery_test_940"}
+{"query":"Which work modified the algorithm to get the Probabilistic Serial fractional outcome while showing a weak notion of efficiency with a simpler proof?","query_id":"AutoScholarQuery_test_941"}
+{"query":"Which work introduced the use of orthogonality in feature space to encourage inter-class separation and intra-class clustering?","query_id":"AutoScholarQuery_test_942"}
+{"query":"What paper employs self and cross-reconstruction modules to learn discriminative and smooth representations and uses DGCNN for learning the per-point feature embeddings?","query_id":"AutoScholarQuery_test_943"}
+{"query":"Could you mention some studies that contributed to remarkable text-to-3D generation results?","query_id":"AutoScholarQuery_test_944"}
+{"query":"What studies advanced diffusion probabilistic models to generate high-resolution and diverse images?","query_id":"AutoScholarQuery_test_945"}
+{"query":"Which works have sought to detect important skill neurons in performing a specific task?","query_id":"AutoScholarQuery_test_946"}
+{"query":"Which studies have proposed methods to detect skill neurons within already trained models using an inference-based method?","query_id":"AutoScholarQuery_test_947"}
+{"query":"Which papers investigated CLIP-based classifiers and their performance in open-granularity classification?","query_id":"AutoScholarQuery_test_948"}
+{"query":"What studies have produced abundant equivariant neural networks?","query_id":"AutoScholarQuery_test_949"}
+{"query":"Which studies used transformers and diffusion models for creating high-fidelity images from text?","query_id":"AutoScholarQuery_test_950"}
+{"query":"What research works have explored how to address the susceptibility of current large language models to certain errors?","query_id":"AutoScholarQuery_test_951"}
+{"query":"Are there any works that have further strengthened text embedders?","query_id":"AutoScholarQuery_test_952"}
+{"query":"Could you provide some works that discussed the problem of selling information in economics and computer science?","query_id":"AutoScholarQuery_test_953"}
+{"query":"Which studies approached the combination of Imitation learning and Reinforcement learning by treating RL as a sequence modelling problem and train an autoregressive model using offline data?","query_id":"AutoScholarQuery_test_954"}
+{"query":"Could you provide me studies that improved the performance of small-scale models by fine-tuning them using reasoning processes generated by LLMs?","query_id":"AutoScholarQuery_test_955"}
+{"query":"Could you provide me some works that show asymmetric quantization methods outperform their symmetric counterparts?","query_id":"AutoScholarQuery_test_956"}
+{"query":"Could you provide me some works focusing on video visual relation detection using datasets like AG, VidVRD and VidOR?","query_id":"AutoScholarQuery_test_957"}
+{"query":"Could you mention a study that proposed plain diffusion Transformer architecture to learn the denoising diffusion process on latent patches?","query_id":"AutoScholarQuery_test_958"}
+{"query":"What works discusses the combination of the KD and model quantization method to achieve high compression ratios?","query_id":"AutoScholarQuery_test_959"}
+{"query":"Which research first studied a local minimax risk for instance optimality in differential privacy?","query_id":"AutoScholarQuery_test_960"}
+{"query":"Are there any works related to the framework of detector-free Structure-from-Motion?","query_id":"AutoScholarQuery_test_961"}
+{"query":"Which work discusses the generation of CDRs on a single chain in regards to pipeline-based antibody design?","query_id":"AutoScholarQuery_test_962"}
+{"query":"Which research works presented improvements on the top of EDM?","query_id":"AutoScholarQuery_test_963"}
+{"query":"Could you provide me some works that have developed RL, behavioral cloning, and LLM-based models on the web front?","query_id":"AutoScholarQuery_test_964"}
+{"query":"Which papers introduced factorization along spatial and temporal dimensions on the granularity of the encoder?","query_id":"AutoScholarQuery_test_965"}
+{"query":"Can you mention some studies that address the issue of diversity in single-imgae 3D generation, especially in face generation or starting from text for 3D generation?","query_id":"AutoScholarQuery_test_966"}
+{"query":"Can you provide a study that effectively tackles domain adaptation and active domain adaptation tasks for 3D semantic segmentation?","query_id":"AutoScholarQuery_test_967"}
+{"query":"Which study proposed to use rooted homomorphism counts as node features in a graph neural network (GNN)?","query_id":"AutoScholarQuery_test_968"}
+{"query":"Which studies used feature decomposition to enhance feature alignment in domain adaptation and domain generalization?","query_id":"AutoScholarQuery_test_969"}
+{"query":"Could you provide me some studies that focus on the impact of noisy information on retrieval-augmented generation?","query_id":"AutoScholarQuery_test_970"}
+{"query":"What studies tackled the challenge of missing data within MMKGs with adversarial methods?","query_id":"AutoScholarQuery_test_971"}
+{"query":"What papers utilized the strategy of transforming categorical data into a continuous space and then applying Gaussian diffusion?","query_id":"AutoScholarQuery_test_972"}
+{"query":"Name a research work that involves the use of neural networks as alternative function classes in BO methods?","query_id":"AutoScholarQuery_test_973"}
+{"query":"Which studies explored the effect of the choice of the in-context samples on the performance of in-context learning?","query_id":"AutoScholarQuery_test_974"}
+{"query":"Could you mention any research that was focused on applying CLIP to downstream tasks?","query_id":"AutoScholarQuery_test_975"}
+{"query":"What are the studies where the RL agents are evaluated by seeing if they can quickly adapt from one task to another?","query_id":"AutoScholarQuery_test_976"}
+{"query":"Which works focused on the evaluation of RL agents by changing the surfaces of the objects in the environment?","query_id":"AutoScholarQuery_test_977"}
+{"query":"Could you cite the works where multilingual LLMs were evaluated on individual tasks such as Translation, Question-Answering, Summarization, and Reasoning?","query_id":"AutoScholarQuery_test_978"}
+{"query":"Can you provide the references that propose techniques for enhancing hierarchical classification consistency?","query_id":"AutoScholarQuery_test_979"}
+{"query":"Could you provide some references focusing on achieving ϵ-stationary points under non-convex settings?","query_id":"AutoScholarQuery_test_980"}
+{"query":"What studies have been conducted to predict future actions from a sequence of observed actions?","query_id":"AutoScholarQuery_test_981"}
+{"query":"Are there works that demonstrate attempts to make images unlearnable or uneditable to handle unauthorized data usage issues in diffusion models?","query_id":"AutoScholarQuery_test_982"}
+{"query":"Can you list the research that introduced the Mirror Descent Policy Optimization?","query_id":"AutoScholarQuery_test_983"}
+{"query":"Which research projects looked into misclassification issues of black-box classifiers where human text was mistaken as LLM-generated?","query_id":"AutoScholarQuery_test_984"}
+{"query":"Could you provide examples of the works on building structured and interpretable models such as Hamiltonian Neural Networks (HNN), Lagrangian Neural Networks (LNN), and Sparse Identification of Nonlinear Dynamics (SINDy)?","query_id":"AutoScholarQuery_test_985"}
+{"query":"Did any researchers create a synchrony-based model with no reliance on explicit supervision for grouping?","query_id":"AutoScholarQuery_test_986"}
+{"query":"Who proposed analytic methods for gradient inversion?","query_id":"AutoScholarQuery_test_987"}
+{"query":"Are there any research related to meta-learning?","query_id":"AutoScholarQuery_test_988"}
+{"query":"Could you provide me some studies that detected hallucinations by analyzing the relationship between input prompts and the LLM's output responses?","query_id":"AutoScholarQuery_test_989"}
+{"query":"Which papers mentioned the application of transformer-based pre-trained models in code search?","query_id":"AutoScholarQuery_test_990"}
+{"query":"Could you provide references that discuss alternative approaches to the matrix mechanism that reduce the variance by adding bias?","query_id":"AutoScholarQuery_test_991"}
+{"query":"What papers are about using synthetic data to improve the domain-generalization of NLI models?","query_id":"AutoScholarQuery_test_992"}
+{"query":"Which works describe the advancements in 3D reconstruction and novel view synthesis with NeRF?","query_id":"AutoScholarQuery_test_993"}
+{"query":"What works evaluated the applicability of MAML and its variants to graph neural networks (GNNs)?","query_id":"AutoScholarQuery_test_994"}
+{"query":"What papers discuss client-side local distillation to transfer global knowledge to local models in generic FL?","query_id":"AutoScholarQuery_test_995"}
+{"query":"Which papers describe the analysis of the semantic property of intermediate latent space by its local geometry?","query_id":"AutoScholarQuery_test_996"}
+{"query":"What are the examples of research done on SLAM methods in the context of object navigation tasks?","query_id":"AutoScholarQuery_test_997"}
+{"query":"What works discuss the performance degradation in NLI models when presented with adversarial datasets?","query_id":"AutoScholarQuery_test_998"}
+{"query":"What studies have focused on training language like models with privacy guarantees?","query_id":"AutoScholarQuery_test_999"}

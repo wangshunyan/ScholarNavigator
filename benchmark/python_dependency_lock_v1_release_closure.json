@@ -1,0 +1,200 @@
+{
+  "complete": true,
+  "direct_requirements": [
+    "fastapi==0.138.0",
+    "packaging==25.0",
+    "pydantic==2.11.7",
+    "rank-bm25==0.2.2",
+    "uvicorn==0.48.0"
+  ],
+  "kind": "python_installed_metadata_lock_v1",
+  "missing_packages": [],
+  "packages": [
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": null,
+      "dependencies": [],
+      "ecosystem": "pypi",
+      "license": "MIT",
+      "name": "annotated-doc",
+      "scope": "transitive",
+      "version": "0.0.4"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": null,
+      "dependencies": [],
+      "ecosystem": "pypi",
+      "license": "unknown",
+      "name": "annotated-types",
+      "scope": "transitive",
+      "version": "0.6.0"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": null,
+      "dependencies": [
+        "idna>=2.8"
+      ],
+      "ecosystem": "pypi",
+      "license": "MIT",
+      "name": "anyio",
+      "scope": "transitive",
+      "version": "4.13.0"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": null,
+      "dependencies": [],
+      "ecosystem": "pypi",
+      "license": "BSD-3-Clause",
+      "name": "click",
+      "scope": "transitive",
+      "version": "8.2.1"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": "fastapi==0.138.0",
+      "dependencies": [
+        "annotated-doc>=0.0.2",
+        "pydantic>=2.9.0",
+        "starlette>=0.46.0",
+        "typing-extensions>=4.8.0",
+        "typing-inspection>=0.4.2"
+      ],
+      "ecosystem": "pypi",
+      "license": "MIT",
+      "name": "fastapi",
+      "scope": "direct",
+      "version": "0.138.0"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": null,
+      "dependencies": [],
+      "ecosystem": "pypi",
+      "license": "MIT",
+      "name": "h11",
+      "scope": "transitive",
+      "version": "0.16.0"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": null,
+      "dependencies": [],
+      "ecosystem": "pypi",
+      "license": "unknown",
+      "name": "idna",
+      "scope": "transitive",
+      "version": "3.7"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": null,
+      "dependencies": [],
+      "ecosystem": "pypi",
+      "license": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+      "name": "numpy",
+      "scope": "transitive",
+      "version": "2.4.6"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": "packaging==25.0",
+      "dependencies": [],
+      "ecosystem": "pypi",
+      "license": "unknown",
+      "name": "packaging",
+      "scope": "direct",
+      "version": "25.0"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": "pydantic==2.11.7",
+      "dependencies": [
+        "annotated-types>=0.6.0",
+        "pydantic-core==2.33.2",
+        "typing-extensions>=4.12.2",
+        "typing-inspection>=0.4.0"
+      ],
+      "ecosystem": "pypi",
+      "license": "MIT",
+      "name": "pydantic",
+      "scope": "direct",
+      "version": "2.11.7"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": null,
+      "dependencies": [
+        "typing-extensions!=4.7.0,>=4.6.0"
+      ],
+      "ecosystem": "pypi",
+      "license": "MIT",
+      "name": "pydantic-core",
+      "scope": "transitive",
+      "version": "2.33.2"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": "rank-bm25==0.2.2",
+      "dependencies": [
+        "numpy"
+      ],
+      "ecosystem": "pypi",
+      "license": "Apache2.0",
+      "name": "rank-bm25",
+      "scope": "direct",
+      "version": "0.2.2"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": null,
+      "dependencies": [
+        "anyio<5,>=3.6.2"
+      ],
+      "ecosystem": "pypi",
+      "license": "BSD-3-Clause",
+      "name": "starlette",
+      "scope": "transitive",
+      "version": "1.2.0"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": null,
+      "dependencies": [],
+      "ecosystem": "pypi",
+      "license": "PSF-2.0",
+      "name": "typing-extensions",
+      "scope": "transitive",
+      "version": "4.15.0"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": null,
+      "dependencies": [
+        "typing-extensions>=4.12.0"
+      ],
+      "ecosystem": "pypi",
+      "license": "MIT",
+      "name": "typing-inspection",
+      "scope": "transitive",
+      "version": "0.4.2"
+    },
+    {
+      "artifact_sha256": "unknown",
+      "declared_requirement": "uvicorn==0.48.0",
+      "dependencies": [
+        "click>=7.0",
+        "h11>=0.8"
+      ],
+      "ecosystem": "pypi",
+      "license": "BSD-3-Clause",
+      "name": "uvicorn",
+      "scope": "direct",
+      "version": "0.48.0"
+    }
+  ],
+  "schema_version": "1",
+  "unpinned_direct_requirements": []
+}

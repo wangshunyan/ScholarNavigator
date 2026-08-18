@@ -1,0 +1,47 @@
+{
+  "dataset": "beir_scifact",
+  "split": "test",
+  "source_url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/scifact.zip",
+  "beir_repository": "https://github.com/beir-cellar/beir",
+  "beir_commit": "6ef8c90",
+  "license": "Apache-2.0 (BEIR repository; SciFact attribution follows the BEIR release)",
+  "archive": "scifact.zip",
+  "archive_size_bytes": 2816079,
+  "archive_sha256": "536e14446a0ba56ed1398ab1055f39fe852686ecad24a6306c80c490fa8e0165",
+  "required_members": ["scifact/corpus.jsonl", "scifact/queries.jsonl", "scifact/qrels/test.tsv"],
+  "corpus_count": 5183,
+  "query_count": 1109,
+  "qrel_count": 339,
+  "qrel_query_count": 300,
+  "qrel_judgments": [1],
+  "sample_size": 50,
+  "sample_order": "sha256(query_id) ascending, query_id tie-break",
+  "sample_manifest": "benchmark/beir_scifact_sample_manifest.json",
+  "gold_identity": "s2orc_corpus_id from corpus _id, enriched only in the offline evaluator with exact official Semantic Scholar CorpusId responses; unavailable/failed crosswalk records are excluded from retrieval-miss denominators",
+  "evaluator_crosswalk": {
+    "source": "Semantic Scholar Graph API /paper/CorpusId:{id}",
+    "connector_version": "semantic-scholar-corpusid-v1",
+    "schema_version": "1",
+    "requested_fields": ["paperId", "corpusId", "externalIds"],
+    "artifact": "benchmark/beir_scifact_s2_crosswalk.json",
+    "artifact_sha256": "ec7406107d13ddfd81ea1eca6f065c85dda25276f4ddb33abd568c5dd9d94d1c",
+    "gold_relation_count": 51,
+    "unique_corpus_id_count": 48,
+    "unique_terminal_counts": {
+      "success": 39,
+      "unavailable": 3,
+      "failed": 6
+    },
+    "gold_relation_terminal_counts": {
+      "success": 42,
+      "unavailable": 3,
+      "failed": 6
+    },
+    "external_id_coverage_unique": {
+      "DOI": 38,
+      "PubMed": 38,
+      "ArXiv": 0
+    },
+    "collection_snapshot_name": "beir_scifact_s2_crosswalk_v1_4b4fdff"
+  }
+}

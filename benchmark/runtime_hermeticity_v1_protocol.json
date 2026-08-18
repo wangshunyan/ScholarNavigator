@@ -1,0 +1,151 @@
+{
+  "allowed_environment_variables": [
+    "HOME",
+    "LANG",
+    "LC_ALL",
+    "MKL_NUM_THREADS",
+    "NUMEXPR_NUM_THREADS",
+    "OMP_NUM_THREADS",
+    "OPENBLAS_NUM_THREADS",
+    "PYTHONDONTWRITEBYTECODE",
+    "PYTHONHASHSEED",
+    "PYTHONUNBUFFERED",
+    "TMPDIR",
+    "TZ"
+  ],
+  "allowed_inputs": [
+    {
+      "path": "benchmark/execution_determinism_v1_protocol.json",
+      "role": "execution_protocol",
+      "sha256": "0640efea3d040c750c832a8f5722edb7fd20878100a0436546dc9554e1f9057a",
+      "size_bytes": 4546
+    },
+    {
+      "path": "datasets/eval_fixtures/sample/retrieval_outputs.json",
+      "role": "retrieval_fixture",
+      "sha256": "113fe81cb5b6a4e3d912668122825a7d34dfd40ab30d8694139c13ddc3b89f62",
+      "size_bytes": 5979
+    }
+  ],
+  "allowed_outputs": [
+    {
+      "role": "gate_worker_report",
+      "scope": "isolated_profile_output_directory"
+    }
+  ],
+  "audit_boundary": "after_dependency_import_before_business_execution",
+  "business_execution": {
+    "dynamic_configuration_loading": false,
+    "entrypoint": "execution_determinism.replay_canonical_fixture",
+    "llm_enabled": false,
+    "snapshot_writes_enabled": false
+  },
+  "canonicalization": {
+    "list_order_policy": "preserved",
+    "policy": "reuse_execution_determinism_explicit_paths_unknown_fields_preserved",
+    "unknown_field_policy": "compare_and_fail_on_drift"
+  },
+  "contract": "runtime_hermeticity_v1",
+  "environment_profiles": [
+    {
+      "cwd_variant": "cwd-minimal",
+      "home_variant": "home-minimal",
+      "kind": "minimal_environment",
+      "locale": "C",
+      "profile_id": "minimal",
+      "python_hash_seed": "1",
+      "thread_count": 1,
+      "timezone": "UTC",
+      "tmp_variant": "tmp-minimal"
+    },
+    {
+      "cwd_variant": "cwd-minimal",
+      "home_variant": "home-minimal",
+      "kind": "hash_seed",
+      "locale": "C",
+      "profile_id": "hash-seed-98765",
+      "python_hash_seed": "98765",
+      "thread_count": 1,
+      "timezone": "UTC",
+      "tmp_variant": "tmp-minimal"
+    },
+    {
+      "cwd_variant": "different-working-directory",
+      "home_variant": "different-home",
+      "kind": "working_directory_home_tmpdir",
+      "locale": "C",
+      "profile_id": "cwd-home-tmp-alternate",
+      "python_hash_seed": "1",
+      "thread_count": 1,
+      "timezone": "UTC",
+      "tmp_variant": "different-tmp"
+    },
+    {
+      "cwd_variant": "cwd-timezone",
+      "home_variant": "home-timezone",
+      "kind": "timezone",
+      "locale": "C",
+      "profile_id": "timezone-asia-shanghai",
+      "python_hash_seed": "1",
+      "thread_count": 1,
+      "timezone": "Asia/Shanghai",
+      "tmp_variant": "tmp-timezone"
+    },
+    {
+      "cwd_variant": "cwd-locale",
+      "home_variant": "home-locale",
+      "kind": "locale",
+      "locale": "en_US.UTF-8",
+      "profile_id": "locale-utf8",
+      "python_hash_seed": "1",
+      "thread_count": 1,
+      "timezone": "UTC",
+      "tmp_variant": "tmp-locale"
+    },
+    {
+      "cwd_variant": "cwd-threads",
+      "home_variant": "home-threads",
+      "kind": "thread_environment",
+      "locale": "C",
+      "profile_id": "thread-environment-two",
+      "python_hash_seed": "1",
+      "thread_count": 2,
+      "timezone": "UTC",
+      "tmp_variant": "tmp-threads"
+    },
+    {
+      "cwd_variant": "cwd-polluted",
+      "home_variant": "home-polluted",
+      "kind": "polluted_environment",
+      "locale": "C",
+      "profile_id": "polluted-environment",
+      "python_hash_seed": "1",
+      "thread_count": 1,
+      "timezone": "UTC",
+      "tmp_variant": "tmp-polluted"
+    }
+  ],
+  "execution_protocol": {
+    "path": "benchmark/execution_determinism_v1_protocol.json",
+    "sha256": "0640efea3d040c750c832a8f5722edb7fd20878100a0436546dc9554e1f9057a",
+    "size_bytes": 4546
+  },
+  "forbidden_resources": [
+    "network_or_dns",
+    "dotenv_or_secret_files",
+    "home_configuration",
+    "undeclared_file_content",
+    "writes_outside_declared_output",
+    "snapshot_writes",
+    "llm_calls",
+    "unregistered_subprocesses",
+    "sensitive_output_echo"
+  ],
+  "frozen_baseline_eligibility": {
+    "path": "benchmark/run_provenance_legacy_audit.json",
+    "sha256": "46197f1665cd827bf386b985b00ae0d8079bcffb1c56e48556953bd926cf084d",
+    "size_bytes": 5777
+  },
+  "schema_version": "1",
+  "score_scope": "runtime_hermeticity_only_not_quality_or_official_score"
+}

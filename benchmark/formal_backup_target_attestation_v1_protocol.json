@@ -1,0 +1,73 @@
+{
+  "bindings": {
+    "disaster_recovery": {
+      "path": "benchmark/formal_run_disaster_recovery_v1_protocol.json",
+      "sha256": "e6b646df73fee75421e33894a73f60cb6f4e00f509a09a103766f68310a20467"
+    },
+    "execution_plan": {
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    "host_attestation": {
+      "path": "benchmark/formal_execution_host_attestation_v1_protocol.json",
+      "sha256": "095bbe731aa461dfa1999080cb916757ecce8f737c19e823aa1173b8663a7681"
+    },
+    "launch_control": {
+      "path": "benchmark/full1000_launch_control_v1_protocol.json",
+      "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+    },
+    "multivolume_storage": {
+      "path": "benchmark/formal_multivolume_storage_v1_protocol.json",
+      "sha256": "ae6ecc5691ce9cde6a0780c4c4276067e1cefb3154ffe3ff3cefac1c54e87e5c"
+    },
+    "portable_execution_site": {
+      "path": "benchmark/portable_execution_site_attestation_v1_protocol.json",
+      "sha256": "10d49ae0e80ddd00edfa84ba676985f5104cad1b428a7cb2ba613f95858d7ead"
+    },
+    "shard_streaming_retention": {
+      "path": "benchmark/formal_shard_streaming_retention_v1_protocol.json",
+      "sha256": "5673ac2c73873c4c0f96cee14db93d37360f9f304d8a7c2a7181aa89f10a2099"
+    },
+    "storage_governance": {
+      "path": "benchmark/formal_run_storage_governance_v1_protocol.json",
+      "sha256": "bb78967820aba3c223c0638adbda9b0779cc7cecffcb718fa22a06f352c9d5c1"
+    }
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "kit": {
+    "fixed_zip_timestamp": [
+      2024,
+      1,
+      1,
+      0,
+      0,
+      0
+    ],
+    "network_request_count": 0,
+    "project_dependency_count": 0,
+    "python_invocation": "python -I -S"
+  },
+  "protocol": "formal_backup_target_attestation_v1",
+  "protocol_sha256": "c02ec5e3bc7219984622c5b64fde3beb8111e4c513df2fe9299324a10733a805",
+  "requirements": {
+    "active_shard_window": 4,
+    "challenge_max_age_seconds": 86400,
+    "fault_domain_policy": "verified_independent_device_and_management_domain",
+    "max_file_size_bytes": 35030827008,
+    "minimum_concurrent_writers": 2,
+    "minimum_path_name_bytes": 240,
+    "required_available_bytes": 2119029489664,
+    "required_available_inodes": 210940,
+    "required_quota_bytes": 2119029489664,
+    "required_reserved_bytes": 2119029489664
+  },
+  "schema_version": "1",
+  "source_commit": "8aad1925585ba6715dc66fcadce8decd3480a50e"
+}

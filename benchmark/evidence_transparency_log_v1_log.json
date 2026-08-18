@@ -1,0 +1,85 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "log_sha256": "6c3ac03987ba8ae735af75c3c7120ad9795675b1431feebbbef77e5c65eec171",
+  "merkle_root": "2d2fee76aa56f48a7e4a204bdbb16995701f7f930abfa216e962af04bfb06473",
+  "protocol": "evidence_transparency_log_v1",
+  "record_count": 1,
+  "records": [
+    {
+      "artifacts": {
+        "clearance_receipt": {
+          "evidence_sha256": null,
+          "formal_validation_complete": false,
+          "sha256": null,
+          "source_commit": null,
+          "status": "not_available"
+        },
+        "readiness": {
+          "formal_validation_complete": false,
+          "sha256": "7290530ef4beaf2a4677c6401512a8d975328115e28430cffd70d99f4628401c",
+          "status": "ready_with_declared_blockers"
+        },
+        "release_candidate": {
+          "formal_validation_complete": false,
+          "qualification": "not_qualified",
+          "sha256": "6b07107b94d8f25b1abf6a49baf68446f76b0b93fdad4e157c6ca7199073226c",
+          "status": "build_or_supply_chain_violation"
+        },
+        "standalone": {
+          "formal_validation_complete": false,
+          "sha256": "783ea4d896daf61187e3eb202bb27c1bd974b62439dac2f66145c3e18f0ecf60",
+          "status": "verified_with_declared_blockers"
+        }
+      },
+      "blockers": [
+        "full1000_incomplete",
+        "human_precision_missing",
+        "official_scorer_schema_missing"
+      ],
+      "claims": {
+        "claim_count": 28,
+        "claims_sha256": "bd267a0f2bfb5acccc72fe93cf320bf900159a5ddda49d70ae200447171e50ac",
+        "identity_sha256": "469908e88c563348ee376cceeb57abf611f0ada1caf8b363691bc9429f584d47",
+        "status_counts": {
+          "blocked": 3,
+          "internal_only": 8,
+          "not_applicable": 1,
+          "verified": 16
+        }
+      },
+      "code_commit": "f764eb3c0849c53512f9326d7a83429e1c430a7b",
+      "content_sha256": "8f7918237273a052b4a85262fd813610bd8f2291e67dc7edca050982f2fe15f8",
+      "evidence_epoch": 0,
+      "formal_validation_complete": false,
+      "freshness": {
+        "sha256": "2991571c377c4f0c6ff3cbcc35b3c3e11131317f09f7ffdc5a6c46a470aac56d",
+        "stale_count": 0,
+        "status": "fresh_with_declared_blockers"
+      },
+      "previous_record_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "publisher_identity_authentication": "not_provided_hash_chain_proves_content_consistency_not_publisher_identity",
+      "release_identity": "candidate:f764eb3c0849c53512f9326d7a83429e1c430a7b:c3d05250dd7540d2",
+      "release_status": "candidate_only",
+      "revocation": {
+        "active_incident_count": 0,
+        "event_count": 0,
+        "ledger_sha256": "633bae80ed531cad7ee577a1b515ddfbc41545e711d987f0fbc5ca91bbca54d3",
+        "status": "revocation_controls_ready"
+      },
+      "sequence": 0,
+      "supersession": {
+        "revocation_event_sha256": null,
+        "supersedes_release_identity": null
+      }
+    }
+  ],
+  "schema_version": "1",
+  "source_commit": "f764eb3c0849c53512f9326d7a83429e1c430a7b"
+}

@@ -1,0 +1,133 @@
+{
+  "allowed_environment": [
+    "HOME",
+    "LANG",
+    "LC_ALL",
+    "NEXT_TELEMETRY_DISABLED",
+    "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY",
+    "PATH",
+    "SOURCE_DATE_EPOCH",
+    "TMPDIR",
+    "TZ"
+  ],
+  "archive": {
+    "file_mode": 420,
+    "format": "ustar+gzip",
+    "gzip_filename": "",
+    "gid": 0,
+    "gname": "",
+    "uid": 0,
+    "uname": ""
+  },
+  "build_commands": {
+    "backend": "builtin deterministic wheel writer; no dependency download",
+    "frontend": "next build --webpack with registered deterministic build-id and module-id overlay",
+    "release": "canonical tar/gzip assembly"
+  },
+  "dependency_inputs": [
+    "requirements.txt",
+    "frontend/package.json",
+    "frontend/package-lock.json",
+    "frontend/node_modules/.package-lock.json"
+  ],
+  "frontend_build_overlay": {
+    "path": "frontend/next.config.ts",
+    "purpose": "fixed build and module identities for release-only webpack build",
+    "template_lines": [
+      "// @ts-nocheck -- deterministic release-only webpack configuration",
+      "import type { NextConfig } from \"next\";",
+      "const crypto = require(\"node:crypto\");",
+      "const fs = require(\"node:fs\");",
+      "",
+      "class StableReleaseModuleIdsPlugin {",
+      "  apply(compiler) {",
+      "    compiler.hooks.compilation.tap(\"StableReleaseModuleIdsPlugin\", (compilation) => {",
+      "      compilation.hooks.beforeModuleIds.tap(\"StableReleaseModuleIdsPlugin\", (modules) => {",
+      "        const projectRoot = fs.realpathSync(process.cwd()).split(\"\\\\\").join(\"/\");",
+      "        const dependencyRoot = fs.realpathSync(\"node_modules\").split(\"\\\\\").join(\"/\");",
+      "        const normalize = (value) => String(value ?? \"\")",
+      "          .split(\"\\\\\").join(\"/\")",
+      "          .split(projectRoot).join(\"<project>\")",
+      "          .split(dependencyRoot).join(\"<node_modules>\")",
+      "          .replace(/(?:file:\\/\\/)?[^!|\\s]*\\/source\\/frontend/g, \"<project>\");",
+      "        const seen = new Set();",
+      "        for (const module of modules) {",
+      "          if (compilation.chunkGraph.getModuleId(module) !== null) continue;",
+      "          const stable = [",
+      "            module.constructor?.name,",
+      "            module.type,",
+      "            module.layer,",
+      "            normalize(module.identifier()),",
+      "          ].join(\"|\");",
+      "          const id = crypto.createHash(\"sha256\").update(stable).digest(\"hex\").slice(0, 24);",
+      "          if (seen.has(id)) throw new Error(\"stable release module identity collision\");",
+      "          seen.add(id);",
+      "          compilation.chunkGraph.setModuleId(module, id);",
+      "        }",
+      "      });",
+      "    });",
+      "  }",
+      "}",
+      "",
+      "const nextConfig: NextConfig = {",
+      "  reactStrictMode: true,",
+      "  generateBuildId: async () => \"spar-release-{commit}\",",
+      "  webpack: (config) => {",
+      "    config.optimization.moduleIds = false;",
+      "    config.optimization.chunkIds = \"deterministic\";",
+      "    config.optimization.concatenateModules = false;",
+      "    config.output.hashSalt = \"spar-release-{commit}\";",
+      "    config.plugins.push(new StableReleaseModuleIdsPlugin());",
+      "    return config;",
+      "  },",
+      "};",
+      "",
+      "export default nextConfig;"
+    ]
+  },
+  "output_names": [
+    "frontend-static.tar.gz",
+    "release-manifest.json",
+    "sbom.json",
+    "source.tar.gz",
+    "spar-release-candidate.tar.gz",
+    "spar_scholar_agent-0.1.0-py3-none-any.whl"
+  ],
+  "protocol": "release_candidate_reproducibility_v1_spec",
+  "schema_version": "1",
+  "source_commit": "a743c59c719dd10db742cbd526f8f09c5ba13839",
+  "source_date_epoch": 1784703219,
+  "source_selection": {
+    "exact": [
+      "README.md",
+      "benchmark/evidence_registry_manifest.json",
+      "benchmark/validation_evidence_freshness_v1_contract.json",
+      "benchmark/validation_evidence_freshness_v1_spec.json",
+      "benchmark/validation_readiness_bundle_v1_contract.json",
+      "frontend/next.config.ts",
+      "frontend/package-lock.json",
+      "frontend/package.json",
+      "frontend/postcss.config.mjs",
+      "frontend/tsconfig.json",
+      "requirements.txt"
+    ],
+    "prefixes": [
+      "benchmark/validation_readiness_bundle_v1_release/",
+      "docs/",
+      "frontend/public/",
+      "frontend/src/",
+      "scripts/",
+      "src/scholar_agent/"
+    ],
+    "suffixes": [
+      "_protocol.json"
+    ]
+  },
+  "toolchain_requirements": {
+    "node_major": 20,
+    "npm_major": 10,
+    "python_major_minor": "3.13",
+    "setuptools": "78.1.1",
+    "wheel": "0.45.1"
+  }
+}

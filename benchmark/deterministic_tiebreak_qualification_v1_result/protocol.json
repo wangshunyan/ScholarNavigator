@@ -1,0 +1,148 @@
+{
+  "analysis": "deterministic_tiebreak_qualification_v1",
+  "analysis_population": {
+    "excluded_case_count": 2,
+    "exclusion_rule": "reuse the frozen Record160 excluded_no_successful_source rule exactly; no post-hoc exclusion is allowed",
+    "expected_candidate_count": 4599,
+    "main_case_count": 160,
+    "record_case_count": 162,
+    "selection_prohibitions": [
+      "gold",
+      "qrels",
+      "case_id",
+      "target_paper",
+      "quality_score",
+      "observed_tie_result"
+    ]
+  },
+  "current_policy": {
+    "name": "original_index_v1",
+    "primary_key_fields": [
+      {
+        "direction": "ascending",
+        "field": "category_tier"
+      },
+      {
+        "direction": "descending",
+        "field": "final_score"
+      },
+      {
+        "direction": "descending",
+        "field": "relevance_score"
+      },
+      {
+        "direction": "descending",
+        "field": "nonnegative_citation_count"
+      },
+      {
+        "direction": "descending",
+        "field": "year_or_zero"
+      },
+      {
+        "direction": "ascending",
+        "field": "title_casefold"
+      }
+    ],
+    "tie_break_field": {
+      "direction": "ascending",
+      "field": "original_index"
+    },
+    "tie_definition": "all primary key values compare exactly equal after the existing production score rounding and field normalization; no tolerance, bucket, or approximate comparison is permitted"
+  },
+  "deterministic_tiebreak_v2": {
+    "default_enabled": false,
+    "fallback_requires_registered_source_record": true,
+    "identity_normalization_version": "unified_identity_v1",
+    "name": "deterministic_tiebreak_v2",
+    "stable_key_precedence": [
+      "sorted exact stable identifiers from unified IdentityProfile",
+      "exact normalized title plus sorted normalized authors plus year when all are present",
+      "sorted registered source names plus sorted registered source record references plus normalized field-summary SHA-256"
+    ],
+    "stable_key_prohibitions": [
+      "input_position",
+      "completion_order",
+      "process_state",
+      "gold",
+      "quality_result",
+      "case_id"
+    ],
+    "unresolved_equal_stable_key": "not_eligible"
+  },
+  "execution": {
+    "gold_access": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "frozen_input": {
+    "component_assignments": {
+      "path": "benchmark/autoscholar_query_independence_baseline/query_assignments.jsonl",
+      "sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5"
+    },
+    "config_sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+    "observed_snapshot_key_count": 1093,
+    "record_results_sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+    "run_dir": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1",
+    "snapshot_dir": "outputs/benchmark_snapshots/autoscholar_current_rules_full1000_3cd47c1",
+    "snapshot_file_count": 1934,
+    "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5"
+  },
+  "implementation_base_commit": "0c05632c537bf7bc6d7a319e4094c6ddb7589aed",
+  "permutations": {
+    "deterministic_random_seed": 20260722,
+    "fixed_profiles": [
+      "canonical_input",
+      "reverse_input",
+      "reverse_source_blocks",
+      "rotate_source_blocks",
+      "deterministic_random",
+      "shard_completion_2_0_1"
+    ],
+    "shard_count": 3,
+    "source_order": [
+      "openalex",
+      "arxiv",
+      "semantic_scholar",
+      "pubmed"
+    ]
+  },
+  "production_inputs": {
+    "dedup_sha256": "db4162ef6359e1d973e666d68af657da0901d37b8d202db68214cfe2011b343d",
+    "identity_sha256": "af52ba53c2e559ae87dac83373f0fc2bfeb38d9351ccfb75d7463d1caa2a1dc8",
+    "ranking_audit_sha256": "bf9d29253b17ac54497917e7a6b274d27f948939aa4636a94731d91bcdb50a63",
+    "reranker_sha256_at_protocol_freeze": "46ff113bcb61cbf00a3887654325cc19b74680b35765247459865fbae708e3a1",
+    "result_lineage_sha256": "800557a3d74d69f11369eff39c29aa3691a1191d3b9202ed414a9b77198c7675"
+  },
+  "reconstruction": {
+    "candidate_limit": 200,
+    "judgement_policy": "current_rules",
+    "required_exact_stages": [
+      "initial_deduplicated",
+      "initial_judged",
+      "initial_reranked",
+      "final_returned"
+    ],
+    "result_policy": "highly_and_partial",
+    "top_k": 20
+  },
+  "schema_version": "1",
+  "validation_invariants": [
+    "the frozen current_rules candidate pool, scores, categories, identities, events, lineage, reranked output, and final output reconstruct exactly",
+    "an exact tie is formed only when every registered production primary sort-key value compares exactly equal",
+    "deterministic_tiebreak_v2 uses no input position or execution-order information",
+    "every v2 fallback key binds registered source record references and a normalized field-summary digest",
+    "v2 produces the same ranked semantic document under every preregistered permutation",
+    "score, category, deduplicated identity set, field lineage, semantic events, and non-tie relative order remain unchanged",
+    "any Top-20 membership change, non-tie order change, or authoritative identity change yields not_qualified",
+    "only exact-tie internal order may differ for qualified_for_review",
+    "the current production default remains original_index_v1",
+    "snapshot tree remains unchanged and no network, LLM, evaluator, or quality path is used"
+  ],
+  "warnings": [
+    "This qualification addresses deterministic ordering only; it does not establish relevance, Precision, Recall, F1, or an official score.",
+    "qualified_for_review does not enable deterministic_tiebreak_v2 or change current_rules evidence conclusions.",
+    "Permutation profiles reorder one immutable deduplicated candidate pool; they do not re-run or alter production identity merging."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "adjudication": "required only where the two labels differ",
+  "adjudication_row_fields": [
+    "sample_id",
+    "adjudicator_id",
+    "final_label",
+    "rationale"
+  ],
+  "annotation_row_fields": [
+    "sample_id",
+    "annotator_id",
+    "label",
+    "notes"
+  ],
+  "definitions": {
+    "insufficient_information": "title and abstract are insufficient for a reliable decision",
+    "not_relevant": "does not materially address the query",
+    "partially_relevant": "addresses a meaningful part of the query but is incomplete or indirect",
+    "relevant": "directly answers or materially supports the query"
+  },
+  "independence": "annotators work independently before adjudication",
+  "labels": [
+    "relevant",
+    "partially_relevant",
+    "not_relevant",
+    "insufficient_information"
+  ],
+  "public_sample_fields": [
+    "sample_id",
+    "query",
+    "title",
+    "abstract",
+    "year"
+  ],
+  "schema_version": "1"
+}

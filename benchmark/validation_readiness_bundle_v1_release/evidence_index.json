@@ -1,0 +1,2171 @@
+{
+  "evidence": [
+    {
+      "dependencies": [
+        "completion_bias_protocol"
+      ],
+      "evidence_id": "completion_bias_aggregate",
+      "format": "json",
+      "path": "benchmark/completion_bias_audit_v1_release/audit.json",
+      "protocol": "completion_bias_audit_v1",
+      "role": "aggregate",
+      "sha256": "87d3a4612b1795586d6844ac28c35b80ece339ae8df7523aa611fb62ff353680",
+      "size": 51646
+    },
+    {
+      "dependencies": [
+        "completion_bias_aggregate"
+      ],
+      "evidence_id": "completion_bias_manifest",
+      "format": "json",
+      "path": "benchmark/completion_bias_audit_v1_release/bundle.json",
+      "protocol": "completion_bias_audit_v1",
+      "role": "integrity_manifest",
+      "sha256": "1fa4113f234ba38b2b158b0d69ebf45f8c51b1d593e8cab27b59bd9a1d2b39e1",
+      "size": 1063
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "completion_bias_protocol",
+      "format": "json",
+      "path": "benchmark/completion_bias_audit_v1_protocol.json",
+      "protocol": "completion_bias_audit_v1",
+      "role": "protocol",
+      "sha256": "d2ec17c54190104b8165aa13990e534b2ba1b517a23a48f16acd2712965af7d8",
+      "size": 5964
+    },
+    {
+      "dependencies": [
+        "constraint_decision_protocol"
+      ],
+      "evidence_id": "constraint_decision_manifest",
+      "format": "json",
+      "path": "benchmark/constraint_decision_audit_v1_result/manifest.json",
+      "protocol": "constraint_decision_audit_v1",
+      "role": "integrity_manifest",
+      "sha256": "c367f5e4d94996a011937607b212173d2be4af31a95c0c67afdb0564ff9c8cd0",
+      "size": 801
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "constraint_decision_protocol",
+      "format": "json",
+      "path": "benchmark/constraint_decision_audit_v1_protocol.json",
+      "protocol": "constraint_decision_audit_v1",
+      "role": "protocol",
+      "sha256": "284456f8a26d941421d51a89f97b72314b536be3ce9d0c10433e0a383667b0dc",
+      "size": 9263
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "evidence_registry_gate",
+      "format": "json",
+      "path": "benchmark/evidence_registry_result.json",
+      "protocol": "experiment_evidence_registry_v1",
+      "role": "default_policy_gate",
+      "sha256": "2b36d6cf09e79721550815a7ebc360bef2dd420e4cc3986197fe351caa428b1d",
+      "size": 1275
+    },
+    {
+      "dependencies": [
+        "evidence_revocation_protocol"
+      ],
+      "evidence_id": "evidence_revocation_ledger",
+      "format": "json",
+      "path": "benchmark/evidence_revocation_response_v1_ledger.json",
+      "protocol": "evidence_revocation_response_v1",
+      "role": "authoritative_empty_revocation_ledger",
+      "sha256": "b062aa2332a0d8f1b9388d9c260806a525a718dd06ab34e4feb16513f66768e7",
+      "size": 371
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "evidence_revocation_protocol",
+      "format": "json",
+      "path": "benchmark/evidence_revocation_response_v1_protocol.json",
+      "protocol": "evidence_revocation_response_v1",
+      "role": "protocol",
+      "sha256": "d86d66bae405f84cd22047edbffae83229e85671cd36102fd7065e9111d5e927",
+      "size": 1666
+    },
+    {
+      "dependencies": [
+        "evidence_revocation_ledger",
+        "evidence_revocation_protocol"
+      ],
+      "evidence_id": "evidence_revocation_simulation",
+      "format": "json",
+      "path": "benchmark/evidence_revocation_response_v1_evidence/simulation.json",
+      "protocol": "evidence_revocation_response_v1",
+      "role": "synthetic_incident_response_matrix",
+      "sha256": "5ca8f80422e1bccf0eeec276ce0353fcdfa784e21941caf23bc596703e661b7a",
+      "size": 1553
+    },
+    {
+      "dependencies": [
+        "evidence_transparency_protocol"
+      ],
+      "evidence_id": "evidence_transparency_checkpoint",
+      "format": "json",
+      "path": "benchmark/evidence_transparency_log_v1_checkpoint.json",
+      "protocol": "evidence_transparency_log_v1",
+      "role": "candidate_only_transparency_checkpoint",
+      "sha256": "31996bd501f154b4230ed7eb840434eb3c1b0ed0e64f5a6d15f4a9f8896662a8",
+      "size": 1006
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "evidence_transparency_protocol",
+      "format": "json",
+      "path": "benchmark/evidence_transparency_log_v1_protocol.json",
+      "protocol": "evidence_transparency_log_v1",
+      "role": "append_only_transparency_protocol",
+      "sha256": "cfe6cd94bf107bdc7866d2ca577aa2d98e63ac9ae7b318a44f19879ce8c70bed",
+      "size": 2339
+    },
+    {
+      "dependencies": [
+        "evidence_transparency_checkpoint",
+        "evidence_transparency_protocol",
+        "evidence_transparency_simulation"
+      ],
+      "evidence_id": "evidence_transparency_readiness",
+      "format": "json",
+      "path": "benchmark/evidence_transparency_log_v1_evidence/readiness.json",
+      "protocol": "evidence_transparency_log_v1",
+      "role": "candidate_checkpoint_publication_boundary",
+      "sha256": "00d230f023a057eed18045417e72450c0b9a300713c4ba692d20435060096813",
+      "size": 838
+    },
+    {
+      "dependencies": [
+        "evidence_transparency_protocol"
+      ],
+      "evidence_id": "evidence_transparency_simulation",
+      "format": "json",
+      "path": "benchmark/evidence_transparency_log_v1_evidence/simulation.json",
+      "protocol": "evidence_transparency_log_v1",
+      "role": "synthetic_transparency_attack_matrix",
+      "sha256": "e1c7b676363aab17a5e060b7a07ffd75a23d02a84eb3987a88c3057ca3e291f0",
+      "size": 1676
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "external_scorer_protocol",
+      "format": "json",
+      "path": "benchmark/external_scorer_handoff_v1_protocol.json",
+      "protocol": "external_scorer_handoff_v1",
+      "role": "protocol",
+      "sha256": "60adfa40f3ba09d25c980a7614416d947d15393110542048bed1318eed0b69b7",
+      "size": 4143
+    },
+    {
+      "dependencies": [
+        "external_scorer_protocol",
+        "full1000_resume_summary",
+        "official_scorer_blocked"
+      ],
+      "evidence_id": "external_scorer_readiness",
+      "format": "json",
+      "path": "benchmark/external_scorer_handoff_v1_evidence/readiness.json",
+      "protocol": "external_scorer_handoff_v1",
+      "role": "formal_blocker_handoff",
+      "sha256": "ba5e44ec9150c195e2c93571443aba0f267aeba42a76b6c1b02e05e7e60ae5a3",
+      "size": 896
+    },
+    {
+      "dependencies": [
+        "external_scorer_protocol"
+      ],
+      "evidence_id": "external_scorer_synthetic_matrix",
+      "format": "json",
+      "path": "benchmark/external_scorer_handoff_v1_evidence/synthetic_matrix.json",
+      "protocol": "external_scorer_handoff_v1",
+      "role": "engineering_conformance",
+      "sha256": "63e8ff9400f93f524b28ece2141abc015b9384882c2589c6599564b62b0fea00",
+      "size": 2393
+    },
+    {
+      "dependencies": [
+        "formal_backup_compaction_protocol"
+      ],
+      "evidence_id": "formal_backup_compaction_capacity",
+      "format": "json",
+      "path": "benchmark/formal_backup_compaction_v1_evidence/capacity.json",
+      "protocol": "formal_backup_compaction_v1",
+      "role": "worst_case_backup_capacity_bound",
+      "sha256": "65edec8dc009906eb5fb9bb10ee05958931da951e0c32b59c2d31b499821664c",
+      "size": 2481
+    },
+    {
+      "dependencies": [
+        "formal_backup_target_protocol",
+        "formal_shard_retention_protocol"
+      ],
+      "evidence_id": "formal_backup_compaction_protocol",
+      "format": "json",
+      "path": "benchmark/formal_backup_compaction_v1_protocol.json",
+      "protocol": "formal_backup_compaction_v1",
+      "role": "content_addressed_compaction_protocol",
+      "sha256": "d2cd787e26f31b025f73a97534fcfec5a70a23dedb8257e189ad89dacbb309a9",
+      "size": 5233
+    },
+    {
+      "dependencies": [
+        "formal_backup_compaction_capacity",
+        "formal_backup_compaction_protocol",
+        "formal_backup_compaction_simulation"
+      ],
+      "evidence_id": "formal_backup_compaction_readiness",
+      "format": "json",
+      "path": "benchmark/formal_backup_compaction_v1_evidence/readiness.json",
+      "protocol": "formal_backup_compaction_v1",
+      "role": "real_backup_compaction_readiness",
+      "sha256": "0fa3a0513288423e17899392e8c850ec36f1abf1e91952a39b7dd98ef394427e",
+      "size": 1002
+    },
+    {
+      "dependencies": [
+        "formal_backup_compaction_protocol"
+      ],
+      "evidence_id": "formal_backup_compaction_simulation",
+      "format": "json",
+      "path": "benchmark/formal_backup_compaction_v1_evidence/simulation.json",
+      "protocol": "formal_backup_compaction_v1",
+      "role": "synthetic_content_addressed_compaction_recovery_matrix",
+      "sha256": "dfd0f0ec1325696eb1488c741824e7ca266788afab96c37bd4d7a8c31775c74d",
+      "size": 1649
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_backup_member_enrollment_protocol",
+      "format": "json",
+      "path": "benchmark/formal_backup_member_enrollment_v1_protocol.json",
+      "protocol": "formal_backup_member_enrollment_v1",
+      "role": "end_to_end_offline_backup_member_enrollment_protocol",
+      "sha256": "0638533d420679203c4428c7f7e4873f4b26b7e71cb16cc796ee05b71663db92",
+      "size": 2284
+    },
+    {
+      "dependencies": [
+        "formal_backup_member_enrollment_protocol"
+      ],
+      "evidence_id": "formal_backup_member_enrollment_readiness",
+      "format": "json",
+      "path": "benchmark/formal_backup_member_enrollment_v1_evidence/readiness.json",
+      "protocol": "formal_backup_member_enrollment_v1",
+      "role": "real_backup_member_enrollment_readiness",
+      "sha256": "4c278588122b7e043fa86db04dc0a2d2e344a2fab4cfdc7062832eaccd6bc436",
+      "size": 727
+    },
+    {
+      "dependencies": [
+        "formal_backup_member_enrollment_protocol"
+      ],
+      "evidence_id": "formal_backup_member_enrollment_simulation",
+      "format": "json",
+      "path": "benchmark/formal_backup_member_enrollment_v1_evidence/simulation.json",
+      "protocol": "formal_backup_member_enrollment_v1",
+      "role": "synthetic_backup_member_enrollment_attack_matrix",
+      "sha256": "1e210919fc6a87521b1a4e8571d40c141059b8ba58b4b57c690ac9ecbcdc9fdb",
+      "size": 1178
+    },
+    {
+      "dependencies": [
+        "formal_backup_set_protocol"
+      ],
+      "evidence_id": "formal_backup_set_capacity",
+      "format": "json",
+      "path": "benchmark/formal_backup_set_topology_v1_evidence/capacity.json",
+      "protocol": "formal_backup_set_topology_v1",
+      "role": "worst_case_multi_target_backup_capacity",
+      "sha256": "283764668ab33074678e465c26da27a16cb48125afdd00d89bc863b00eebfc0a",
+      "size": 17378
+    },
+    {
+      "dependencies": [
+        "formal_backup_set_intake_protocol"
+      ],
+      "evidence_id": "formal_backup_set_intake_addendum",
+      "format": "json",
+      "path": "benchmark/full1000_backup_set_member_intake_addendum_v1.json",
+      "protocol": "formal_backup_set_member_intake_v1",
+      "role": "launch_backup_set_member_activation_binding",
+      "sha256": "3dd4ed51b3090fbc8b238d590c15024d5ab5127c854807f7cc1b70c47d90ebc6",
+      "size": 1238
+    },
+    {
+      "dependencies": [
+        "formal_backup_set_protocol",
+        "formal_backup_target_protocol"
+      ],
+      "evidence_id": "formal_backup_set_intake_protocol",
+      "format": "json",
+      "path": "benchmark/formal_backup_set_member_intake_v1_protocol.json",
+      "protocol": "formal_backup_set_member_intake_v1",
+      "role": "backup_set_member_intake_and_activation_protocol",
+      "sha256": "7c3a68a8e59237fc00093928eb8c1368d8fc194de04397a341cc3d6c95a90d44",
+      "size": 2656
+    },
+    {
+      "dependencies": [
+        "formal_backup_set_intake_addendum",
+        "formal_backup_set_intake_protocol",
+        "formal_backup_set_intake_simulation"
+      ],
+      "evidence_id": "formal_backup_set_intake_readiness",
+      "format": "json",
+      "path": "benchmark/formal_backup_set_member_intake_v1_evidence/readiness.json",
+      "protocol": "formal_backup_set_member_intake_v1",
+      "role": "real_backup_set_member_slot_readiness",
+      "sha256": "cb3858081465c5e09090b4fd1975669e67f449f27f366d4d384c10b2b95b456f",
+      "size": 3292
+    },
+    {
+      "dependencies": [
+        "formal_backup_set_intake_protocol"
+      ],
+      "evidence_id": "formal_backup_set_intake_simulation",
+      "format": "json",
+      "path": "benchmark/formal_backup_set_member_intake_v1_evidence/simulation.json",
+      "protocol": "formal_backup_set_member_intake_v1",
+      "role": "synthetic_incremental_member_intake_activation_and_recovery_matrix",
+      "sha256": "f0abe56645110128d56038e467b335f30344d8756490d60c17a7b7792f9978f8",
+      "size": 1979
+    },
+    {
+      "dependencies": [
+        "formal_backup_compaction_protocol",
+        "formal_backup_target_protocol"
+      ],
+      "evidence_id": "formal_backup_set_protocol",
+      "format": "json",
+      "path": "benchmark/formal_backup_set_topology_v1_protocol.json",
+      "protocol": "formal_backup_set_topology_v1",
+      "role": "multi_target_backup_set_topology_protocol",
+      "sha256": "c810a5bdd64dbcf2739aef02c92ef156c246cbf0224303bf5a8e05a504b610ae",
+      "size": 3034
+    },
+    {
+      "dependencies": [
+        "formal_backup_set_capacity",
+        "formal_backup_set_protocol",
+        "formal_backup_set_simulation"
+      ],
+      "evidence_id": "formal_backup_set_readiness",
+      "format": "json",
+      "path": "benchmark/formal_backup_set_topology_v1_evidence/readiness.json",
+      "protocol": "formal_backup_set_topology_v1",
+      "role": "real_multi_target_backup_set_readiness",
+      "sha256": "42192e2c820dc252f5e7f6d48dd4322cf3e647db0ce8536b68a5a1e1e74f0bfa",
+      "size": 4720
+    },
+    {
+      "dependencies": [
+        "formal_backup_set_protocol"
+      ],
+      "evidence_id": "formal_backup_set_simulation",
+      "format": "json",
+      "path": "benchmark/formal_backup_set_topology_v1_evidence/simulation.json",
+      "protocol": "formal_backup_set_topology_v1",
+      "role": "synthetic_multi_target_backup_restore_matrix",
+      "sha256": "66eaa4e32d7cb5b7cddcf2511415576b7ae337acb762f4b281cca2c4e8237b06",
+      "size": 1270
+    },
+    {
+      "dependencies": [
+        "formal_backup_target_protocol"
+      ],
+      "evidence_id": "formal_backup_target_addendum",
+      "format": "json",
+      "path": "benchmark/full1000_backup_target_attestation_addendum_v1.json",
+      "protocol": "formal_backup_target_attestation_v1",
+      "role": "launch_backup_target_binding",
+      "sha256": "c85e639e73c41530d49629dc2b2b61ecb74affb6bf787579f82ccc89c2ce26ff",
+      "size": 802
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_backup_target_protocol",
+      "format": "json",
+      "path": "benchmark/formal_backup_target_attestation_v1_protocol.json",
+      "protocol": "formal_backup_target_attestation_v1",
+      "role": "backup_target_qualification_protocol",
+      "sha256": "2cf63cbfed4e602f8e2ace4f766be80e7298f3819570bcb4f64c1bfa745b87a3",
+      "size": 2675
+    },
+    {
+      "dependencies": [
+        "formal_backup_target_addendum",
+        "formal_backup_target_protocol",
+        "formal_backup_target_simulation"
+      ],
+      "evidence_id": "formal_backup_target_readiness",
+      "format": "json",
+      "path": "benchmark/formal_backup_target_attestation_v1_evidence/readiness.json",
+      "protocol": "formal_backup_target_attestation_v1",
+      "role": "real_backup_target_readiness",
+      "sha256": "6e47e4541c188a1139d012f43e3f8971031ae24d2dd1d90c6d754a1af66adc14",
+      "size": 1076
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_backup_target_registration_protocol",
+      "format": "json",
+      "path": "benchmark/formal_backup_target_registration_v1_protocol.json",
+      "protocol": "formal_backup_target_registration_v1",
+      "role": "private_backup_target_registration_and_local_preflight_protocol",
+      "sha256": "06e0314c9d29d08de881d2c66d1bef6e88786298e46aa1ebbac5c76b693dc066",
+      "size": 1994
+    },
+    {
+      "dependencies": [
+        "formal_backup_target_registration_protocol"
+      ],
+      "evidence_id": "formal_backup_target_registration_readiness",
+      "format": "json",
+      "path": "benchmark/formal_backup_target_registration_v1_evidence/readiness.json",
+      "protocol": "formal_backup_target_registration_v1",
+      "role": "real_private_backup_target_registration_readiness",
+      "sha256": "d175ca9390873840862e58f987277d0e52bda01758ada7c1b95601f2a1203a6d",
+      "size": 605
+    },
+    {
+      "dependencies": [
+        "formal_backup_target_registration_protocol"
+      ],
+      "evidence_id": "formal_backup_target_registration_simulation",
+      "format": "json",
+      "path": "benchmark/formal_backup_target_registration_v1_evidence/simulation.json",
+      "protocol": "formal_backup_target_registration_v1",
+      "role": "synthetic_private_registration_probe_deduplication_and_revocation_matrix",
+      "sha256": "adb42f370e9b0fab0e2707df2ee61ac4120f5d18110120e7f9be9b396a9bce85",
+      "size": 1086
+    },
+    {
+      "dependencies": [
+        "formal_backup_target_protocol"
+      ],
+      "evidence_id": "formal_backup_target_simulation",
+      "format": "json",
+      "path": "benchmark/formal_backup_target_attestation_v1_evidence/simulation.json",
+      "protocol": "formal_backup_target_attestation_v1",
+      "role": "synthetic_backup_target_conformance",
+      "sha256": "e0887ce2b599e84413b09770aed8c1a294f5928b9a1aa53675907efb5a8b8b4c",
+      "size": 2925
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_dress_rehearsal_protocol",
+      "format": "json",
+      "path": "benchmark/formal_validation_dress_rehearsal_v1_protocol.json",
+      "protocol": "formal_validation_dress_rehearsal_v1",
+      "role": "synthetic_rehearsal_protocol",
+      "sha256": "75263f644adcf5415d74cce820c73b19695a6921fc971223a991fb35755b000e",
+      "size": 11164
+    },
+    {
+      "dependencies": [
+        "formal_dress_rehearsal_protocol"
+      ],
+      "evidence_id": "formal_dress_rehearsal_readiness",
+      "format": "json",
+      "path": "benchmark/formal_validation_dress_rehearsal_v1_evidence/readiness.json",
+      "protocol": "formal_validation_dress_rehearsal_v1",
+      "role": "synthetic_rehearsal_real_blocker_boundary",
+      "sha256": "d29da606056d50317e6fcf125d1ae30fd99238fc1edca0a1a2f969a2f0ec4360",
+      "size": 713
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_evidence_quarantine_protocol",
+      "format": "json",
+      "path": "benchmark/formal_evidence_quarantine_v1_protocol.json",
+      "protocol": "formal_evidence_quarantine_v1",
+      "role": "protocol",
+      "sha256": "63b9cc16123b63a6b30732878bfed76c03d744d1b0e862c7c9ddd2dca30dc7a4",
+      "size": 2887
+    },
+    {
+      "dependencies": [
+        "external_scorer_readiness",
+        "formal_evidence_quarantine_protocol",
+        "human_annotation_delivery_readiness"
+      ],
+      "evidence_id": "formal_evidence_quarantine_readiness",
+      "format": "json",
+      "path": "benchmark/formal_evidence_quarantine_v1_evidence/readiness.json",
+      "protocol": "formal_evidence_quarantine_v1",
+      "role": "current_boundary_state",
+      "sha256": "93aab19c45d4ed85a160e7b68b9cac3eb45defd2085aa5b44b1ef6a7bb4d70c3",
+      "size": 569
+    },
+    {
+      "dependencies": [
+        "formal_execution_host_protocol"
+      ],
+      "evidence_id": "formal_execution_host_addendum",
+      "format": "json",
+      "path": "benchmark/full1000_host_attestation_addendum_v1.json",
+      "protocol": "formal_execution_host_attestation_v1",
+      "role": "future_launch_host_attestation_binding",
+      "sha256": "12ef41a37ad7e4a52f56114603f250e1c63f61444a7155db5f018f3ec979b307",
+      "size": 1124
+    },
+    {
+      "dependencies": [
+        "formal_execution_host_protocol"
+      ],
+      "evidence_id": "formal_execution_host_attestation",
+      "format": "json",
+      "path": "benchmark/formal_execution_host_attestation_v1_evidence/current_attestation.json",
+      "protocol": "formal_execution_host_attestation_v1",
+      "role": "current_read_only_host_observation",
+      "sha256": "7e0f2a9ccd446040be831624c5c67fdbfea5d02bb101dc561542b09388ef6a5c",
+      "size": 6249
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_execution_host_protocol",
+      "format": "json",
+      "path": "benchmark/formal_execution_host_attestation_v1_protocol.json",
+      "protocol": "formal_execution_host_attestation_v1",
+      "role": "host_capability_and_attestation_contract",
+      "sha256": "095bbe731aa461dfa1999080cb916757ecce8f737c19e823aa1173b8663a7681",
+      "size": 3354
+    },
+    {
+      "dependencies": [
+        "formal_execution_host_addendum",
+        "formal_execution_host_attestation",
+        "formal_execution_host_protocol",
+        "formal_execution_host_simulation"
+      ],
+      "evidence_id": "formal_execution_host_readiness",
+      "format": "json",
+      "path": "benchmark/formal_execution_host_attestation_v1_evidence/readiness.json",
+      "protocol": "formal_execution_host_attestation_v1",
+      "role": "current_host_activation_boundary",
+      "sha256": "f4c37a4a7ddab4f0b0a57d1c7f0a3116c064a00bf47522b6cb7907ea89a667bf",
+      "size": 894
+    },
+    {
+      "dependencies": [
+        "formal_execution_host_protocol"
+      ],
+      "evidence_id": "formal_execution_host_simulation",
+      "format": "json",
+      "path": "benchmark/formal_execution_host_attestation_v1_evidence/simulation.json",
+      "protocol": "formal_execution_host_attestation_v1",
+      "role": "synthetic_host_profile_matrix",
+      "sha256": "eefaa3a82e961e6ee6ef19abdb2bfb3bfd8eea703e6145ea1cc2933ea4a8d805",
+      "size": 1717
+    },
+    {
+      "dependencies": [
+        "formal_external_blocker_action_protocol"
+      ],
+      "evidence_id": "formal_external_blocker_action_pack",
+      "format": "json",
+      "path": "benchmark/formal_external_blocker_action_pack_v1_pack.json",
+      "protocol": "formal_external_blocker_action_pack_v1",
+      "role": "deterministic_external_input_operator_action_pack",
+      "sha256": "79db9f77da13440e40f3b07d2260513c23ccc093afaed210c93f1d444eb70d81",
+      "size": 6348
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_external_blocker_action_protocol",
+      "format": "json",
+      "path": "benchmark/formal_external_blocker_action_pack_v1_protocol.json",
+      "protocol": "formal_external_blocker_action_pack_v1",
+      "role": "external_input_handoff_and_development_freeze_contract",
+      "sha256": "8b5ebaab07222648da04e81dfe76a7ae73ce215342b78c96d2d38e02d12899e6",
+      "size": 8011
+    },
+    {
+      "dependencies": [
+        "formal_external_blocker_action_pack",
+        "formal_external_blocker_action_protocol"
+      ],
+      "evidence_id": "formal_external_blocker_action_readiness",
+      "format": "json",
+      "path": "benchmark/formal_external_blocker_action_pack_v1_evidence/readiness.json",
+      "protocol": "formal_external_blocker_action_pack_v1",
+      "role": "real_external_input_blocker_state",
+      "sha256": "126730322a7626b5f9865b6a9128eb965867855c750e53ec36b660310e36e869",
+      "size": 836
+    },
+    {
+      "dependencies": [
+        "formal_multivolume_protocol"
+      ],
+      "evidence_id": "formal_multivolume_addendum",
+      "format": "json",
+      "path": "benchmark/full1000_multivolume_storage_addendum_v1.json",
+      "protocol": "formal_multivolume_storage_v1",
+      "role": "future_launch_topology_binding",
+      "sha256": "5327c51e3d417072140db045f56d5661bb15f3c74d5b39258e7ebe354041db65",
+      "size": 1307
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_multivolume_protocol",
+      "format": "json",
+      "path": "benchmark/formal_multivolume_storage_v1_protocol.json",
+      "protocol": "formal_multivolume_storage_v1",
+      "role": "protocol",
+      "sha256": "ae6ecc5691ce9cde6a0780c4c4276067e1cefb3154ffe3ff3cefac1c54e87e5c",
+      "size": 3223
+    },
+    {
+      "dependencies": [
+        "formal_multivolume_addendum",
+        "formal_multivolume_protocol",
+        "formal_multivolume_simulation"
+      ],
+      "evidence_id": "formal_multivolume_readiness",
+      "format": "json",
+      "path": "benchmark/formal_multivolume_storage_v1_evidence/readiness.json",
+      "protocol": "formal_multivolume_storage_v1",
+      "role": "real_host_volume_readiness",
+      "sha256": "da35b918f66a742f7060fb7b039f292d4e64e960a7dfded467cb6101171e2249",
+      "size": 793
+    },
+    {
+      "dependencies": [
+        "formal_multivolume_protocol"
+      ],
+      "evidence_id": "formal_multivolume_simulation",
+      "format": "json",
+      "path": "benchmark/formal_multivolume_storage_v1_evidence/simulation.json",
+      "protocol": "formal_multivolume_storage_v1",
+      "role": "synthetic_multivolume_conformance",
+      "sha256": "89cbed6a1756adddd04d43446a3e680b12e7ae4f80b8d4527730595546b23ab2",
+      "size": 1702
+    },
+    {
+      "dependencies": [
+        "formal_network_request_intents",
+        "formal_network_request_launch_addendum",
+        "formal_network_request_manifest",
+        "formal_network_request_protocol",
+        "formal_network_request_snapshot_audit"
+      ],
+      "evidence_id": "formal_network_request_bundle",
+      "format": "json",
+      "path": "benchmark/formal_network_request_manifest_v1_evidence/bundle.json",
+      "protocol": "formal_network_request_manifest_v1",
+      "role": "deterministic_full1000_request_bundle",
+      "sha256": "3e6dbe7b0f005e87ac3b1c7de8c27be0ea863510b9fedc9f77fc33b412313845",
+      "size": 1011
+    },
+    {
+      "dependencies": [
+        "formal_network_request_protocol"
+      ],
+      "evidence_id": "formal_network_request_intents",
+      "format": "jsonl",
+      "path": "benchmark/formal_network_request_manifest_v1_evidence/intents.jsonl",
+      "protocol": "formal_network_request_manifest_v1",
+      "role": "opaque_full1000_source_request_intents",
+      "sha256": "981d26367e41c56b287bb9293dc39674e90291042ae4440e0aa17da59107e47c",
+      "size": 19912790
+    },
+    {
+      "dependencies": [
+        "formal_network_request_manifest",
+        "formal_network_request_snapshot_audit"
+      ],
+      "evidence_id": "formal_network_request_launch_addendum",
+      "format": "json",
+      "path": "benchmark/formal_network_request_manifest_v1_evidence/launch_addendum.json",
+      "protocol": "formal_network_request_manifest_v1",
+      "role": "future_full1000_launch_binding",
+      "sha256": "71c87ba48bbe21747871fd8a4098b77bba5bdb6ff73d3543ed97deac5512c5eb",
+      "size": 1334
+    },
+    {
+      "dependencies": [
+        "formal_network_request_intents",
+        "formal_network_request_protocol"
+      ],
+      "evidence_id": "formal_network_request_manifest",
+      "format": "json",
+      "path": "benchmark/formal_network_request_manifest_v1_evidence/manifest.json",
+      "protocol": "formal_network_request_manifest_v1",
+      "role": "full1000_request_count_and_identity_closure",
+      "sha256": "4a281e69e864490b7cb1bf20bc9f8fcb940ce4443e4305751244eaa1bb6bf50f",
+      "size": 2751
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_network_request_protocol",
+      "format": "json",
+      "path": "benchmark/formal_network_request_manifest_v1_protocol.json",
+      "protocol": "formal_network_request_manifest_v1",
+      "role": "full1000_request_manifest_protocol",
+      "sha256": "9553b3f21413c0b1ae56c547b752ca31be4eb05ebcaf3839ca1d99437bb33100",
+      "size": 3401
+    },
+    {
+      "dependencies": [
+        "formal_network_request_manifest",
+        "formal_network_request_protocol"
+      ],
+      "evidence_id": "formal_network_request_snapshot_audit",
+      "format": "json",
+      "path": "benchmark/formal_network_request_manifest_v1_evidence/snapshot_audit.json",
+      "protocol": "formal_network_request_manifest_v1",
+      "role": "historical_snapshot_gap_audit",
+      "sha256": "c546c0ec575f10dcca38cfd4befb0df47e9968ca55c370a8aed91a2952ac9ce6",
+      "size": 1718
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_preregistration_protocol",
+      "format": "json",
+      "path": "benchmark/formal_validation_preregistration_v1_protocol.json",
+      "protocol": "formal_validation_preregistration_v1",
+      "role": "preregistration_protocol",
+      "sha256": "b2ab16003cc843657896cda863deaab39bfb80f2b098e8eaf24e718304e8920a",
+      "size": 8359
+    },
+    {
+      "dependencies": [
+        "formal_preregistration_seal"
+      ],
+      "evidence_id": "formal_preregistration_readiness",
+      "format": "json",
+      "path": "benchmark/formal_validation_preregistration_v1_evidence/readiness.json",
+      "protocol": "formal_validation_preregistration_v1",
+      "role": "current_preregistration_readiness",
+      "sha256": "333cc0573111500407447fb05c759fbc3ed6de12d916850ecc1cd5ce8de68680",
+      "size": 762
+    },
+    {
+      "dependencies": [
+        "formal_preregistration_protocol"
+      ],
+      "evidence_id": "formal_preregistration_seal",
+      "format": "json",
+      "path": "benchmark/formal_validation_preregistration_v1_seal.json",
+      "protocol": "formal_validation_preregistration_v1",
+      "role": "immutable_preregistration_seal",
+      "sha256": "7236611c13d6f61a3ec98128344bf97fc9e4295628fe60147badeaf2b5576d7d",
+      "size": 4675
+    },
+    {
+      "dependencies": [
+        "formal_preregistration_protocol"
+      ],
+      "evidence_id": "formal_preregistration_simulation",
+      "format": "json",
+      "path": "benchmark/formal_validation_preregistration_v1_evidence/simulation.json",
+      "protocol": "formal_validation_preregistration_v1",
+      "role": "synthetic_posthoc_contamination_matrix",
+      "sha256": "5ac719a682a634d2a70a3877b836c39c157e907300b490b0332ebf14f782f43e",
+      "size": 2635
+    },
+    {
+      "dependencies": [
+        "formal_provider_health_protocol"
+      ],
+      "evidence_id": "formal_provider_health_addendum",
+      "format": "json",
+      "path": "benchmark/full1000_provider_health_addendum_v1.json",
+      "protocol": "formal_provider_health_supervisor_v1",
+      "role": "future_full1000_health_supervision_binding",
+      "sha256": "fb25f7000d54c94648d6068765ac9c71124f7cffa9278ae99f8b2d5e29551569",
+      "size": 1375
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_provider_health_protocol",
+      "format": "json",
+      "path": "benchmark/formal_provider_health_supervisor_v1_protocol.json",
+      "protocol": "formal_provider_health_supervisor_v1",
+      "role": "preregistered_provider_health_pause_contract",
+      "sha256": "1b943279958c6b5f586a1ccfbe607d3f021cff7e54a4a271d911f73092eba61e",
+      "size": 4795
+    },
+    {
+      "dependencies": [
+        "formal_provider_health_addendum",
+        "formal_provider_health_protocol",
+        "formal_provider_health_simulation"
+      ],
+      "evidence_id": "formal_provider_health_readiness",
+      "format": "json",
+      "path": "benchmark/formal_provider_health_supervisor_v1_evidence/readiness.json",
+      "protocol": "formal_provider_health_supervisor_v1",
+      "role": "current_real_provider_health_boundary",
+      "sha256": "e9670f36a018e1670683ff5610eed384a4cb8a5450010a6b9a71ae1dd4ec297d",
+      "size": 528
+    },
+    {
+      "dependencies": [
+        "formal_provider_health_protocol"
+      ],
+      "evidence_id": "formal_provider_health_simulation",
+      "format": "json",
+      "path": "benchmark/formal_provider_health_supervisor_v1_evidence/simulation.json",
+      "protocol": "formal_provider_health_supervisor_v1",
+      "role": "synthetic_full1000_provider_health_fault_matrix",
+      "sha256": "b86784acee08c95255eceff4e3f56189fdef43845dfee4f08dca72ca4bc99ce0",
+      "size": 10806
+    },
+    {
+      "dependencies": [
+        "formal_network_request_launch_addendum",
+        "formal_provider_pacing_protocol"
+      ],
+      "evidence_id": "formal_provider_pacing_addendum",
+      "format": "json",
+      "path": "benchmark/full1000_provider_pacing_addendum_v1.json",
+      "protocol": "formal_provider_pacing_v1",
+      "role": "launch_addendum",
+      "sha256": "3540617e64afd53f73f96d4449228c59ac0765927d74efa5f1cfb4d275a1804d",
+      "size": 1249
+    },
+    {
+      "dependencies": [
+        "formal_network_request_manifest",
+        "formal_provider_pacing_protocol"
+      ],
+      "evidence_id": "formal_provider_pacing_policy",
+      "format": "json",
+      "path": "benchmark/formal_provider_pacing_v1_evidence/policy.json",
+      "protocol": "formal_provider_pacing_v1",
+      "role": "policy_verification",
+      "sha256": "ea7c4a64d6735a9ab68cb7a80a7918a7d8594fc9984db4bfc81eeb29d1208f88",
+      "size": 662
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_provider_pacing_protocol",
+      "format": "json",
+      "path": "benchmark/formal_provider_pacing_v1_protocol.json",
+      "protocol": "formal_provider_pacing_v1",
+      "role": "protocol",
+      "sha256": "71059ef65106174794358c1646b6a4224613174624a38280ef22e580d3097575",
+      "size": 5596
+    },
+    {
+      "dependencies": [
+        "formal_provider_pacing_policy",
+        "formal_provider_pacing_protocol"
+      ],
+      "evidence_id": "formal_provider_pacing_readiness",
+      "format": "json",
+      "path": "benchmark/formal_provider_pacing_v1_evidence/readiness.json",
+      "protocol": "formal_provider_pacing_v1",
+      "role": "real_capacity_blocker",
+      "sha256": "3cbba36535f31e08c4789b18f173af051110ba4a8bfb82a0a1ba21c1040306fd",
+      "size": 1513
+    },
+    {
+      "dependencies": [
+        "formal_provider_pacing_protocol"
+      ],
+      "evidence_id": "formal_provider_pacing_resume",
+      "format": "json",
+      "path": "benchmark/formal_provider_pacing_v1_evidence/resume.json",
+      "protocol": "formal_provider_pacing_v1",
+      "role": "resume_conformance",
+      "sha256": "20afd1f93550c51f9fbf397db02238ee090bc9f377d591180d2b2cc058d87d6d",
+      "size": 930
+    },
+    {
+      "dependencies": [
+        "formal_provider_pacing_policy",
+        "formal_provider_pacing_protocol"
+      ],
+      "evidence_id": "formal_provider_pacing_simulation",
+      "format": "json",
+      "path": "benchmark/formal_provider_pacing_v1_evidence/simulation.json",
+      "protocol": "formal_provider_pacing_v1",
+      "role": "synthetic_capacity_matrix",
+      "sha256": "2c8d4c7eaac85281d4c461be17cd82871b564e41796de0067667f9a54e3be745",
+      "size": 13804
+    },
+    {
+      "dependencies": [
+        "full1000_execution_plan",
+        "full1000_launch_control_protocol",
+        "provider_ingest_capture_addendum",
+        "provider_ingest_protocol"
+      ],
+      "evidence_id": "formal_run_disaster_recovery_protocol",
+      "format": "json",
+      "path": "benchmark/formal_run_disaster_recovery_v1_protocol.json",
+      "protocol": "formal_run_disaster_recovery_v1",
+      "role": "disaster_recovery_contract",
+      "sha256": "e6b646df73fee75421e33894a73f60cb6f4e00f509a09a103766f68310a20467",
+      "size": 3045
+    },
+    {
+      "dependencies": [
+        "formal_run_disaster_recovery_protocol"
+      ],
+      "evidence_id": "formal_run_disaster_recovery_readiness",
+      "format": "json",
+      "path": "benchmark/formal_run_disaster_recovery_v1_evidence/readiness.json",
+      "protocol": "formal_run_disaster_recovery_v1",
+      "role": "real_run_and_backup_block",
+      "sha256": "8af19ecb7cc0a147636472bb22ebc312cb9e88744e261283c5bf847362dcb253",
+      "size": 543
+    },
+    {
+      "dependencies": [
+        "formal_run_disaster_recovery_protocol"
+      ],
+      "evidence_id": "formal_run_disaster_recovery_simulation",
+      "format": "json",
+      "path": "benchmark/formal_run_disaster_recovery_v1_evidence/simulation.json",
+      "protocol": "formal_run_disaster_recovery_v1",
+      "role": "synthetic_disaster_recovery_conformance",
+      "sha256": "1dd7f737789b771f3cdc0a3790315d4befc84fde9d2ec7f794cbc913b1df8fde",
+      "size": 1615
+    },
+    {
+      "dependencies": [
+        "formal_run_storage_plan",
+        "formal_run_storage_protocol"
+      ],
+      "evidence_id": "formal_run_storage_addendum",
+      "format": "json",
+      "path": "benchmark/full1000_storage_governance_addendum_v1.json",
+      "protocol": "formal_run_storage_governance_v1",
+      "role": "future_launch_storage_binding",
+      "sha256": "0e49d1b41df182b3ebbda92ce986f4e367388361ffd705377b66ac97e3d9003f",
+      "size": 990
+    },
+    {
+      "dependencies": [
+        "formal_run_storage_protocol"
+      ],
+      "evidence_id": "formal_run_storage_plan",
+      "format": "json",
+      "path": "benchmark/formal_run_storage_governance_v1_plan.json",
+      "protocol": "formal_run_storage_governance_v1",
+      "role": "frozen_storage_quota_plan",
+      "sha256": "192fb54f90605d33883be0fd8a94111f030e7dc1a337fc062828abb68755d7d9",
+      "size": 2848
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_run_storage_protocol",
+      "format": "json",
+      "path": "benchmark/formal_run_storage_governance_v1_protocol.json",
+      "protocol": "formal_run_storage_governance_v1",
+      "role": "storage_quota_and_retention_protocol",
+      "sha256": "bb78967820aba3c223c0638adbda9b0779cc7cecffcb718fa22a06f352c9d5c1",
+      "size": 3923
+    },
+    {
+      "dependencies": [
+        "formal_run_storage_addendum",
+        "formal_run_storage_plan",
+        "formal_run_storage_protocol",
+        "formal_run_storage_simulation"
+      ],
+      "evidence_id": "formal_run_storage_readiness",
+      "format": "json",
+      "path": "benchmark/formal_run_storage_governance_v1_evidence/readiness.json",
+      "protocol": "formal_run_storage_governance_v1",
+      "role": "real_capacity_activation_boundary",
+      "sha256": "d150ed6dd37b838b83055c024d4740775af1c0c1046db7a0579339ae3d23255d",
+      "size": 783
+    },
+    {
+      "dependencies": [
+        "formal_run_storage_plan",
+        "formal_run_storage_protocol"
+      ],
+      "evidence_id": "formal_run_storage_simulation",
+      "format": "json",
+      "path": "benchmark/formal_run_storage_governance_v1_evidence/simulation.json",
+      "protocol": "formal_run_storage_governance_v1",
+      "role": "synthetic_capacity_pressure_matrix",
+      "sha256": "590250068edb9915c67644c717d2e8cf780e1d2267783d0ed9cb155be5f411e8",
+      "size": 1872
+    },
+    {
+      "dependencies": [
+        "formal_scheduler_fairness_protocol"
+      ],
+      "evidence_id": "formal_scheduler_fairness_addendum",
+      "format": "json",
+      "path": "benchmark/full1000_scheduler_fairness_addendum_v1.json",
+      "protocol": "formal_scheduler_fairness_v1",
+      "role": "future_full1000_scheduler_binding",
+      "sha256": "6bc4b4acc7da4ffd2a247750725e16e795a567199844c71cc13fe9115acef1e3",
+      "size": 1327
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_scheduler_fairness_protocol",
+      "format": "json",
+      "path": "benchmark/formal_scheduler_fairness_v1_protocol.json",
+      "protocol": "formal_scheduler_fairness_v1",
+      "role": "preregistered_scheduler_fairness_contract",
+      "sha256": "d49ca8982397fb773fa5078276a18fc04154087ef44bb7ef61d000ddcfa9883e",
+      "size": 4181
+    },
+    {
+      "dependencies": [
+        "formal_scheduler_fairness_addendum",
+        "formal_scheduler_fairness_protocol",
+        "formal_scheduler_fairness_simulation"
+      ],
+      "evidence_id": "formal_scheduler_fairness_readiness",
+      "format": "json",
+      "path": "benchmark/formal_scheduler_fairness_v1_evidence/readiness.json",
+      "protocol": "formal_scheduler_fairness_v1",
+      "role": "current_real_scheduler_activation_boundary",
+      "sha256": "48934c8593292669a38fe8a4d0dad73a505a72e6c26ff980f4e22a9a6235b9d0",
+      "size": 471
+    },
+    {
+      "dependencies": [
+        "formal_scheduler_fairness_protocol"
+      ],
+      "evidence_id": "formal_scheduler_fairness_simulation",
+      "format": "json",
+      "path": "benchmark/formal_scheduler_fairness_v1_evidence/simulation.json",
+      "protocol": "formal_scheduler_fairness_v1",
+      "role": "synthetic_full1000_scheduler_load_matrix",
+      "sha256": "199b1c28c0bfb8e839f89a7dadb2ce4bd5123d738162dd3298fedb00d22c1caf",
+      "size": 20606
+    },
+    {
+      "dependencies": [
+        "formal_shard_retention_protocol"
+      ],
+      "evidence_id": "formal_shard_retention_addendum",
+      "format": "json",
+      "path": "benchmark/full1000_shard_streaming_retention_addendum_v1.json",
+      "protocol": "formal_shard_streaming_retention_v1",
+      "role": "future_streaming_residency_binding",
+      "sha256": "aff056b078ba3f18b43641714deddcf246a4170ff8f8115fed7a896019a33be3",
+      "size": 3213
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_shard_retention_protocol",
+      "format": "json",
+      "path": "benchmark/formal_shard_streaming_retention_v1_protocol.json",
+      "protocol": "formal_shard_streaming_retention_v1",
+      "role": "protocol",
+      "sha256": "5673ac2c73873c4c0f96cee14db93d37360f9f304d8a7c2a7181aa89f10a2099",
+      "size": 4280
+    },
+    {
+      "dependencies": [
+        "formal_shard_retention_addendum",
+        "formal_shard_retention_protocol",
+        "formal_shard_retention_simulation"
+      ],
+      "evidence_id": "formal_shard_retention_readiness",
+      "format": "json",
+      "path": "benchmark/formal_shard_streaming_retention_v1_evidence/readiness.json",
+      "protocol": "formal_shard_streaming_retention_v1",
+      "role": "real_backup_readiness",
+      "sha256": "2b08977937afa4b9ecbb4e436e28fcab3092e9df0ece5341dcc6aabba06727fd",
+      "size": 2601
+    },
+    {
+      "dependencies": [
+        "formal_shard_retention_protocol"
+      ],
+      "evidence_id": "formal_shard_retention_simulation",
+      "format": "json",
+      "path": "benchmark/formal_shard_streaming_retention_v1_evidence/simulation.json",
+      "protocol": "formal_shard_streaming_retention_v1",
+      "role": "synthetic_streaming_retention_conformance",
+      "sha256": "00d368d1ac3bd7093e8a8fc3d0bc345a58e9c56fc9e32c9403a42733b265938f",
+      "size": 2349
+    },
+    {
+      "dependencies": [
+        "external_scorer_readiness",
+        "formal_validation_clearance_protocol",
+        "full1000_execution_plan",
+        "human_annotation_delivery_readiness"
+      ],
+      "evidence_id": "formal_validation_clearance_current",
+      "format": "json",
+      "path": "benchmark/formal_validation_clearance_v1_evidence/current.json",
+      "protocol": "formal_validation_clearance_v1",
+      "role": "current_blocker_state",
+      "sha256": "580194bba27a5f51a2675e5175ad8866d2d1abbb93db1189ae116c6d0ace8c56",
+      "size": 2023
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_validation_clearance_protocol",
+      "format": "json",
+      "path": "benchmark/formal_validation_clearance_v1_protocol.json",
+      "protocol": "formal_validation_clearance_v1",
+      "role": "protocol",
+      "sha256": "b37118f7741e8132eb3ab1436f7d73aff336d6351d601c8e86cc8f1c691903b5",
+      "size": 1825
+    },
+    {
+      "dependencies": [
+        "formal_validation_roles_protocol"
+      ],
+      "evidence_id": "formal_validation_roles_assignments",
+      "format": "json",
+      "path": "benchmark/formal_validation_separation_of_duties_v1_assignments.json",
+      "protocol": "formal_validation_separation_of_duties_v1",
+      "role": "real_assignment_slot",
+      "sha256": "5e1cb0782e0f41be7589961b540415d072461bdf9008d664a3c1b6b277a82b3e",
+      "size": 348
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "formal_validation_roles_protocol",
+      "format": "json",
+      "path": "benchmark/formal_validation_separation_of_duties_v1_protocol.json",
+      "protocol": "formal_validation_separation_of_duties_v1",
+      "role": "protocol",
+      "sha256": "8f7b7978a680e3349fe323de5f98b8e51f1f1258d6206f4399b11006fefb3a26",
+      "size": 4268
+    },
+    {
+      "dependencies": [
+        "formal_validation_roles_assignments",
+        "formal_validation_roles_protocol"
+      ],
+      "evidence_id": "formal_validation_roles_readiness",
+      "format": "json",
+      "path": "benchmark/formal_validation_separation_of_duties_v1_evidence/readiness.json",
+      "protocol": "formal_validation_separation_of_duties_v1",
+      "role": "real_readiness",
+      "sha256": "98bb8bf0ece63d58d1c7987d1ed078909fd390b81955ad9c526b7517c52f70f6",
+      "size": 668
+    },
+    {
+      "dependencies": [
+        "formal_validation_roles_protocol"
+      ],
+      "evidence_id": "formal_validation_roles_simulation",
+      "format": "json",
+      "path": "benchmark/formal_validation_separation_of_duties_v1_evidence/simulation.json",
+      "protocol": "formal_validation_separation_of_duties_v1",
+      "role": "synthetic_attack_matrix",
+      "sha256": "cff4454c4cdacc82324511deae7172e6dbf0fff137a795c7010b262ca5ee2584",
+      "size": 1340
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "frontend_reproducible_build_protocol",
+      "format": "json",
+      "path": "benchmark/frontend_reproducible_build_v1_protocol.json",
+      "protocol": "frontend_reproducible_build_v1",
+      "role": "frontend_release_protocol",
+      "sha256": "bbcf37e8cbee87863bcb8bfb632a5e470803fccf9982c40d2d4a508fcaba5d96",
+      "size": 1764
+    },
+    {
+      "dependencies": [
+        "frontend_reproducible_build_protocol",
+        "frontend_reproducible_release_contract",
+        "release_candidate_reproducibility"
+      ],
+      "evidence_id": "frontend_reproducible_build_qualification",
+      "format": "json",
+      "path": "benchmark/frontend_reproducible_build_v1_evidence/current.json",
+      "protocol": "frontend_reproducible_build_v1",
+      "role": "frontend_release_qualification",
+      "sha256": "5f2e1f317f0ac65489c12134d4ad03e7e13672abbc84b49c8b936566c6e54b58",
+      "size": 38229
+    },
+    {
+      "dependencies": [
+        "frontend_reproducible_build_protocol"
+      ],
+      "evidence_id": "frontend_reproducible_release_contract",
+      "format": "json",
+      "path": "benchmark/frontend_reproducible_build_v1_release_contract.json",
+      "protocol": "release_candidate_reproducibility_v1",
+      "role": "frontend_release_input",
+      "sha256": "cecc8ee80ff10bac68269cb303a998b1a3bb413dc846a1c7f4a584550ad7a32a",
+      "size": 64462
+    },
+    {
+      "dependencies": [
+        "full1000_execution_plan"
+      ],
+      "evidence_id": "full1000_execution_dry_run",
+      "format": "json",
+      "path": "benchmark/full1000_execution_readiness_v1_evidence/dry_run.json",
+      "protocol": "full1000_execution_readiness_v1",
+      "role": "fake_adapter_full_chain",
+      "sha256": "4794ec20fe5d864182d9699005384afa7d0fd12dce81de92e053eac6056664d2",
+      "size": 1407
+    },
+    {
+      "dependencies": [
+        "full1000_execution_protocol"
+      ],
+      "evidence_id": "full1000_execution_plan",
+      "format": "json",
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "protocol": "full1000_execution_readiness_v1",
+      "role": "immutable_execution_plan",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613",
+      "size": 435250
+    },
+    {
+      "dependencies": [
+        "full1000_execution_plan"
+      ],
+      "evidence_id": "full1000_execution_preflight",
+      "format": "json",
+      "path": "benchmark/full1000_execution_readiness_v1_evidence/preflight.json",
+      "protocol": "full1000_execution_readiness_v1",
+      "role": "offline_preflight",
+      "sha256": "191eaabc03447bbc22c3931646cc3f4b55e88ea1f753ba03a35f5de8742b5a18",
+      "size": 972
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "full1000_execution_protocol",
+      "format": "json",
+      "path": "benchmark/full1000_execution_readiness_v1_protocol.json",
+      "protocol": "full1000_execution_readiness_v1",
+      "role": "protocol",
+      "sha256": "4dc5feaf3f6fc7119a3adcece77b79fb605bcfdde67397f3cbde158a66235873",
+      "size": 5664
+    },
+    {
+      "dependencies": [
+        "full1000_execution_plan"
+      ],
+      "evidence_id": "full1000_execution_verification",
+      "format": "json",
+      "path": "benchmark/full1000_execution_readiness_v1_evidence/verification.json",
+      "protocol": "full1000_execution_readiness_v1",
+      "role": "plan_verification",
+      "sha256": "8b1b8c4a6b08d55333216fde5eba0a22cbb20691c23c8c65fc1b4855bc6e9c2d",
+      "size": 475
+    },
+    {
+      "dependencies": [
+        "full1000_execution_plan",
+        "provider_ingest_capture_addendum",
+        "provider_ingest_protocol"
+      ],
+      "evidence_id": "full1000_launch_control_protocol",
+      "format": "json",
+      "path": "benchmark/full1000_launch_control_v1_protocol.json",
+      "protocol": "full1000_launch_control_v1",
+      "role": "two_stage_launch_contract",
+      "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1",
+      "size": 4569
+    },
+    {
+      "dependencies": [
+        "full1000_launch_control_protocol"
+      ],
+      "evidence_id": "full1000_launch_control_readiness",
+      "format": "json",
+      "path": "benchmark/full1000_launch_control_v1_evidence/readiness.json",
+      "protocol": "full1000_launch_control_v1",
+      "role": "external_activation_block",
+      "sha256": "d47297dcef20db55360853288e91dace4cd4052712c45a7e45412fc06f8a73d3",
+      "size": 848
+    },
+    {
+      "dependencies": [
+        "full1000_launch_control_protocol"
+      ],
+      "evidence_id": "full1000_launch_control_simulation",
+      "format": "json",
+      "path": "benchmark/full1000_launch_control_v1_evidence/simulation.json",
+      "protocol": "full1000_launch_control_v1",
+      "role": "synthetic_operation_conformance",
+      "sha256": "1151769f25bd838d6d53bacd2b8c07083b05679dbb5cf3d8f93f16afb7780fb2",
+      "size": 1515
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "full1000_resume_summary",
+      "format": "json",
+      "path": "benchmark/autoscholar_full1000_resume/summary.json",
+      "protocol": "autoscholar_full1000_resume_manifest_v1",
+      "role": "formal_blocker",
+      "sha256": "940d09c5d4f51f834da80dd73819987e14639ac561956576b00370130025f045",
+      "size": 4566
+    },
+    {
+      "dependencies": [
+        "formal_validation_roles_protocol",
+        "human_annotation_submission_protocol",
+        "human_precision_pending"
+      ],
+      "evidence_id": "human_adjudication_activation_protocol",
+      "format": "json",
+      "path": "benchmark/human_adjudication_activation_v1_protocol.json",
+      "protocol": "human_adjudication_activation_v1",
+      "role": "blind_disagreement_adjudication_and_statistics_unlock_contract",
+      "sha256": "c3be12575eb4cd04ed259b258f3a947ca2bc283c170a993b74fcbc797926aecd",
+      "size": 3870
+    },
+    {
+      "dependencies": [
+        "human_adjudication_activation_protocol",
+        "human_annotation_submission_readiness"
+      ],
+      "evidence_id": "human_adjudication_activation_readiness",
+      "format": "json",
+      "path": "benchmark/human_adjudication_activation_v1_evidence/readiness.json",
+      "protocol": "human_adjudication_activation_v1",
+      "role": "real_human_adjudication_and_statistics_blocker",
+      "sha256": "af3f989145ad73f3f5ee7a40e5f8b970a425936536f9cc642a3da2787ec5aa2d",
+      "size": 1040
+    },
+    {
+      "dependencies": [
+        "human_adjudication_activation_protocol",
+        "human_annotation_submission_simulation"
+      ],
+      "evidence_id": "human_adjudication_activation_simulation",
+      "format": "json",
+      "path": "benchmark/human_adjudication_activation_v1_evidence/simulation.json",
+      "protocol": "human_adjudication_activation_v1",
+      "role": "synthetic_blind_adjudication_and_statistics_unlock_attack_matrix",
+      "sha256": "05c9bf0ac4b13fa96b1d68dc7cf7a429b4620980cdb93405d1033a4bdb9112db",
+      "size": 1943
+    },
+    {
+      "dependencies": [
+        "formal_validation_roles_protocol",
+        "human_annotation_delivery_protocol",
+        "human_annotator_qualification_protocol"
+      ],
+      "evidence_id": "human_annotation_assignment_protocol",
+      "format": "json",
+      "path": "benchmark/human_annotation_assignment_activation_v1_protocol.json",
+      "protocol": "human_annotation_assignment_activation_v1",
+      "role": "human_blind_assignment_activation_contract",
+      "sha256": "b00d909e394ef312d974fce84c1ab9ddea6efa8d4f92ee5fb6934b70f7cf4372",
+      "size": 3635
+    },
+    {
+      "dependencies": [
+        "human_annotation_assignment_protocol",
+        "human_annotation_delivery_readiness",
+        "human_annotator_qualification_readiness"
+      ],
+      "evidence_id": "human_annotation_assignment_readiness",
+      "format": "json",
+      "path": "benchmark/human_annotation_assignment_activation_v1_evidence/readiness.json",
+      "protocol": "human_annotation_assignment_activation_v1",
+      "role": "real_human_assignment_and_acknowledgement_blocker",
+      "sha256": "7b24d98dc0fcb914618da707370ef922a490f80d33d5516da333ccc3f8c66ecd",
+      "size": 905
+    },
+    {
+      "dependencies": [
+        "human_annotation_assignment_protocol",
+        "human_annotation_delivery_dry_run",
+        "human_annotator_qualification_simulation"
+      ],
+      "evidence_id": "human_annotation_assignment_simulation",
+      "format": "json",
+      "path": "benchmark/human_annotation_assignment_activation_v1_evidence/simulation.json",
+      "protocol": "human_annotation_assignment_activation_v1",
+      "role": "synthetic_human_assignment_blinding_and_receipt_attack_matrix",
+      "sha256": "a9e8f6c86713bd105c4deece615f74f8dd2e612a94df63a08c627fc1e5c8cd92",
+      "size": 1842
+    },
+    {
+      "dependencies": [
+        "human_annotation_delivery_protocol"
+      ],
+      "evidence_id": "human_annotation_delivery_dry_run",
+      "format": "json",
+      "path": "benchmark/human_annotation_delivery_v1_evidence/dry_run.json",
+      "protocol": "human_annotation_delivery_v1",
+      "role": "engineering_conformance",
+      "sha256": "4923c7b7bd8574e34c4d1e174402530e6c830909a69a0080fd238e882daf43a2",
+      "size": 404
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "human_annotation_delivery_protocol",
+      "format": "json",
+      "path": "benchmark/human_annotation_delivery_v1_protocol.json",
+      "protocol": "human_annotation_delivery_v1",
+      "role": "protocol",
+      "sha256": "e691bf1990abcc39a3dc28ab9790aae24f91caf99a20609812bc9f616826f647",
+      "size": 1620
+    },
+    {
+      "dependencies": [
+        "human_annotation_delivery_dry_run",
+        "human_annotation_delivery_protocol"
+      ],
+      "evidence_id": "human_annotation_delivery_readiness",
+      "format": "json",
+      "path": "benchmark/human_annotation_delivery_v1_evidence/readiness.json",
+      "protocol": "human_annotation_delivery_v1",
+      "role": "formal_blocker_boundary",
+      "sha256": "1125d9d17b485a61900599691c960d2cf225c461579484bfd00ac46526e658f2",
+      "size": 410
+    },
+    {
+      "dependencies": [
+        "formal_validation_roles_protocol",
+        "human_annotation_assignment_protocol",
+        "human_annotation_delivery_protocol",
+        "human_annotator_qualification_protocol"
+      ],
+      "evidence_id": "human_annotation_submission_protocol",
+      "format": "json",
+      "path": "benchmark/human_annotation_submission_intake_v1_protocol.json",
+      "protocol": "human_annotation_submission_intake_v1",
+      "role": "locked_human_submission_and_adjudication_queue_contract",
+      "sha256": "04b4dfcb7c65e11107f31ee88de5e3443a63ac9aaaea30b60558a6cd4024b5ea",
+      "size": 3692
+    },
+    {
+      "dependencies": [
+        "human_annotation_assignment_readiness",
+        "human_annotation_submission_protocol",
+        "human_annotator_qualification_readiness"
+      ],
+      "evidence_id": "human_annotation_submission_readiness",
+      "format": "json",
+      "path": "benchmark/human_annotation_submission_intake_v1_evidence/readiness.json",
+      "protocol": "human_annotation_submission_intake_v1",
+      "role": "real_locked_human_submission_blocker",
+      "sha256": "c85098b95fd7386f1175fa4e1da97f6138a950d3b9024be45fc3cd71b1eddd55",
+      "size": 919
+    },
+    {
+      "dependencies": [
+        "human_annotation_assignment_simulation",
+        "human_annotation_delivery_dry_run",
+        "human_annotation_submission_protocol"
+      ],
+      "evidence_id": "human_annotation_submission_simulation",
+      "format": "json",
+      "path": "benchmark/human_annotation_submission_intake_v1_evidence/simulation.json",
+      "protocol": "human_annotation_submission_intake_v1",
+      "role": "synthetic_locked_submission_and_blind_queue_attack_matrix",
+      "sha256": "b5bc8dc13a1e9728f3419309c81ab26ca8b117c85ff169a2e5544fd0aa63bd55",
+      "size": 2052
+    },
+    {
+      "dependencies": [
+        "formal_validation_roles_protocol",
+        "human_annotation_delivery_protocol"
+      ],
+      "evidence_id": "human_annotator_qualification_protocol",
+      "format": "json",
+      "path": "benchmark/human_annotator_qualification_intake_v1_protocol.json",
+      "protocol": "human_annotator_qualification_intake_v1",
+      "role": "human_role_qualification_intake_contract",
+      "sha256": "dbaa904fa64d325b388c3143b77b399e85a49bb78c1bbeb53399e5a88b04d43c",
+      "size": 2759
+    },
+    {
+      "dependencies": [
+        "human_annotation_delivery_readiness",
+        "human_annotator_qualification_protocol"
+      ],
+      "evidence_id": "human_annotator_qualification_readiness",
+      "format": "json",
+      "path": "benchmark/human_annotator_qualification_intake_v1_evidence/readiness.json",
+      "protocol": "human_annotator_qualification_intake_v1",
+      "role": "real_human_role_qualification_blocker",
+      "sha256": "163ec76bac45f520818799af5a4187f0470f13610763086314ae005eaf023eb4",
+      "size": 743
+    },
+    {
+      "dependencies": [
+        "formal_validation_roles_simulation",
+        "human_annotator_qualification_protocol"
+      ],
+      "evidence_id": "human_annotator_qualification_simulation",
+      "format": "json",
+      "path": "benchmark/human_annotator_qualification_intake_v1_evidence/simulation.json",
+      "protocol": "human_annotator_qualification_intake_v1",
+      "role": "synthetic_human_qualification_and_role_attack_matrix",
+      "sha256": "1e37a1b68e8f74f094b6bdcf997c661238232eeda1a60e71780a60a93e526246",
+      "size": 1804
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "human_precision_pending",
+      "format": "json",
+      "path": "benchmark/lexical_normalization_record160_precision_result.json",
+      "protocol": "lexical_normalization_record160_precision_package_v1",
+      "role": "formal_blocker",
+      "sha256": "6987139238c2576ed49df6c146dd6bb7fb0cb399ee186e706337623b5db2da98",
+      "size": 3025
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "official_scorer_blocked",
+      "format": "json",
+      "path": "benchmark/official_scorer_alignment_blocked.json",
+      "protocol": "official_scorer_alignment_audit_v1",
+      "role": "formal_blocker",
+      "sha256": "e1629f7e7dfe632746b51a5446d9aa7a18909683966a0ac2053d97e0eb08e237",
+      "size": 4559
+    },
+    {
+      "dependencies": [
+        "external_scorer_protocol"
+      ],
+      "evidence_id": "official_scorer_intake_protocol",
+      "format": "json",
+      "path": "benchmark/official_scorer_package_intake_v1_protocol.json",
+      "protocol": "official_scorer_package_intake_v1",
+      "role": "official_scorer_offline_intake_contract",
+      "sha256": "b58fef36eb8f242adf6195251ab1f198908bd23fb4fc434d09ac6110752d0e5f",
+      "size": 2871
+    },
+    {
+      "dependencies": [
+        "external_scorer_readiness",
+        "official_scorer_intake_protocol"
+      ],
+      "evidence_id": "official_scorer_intake_readiness",
+      "format": "json",
+      "path": "benchmark/official_scorer_package_intake_v1_evidence/readiness.json",
+      "protocol": "official_scorer_package_intake_v1",
+      "role": "official_scorer_material_blocker",
+      "sha256": "67bfffb0d5a347ca2de115d2ed514903157a14fe4911d08e531e56b3fefe9b19",
+      "size": 632
+    },
+    {
+      "dependencies": [
+        "external_scorer_synthetic_matrix",
+        "official_scorer_intake_protocol"
+      ],
+      "evidence_id": "official_scorer_intake_simulation",
+      "format": "json",
+      "path": "benchmark/official_scorer_package_intake_v1_evidence/simulation.json",
+      "protocol": "official_scorer_package_intake_v1",
+      "role": "synthetic_official_scorer_intake_and_sandbox_matrix",
+      "sha256": "949a82c004b38ed11e3d9b75c5e1c6f8e79c0607d32b37ed091e715fad275bfc",
+      "size": 1638
+    },
+    {
+      "dependencies": [
+        "offline_wheelhouse_manifest"
+      ],
+      "evidence_id": "offline_wheelhouse_install_test",
+      "format": "json",
+      "path": "benchmark/offline_wheelhouse_intake_v1_evidence/install_test.json",
+      "protocol": "offline_wheelhouse_intake_v1",
+      "role": "real_install_qualification",
+      "sha256": "ff5f031149c26943b1ab43b19bbc8d1ac61ad0f4425a75b90594345f6fe5f66e",
+      "size": 3092
+    },
+    {
+      "dependencies": [
+        "offline_wheelhouse_protocol"
+      ],
+      "evidence_id": "offline_wheelhouse_manifest",
+      "format": "json",
+      "path": "benchmark/offline_wheelhouse_intake_v1_manifest.json",
+      "protocol": "offline_wheelhouse_intake_v1",
+      "role": "real_artifact_inventory",
+      "sha256": "adcbb6a908f1987ff1ce6141c5821de1f6b4447349b8bb2d3224c04e1f220789",
+      "size": 3465
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "offline_wheelhouse_protocol",
+      "format": "json",
+      "path": "benchmark/offline_wheelhouse_intake_v1_protocol.json",
+      "protocol": "offline_wheelhouse_intake_v1",
+      "role": "protocol",
+      "sha256": "0a73d131fe4ec0e2396fb5764758404bc2200663f9b69ab73a3e5514e32d3118",
+      "size": 1290
+    },
+    {
+      "dependencies": [
+        "offline_wheelhouse_install_test",
+        "offline_wheelhouse_manifest"
+      ],
+      "evidence_id": "offline_wheelhouse_release_review",
+      "format": "json",
+      "path": "benchmark/offline_wheelhouse_intake_v1_evidence/release_review.json",
+      "protocol": "release_candidate_reproducibility_v1",
+      "role": "double_build_release_review",
+      "sha256": "24674e6c359539eb9ae98ed85b48e70a872b0e5db63acd09085e09dde6fa11ea",
+      "size": 1637
+    },
+    {
+      "dependencies": [
+        "offline_wheelhouse_protocol"
+      ],
+      "evidence_id": "offline_wheelhouse_synthetic",
+      "format": "json",
+      "path": "benchmark/offline_wheelhouse_intake_v1_evidence/synthetic_install.json",
+      "protocol": "offline_wheelhouse_intake_v1",
+      "role": "synthetic_dual_venv_proof",
+      "sha256": "0785e476c314e5ecdbf40a2fc27ff1d05ce7f258584bdb3c0b9c769d62d9515a",
+      "size": 893
+    },
+    {
+      "dependencies": [
+        "offline_wheelhouse_manifest"
+      ],
+      "evidence_id": "offline_wheelhouse_verification",
+      "format": "json",
+      "path": "benchmark/offline_wheelhouse_intake_v1_evidence/verification.json",
+      "protocol": "offline_wheelhouse_intake_v1",
+      "role": "real_intake_verification",
+      "sha256": "36ebe2de38dae886754ba1e43c0cc728ad8eae6d665518330730a7e518bd1cdb",
+      "size": 3238
+    },
+    {
+      "dependencies": [
+        "portable_execution_site_protocol"
+      ],
+      "evidence_id": "portable_execution_site_addendum",
+      "format": "json",
+      "path": "benchmark/full1000_portable_execution_site_addendum_v1.json",
+      "protocol": "portable_execution_site_attestation_v1",
+      "role": "future_launch_attestation_import_binding",
+      "sha256": "02243ca8c7b60b360a6621dec29913d8b9d7de34fc17aa0e7f01f72e091dc6a2",
+      "size": 1036
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "portable_execution_site_protocol",
+      "format": "json",
+      "path": "benchmark/portable_execution_site_attestation_v1_protocol.json",
+      "protocol": "portable_execution_site_attestation_v1",
+      "role": "portable_site_protocol",
+      "sha256": "10d49ae0e80ddd00edfa84ba676985f5104cad1b428a7cb2ba613f95858d7ead",
+      "size": 2290
+    },
+    {
+      "dependencies": [
+        "portable_execution_site_addendum",
+        "portable_execution_site_protocol",
+        "portable_execution_site_simulation"
+      ],
+      "evidence_id": "portable_execution_site_readiness",
+      "format": "json",
+      "path": "benchmark/portable_execution_site_attestation_v1_evidence/readiness.json",
+      "protocol": "portable_execution_site_attestation_v1",
+      "role": "real_external_site_readiness",
+      "sha256": "b57ef478064d60cf863b742a1b4f124b6584778a80a72e9486327750ac8715bc",
+      "size": 703
+    },
+    {
+      "dependencies": [
+        "portable_execution_site_protocol"
+      ],
+      "evidence_id": "portable_execution_site_simulation",
+      "format": "json",
+      "path": "benchmark/portable_execution_site_attestation_v1_evidence/simulation.json",
+      "protocol": "portable_execution_site_attestation_v1",
+      "role": "synthetic_portable_site_conformance",
+      "sha256": "467616b78204587fe37658920b371d0c6baa60e7f51f51771022193b34cca1ba",
+      "size": 2420
+    },
+    {
+      "dependencies": [
+        "formal_provider_pacing_protocol",
+        "provider_capacity_intake_protocol"
+      ],
+      "evidence_id": "provider_capacity_intake_addendum",
+      "format": "json",
+      "path": "benchmark/full1000_provider_capacity_intake_addendum_v1.json",
+      "protocol": "provider_capacity_declaration_intake_v1",
+      "role": "launch_capacity_intake_addendum",
+      "sha256": "a7eecc98ad837924f9d075498f49612fbd82b7d74b2ae6412f902ec2875e21a6",
+      "size": 1167
+    },
+    {
+      "dependencies": [
+        "provider_capacity_intake_protocol"
+      ],
+      "evidence_id": "provider_capacity_intake_contract",
+      "format": "json",
+      "path": "benchmark/provider_capacity_declaration_intake_v1_evidence/contract.json",
+      "protocol": "provider_capacity_declaration_intake_v1",
+      "role": "offline_declaration_kit_contract",
+      "sha256": "3bd74b664f23eae5ad58f8a2e04b602676f523b6fd249fe258e5af7dac64f09f",
+      "size": 1347
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "provider_capacity_intake_protocol",
+      "format": "json",
+      "path": "benchmark/provider_capacity_declaration_intake_v1_protocol.json",
+      "protocol": "provider_capacity_declaration_intake_v1",
+      "role": "protocol",
+      "sha256": "4ff1bfc75046319ef04eff7470394fea1d585300f1e68028e7f701633c8d86e0",
+      "size": 4045
+    },
+    {
+      "dependencies": [
+        "provider_capacity_intake_contract",
+        "provider_capacity_intake_protocol"
+      ],
+      "evidence_id": "provider_capacity_intake_readiness",
+      "format": "json",
+      "path": "benchmark/provider_capacity_declaration_intake_v1_evidence/readiness.json",
+      "protocol": "provider_capacity_declaration_intake_v1",
+      "role": "real_declarations_blocker",
+      "sha256": "853665d123fa409d1fe8c14a49a5e38618647edcf8f3b5ebfb8ff5179e96bc7b",
+      "size": 1305
+    },
+    {
+      "dependencies": [
+        "provider_capacity_intake_contract",
+        "provider_capacity_intake_protocol"
+      ],
+      "evidence_id": "provider_capacity_intake_simulation",
+      "format": "json",
+      "path": "benchmark/provider_capacity_declaration_intake_v1_evidence/simulation.json",
+      "protocol": "provider_capacity_declaration_intake_v1",
+      "role": "synthetic_declaration_attack_matrix",
+      "sha256": "087f342be4cf291ab0f94c089d8805020c3a626cb50243867cfef33c7198b8a7",
+      "size": 3384
+    },
+    {
+      "dependencies": [
+        "full1000_execution_plan",
+        "provider_ingest_protocol"
+      ],
+      "evidence_id": "provider_ingest_capture_addendum",
+      "format": "json",
+      "path": "benchmark/full1000_provider_ingest_capture_addendum_v1.json",
+      "protocol": "provider_ingest_provenance_v1",
+      "role": "future_full1000_capture_binding",
+      "sha256": "38d87a09eb5b39ef14b53c26a523c6ade24682b14ce180cfd2b153cde9d7adc2",
+      "size": 1088
+    },
+    {
+      "dependencies": [
+        "provider_ingest_protocol"
+      ],
+      "evidence_id": "provider_ingest_fixture_matrix",
+      "format": "json",
+      "path": "benchmark/provider_ingest_provenance_v1_evidence/fixture_matrix.json",
+      "protocol": "provider_ingest_provenance_v1",
+      "role": "offline_synthetic_parser_replay_conformance",
+      "sha256": "e19aea821ba74c672849e2eb7105e3a9fab430ae734ddebda72c4f3970a6a63e",
+      "size": 1008
+    },
+    {
+      "dependencies": [
+        "provider_ingest_protocol"
+      ],
+      "evidence_id": "provider_ingest_frozen_audit",
+      "format": "json",
+      "path": "benchmark/provider_ingest_provenance_v1_evidence/frozen_audit.json",
+      "protocol": "provider_ingest_provenance_v1",
+      "role": "historical_record162_eligibility_boundary",
+      "sha256": "1a57b1200fd8bb1c0906de73d06af2b2b658c80abbf4de61a6767861b73afcd6",
+      "size": 432
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "provider_ingest_protocol",
+      "format": "json",
+      "path": "benchmark/provider_ingest_provenance_v1_protocol.json",
+      "protocol": "provider_ingest_provenance_v1",
+      "role": "protocol",
+      "sha256": "29a4a687f8bec2d9c3f12f264b24e41df2519442182728dc424b101e578e6a77",
+      "size": 2167
+    },
+    {
+      "dependencies": [
+        "public_contract_protocol"
+      ],
+      "evidence_id": "public_contract_baseline",
+      "format": "json",
+      "path": "benchmark/public_contract_compatibility_v1_baseline.json",
+      "protocol": "public_contract_compatibility_v1",
+      "role": "contract_baseline",
+      "sha256": "c6d410b7ddea43db4b9dfe5b7f5ef4d1fa0fcc1c270aa1bdd6ae0c59c31453c1",
+      "size": 1325527
+    },
+    {
+      "dependencies": [
+        "public_contract_baseline",
+        "public_contract_protocol"
+      ],
+      "evidence_id": "public_contract_current",
+      "format": "json",
+      "path": "benchmark/public_contract_compatibility_v1_evidence/current.json",
+      "protocol": "public_contract_compatibility_v1",
+      "role": "compatibility_verification",
+      "sha256": "cbdf463d40a4a40c4c914856569e08600ebbd352c814781cfc3bde8040e0d0c2",
+      "size": 551
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "public_contract_protocol",
+      "format": "json",
+      "path": "benchmark/public_contract_compatibility_v1_protocol.json",
+      "protocol": "public_contract_compatibility_v1",
+      "role": "protocol",
+      "sha256": "574ab78cab9752e235a34a5d5921c6ed9170c08a18a743d0ec0e2410b2bd2e03",
+      "size": 48509
+    },
+    {
+      "dependencies": [
+        "python_dependency_lock_protocol"
+      ],
+      "evidence_id": "python_dependency_lock_manifest",
+      "format": "json",
+      "path": "benchmark/python_dependency_lock_v1_manifest.json",
+      "protocol": "python_dependency_lock_v1",
+      "role": "installed_metadata_dependency_closure",
+      "sha256": "d83da09ed13fb1e3b1868c2096912fce06f592b2be9a1d608533f089b19d8910",
+      "size": 26147
+    },
+    {
+      "dependencies": [
+        "python_dependency_lock_manifest"
+      ],
+      "evidence_id": "python_dependency_lock_offline_install",
+      "format": "json",
+      "path": "benchmark/python_dependency_lock_v1_evidence/offline_install.json",
+      "protocol": "python_dependency_lock_v1",
+      "role": "dual_venv_offline_install_qualification",
+      "sha256": "e5130dfa9e4b9f4eac7a45e50eebdaf71475844eefde3ada5c2f944cfb9fcf6a",
+      "size": 1912
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "python_dependency_lock_protocol",
+      "format": "json",
+      "path": "benchmark/python_dependency_lock_v1_protocol.json",
+      "protocol": "python_dependency_lock_v1",
+      "role": "protocol",
+      "sha256": "c1e9570e11b9048b49290a5b5731d9794a585785e4c3ec98902885f1349954f9",
+      "size": 918
+    },
+    {
+      "dependencies": [
+        "python_dependency_lock_manifest",
+        "python_dependency_lock_offline_install"
+      ],
+      "evidence_id": "python_dependency_lock_release_review",
+      "format": "json",
+      "path": "benchmark/python_dependency_lock_v1_evidence/release_review.json",
+      "protocol": "release_candidate_reproducibility_v1",
+      "role": "double_build_release_review",
+      "sha256": "ca170291c9751dab333902c01fa35b7be43052d9dc0c00a702f92814f63ae85f",
+      "size": 1590
+    },
+    {
+      "dependencies": [
+        "python_dependency_lock_manifest"
+      ],
+      "evidence_id": "python_dependency_lock_verification",
+      "format": "json",
+      "path": "benchmark/python_dependency_lock_v1_evidence/verification.json",
+      "protocol": "python_dependency_lock_v1",
+      "role": "lock_and_metadata_verification",
+      "sha256": "779ab9ef98572cd87a0d4bd784e6eb6fbc0339db380c052f1b4ec4b8332e824e",
+      "size": 2156
+    },
+    {
+      "dependencies": [
+        "ranking_decision_protocol"
+      ],
+      "evidence_id": "ranking_decision_manifest",
+      "format": "json",
+      "path": "benchmark/ranking_decision_audit_v1_result/manifest.json",
+      "protocol": "ranking_decision_audit_v1",
+      "role": "integrity_manifest",
+      "sha256": "ed0823bc53d0402c58ea86a17dec30f8e56e36903b17080c78e09dbac19c42a8",
+      "size": 798
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "ranking_decision_protocol",
+      "format": "json",
+      "path": "benchmark/ranking_decision_audit_v1_protocol.json",
+      "protocol": "ranking_decision_audit_v1",
+      "role": "protocol",
+      "sha256": "5a38bb255c8d56d172b323ffd8ab71275ed7d7273bece05654d932dbcb93052b",
+      "size": 7472
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "release_authenticity_protocol",
+      "format": "json",
+      "path": "benchmark/release_authenticity_signing_v1_protocol.json",
+      "protocol": "release_authenticity_signing_v1",
+      "role": "canonical_release_signing_contract",
+      "sha256": "7a7e6a840fa0c16c3c774a10c6713d160c4c52758d1dced2210fb5adcf11a338",
+      "size": 2637
+    },
+    {
+      "dependencies": [
+        "release_authenticity_protocol",
+        "release_authenticity_trust_root"
+      ],
+      "evidence_id": "release_authenticity_readiness",
+      "format": "json",
+      "path": "benchmark/release_authenticity_signing_v1_evidence/readiness.json",
+      "protocol": "release_authenticity_signing_v1",
+      "role": "current_real_signer_boundary",
+      "sha256": "9fd9f2120b6f5461b5ae9f62b205c7e6c932599b4cc212069bf2fd821eb714a1",
+      "size": 1450
+    },
+    {
+      "dependencies": [
+        "release_authenticity_protocol"
+      ],
+      "evidence_id": "release_authenticity_trust_root",
+      "format": "json",
+      "path": "benchmark/release_authenticity_signing_v1_trust_root.json",
+      "protocol": "release_authenticity_signing_v1",
+      "role": "append_only_public_trust_root",
+      "sha256": "47df1f352508fcadbcbcd702265d37b51662df2ca7df5c9c88b20ef87713198e",
+      "size": 356
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "release_candidate_contract",
+      "format": "json",
+      "path": "benchmark/release_candidate_reproducibility_v1_contract.json",
+      "protocol": "release_candidate_reproducibility_v1",
+      "role": "release_engineering_contract",
+      "sha256": "5fd108ff252ec53837d787709177258ed322a29efb6d87e46e5459f2714fa638",
+      "size": 63206
+    },
+    {
+      "dependencies": [
+        "release_candidate_contract"
+      ],
+      "evidence_id": "release_candidate_python_lock",
+      "format": "json",
+      "path": "benchmark/release_candidate_reproducibility_v1_python_lock.json",
+      "protocol": "python_installed_metadata_lock_v1",
+      "role": "release_dependency_closure",
+      "sha256": "ddde2709b51035f0aee02431cd1fb2e6bc46e63be6ea9bdb15d621542cf12918",
+      "size": 9874
+    },
+    {
+      "dependencies": [
+        "release_candidate_contract",
+        "release_candidate_python_lock"
+      ],
+      "evidence_id": "release_candidate_reproducibility",
+      "format": "json",
+      "path": "benchmark/release_candidate_reproducibility_v1_evidence/current.json",
+      "protocol": "release_candidate_reproducibility_v1",
+      "role": "release_engineering_evidence",
+      "sha256": "6b07107b94d8f25b1abf6a49baf68446f76b0b93fdad4e157c6ca7199073226c",
+      "size": 1601
+    },
+    {
+      "dependencies": [
+        "source_fusion_protocol"
+      ],
+      "evidence_id": "source_fusion_aggregate",
+      "format": "json",
+      "path": "benchmark/source_fusion_ablation_v1_result/aggregate.json",
+      "protocol": "source_fusion_ablation_v1",
+      "role": "aggregate",
+      "sha256": "716b170c1e453083ac916ee121eff883c639642414b658fddcce372e6450d29f",
+      "size": 41936
+    },
+    {
+      "dependencies": [
+        "source_fusion_aggregate"
+      ],
+      "evidence_id": "source_fusion_manifest",
+      "format": "json",
+      "path": "benchmark/source_fusion_ablation_v1_result/manifest.json",
+      "protocol": "source_fusion_ablation_v1",
+      "role": "integrity_manifest",
+      "sha256": "5a1f45caa408f03cb12c5aeddd7458322d75e39b74e7fab854ac08703314bed4",
+      "size": 613
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "source_fusion_protocol",
+      "format": "json",
+      "path": "benchmark/source_fusion_ablation_v1_protocol.json",
+      "protocol": "source_fusion_ablation_v1",
+      "role": "protocol",
+      "sha256": "dbf1a340ed4b66aefb62db496ce9992f39476d7b04024df97192d509d7922111",
+      "size": 4917
+    },
+    {
+      "dependencies": [
+        "source_reliability_protocol"
+      ],
+      "evidence_id": "source_reliability_aggregate",
+      "format": "json",
+      "path": "benchmark/source_reliability_diagnostics_v1_result/aggregate.json",
+      "protocol": "source_reliability_diagnostics_v1",
+      "role": "aggregate",
+      "sha256": "65407e5c3dd992cd418e9f7c5509c2508cf1a688a676bd156a7b980a1f5bea87",
+      "size": 34669
+    },
+    {
+      "dependencies": [
+        "source_reliability_aggregate"
+      ],
+      "evidence_id": "source_reliability_manifest",
+      "format": "json",
+      "path": "benchmark/source_reliability_diagnostics_v1_result/manifest.json",
+      "protocol": "source_reliability_diagnostics_v1",
+      "role": "integrity_manifest",
+      "sha256": "cbf44ced10fc90807c0e966e1b0925d09d04dc8b29ac39f9a7b9a55d3760b413",
+      "size": 621
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "source_reliability_protocol",
+      "format": "json",
+      "path": "benchmark/source_reliability_diagnostics_v1_protocol.json",
+      "protocol": "source_reliability_diagnostics_v1",
+      "role": "protocol",
+      "sha256": "9df9f920d0f52869bef808fddc73a8dbead39fdf9edd8b0ff467b8147fa075db",
+      "size": 8735
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "standalone_auditor_bundle_contract",
+      "format": "json",
+      "path": "benchmark/standalone_auditor_bundle_v1_contract.json",
+      "protocol": "standalone_auditor_bundle_v1",
+      "role": "standalone_publication_contract",
+      "sha256": "311435e51dc93a6e2d2bbc26682f7a4e907d39ca85cc82886b768be3d971fbef",
+      "size": 1567
+    },
+    {
+      "dependencies": [
+        "standalone_auditor_bundle_contract"
+      ],
+      "evidence_id": "standalone_auditor_bundle_readiness",
+      "format": "json",
+      "path": "benchmark/standalone_auditor_bundle_v1_evidence/readiness.json",
+      "protocol": "standalone_auditor_bundle_v1",
+      "role": "external_auditor_readiness",
+      "sha256": "f2a11f391569bce2026e120cbdcff804e03327b94988dc4b86d3da4160c700b2",
+      "size": 286
+    },
+    {
+      "dependencies": [
+        "tiebreak_protocol"
+      ],
+      "evidence_id": "tiebreak_aggregate",
+      "format": "json",
+      "path": "benchmark/deterministic_tiebreak_qualification_v1_result/aggregate.json",
+      "protocol": "deterministic_tiebreak_qualification_v1",
+      "role": "aggregate",
+      "sha256": "787b29002a7d9fd1b6403b88981f3ececc93bd6f40696786e80ab2015ead8c48",
+      "size": 5204
+    },
+    {
+      "dependencies": [
+        "tiebreak_aggregate"
+      ],
+      "evidence_id": "tiebreak_manifest",
+      "format": "json",
+      "path": "benchmark/deterministic_tiebreak_qualification_v1_result/manifest.json",
+      "protocol": "deterministic_tiebreak_qualification_v1",
+      "role": "integrity_manifest",
+      "sha256": "fdb6620a55143e4e9da933403a78438c568c74c0f6d42a64f78b33043ddaa833",
+      "size": 988
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "tiebreak_protocol",
+      "format": "json",
+      "path": "benchmark/deterministic_tiebreak_qualification_v1_protocol.json",
+      "protocol": "deterministic_tiebreak_qualification_v1",
+      "role": "protocol",
+      "sha256": "e0850efb8b4338e65f0eaca150a579260c3aff3675c71c837a840661dfaa76d2",
+      "size": 5715
+    },
+    {
+      "dependencies": [
+        "top20_delivery_contract"
+      ],
+      "evidence_id": "top20_delivery_aggregate",
+      "format": "json",
+      "path": "benchmark/top20_delivery_fidelity_v1_result/aggregate.json",
+      "protocol": "top20_delivery_fidelity_v1",
+      "role": "aggregate",
+      "sha256": "5dadd3a1637865a2a05d8d2099c02b4cfdd6d619778dbfed5454604b82b2b626",
+      "size": 3860
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "top20_delivery_contract",
+      "format": "json",
+      "path": "benchmark/top20_delivery_contract_v1.json",
+      "protocol": "top20_delivery_fidelity_v1",
+      "role": "protocol",
+      "sha256": "bbe386cbee1cec4e2ec85c9280ace4e194620bdf4e4f7cee053f6dd06793f30b",
+      "size": 6606
+    },
+    {
+      "dependencies": [
+        "top20_delivery_aggregate"
+      ],
+      "evidence_id": "top20_delivery_manifest",
+      "format": "json",
+      "path": "benchmark/top20_delivery_fidelity_v1_result/manifest.json",
+      "protocol": "top20_delivery_fidelity_v1",
+      "role": "integrity_manifest",
+      "sha256": "a68dcecb5c948217fbb0f11ee17d08572b988888f18038d2453956a594678cd8",
+      "size": 838
+    },
+    {
+      "dependencies": [
+        "validation_freshness_protocol"
+      ],
+      "evidence_id": "validation_freshness_current",
+      "format": "json",
+      "path": "benchmark/validation_evidence_freshness_v1_evidence/current.json",
+      "protocol": "validation_evidence_freshness_v1",
+      "role": "freshness_baseline_closure",
+      "sha256": "29b7c9b1e7f0d6d040f1f522de73523ae91ddf4b83034dd288490a95726dc280",
+      "size": 59516
+    },
+    {
+      "dependencies": [],
+      "evidence_id": "validation_freshness_protocol",
+      "format": "json",
+      "path": "benchmark/validation_evidence_freshness_v1_contract.json",
+      "protocol": "validation_evidence_freshness_v1",
+      "role": "protocol",
+      "sha256": "17f54683935a899aadc5ad980dbd63af1f0ac411968a8730fa26875477780767",
+      "size": 239408
+    },
+    {
+      "dependencies": [
+        "validation_freshness_current",
+        "validation_freshness_protocol"
+      ],
+      "evidence_id": "validation_freshness_synthetic_impact",
+      "format": "json",
+      "path": "benchmark/validation_evidence_freshness_v1_evidence/synthetic_impact.json",
+      "protocol": "validation_evidence_freshness_v1",
+      "role": "change_impact_conformance",
+      "sha256": "6f5b2fb25172b77b3e936c00ffe5aed6b95e4eb6bc23a7050ab3a670add71238",
+      "size": 3349
+    }
+  ],
+  "evidence_count": 180,
+  "protocol": "validation_readiness_bundle_v1",
+  "schema_version": "1"
+}

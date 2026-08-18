@@ -1,0 +1,66 @@
+{
+  "audit": "scifact-source-index-v1",
+  "base_commit": "1bcbbb432b6312e29cd59a0c7ea5bf46736a1846",
+  "script": "scripts/audit_scifact_source_index.py",
+  "dataset": "beir_scifact",
+  "split": "test",
+  "sample_query_count": 50,
+  "evaluable_gold_count": 42,
+  "unique_gold_subject_count": 39,
+  "source_pair_count": 168,
+  "request_key_count": 156,
+  "inputs": {
+    "dataset_sha256": "536e14446a0ba56ed1398ab1055f39fe852686ecad24a6306c80c490fa8e0165",
+    "sample_manifest_sha256": "a1c010060078a806cae5f79ee24e565b0546206144f9ac4e9fdc15d432318f9b",
+    "crosswalk_sha256": "ec7406107d13ddfd81ea1eca6f065c85dda25276f4ddb33abd568c5dd9d94d1c",
+    "external_results_sha256": "ee6b95ff7becc25672d952a8e951c9c6ad43b68f379f1fc83a9426f99d28359e"
+  },
+  "request_policy": {
+    "serial": true,
+    "http_timeout_seconds": 10.0,
+    "request_wall_timeout_seconds": 30.0,
+    "max_retries": 1,
+    "max_retry_wait_seconds": 5.0,
+    "title_matching": false
+  },
+  "preflight": {
+    "arxiv": {"status": "not_applicable", "http_status": null, "request_count": 0, "retry_count": 0},
+    "openalex": {"status": "success", "http_status": 200, "request_count": 1, "retry_count": 0},
+    "semantic_scholar": {"status": "success", "http_status": 200, "request_count": 1, "retry_count": 0},
+    "pubmed": {"status": "success", "http_status": 200, "request_count": 1, "retry_count": 0}
+  },
+  "source_coverage": {
+    "arxiv": {"applicable_gold_count": 0, "exact_hit_gold_count": 0, "unavailable_gold_count": 0, "not_applicable_gold_count": 42},
+    "openalex": {"applicable_gold_count": 41, "exact_hit_gold_count": 1, "unavailable_gold_count": 40, "not_applicable_gold_count": 1},
+    "semantic_scholar": {"applicable_gold_count": 42, "exact_hit_gold_count": 33, "unavailable_gold_count": 9, "not_applicable_gold_count": 0},
+    "pubmed": {"applicable_gold_count": 41, "exact_hit_gold_count": 39, "unavailable_gold_count": 0, "not_applicable_gold_count": 1, "identity_evidence_insufficient_gold_count": 2}
+  },
+  "classification_counts": {
+    "current_query_recalled": 5,
+    "source_exactly_locatable_query_miss": 37,
+    "applicable_sources_not_located": 0,
+    "source_unavailable": 0,
+    "identity_evidence_insufficient": 0
+  },
+  "joint_exact_coverage": {
+    "matched_gold_count": 42,
+    "gold_denominator": 42,
+    "coverage_rate": 1.0
+  },
+  "strategy_space": {
+    "query_expression_theoretical_max_new_gold_count": 37,
+    "additional_or_replacement_source_residual_gold_count": 0,
+    "indeterminate_gold_count": 0
+  },
+  "snapshot": {
+    "directory_sha256": "6a4696c7d694b9d195d37cf2be81cf6452b2753ad8762305240f80da92783c26",
+    "status_counts": {"success": 69, "failed": 46, "not_applicable": 41}
+  },
+  "artifact_hashes": {
+    "config.json": "a31edd2243904ba097af5b0750ff6c29efc0d85794f8f4074142c0d982b02f8f",
+    "gold_audit.jsonl": "23d312a4e652efdd83a72cf8f515a166aa4545c1b622a7afa73f14e35fe41bd5",
+    "aggregate.json": "36629b8fe364018dd89904b9b55bdae67a6d5b1115bf72b1d136cb5d36a46b0b"
+  },
+  "collection_note": "An initial PubMed parser read nested reference ArticleIdList values; those snapshots were isolated and all fixed PubMed keys were recollected before formal Replay.",
+  "scope_note": "Evaluator-only exact identifier oracle; no gold data enters product retrieval."
+}

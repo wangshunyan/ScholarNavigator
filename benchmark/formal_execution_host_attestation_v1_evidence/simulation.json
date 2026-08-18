@@ -1,0 +1,57 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "protocol": "formal_execution_host_attestation_v1",
+  "scenario_count": 10,
+  "scenarios": {
+    "advisory_lock_unavailable": {
+      "observed_host_status": "not_ready_unverified_or_insufficient_host",
+      "status": "passed"
+    },
+    "attestation_tamper": {
+      "observed_host_status": "integrity_violation",
+      "status": "passed"
+    },
+    "capacity_insufficient": {
+      "observed_host_status": "not_ready_unverified_or_insufficient_host",
+      "status": "passed"
+    },
+    "directory_fsync_unavailable": {
+      "observed_host_status": "not_ready_unverified_or_insufficient_host",
+      "status": "passed"
+    },
+    "fully_qualified": {
+      "observed_host_status": "host_qualified",
+      "status": "passed"
+    },
+    "inode_insufficient": {
+      "observed_host_status": "not_ready_unverified_or_insufficient_host",
+      "status": "passed"
+    },
+    "nofile_insufficient": {
+      "observed_host_status": "not_ready_unverified_or_insufficient_host",
+      "status": "passed"
+    },
+    "non_atomic_replace": {
+      "observed_host_status": "not_ready_unverified_or_insufficient_host",
+      "status": "passed"
+    },
+    "observation_missing": {
+      "observed_host_status": "not_ready_unverified_or_insufficient_host",
+      "status": "passed"
+    },
+    "shared_fault_domain": {
+      "observed_host_status": "not_ready_unverified_or_insufficient_host",
+      "status": "passed"
+    }
+  },
+  "schema_version": "1",
+  "status": "host_controls_ready"
+}

@@ -1,0 +1,73 @@
+{
+  "artifacts": {
+    "duplicate_rows_sha256": "4eecc9428e068d95bd6df07a89c170856d3018b6893da45c61984cf6c79e15f2",
+    "query_rows_sha256": "2078c67b39ff22927b90af968776ed2e6e4aa3d46677440ec70c3e87065a778d",
+    "replay_rows_sha256": "3f5029ff45687bfb74bbd8cd115e68137c0d851c9c9ba7fd8be42beed3f03c1a",
+    "summary_sha256": "e98051281b594df31ddf6823911b13a7df7b82eb7495c26e2248475955fa3fc4"
+  },
+  "execution": {
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "retrieval_invoked": false,
+    "snapshot_write_count": 0
+  },
+  "frozen_replay": {
+    "auto_dev": {
+      "case_count": 10,
+      "deduplicated": {
+        "candidate_recall": 0.15,
+        "f1_at_20": 0.017857142857142856,
+        "recall_at_20": 0.125
+      },
+      "delta": {
+        "candidate_recall": 0.0,
+        "f1_at_20": 0.0,
+        "recall_at_20": 0.0
+      },
+      "impacted_query_count": 0
+    },
+    "auto_val": {
+      "case_count": 5,
+      "deduplicated": {
+        "candidate_recall": 0.2,
+        "f1_at_20": 0.019047619047619046,
+        "recall_at_20": 0.2
+      },
+      "delta": {
+        "candidate_recall": 0.0,
+        "f1_at_20": 0.0,
+        "recall_at_20": 0.0
+      },
+      "impacted_query_count": 0
+    },
+    "scifact": {
+      "case_count": 50,
+      "deduplicated": {
+        "candidate_recall": 0.12195121951219512,
+        "f1_at_20": 0.011614401858304297,
+        "recall_at_20": 0.12195121951219512
+      },
+      "delta": {
+        "candidate_recall": 0.0,
+        "f1_at_20": 0.0,
+        "recall_at_20": 0.0
+      },
+      "impacted_query_count": 0
+    }
+  },
+  "full_autoscholar": {
+    "deduplicated_evaluable_gold_count": 2398,
+    "duplicate_relation_count": 5,
+    "identity_rule": "shared_stable_identifier",
+    "impacted_query_count": 2,
+    "legacy_evaluable_gold_count": 2403,
+    "query_count": 1000
+  },
+  "historical_artifacts_mutated": false,
+  "metric_versions": {
+    "current_internal": "deduplicated_gold_identity_v2",
+    "legacy": "legacy_gold_records_v1"
+  },
+  "official_scorer": false,
+  "schema_version": "1"
+}

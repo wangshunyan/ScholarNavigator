@@ -1,0 +1,25 @@
+{
+  "activation_requirements": {
+    "attestation_source_commit_matches_launch": true,
+    "challenge_is_fresh_and_unused": true,
+    "import_receipt_required": true,
+    "legacy_or_synthetic_attestation_reusable": false,
+    "multivolume_topology_identity_matches": true,
+    "per_volume_capacity_inode_quota_verified": true,
+    "primary_backup_failure_domain_independence_verified": true
+  },
+  "addendum": "full1000_portable_execution_site_addendum_v1",
+  "formal_validation_complete": false,
+  "launch_control": {
+    "path": "benchmark/full1000_launch_control_v1_protocol.json",
+    "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+  },
+  "portable_site_protocol": {
+    "path": "benchmark/portable_execution_site_attestation_v1_protocol.json",
+    "sha256": "10d49ae0e80ddd00edfa84ba676985f5104cad1b428a7cb2ba613f95858d7ead"
+  },
+  "real_external_site_attestation": "not_available",
+  "real_run_started": false,
+  "schema_version": "1",
+  "source_commit": "b492e660e97fc45a463972a06107eea3101575df"
+}

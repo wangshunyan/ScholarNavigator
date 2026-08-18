@@ -1,0 +1,27 @@
+{
+  "analysis": "constraint_decision_audit_v1",
+  "files": {
+    "aggregate": {
+      "path": "aggregate.json",
+      "sha256": "0b995a083b706e4eec08997b7cb71e1d9f17c66492b404c5e55393ef95c921e1",
+      "size": 34578
+    },
+    "candidate_decisions": {
+      "path": "candidate_decisions.jsonl",
+      "sha256": "fcde3f0c69c135d9c3c6cbe8e9ba2f48a4f1fadd378170c19ba8c47cee3d916b",
+      "size": 24074640
+    },
+    "case_diagnostics": {
+      "path": "case_diagnostics.jsonl",
+      "sha256": "6dfb4631f1b527efc508c45515af812e2d6b11188962aee02562e81f81ce39e2",
+      "size": 551843
+    },
+    "protocol": {
+      "path": "protocol.json",
+      "sha256": "284456f8a26d941421d51a89f97b72314b536be3ce9d0c10433e0a383667b0dc",
+      "size": 9263
+    }
+  },
+  "schema_version": "1",
+  "status": "completed"
+}

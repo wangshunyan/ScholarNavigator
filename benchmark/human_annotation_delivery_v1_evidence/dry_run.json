@@ -1,0 +1,16 @@
+{
+  "contract": "human_annotation_delivery_v1",
+  "execution": {
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "official_scorer_call_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "schema_version": "1",
+  "state": "delivery_ready",
+  "statistics": null,
+  "synthetic_artifacts_persisted": false,
+  "synthetic_gate_state": "validated",
+  "synthetic_item_count": 471
+}

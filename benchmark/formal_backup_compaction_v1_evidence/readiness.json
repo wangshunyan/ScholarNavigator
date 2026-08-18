@@ -1,0 +1,31 @@
+{
+  "backup_available_bytes": "not_available",
+  "backup_available_inodes": "not_available",
+  "backup_failure_domain_independent": "not_available",
+  "backup_quota_bytes": "not_available",
+  "controls_default_enabled": false,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_run_started": false,
+  "formal_validation_complete": false,
+  "full1000_blocker_cleared": false,
+  "missing_backup_fields": [
+    "backup.available_bytes",
+    "backup.available_inodes",
+    "backup.failure_domain_independent",
+    "backup.filesystem_quota_bytes"
+  ],
+  "new_backup_required_bytes": 1028812963840,
+  "new_backup_required_inodes": 108137,
+  "old_backup_required_bytes": 2119029489664,
+  "old_backup_required_inodes": 210940,
+  "protocol": "formal_backup_compaction_v1",
+  "schema_version": "1",
+  "status": "not_ready_missing_qualified_backup_target"
+}

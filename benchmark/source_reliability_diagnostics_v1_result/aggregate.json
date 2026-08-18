@@ -1,0 +1,1016 @@
+{
+  "analysis": "source_reliability_diagnostics_v1",
+  "closure": {
+    "component_count": 134,
+    "excluded_no_successful_source_count": 2,
+    "included_main_case_count": 160,
+    "observed_snapshot_key_count": 1093,
+    "reconstruction_exact_case_count": 160,
+    "record_case_count": 162
+  },
+  "execution": {
+    "full1000_inference_performed": false,
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "implementation_base_commit": "6358c12ceb448c95780c99b446bc15dc40a606db",
+  "implementation_sha256": "8236c998ebc160cc7af3a5f101f8cf531e8c1a80ed7560acc763ddfc5b1084ad",
+  "inputs": {
+    "component_assignments_sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5",
+    "config_sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+    "record_results_sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+    "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5"
+  },
+  "interpretation": {
+    "precision_recall_or_official_score": false,
+    "relevance_claim_permitted": false,
+    "scope": "source_availability_and_pipeline_accounting_only",
+    "warnings": [
+      "Availability, record yield, identity coverage, and Top-20 contribution do not establish relevance, Precision, Recall, or an official score.",
+      "Frozen failures remain in the fixed 160-query population and are never used for post-hoc filtering.",
+      "Missing pre-parser evidence is reported as unknown and never reconstructed from parsed papers."
+    ]
+  },
+  "protocol_sha256": "9df9f920d0f52869bef808fddc73a8dbead39fdf9edd8b0ff467b8147fa075db",
+  "schema_version": "1",
+  "silent_loss": {
+    "accounting_violation_count": 0,
+    "duplicate_snapshot_reference_count": 0,
+    "failed_disguised_as_empty_success_count": 0,
+    "status_record_contradiction_count": 0,
+    "unknown_schema_field_count": 0
+  },
+  "sources": {
+    "arxiv": {
+      "failure_category_counts": {
+        "http_failure": 19,
+        "transport_failure": 48
+      },
+      "funnel_totals": {
+        "budget_retained_identity_count": 2561,
+        "canonical_record_count": 3920,
+        "constraint_survivor_identity_count": 848,
+        "cross_source_redundant_identity_attribution_count": 14,
+        "global_unique_identity_count": 2561,
+        "parsed_record_count": 3920,
+        "raw_provider_record_count": null,
+        "source_unique_identity_count": 2561,
+        "top20_identity_count": 623
+      },
+      "legal_empty_success_request_rate": 0.0,
+      "operational_counts": {
+        "authoritative_snapshot_count": 263,
+        "duplicate_snapshot_reference_count": 0,
+        "legal_empty_success_count": 0,
+        "logical_executed_count": 390,
+        "logical_request_count": 758,
+        "raw_provider_record_unknown_request_count": 196,
+        "recorded_cache_hit_count": 0,
+        "recorded_error_count": 67,
+        "recorded_latency_seconds": 1967.80204474274,
+        "recorded_rate_limit_wait_seconds": 25.208547996822,
+        "recorded_request_count": 332,
+        "recorded_retry_count": 69,
+        "snapshot_failed_count": 67,
+        "snapshot_missing_count": 0,
+        "snapshot_reference_count": 263,
+        "snapshot_success_count": 196,
+        "success_nonempty_count": 196,
+        "unique_snapshot_count": 263,
+        "unknown_evidence_count": 0
+      },
+      "parsed_nonempty_zero_canonical_query_count": 0,
+      "partial_failure_count": 12,
+      "partial_failure_rate": 0.075,
+      "primary_outcome_counts": {
+        "constraint_loss": 9,
+        "contributed_top20": 70,
+        "not_started": 47,
+        "request_failure": 29,
+        "valid_not_top20": 5
+      },
+      "queries_with_legal_empty_success_count": 0,
+      "queries_with_only_legal_empty_success_count": 0,
+      "queries_with_successful_snapshot_count": 84,
+      "query_state_counts": {
+        "failed": 29,
+        "not_started": 47,
+        "partial_failure": 12,
+        "success": 72
+      },
+      "query_structure_strata": {
+        "has_boolean_operator": {
+          "false": {
+            "queries_with_failure_count": 27,
+            "queries_with_failure_rate": 0.228813559322,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 118
+          },
+          "true": {
+            "queries_with_failure_count": 14,
+            "queries_with_failure_rate": 0.333333333333,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 42
+          }
+        },
+        "has_quote": {
+          "false": {
+            "queries_with_failure_count": 41,
+            "queries_with_failure_rate": 0.25625,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 160
+          },
+          "true": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          }
+        },
+        "has_year": {
+          "false": {
+            "queries_with_failure_count": 41,
+            "queries_with_failure_rate": 0.25625,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 160
+          },
+          "true": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          }
+        },
+        "length_bucket": {
+          "0_80": {
+            "queries_with_failure_count": 10,
+            "queries_with_failure_rate": 0.232558139535,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 43
+          },
+          "161_320": {
+            "queries_with_failure_count": 4,
+            "queries_with_failure_rate": 0.5,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 8
+          },
+          "321_plus": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          },
+          "81_160": {
+            "queries_with_failure_count": 27,
+            "queries_with_failure_rate": 0.247706422018,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 109
+          }
+        },
+        "unicode_class": {
+          "ascii_only": {
+            "queries_with_failure_count": 41,
+            "queries_with_failure_rate": 0.25625,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 160
+          },
+          "non_ascii_letter": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          },
+          "non_ascii_nonletter": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          }
+        }
+      },
+      "raw_nonempty_zero_valid_query_count": null,
+      "request_state_counts": {
+        "http_failure": 19,
+        "not_started": 495,
+        "success": 196,
+        "transport_failure": 48
+      },
+      "stage_losses": {
+        "canonicalization_loss": {
+          "count": 0,
+          "rate": 0.0,
+          "status": "known"
+        },
+        "constraint_loss": {
+          "count": 1713,
+          "rate": 0.668879344006,
+          "status": "known"
+        },
+        "global_budget_loss": {
+          "count": 0,
+          "rate": 0.0,
+          "status": "known"
+        },
+        "global_identity_loss": {
+          "count": 0,
+          "rate": 0.0,
+          "status": "known"
+        },
+        "identity_dedup_loss": {
+          "count": 1359,
+          "rate": 0.346683673469,
+          "status": "known"
+        },
+        "parse_loss": {
+          "count": null,
+          "rate": null,
+          "status": "unknown"
+        },
+        "top20_selection_loss": {
+          "count": 225,
+          "rate": 0.265330188679,
+          "status": "known"
+        }
+      },
+      "successful_request_output": {
+        "cluster_mean_confidence_interval": {
+          "component_count": 67,
+          "confidence_interval_95": [
+            20.0,
+            20.0
+          ],
+          "mean": 20.0,
+          "median": 20.0,
+          "missing_query_count": 76,
+          "observed_query_count": 84,
+          "query_count": 160
+        },
+        "request_distribution": {
+          "count": 196,
+          "maximum": 20.0,
+          "mean": 20.0,
+          "median": 20.0,
+          "minimum": 20.0,
+          "q1": 20.0,
+          "q3": 20.0,
+          "total": 3920.0
+        }
+      }
+    },
+    "openalex": {
+      "failure_category_counts": {
+        "http_failure": 52
+      },
+      "funnel_totals": {
+        "budget_retained_identity_count": 20,
+        "canonical_record_count": 20,
+        "constraint_survivor_identity_count": 0,
+        "cross_source_redundant_identity_attribution_count": 0,
+        "global_unique_identity_count": 20,
+        "parsed_record_count": 20,
+        "raw_provider_record_count": null,
+        "source_unique_identity_count": 20,
+        "top20_identity_count": 0
+      },
+      "legal_empty_success_request_rate": 0.0,
+      "operational_counts": {
+        "authoritative_snapshot_count": 53,
+        "duplicate_snapshot_reference_count": 0,
+        "legal_empty_success_count": 0,
+        "logical_executed_count": 379,
+        "logical_request_count": 758,
+        "raw_provider_record_unknown_request_count": 1,
+        "recorded_cache_hit_count": 0,
+        "recorded_error_count": 52,
+        "recorded_latency_seconds": 118.725681916812,
+        "recorded_rate_limit_wait_seconds": 0.0,
+        "recorded_request_count": 105,
+        "recorded_retry_count": 52,
+        "snapshot_failed_count": 52,
+        "snapshot_missing_count": 0,
+        "snapshot_reference_count": 53,
+        "snapshot_success_count": 1,
+        "success_nonempty_count": 1,
+        "unique_snapshot_count": 53,
+        "unknown_evidence_count": 0
+      },
+      "parsed_nonempty_zero_canonical_query_count": 0,
+      "partial_failure_count": 1,
+      "partial_failure_rate": 0.00625,
+      "primary_outcome_counts": {
+        "constraint_loss": 1,
+        "not_started": 108,
+        "request_failure": 51
+      },
+      "queries_with_legal_empty_success_count": 0,
+      "queries_with_only_legal_empty_success_count": 0,
+      "queries_with_successful_snapshot_count": 1,
+      "query_state_counts": {
+        "failed": 51,
+        "not_started": 108,
+        "partial_failure": 1
+      },
+      "query_structure_strata": {
+        "has_boolean_operator": {
+          "false": {
+            "queries_with_failure_count": 40,
+            "queries_with_failure_rate": 0.338983050847,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 118
+          },
+          "true": {
+            "queries_with_failure_count": 12,
+            "queries_with_failure_rate": 0.285714285714,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 42
+          }
+        },
+        "has_quote": {
+          "false": {
+            "queries_with_failure_count": 52,
+            "queries_with_failure_rate": 0.325,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 160
+          },
+          "true": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          }
+        },
+        "has_year": {
+          "false": {
+            "queries_with_failure_count": 52,
+            "queries_with_failure_rate": 0.325,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 160
+          },
+          "true": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          }
+        },
+        "length_bucket": {
+          "0_80": {
+            "queries_with_failure_count": 13,
+            "queries_with_failure_rate": 0.302325581395,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 43
+          },
+          "161_320": {
+            "queries_with_failure_count": 4,
+            "queries_with_failure_rate": 0.5,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 8
+          },
+          "321_plus": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          },
+          "81_160": {
+            "queries_with_failure_count": 35,
+            "queries_with_failure_rate": 0.321100917431,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 109
+          }
+        },
+        "unicode_class": {
+          "ascii_only": {
+            "queries_with_failure_count": 52,
+            "queries_with_failure_rate": 0.325,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": 0.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 160
+          },
+          "non_ascii_letter": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          },
+          "non_ascii_nonletter": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          }
+        }
+      },
+      "raw_nonempty_zero_valid_query_count": null,
+      "request_state_counts": {
+        "http_failure": 52,
+        "not_started": 705,
+        "success": 1
+      },
+      "stage_losses": {
+        "canonicalization_loss": {
+          "count": 0,
+          "rate": 0.0,
+          "status": "known"
+        },
+        "constraint_loss": {
+          "count": 20,
+          "rate": 1.0,
+          "status": "known"
+        },
+        "global_budget_loss": {
+          "count": 0,
+          "rate": 0.0,
+          "status": "known"
+        },
+        "global_identity_loss": {
+          "count": 0,
+          "rate": 0.0,
+          "status": "known"
+        },
+        "identity_dedup_loss": {
+          "count": 0,
+          "rate": 0.0,
+          "status": "known"
+        },
+        "parse_loss": {
+          "count": null,
+          "rate": null,
+          "status": "unknown"
+        },
+        "top20_selection_loss": {
+          "count": 0,
+          "rate": null,
+          "status": "known"
+        }
+      },
+      "successful_request_output": {
+        "cluster_mean_confidence_interval": {
+          "component_count": 1,
+          "confidence_interval_95": [
+            20.0,
+            20.0
+          ],
+          "mean": 20.0,
+          "median": 20.0,
+          "missing_query_count": 159,
+          "observed_query_count": 1,
+          "query_count": 160
+        },
+        "request_distribution": {
+          "count": 1,
+          "maximum": 20.0,
+          "mean": 20.0,
+          "median": 20.0,
+          "minimum": 20.0,
+          "q1": 20.0,
+          "q3": 20.0,
+          "total": 20.0
+        }
+      }
+    },
+    "pubmed": {
+      "failure_category_counts": {
+        "provider_failure": 1,
+        "transport_failure": 1
+      },
+      "funnel_totals": {
+        "budget_retained_identity_count": 863,
+        "canonical_record_count": 1292,
+        "constraint_survivor_identity_count": 287,
+        "cross_source_redundant_identity_attribution_count": 9,
+        "global_unique_identity_count": 863,
+        "parsed_record_count": 1292,
+        "raw_provider_record_count": null,
+        "source_unique_identity_count": 863,
+        "top20_identity_count": 234
+      },
+      "legal_empty_success_request_rate": 0.763912310287,
+      "operational_counts": {
+        "authoritative_snapshot_count": 595,
+        "duplicate_snapshot_reference_count": 0,
+        "legal_empty_success_count": 453,
+        "logical_executed_count": 597,
+        "logical_request_count": 758,
+        "raw_provider_record_unknown_request_count": 593,
+        "recorded_cache_hit_count": 0,
+        "recorded_error_count": 2,
+        "recorded_latency_seconds": 1165.34560675826,
+        "recorded_rate_limit_wait_seconds": 0.0,
+        "recorded_request_count": 736,
+        "recorded_retry_count": 0,
+        "snapshot_failed_count": 2,
+        "snapshot_missing_count": 0,
+        "snapshot_reference_count": 595,
+        "snapshot_success_count": 593,
+        "success_nonempty_count": 140,
+        "unique_snapshot_count": 595,
+        "unknown_evidence_count": 0
+      },
+      "parsed_nonempty_zero_canonical_query_count": 0,
+      "partial_failure_count": 1,
+      "partial_failure_rate": 0.00625,
+      "primary_outcome_counts": {
+        "constraint_loss": 10,
+        "contributed_top20": 42,
+        "legal_empty_response": 101,
+        "valid_not_top20": 7
+      },
+      "queries_with_legal_empty_success_count": 139,
+      "queries_with_only_legal_empty_success_count": 101,
+      "queries_with_successful_snapshot_count": 160,
+      "query_state_counts": {
+        "partial_failure": 1,
+        "success": 159
+      },
+      "query_structure_strata": {
+        "has_boolean_operator": {
+          "false": {
+            "queries_with_failure_count": 1,
+            "queries_with_failure_rate": 0.008474576271,
+            "queries_with_legal_empty_count": 97,
+            "queries_with_legal_empty_rate": 0.822033898305,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 118
+          },
+          "true": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": 0.0,
+            "queries_with_legal_empty_count": 42,
+            "queries_with_legal_empty_rate": 1.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 42
+          }
+        },
+        "has_quote": {
+          "false": {
+            "queries_with_failure_count": 1,
+            "queries_with_failure_rate": 0.00625,
+            "queries_with_legal_empty_count": 139,
+            "queries_with_legal_empty_rate": 0.86875,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 160
+          },
+          "true": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          }
+        },
+        "has_year": {
+          "false": {
+            "queries_with_failure_count": 1,
+            "queries_with_failure_rate": 0.00625,
+            "queries_with_legal_empty_count": 139,
+            "queries_with_legal_empty_rate": 0.86875,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 160
+          },
+          "true": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          }
+        },
+        "length_bucket": {
+          "0_80": {
+            "queries_with_failure_count": 1,
+            "queries_with_failure_rate": 0.023255813953,
+            "queries_with_legal_empty_count": 29,
+            "queries_with_legal_empty_rate": 0.674418604651,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 43
+          },
+          "161_320": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": 0.0,
+            "queries_with_legal_empty_count": 8,
+            "queries_with_legal_empty_rate": 1.0,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 8
+          },
+          "321_plus": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          },
+          "81_160": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": 0.0,
+            "queries_with_legal_empty_count": 102,
+            "queries_with_legal_empty_rate": 0.935779816514,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 109
+          }
+        },
+        "unicode_class": {
+          "ascii_only": {
+            "queries_with_failure_count": 1,
+            "queries_with_failure_rate": 0.00625,
+            "queries_with_legal_empty_count": 139,
+            "queries_with_legal_empty_rate": 0.86875,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 160
+          },
+          "non_ascii_letter": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          },
+          "non_ascii_nonletter": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          }
+        }
+      },
+      "raw_nonempty_zero_valid_query_count": null,
+      "request_state_counts": {
+        "not_started": 163,
+        "provider_failure": 1,
+        "success": 593,
+        "transport_failure": 1
+      },
+      "stage_losses": {
+        "canonicalization_loss": {
+          "count": 0,
+          "rate": 0.0,
+          "status": "known"
+        },
+        "constraint_loss": {
+          "count": 576,
+          "rate": 0.667439165701,
+          "status": "known"
+        },
+        "global_budget_loss": {
+          "count": 0,
+          "rate": 0.0,
+          "status": "known"
+        },
+        "global_identity_loss": {
+          "count": 0,
+          "rate": 0.0,
+          "status": "known"
+        },
+        "identity_dedup_loss": {
+          "count": 429,
+          "rate": 0.332043343653,
+          "status": "known"
+        },
+        "parse_loss": {
+          "count": null,
+          "rate": null,
+          "status": "unknown"
+        },
+        "top20_selection_loss": {
+          "count": 53,
+          "rate": 0.184668989547,
+          "status": "known"
+        }
+      },
+      "successful_request_output": {
+        "cluster_mean_confidence_interval": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            1.424099147122,
+            2.918742670576
+          ],
+          "mean": 2.131863006397,
+          "median": 0.0,
+          "missing_query_count": 0,
+          "observed_query_count": 160,
+          "query_count": 160
+        },
+        "request_distribution": {
+          "count": 593,
+          "maximum": 20.0,
+          "mean": 2.178752107926,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0,
+          "total": 1292.0
+        }
+      }
+    },
+    "semantic_scholar": {
+      "failure_category_counts": {
+        "http_failure": 35
+      },
+      "funnel_totals": {
+        "budget_retained_identity_count": 1178,
+        "canonical_record_count": 1439,
+        "constraint_survivor_identity_count": 769,
+        "cross_source_redundant_identity_attribution_count": 23,
+        "global_unique_identity_count": 1178,
+        "parsed_record_count": 1439,
+        "raw_provider_record_count": null,
+        "source_unique_identity_count": 1178,
+        "top20_identity_count": 556
+      },
+      "legal_empty_success_request_rate": 0.360544217687,
+      "operational_counts": {
+        "authoritative_snapshot_count": 182,
+        "duplicate_snapshot_reference_count": 0,
+        "legal_empty_success_count": 53,
+        "logical_executed_count": 427,
+        "logical_request_count": 758,
+        "raw_provider_record_unknown_request_count": 147,
+        "recorded_cache_hit_count": 0,
+        "recorded_error_count": 35,
+        "recorded_latency_seconds": 524.957406166005,
+        "recorded_rate_limit_wait_seconds": 146.0,
+        "recorded_request_count": 255,
+        "recorded_retry_count": 73,
+        "snapshot_failed_count": 35,
+        "snapshot_missing_count": 0,
+        "snapshot_reference_count": 182,
+        "snapshot_success_count": 147,
+        "success_nonempty_count": 94,
+        "unique_snapshot_count": 182,
+        "unknown_evidence_count": 0
+      },
+      "parsed_nonempty_zero_canonical_query_count": 0,
+      "partial_failure_count": 19,
+      "partial_failure_rate": 0.11875,
+      "primary_outcome_counts": {
+        "constraint_loss": 2,
+        "contributed_top20": 38,
+        "legal_empty_response": 10,
+        "not_started": 94,
+        "request_failure": 16
+      },
+      "queries_with_legal_empty_success_count": 37,
+      "queries_with_only_legal_empty_success_count": 10,
+      "queries_with_successful_snapshot_count": 50,
+      "query_state_counts": {
+        "failed": 16,
+        "not_started": 94,
+        "partial_failure": 19,
+        "success": 31
+      },
+      "query_structure_strata": {
+        "has_boolean_operator": {
+          "false": {
+            "queries_with_failure_count": 28,
+            "queries_with_failure_rate": 0.237288135593,
+            "queries_with_legal_empty_count": 29,
+            "queries_with_legal_empty_rate": 0.245762711864,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 118
+          },
+          "true": {
+            "queries_with_failure_count": 7,
+            "queries_with_failure_rate": 0.166666666667,
+            "queries_with_legal_empty_count": 8,
+            "queries_with_legal_empty_rate": 0.190476190476,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 42
+          }
+        },
+        "has_quote": {
+          "false": {
+            "queries_with_failure_count": 35,
+            "queries_with_failure_rate": 0.21875,
+            "queries_with_legal_empty_count": 37,
+            "queries_with_legal_empty_rate": 0.23125,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 160
+          },
+          "true": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          }
+        },
+        "has_year": {
+          "false": {
+            "queries_with_failure_count": 35,
+            "queries_with_failure_rate": 0.21875,
+            "queries_with_legal_empty_count": 37,
+            "queries_with_legal_empty_rate": 0.23125,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 160
+          },
+          "true": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          }
+        },
+        "length_bucket": {
+          "0_80": {
+            "queries_with_failure_count": 9,
+            "queries_with_failure_rate": 0.209302325581,
+            "queries_with_legal_empty_count": 8,
+            "queries_with_legal_empty_rate": 0.186046511628,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 43
+          },
+          "161_320": {
+            "queries_with_failure_count": 2,
+            "queries_with_failure_rate": 0.25,
+            "queries_with_legal_empty_count": 4,
+            "queries_with_legal_empty_rate": 0.5,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 8
+          },
+          "321_plus": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          },
+          "81_160": {
+            "queries_with_failure_count": 24,
+            "queries_with_failure_rate": 0.220183486239,
+            "queries_with_legal_empty_count": 25,
+            "queries_with_legal_empty_rate": 0.229357798165,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 109
+          }
+        },
+        "unicode_class": {
+          "ascii_only": {
+            "queries_with_failure_count": 35,
+            "queries_with_failure_rate": 0.21875,
+            "queries_with_legal_empty_count": 37,
+            "queries_with_legal_empty_rate": 0.23125,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 160
+          },
+          "non_ascii_letter": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          },
+          "non_ascii_nonletter": {
+            "queries_with_failure_count": 0,
+            "queries_with_failure_rate": null,
+            "queries_with_legal_empty_count": 0,
+            "queries_with_legal_empty_rate": null,
+            "queries_with_unknown_evidence_count": 0,
+            "query_count": 0
+          }
+        }
+      },
+      "raw_nonempty_zero_valid_query_count": null,
+      "request_state_counts": {
+        "http_failure": 35,
+        "not_started": 576,
+        "success": 147
+      },
+      "stage_losses": {
+        "canonicalization_loss": {
+          "count": 0,
+          "rate": 0.0,
+          "status": "known"
+        },
+        "constraint_loss": {
+          "count": 409,
+          "rate": 0.347198641766,
+          "status": "known"
+        },
+        "global_budget_loss": {
+          "count": 0,
+          "rate": 0.0,
+          "status": "known"
+        },
+        "global_identity_loss": {
+          "count": 0,
+          "rate": 0.0,
+          "status": "known"
+        },
+        "identity_dedup_loss": {
+          "count": 261,
+          "rate": 0.181375955525,
+          "status": "known"
+        },
+        "parse_loss": {
+          "count": null,
+          "rate": null,
+          "status": "unknown"
+        },
+        "top20_selection_loss": {
+          "count": 213,
+          "rate": 0.276983094928,
+          "status": "known"
+        }
+      },
+      "successful_request_output": {
+        "cluster_mean_confidence_interval": {
+          "component_count": 43,
+          "confidence_interval_95": [
+            6.60580749354,
+            10.464990310078
+          ],
+          "mean": 8.547351421189,
+          "median": 10.0,
+          "missing_query_count": 110,
+          "observed_query_count": 50,
+          "query_count": 160
+        },
+        "request_distribution": {
+          "count": 147,
+          "maximum": 20.0,
+          "mean": 9.789115646259,
+          "median": 5.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 20.0,
+          "total": 1439.0
+        }
+      }
+    }
+  },
+  "status": "completed",
+  "unassigned_terminal_counts": {
+    "subquery_timeout": 6
+  },
+  "unknown_evidence": {
+    "raw_provider_record_count_available": false,
+    "reason": "retrieval Snapshots persist adapter-parsed Paper records but not pre-parser provider record counts",
+    "unknown_failure_evidence_count": 0
+  }
+}

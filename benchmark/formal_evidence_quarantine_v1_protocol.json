@@ -1,0 +1,109 @@
+{
+  "allowed_consumer_prefixes": [
+    "scholar_agent.evaluation.",
+    "scripts.check_formal_evidence_quarantine",
+    "scripts.check_formal_validation_clearance"
+  ],
+  "evidence_types": [
+    "human_annotation_labels",
+    "human_adjudication_result",
+    "official_scorer_package",
+    "official_scorer_output"
+  ],
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "forbidden_consumer_roots": [
+    "src/scholar_agent/agents",
+    "src/scholar_agent/app",
+    "src/scholar_agent/connectors",
+    "src/scholar_agent/core",
+    "src/scholar_agent/llm",
+    "src/scholar_agent/prompts",
+    "src/scholar_agent/retrieval",
+    "src/scholar_agent/services",
+    "frontend/src"
+  ],
+  "forbidden_data_tokens": [
+    "formal_evidence",
+    "human_annotation_labels",
+    "human_adjudication_result",
+    "official_scorer_output",
+    "query_to_gold",
+    "qrels"
+  ],
+  "forbidden_path_tokens": [
+    "formal_evidence",
+    "gold",
+    "human_annotation_labels",
+    "human_adjudication_result",
+    "official_scorer_output",
+    "qrels"
+  ],
+  "forbidden_structured_keys": [
+    "gold",
+    "human_adjudication_result",
+    "human_annotation_labels",
+    "official_scorer_output",
+    "qrels"
+  ],
+  "intake_contract": "formal_evidence_intake_manifest_v1",
+  "lifecycle_states": [
+    "received",
+    "validated",
+    "locked",
+    "reported",
+    "stale_for_claim",
+    "invalid"
+  ],
+  "posthoc_protected_components": {
+    "budget": [
+      "src/scholar_agent/core/config.py",
+      "src/scholar_agent/services/search_service.py"
+    ],
+    "data_identity": [
+      "src/scholar_agent/evaluation/datasets/",
+      "benchmark/full1000_execution_plan_v1.json"
+    ],
+    "default_policy": [
+      "src/scholar_agent/retrieval/query_adapter.py",
+      "src/scholar_agent/core/config.py",
+      "benchmark/evidence_registry_manifest.json"
+    ],
+    "prompt": [
+      "src/scholar_agent/prompts/"
+    ],
+    "query_planning": [
+      "src/scholar_agent/agents/query_planner.py",
+      "src/scholar_agent/retrieval/query_adapter.py"
+    ],
+    "ranking": [
+      "src/scholar_agent/agents/reranker.py"
+    ],
+    "retrieval": [
+      "src/scholar_agent/connectors/",
+      "src/scholar_agent/services/search_service.py"
+    ],
+    "tie_break": [
+      "src/scholar_agent/agents/reranker.py",
+      "src/scholar_agent/evaluation/selection.py"
+    ]
+  },
+  "prohibited_uses": [
+    "budget_selection",
+    "default_strategy_selection",
+    "prompt_construction",
+    "query_planning",
+    "ranking_or_threshold_tuning",
+    "retrieval_execution",
+    "training_or_cache_population"
+  ],
+  "protocol": "formal_evidence_quarantine_v1",
+  "schema_version": "1",
+  "source_commit": "473414bc952ba9ef8f36d70af791f59674e9c6cf"
+}

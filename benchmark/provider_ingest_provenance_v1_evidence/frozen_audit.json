@@ -1,0 +1,16 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "historical_artifacts_modified": false,
+  "protocol": "provider_ingest_provenance_v1",
+  "raw_payload_inferred": false,
+  "reason_code": "missing_parser_pre_raw_response_bytes",
+  "schema_version": "1",
+  "status": "not_eligible"
+}

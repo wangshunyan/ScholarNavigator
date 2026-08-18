@@ -1,0 +1,118 @@
+{
+  "audit": "autoscholar_query_independence_v1",
+  "component_definition": {
+    "component_id": "sha256 of the sorted query_id list with the fixed autoscholar-query-component-v1 namespace; identifiers label components only and never affect edges",
+    "edges": [
+      "normalized_exact_query",
+      "lexical_near_duplicate",
+      "shared_gold_identity_cluster"
+    ],
+    "graph": "undirected",
+    "membership": "every query belongs to exactly one transitive connected component, including isolated singleton queries"
+  },
+  "execution": {
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "metric_diagnostics": {
+    "aggregation": "query-equal macro mean over the frozen per-query numeric metric values",
+    "autoscholar_record160": "160 frozen cases with at least one successful source; the two no-success cases remain explicit and are not assigned fabricated metrics",
+    "existing65": "frozen SciFact 50 plus AutoScholarQuery dev 10 and val 5",
+    "non_official": true,
+    "paired_policies": [
+      "baseline_current_rules",
+      "lexical_normalization_v1"
+    ]
+  },
+  "near_duplicate": {
+    "minimum_informative_token_count_per_query": 6,
+    "similarity": "set_jaccard",
+    "threshold_inclusive": 0.8,
+    "token_multiplicity": "ignored",
+    "token_order": "ignored"
+  },
+  "normalization": {
+    "exact_duplicate": [
+      "html_entity_unescape",
+      "unicode_nfkc",
+      "casefold",
+      "unicode punctuation and underscore to spaces",
+      "collapse whitespace"
+    ],
+    "near_duplicate_tokens": "Unicode alphanumeric word tokens excluding underscore, after exact normalization and fixed stopword removal",
+    "semantic_or_fuzzy_matching": false,
+    "short_query_protection": "exact normalized duplicates remain eligible; lexical near-duplicate edges require the fixed minimum informative token count for both queries"
+  },
+  "schema_version": "1",
+  "stopwords": [
+    "a",
+    "an",
+    "and",
+    "are",
+    "as",
+    "at",
+    "be",
+    "been",
+    "being",
+    "by",
+    "can",
+    "could",
+    "did",
+    "do",
+    "does",
+    "for",
+    "from",
+    "had",
+    "has",
+    "have",
+    "how",
+    "in",
+    "into",
+    "is",
+    "it",
+    "its",
+    "may",
+    "might",
+    "of",
+    "on",
+    "or",
+    "should",
+    "that",
+    "the",
+    "their",
+    "these",
+    "this",
+    "those",
+    "to",
+    "was",
+    "were",
+    "what",
+    "when",
+    "where",
+    "which",
+    "who",
+    "why",
+    "will",
+    "with",
+    "would"
+  ],
+  "strata": {
+    "contaminated_component": "a component is cross-stratum contaminated when it contains a query with more than one frozen evidence membership or contains distinct queries from more than one exclusive partition",
+    "exclusive_partition_priority": [
+      "auto_dev",
+      "auto_val",
+      "record160_only",
+      "remainder"
+    ],
+    "frozen_memberships": [
+      "auto_dev",
+      "auto_val",
+      "autoscholar_record160"
+    ],
+    "metric_filter": "the diagnostic decontaminated view removes every case in a contaminated component; SciFact cases are retained because they are outside the AutoScholarQuery graph",
+    "overlap": "raw memberships may overlap and are reported; the exclusive partition is used only to locate cross-stratum graph connections",
+    "remainder": "all 1000-query manifest members outside auto_dev, auto_val, and the complete 162-case Record artifact"
+  },
+  "version": "autoscholar-query-independence-protocol-v1"
+}

@@ -1,0 +1,119 @@
+{
+  "allowed_outputs": [
+    "benchmark/formal_validation_preregistration_v1_evidence/readiness.json",
+    "benchmark/formal_validation_preregistration_v1_evidence/simulation.json",
+    "benchmark/formal_validation_preregistration_v1_seal.json"
+  ],
+  "blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "contract": "formal_validation_preregistration_seal_v1",
+  "external_evidence": {
+    "full1000": "not_available",
+    "human_precision": "not_available",
+    "official_scorer": "not_provided"
+  },
+  "formal_validation_complete": false,
+  "protocol": "formal_validation_preregistration_v1",
+  "protocol_sha256": "aa9f281c9dfe155d19cebc13af16fb350e03ca969fb25211f40e1fc66790a01a",
+  "registered_files": [
+    {
+      "path": "src/scholar_agent/evaluation/cluster_significance.py",
+      "role": "cluster_aware_statistics",
+      "sha256": "dd7b458d4b5c3ef86a227b3cfda959a607008ee932ac155b4f087782f2d69adb",
+      "size": 31403
+    },
+    {
+      "path": "benchmark/lexical_normalization_cluster_significance_manifest.json",
+      "role": "cluster_aware_statistics_contract",
+      "sha256": "c358268c4d7b673910e68af371481f1d182ccb1ef4fb7b15823be29cabc6deb2",
+      "size": 5609
+    },
+    {
+      "path": "benchmark/experiment_pairing_integrity_v1_protocol.json",
+      "role": "comparison_plan_contract",
+      "sha256": "b6884c80f1910199c0fee516319326d5abb6c699fbe9d2aa8d7e5a76a6767b48",
+      "size": 1357
+    },
+    {
+      "path": "benchmark/external_scorer_handoff_v1_protocol.json",
+      "role": "external_scorer_contract",
+      "sha256": "60adfa40f3ba09d25c980a7614416d947d15393110542048bed1318eed0b69b7",
+      "size": 4143
+    },
+    {
+      "path": "src/scholar_agent/evaluation/external_scorer_handoff.py",
+      "role": "external_scorer_handoff",
+      "sha256": "dba6e8b2eb088b28c5235ddc20c20272ef964cb7213fd8b5dacab92f49426c5a",
+      "size": 31256
+    },
+    {
+      "path": "benchmark/formal_validation_clearance_v1_protocol.json",
+      "role": "formal_clearance_contract",
+      "sha256": "b37118f7741e8132eb3ab1436f7d73aff336d6351d601c8e86cc8f1c691903b5",
+      "size": 1825
+    },
+    {
+      "path": "src/scholar_agent/evaluation/formal_validation_clearance.py",
+      "role": "formal_clearance_evaluator",
+      "sha256": "2984c7ec63f25dceffb4159b50d03fa3d04e65ec1675977075bf64cab1ef8e69",
+      "size": 23740
+    },
+    {
+      "path": "src/scholar_agent/evaluation/formal_evidence_quarantine.py",
+      "role": "formal_evidence_quarantine",
+      "sha256": "9e6a21e497aaaba6e20f3810141052c32b08e64fc5d2f99339f01a872ede1af1",
+      "size": 26681
+    },
+    {
+      "path": "benchmark/formal_evidence_quarantine_v1_protocol.json",
+      "role": "formal_evidence_quarantine_contract",
+      "sha256": "63b9cc16123b63a6b30732878bfed76c03d744d1b0e862c7c9ddd2dca30dc7a4",
+      "size": 2887
+    },
+    {
+      "path": "benchmark/validation_evidence_freshness_v1_spec.json",
+      "role": "freshness_dependency_spec",
+      "sha256": "628a14189f30bda971a92e593070e88999e9481fff99e561008a08331f547aa5",
+      "size": 32021
+    },
+    {
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "role": "full1000_execution_plan",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613",
+      "size": 435250
+    },
+    {
+      "path": "src/scholar_agent/evaluation/human_precision_adjudication.py",
+      "role": "human_adjudication_and_statistics",
+      "sha256": "6a8b9f5604ace1ed25172774261bc06bb990ca8575c570e07c7544e2fe63d745",
+      "size": 39861
+    },
+    {
+      "path": "benchmark/human_precision_adjudication_v1_protocol.json",
+      "role": "human_adjudication_contract",
+      "sha256": "6d6d29f98f4115ab960afff29e6e00b55c7ef7aba5376524354badb04dd81145",
+      "size": 2744
+    },
+    {
+      "path": "scripts/check_formal_validation_preregistration.py",
+      "role": "preregistration_cli",
+      "sha256": "9c8af3e79be4423fd66182135d610bee1bfd604c5a91193cbf1085bc10ba3694",
+      "size": 3725
+    },
+    {
+      "path": "src/scholar_agent/evaluation/formal_validation_preregistration.py",
+      "role": "preregistration_implementation",
+      "sha256": "d36fdefa204fe2f96d1af5cff15034c65ac35b26b07bce3ffea5e19dc0c7dffd",
+      "size": 19556
+    }
+  ],
+  "registered_files_sha256": "01964483ed592e4051240d5956e44482129ab583452734b1bc3d404f215ad07d",
+  "schema_version": "1",
+  "seal_sha256": "e9edb66d19a0813d3610ded3652b19fe8a00fe4835c702649b0b0fb6a6c0974d",
+  "semantic_policy_sha256": "ddf99d0196f3559634c3fca61f17b68f9746cde5bff04a6d9c0293b5d72cb08e",
+  "source_commit": "b983b23f1405a12d51cd78bd7acf53ad8dbfcee3",
+  "state": "sealed"
+}

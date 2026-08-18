@@ -1,0 +1,63 @@
+{
+  "audit": "scifact-bm25-v1",
+  "base_commit": "47c2168332e957aec395b7c4e49e4a76d026c716",
+  "script": "scripts/audit_scifact_bm25.py",
+  "dataset": "beir_scifact",
+  "split": "test",
+  "corpus_count": 5183,
+  "sample_query_count": 50,
+  "gold_count": 51,
+  "evaluable_query_count": 41,
+  "evaluable_gold_count": 42,
+  "inputs": {
+    "dataset_sha256": "536e14446a0ba56ed1398ab1055f39fe852686ecad24a6306c80c490fa8e0165",
+    "sample_manifest_sha256": "a1c010060078a806cae5f79ee24e565b0546206144f9ac4e9fdc15d432318f9b",
+    "crosswalk_sha256": "ec7406107d13ddfd81ea1eca6f065c85dda25276f4ddb33abd568c5dd9d94d1c",
+    "external_results_sha256": "ee6b95ff7becc25672d952a8e951c9c6ad43b68f379f1fc83a9426f99d28359e"
+  },
+  "index": {
+    "library": "rank_bm25",
+    "library_version": "0.2.2",
+    "implementation": "BM25Okapi",
+    "parameters": {
+      "k1": 1.5,
+      "b": 0.75,
+      "epsilon": 0.25
+    },
+    "document_fields": ["title", "abstract"],
+    "tokenizer": "unicode_word_casefold_v1",
+    "token_pattern": "\\w+",
+    "stopwords": false,
+    "stemming": false,
+    "query_expansion": false,
+    "tie_break": "score_desc_then_corpus_id_ascending",
+    "prefix_evaluation": "single_full_corpus_ranking"
+  },
+  "metrics": {
+    "mrr": 0.5750338739836387,
+    "depths": {
+      "20": {"matched_gold_count": 32, "micro_recall": 0.7619047619047619, "macro_recall": 0.7560975609756098},
+      "50": {"matched_gold_count": 32, "micro_recall": 0.7619047619047619, "macro_recall": 0.7560975609756098},
+      "100": {"matched_gold_count": 32, "micro_recall": 0.7619047619047619, "macro_recall": 0.7560975609756098},
+      "200": {"matched_gold_count": 35, "micro_recall": 0.8333333333333334, "macro_recall": 0.8292682926829268}
+    },
+    "external_candidate": {
+      "matched_gold_count": 5,
+      "micro_recall": 0.11904761904761904,
+      "macro_recall": 0.12195121951219512
+    },
+    "classification_counts": {
+      "both_hit": 5,
+      "bm25_top_200_only": 30,
+      "external_only": 0,
+      "neither_hit": 7,
+      "identity_unresolvable": 9
+    }
+  },
+  "artifact_hashes": {
+    "aggregate.json": "b2c4ff8ce47d24adb0a77a54d2eb14c18bd5432e7379c1fb80ff18688773cdd0",
+    "config.json": "b6d779fb6e05003ed531d594b12ed4aeeab98cc66509b39eb7024aa9348b8eb4",
+    "per_query.jsonl": "f691b2aba8dc502c1c2c873799df1f5d93db888814126a87e99a203f3396f30f"
+  },
+  "scope_note": "Offline corpus upper bound only; not a product retrieval score."
+}

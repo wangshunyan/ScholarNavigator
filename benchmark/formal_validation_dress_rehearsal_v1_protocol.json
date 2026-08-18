@@ -1,0 +1,291 @@
+{
+  "allowed_outputs": [
+    "benchmark/formal_validation_dress_rehearsal_v1_evidence/failure_matrix.json",
+    "benchmark/formal_validation_dress_rehearsal_v1_evidence/handoff_checklist.json",
+    "benchmark/formal_validation_dress_rehearsal_v1_evidence/readiness.json",
+    "benchmark/formal_validation_dress_rehearsal_v1_evidence/rehearsal.json"
+  ],
+  "bindings": [
+    {
+      "contract": "formal_validation_clearance_v1",
+      "path": "benchmark/formal_validation_clearance_v1_protocol.json",
+      "role": "clearance_protocol",
+      "sha256": "b37118f7741e8132eb3ab1436f7d73aff336d6351d601c8e86cc8f1c691903b5"
+    },
+    {
+      "contract": "external_scorer_handoff_v1",
+      "path": "benchmark/external_scorer_handoff_v1_protocol.json",
+      "role": "external_scorer_protocol",
+      "sha256": "60adfa40f3ba09d25c980a7614416d947d15393110542048bed1318eed0b69b7"
+    },
+    {
+      "contract": "validation_evidence_freshness_v1",
+      "path": "benchmark/validation_evidence_freshness_v1_spec.json",
+      "role": "freshness_spec",
+      "sha256": "628a14189f30bda971a92e593070e88999e9481fff99e561008a08331f547aa5"
+    },
+    {
+      "contract": "full1000_execution_plan_v1",
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "role": "full1000_execution_plan",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    {
+      "contract": "full1000_execution_readiness_v1",
+      "path": "benchmark/full1000_execution_readiness_v1_protocol.json",
+      "role": "full1000_execution_protocol",
+      "sha256": "4dc5feaf3f6fc7119a3adcece77b79fb605bcfdde67397f3cbde158a66235873"
+    },
+    {
+      "contract": "human_precision_adjudication_v1",
+      "path": "benchmark/human_precision_adjudication_v1_protocol.json",
+      "role": "human_adjudication_protocol",
+      "sha256": "6d6d29f98f4115ab960afff29e6e00b55c7ef7aba5376524354badb04dd81145"
+    },
+    {
+      "contract": "human_annotation_delivery_v1",
+      "path": "benchmark/human_annotation_delivery_v1_protocol.json",
+      "role": "human_delivery_protocol",
+      "sha256": "e691bf1990abcc39a3dc28ab9790aae24f91caf99a20609812bc9f616826f647"
+    },
+    {
+      "contract": "full1000_launch_control_v1",
+      "path": "benchmark/full1000_launch_control_v1_protocol.json",
+      "role": "launch_protocol",
+      "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+    },
+    {
+      "contract": "formal_validation_preregistration_v1",
+      "path": "benchmark/formal_validation_preregistration_v1_protocol.json",
+      "role": "preregistration_protocol",
+      "sha256": "b2ab16003cc843657896cda863deaab39bfb80f2b098e8eaf24e718304e8920a"
+    },
+    {
+      "contract": "formal_validation_preregistration_seal_v1",
+      "path": "benchmark/formal_validation_preregistration_v1_seal.json",
+      "role": "preregistration_seal",
+      "sha256": "7236611c13d6f61a3ec98128344bf97fc9e4295628fe60147badeaf2b5576d7d"
+    },
+    {
+      "contract": "provider_ingest_provenance_v1",
+      "path": "benchmark/provider_ingest_provenance_v1_protocol.json",
+      "role": "provider_provenance_protocol",
+      "sha256": "29a4a687f8bec2d9c3f12f264b24e41df2519442182728dc424b101e578e6a77"
+    },
+    {
+      "contract": "formal_evidence_quarantine_v1",
+      "path": "benchmark/formal_evidence_quarantine_v1_protocol.json",
+      "role": "quarantine_protocol",
+      "sha256": "63b9cc16123b63a6b30732878bfed76c03d744d1b0e862c7c9ddd2dca30dc7a4"
+    },
+    {
+      "contract": "formal_run_disaster_recovery_v1",
+      "path": "benchmark/formal_run_disaster_recovery_v1_protocol.json",
+      "role": "recovery_protocol",
+      "sha256": "e6b646df73fee75421e33894a73f60cb6f4e00f509a09a103766f68310a20467"
+    },
+    {
+      "contract": "evidence_revocation_response_v1",
+      "path": "benchmark/evidence_revocation_response_v1_protocol.json",
+      "role": "revocation_protocol",
+      "sha256": "d86d66bae405f84cd22047edbffae83229e85671cd36102fd7065e9111d5e927"
+    },
+    {
+      "contract": "standalone_auditor_bundle_v1",
+      "path": "benchmark/standalone_auditor_bundle_v1_contract.json",
+      "role": "standalone_contract",
+      "sha256": "311435e51dc93a6e2d2bbc26682f7a4e907d39ca85cc82886b768be3d971fbef"
+    }
+  ],
+  "execution": {
+    "academic_api_request_count": 0,
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "failure_scenarios": [
+    "missing_stage",
+    "reordered_stage",
+    "cross_commit_mix",
+    "cross_protocol_mix",
+    "duplicate_intake",
+    "duplicate_receipt",
+    "old_attempt",
+    "partial_human_labels",
+    "partial_scorer_output",
+    "posthoc_prompt_change",
+    "posthoc_threshold_change",
+    "posthoc_sample_change",
+    "posthoc_statistics_change",
+    "posthoc_default_policy_change",
+    "revoked_upstream_evidence",
+    "synthetic_real_state_pollution"
+  ],
+  "formal_validation_complete": false,
+  "handoff_steps": [
+    {
+      "command": "PYTHONPATH=src python scripts/check_formal_validation_preregistration.py verify",
+      "expected_exit_codes": [
+        0
+      ],
+      "failure_rollback": "stop_before_any_external_evidence_intake",
+      "human_checkpoint": "confirm sealed protocol and dependency hashes",
+      "input_prerequisites": [
+        "tracked preregistration protocol",
+        "tracked preregistration seal"
+      ],
+      "step": "verify_preregistration"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_full1000_launch_control.py prepare --authoritative-root <empty-run-root> --output <prepared.json>",
+      "expected_exit_codes": [
+        0,
+        3
+      ],
+      "failure_rollback": "discard unstarted prepared state and keep run root empty",
+      "human_checkpoint": "confirm network and credentials are activated outside this rehearsal",
+      "input_prerequisites": [
+        "fresh Full1000 plan",
+        "empty authoritative run root",
+        "capture addendum"
+      ],
+      "step": "prepare_and_authorize_full1000"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_provider_ingest_provenance.py verify --bundle <provider-envelope.json> --archive <raw-response.tar> --ledger <resource-ledger.json>",
+      "expected_exit_codes": [
+        0
+      ],
+      "failure_rollback": "stop affected attempt and resume only from last committed generation",
+      "human_checkpoint": "confirm raw response, ledger and generation bindings",
+      "input_prerequisites": [
+        "completed committed attempt",
+        "provider raw response archive",
+        "authoritative resource ledger"
+      ],
+      "step": "verify_execution_and_provider_provenance"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_human_annotation_delivery.py ingest --package-root <delivery-package> --annotator-a <a.json> --annotator-b <b.json> --output <intake>",
+      "expected_exit_codes": [
+        0,
+        3
+      ],
+      "failure_rollback": "retain locked originals and return to missing-label or adjudication queue",
+      "human_checkpoint": "confirm independent anonymous coverage and all disagreements adjudicated",
+      "input_prerequisites": [
+        "471 locked annotator-A rows",
+        "471 locked annotator-B rows",
+        "validated package hash"
+      ],
+      "step": "ingest_human_annotations"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_external_scorer_handoff.py run --package <scorer-package> --handoff <canonical-handoff.json>",
+      "expected_exit_codes": [
+        0,
+        3
+      ],
+      "failure_rollback": "retain immutable input and reject partial or malformed output",
+      "human_checkpoint": "confirm exact official package metadata is provided before real scoring",
+      "input_prerequisites": [
+        "complete canonical Full1000 handoff",
+        "verified external scorer package"
+      ],
+      "step": "run_external_scorer"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_formal_evidence_quarantine.py audit-contamination --manifest <intake.json> --evidence-root <evidence-root>",
+      "expected_exit_codes": [
+        0,
+        2
+      ],
+      "failure_rollback": "mark affected claims stale and schedule preregistered rerun",
+      "human_checkpoint": "confirm no posthoc protected component changed after intake",
+      "input_prerequisites": [
+        "locked evidence intake manifests",
+        "current quarantine protocol"
+      ],
+      "step": "audit_quarantine_and_freshness"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_formal_validation_clearance.py issue-receipt --evidence <clearance-evidence.json> --output <receipt.json>",
+      "expected_exit_codes": [
+        0,
+        3
+      ],
+      "failure_rollback": "do not publish receipt; preserve all blockers and incident state",
+      "human_checkpoint": "confirm all three external blockers are independently satisfied",
+      "input_prerequisites": [
+        "fresh Full1000 evidence",
+        "validated real human evidence",
+        "validated official scorer output"
+      ],
+      "step": "evaluate_clearance"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_standalone_auditor_bundle.py build --output <auditor-bundle.zip>",
+      "expected_exit_codes": [
+        0,
+        3
+      ],
+      "failure_rollback": "withhold release bundle and keep prior verified publication state",
+      "human_checkpoint": "confirm declared blockers and externally unverifiable references",
+      "input_prerequisites": [
+        "verified clearance state",
+        "fresh readiness bundle",
+        "empty revocation incident set"
+      ],
+      "step": "build_and_verify_auditor_handoff"
+    }
+  ],
+  "human": {
+    "annotator_count": 2,
+    "item_count": 471,
+    "statistics_persisted": false
+  },
+  "namespace": {
+    "identity_prefix": "synthetic_rehearsal_only:",
+    "persist_labels": false,
+    "persist_receipts": false,
+    "persist_run_artifacts": false,
+    "temporary_directory_prefix": "synthetic_rehearsal_only-"
+  },
+  "population": {
+    "query_count": 1000,
+    "shard_count": 20,
+    "start_mode": "full_restart_all_1000"
+  },
+  "protocol": "formal_validation_dress_rehearsal_v1",
+  "protocol_sha256": "efc226d54e316d21df46e77a5efa930132fcef0720c42f4b4c8ad47c666fc9e6",
+  "real_blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "schema_version": "1",
+  "scorer": {
+    "metric_namespace": "synthetic_handoff",
+    "metric_values_persisted": false,
+    "official_schema_inferred": false,
+    "package_type": "strict_conformance_fixture_not_official_scorer",
+    "query_count": 1000
+  },
+  "source_commit": "a3ba36422b69294cd70bde83b102bd576a2c4d1d",
+  "stage_order": [
+    "preregistration_sealed",
+    "launch_authorized",
+    "full1000_executed",
+    "provider_provenance_verified",
+    "disaster_recovery_verified",
+    "evidence_intake_locked",
+    "unblind_and_scoring_verified",
+    "quarantine_audited",
+    "freshness_verified",
+    "eligible_for_clearance",
+    "test_receipt_issued",
+    "standalone_bundle_verified"
+  ]
+}

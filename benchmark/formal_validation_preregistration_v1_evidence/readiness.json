@@ -1,0 +1,24 @@
+{
+  "blocker_count": 3,
+  "blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_validation_complete": false,
+  "official_scorer_schema": "not_provided",
+  "preregistration_state": "sealed",
+  "protocol": "formal_validation_preregistration_v1",
+  "report_sha256": "f07d55ef486dfc1017e23216eb1d4847d0bb362cbc91c9684f609119c965666d",
+  "schema_version": "1",
+  "seal_sha256": "e9edb66d19a0813d3610ded3652b19fe8a00fe4835c702649b0b0fb6a6c0974d",
+  "status": "sealed_with_external_evidence_blockers"
+}

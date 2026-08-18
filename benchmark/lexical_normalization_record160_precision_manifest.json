@@ -1,0 +1,100 @@
+{
+  "annotation": {
+    "adjudication_required_on_disagreement": true,
+    "independent_annotator_count": 2,
+    "labels": [
+      "relevant",
+      "partially_relevant",
+      "not_relevant",
+      "insufficient_information"
+    ],
+    "positive_labels": [
+      "relevant",
+      "partially_relevant"
+    ]
+  },
+  "blind_public_fields": [
+    "sample_id",
+    "query",
+    "title",
+    "abstract",
+    "year"
+  ],
+  "deduplication": {
+    "cross_package_key": "normalized query plus unified identity equivalence",
+    "identity": "scholar_agent.core.identity",
+    "prior_overlap_action": "reference_prior_sample_without_duplicate_annotation",
+    "within_package_action": "one public sample with every hidden occurrence retained"
+  },
+  "forbidden_public_fields": [
+    "strategy",
+    "policy",
+    "direction",
+    "admitted",
+    "removed",
+    "rank",
+    "score",
+    "gold",
+    "qrels",
+    "judgement",
+    "case_id",
+    "query_id",
+    "source",
+    "sources",
+    "dataset",
+    "paper_id",
+    "identifiers",
+    "stratum",
+    "transition"
+  ],
+  "implementation_base_commit": "444d05dd1cf7c35f358776478ed40ae9f8ae1257",
+  "metrics": {
+    "absolute_precision_at_20": "null for a change-only package because unchanged Top-20 items are intentionally not annotated",
+    "admitted_false_admission_rate": "not_relevant admitted items divided by sufficiently informed admitted items",
+    "agreement": "unweighted Cohen's kappa over the four pre-adjudication labels",
+    "changed_component_precision_at_20": "positive changed items divided by query_count times 20, reported separately for baseline removals and experiment admissions",
+    "no_labels_behavior": "all Precision, rate, paired-difference, stratified and kappa values are null",
+    "paired_precision_at_20_difference": "mean per-query (positive admissions minus positive removals) divided by 20; available only when every change relation has a resolved non-insufficient label",
+    "removed_relevance_rate": "positive removed items divided by sufficiently informed removed items"
+  },
+  "package": "lexical_normalization_v1_record160_all_top20_changes_v1",
+  "prior_package": {
+    "adjudication_sha256": "25251e37485e8da73c0dadee4d698ce2cfd5c46dcad6d7e1d12c796d281e901e",
+    "annotator_1_sha256": "36a43225186958037b6a7741e111a5d8054560c04ff0f48d9b4f5ec1e8e064e3",
+    "annotator_2_sha256": "d78a7f3570782ea89b769113f204212b0727ddac63c2beae08b77541f90dbd89",
+    "blind_samples": "benchmark/lexical_normalization_precision_annotation/public/blind_samples.jsonl",
+    "blind_samples_sha256": "ab9d5db2a7dcd661b24569e30a59b1b8746b0d0ed4e7270c39503528a9f92b59",
+    "mapping": "benchmark/lexical_normalization_precision_annotation/private/mapping.json",
+    "mapping_sha256": "8bc9e928dc0b508e8be58084d462f4d0494f09aec4c03afdefb0eefe0b9b2285"
+  },
+  "randomization": {
+    "display_order": "ascending SHA-256 of seed, display namespace, normalized query fingerprint and unified identity profile",
+    "public_sample_id": "sequential SPAR-LX-160 identifiers assigned after randomized ordering",
+    "sampling": "none; every unique Top-20 boundary change is covered",
+    "seed": "lexical-normalization-record160-all-swaps-20260721"
+  },
+  "scope": {
+    "case_count": 160,
+    "gold_or_qrels_used_for_generation": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0,
+    "top_k": 20
+  },
+  "source_record": {
+    "config_sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+    "results_sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+    "run_dir": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1",
+    "snapshot_dir": "outputs/benchmark_snapshots/autoscholar_current_rules_full1000_3cd47c1",
+    "snapshot_file_count": 1934,
+    "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5"
+  },
+  "source_replay": {
+    "aggregate_sha256": "9ab00c3b4480f66bfaf1c12f3c33e3c1019d50910b5ea2945c7f612836e408b0",
+    "candidate_diagnostics_sha256": "5a61ab557f5a36eb1181f921d940fdd74d9ea42b6c708341a31cba5b70ea205a",
+    "case_comparison_sha256": "cc2372e329055fa82750e6bb0eb2bf0f33322c54a389952d032746d6d0a6a5d2",
+    "manifest_sha256": "a532daa568a1aace4327c94006baee4d12ff9f338f5c907ed89239b67a515254",
+    "run_dir": "outputs/benchmark_runs/lexical_normalization_record160_813cf3a_r5"
+  },
+  "version": "1"
+}

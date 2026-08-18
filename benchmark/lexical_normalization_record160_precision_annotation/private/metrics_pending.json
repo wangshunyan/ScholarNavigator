@@ -1,0 +1,21 @@
+{
+  "agreement": {
+    "cohen_kappa": null
+  },
+  "annotation_status": "pending_human_labels",
+  "metrics": {
+    "admitted_false_admission_rate": null,
+    "by_prior_dev_val_overlap": null,
+    "by_successful_source_count": null,
+    "changed_components": null,
+    "paired_precision_at_20_difference": null,
+    "precision_at_20": {
+      "baseline": null,
+      "experiment": null
+    },
+    "removed_relevance_rate": null
+  },
+  "reason": "human labels have not been provided",
+  "sample_count": 439,
+  "schema_version": "1"
+}

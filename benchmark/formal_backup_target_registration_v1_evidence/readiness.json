@@ -1,0 +1,21 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_validation_complete": false,
+  "next_gates": [
+    "formal_backup_target_attestation_v1",
+    "formal_backup_set_member_intake_v1"
+  ],
+  "private_registration_committed": false,
+  "protocol": "formal_backup_target_registration_v1",
+  "registered_candidate_count": 0,
+  "required_operator_input": "private_registration_file",
+  "schema_version": "1",
+  "status": "no_real_registered_candidates"
+}

@@ -1,0 +1,28 @@
+{
+  "analysis": "top20_delivery_fidelity_v1",
+  "exit_code": 3,
+  "files": {
+    "aggregate": {
+      "path": "aggregate.json",
+      "sha256": "5dadd3a1637865a2a05d8d2099c02b4cfdd6d619778dbfed5454604b82b2b626",
+      "size": 3860
+    },
+    "case_diagnostics": {
+      "path": "case_diagnostics.jsonl",
+      "sha256": "2844185c7ce66a5d9f7c030d1689b383ad468ed86e087d587b9aca7a5271d927",
+      "size": 113816
+    },
+    "contract": {
+      "path": "contract.json",
+      "sha256": "bbe386cbee1cec4e2ec85c9280ace4e194620bdf4e4f7cee053f6dd06793f30b",
+      "size": 6606
+    },
+    "result_diagnostics": {
+      "path": "result_diagnostics.jsonl",
+      "sha256": "37b6118e6c389c733a8e1efb7722920d8c9529947c962d5771fbac5a8a249e68",
+      "size": 1215459
+    }
+  },
+  "schema_version": "1",
+  "status": "completed_with_unsupported_exports"
+}

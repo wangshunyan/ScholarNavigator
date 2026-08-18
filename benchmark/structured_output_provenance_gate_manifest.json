@@ -1,0 +1,58 @@
+{
+  "audit": "structured_output_provenance_gate",
+  "implementation_base_commit": "f8425214a0deef3c370f7c32628dc8246f1c54ba",
+  "schema_version": "1",
+  "frozen_inputs": [
+    {
+      "case_count": 50,
+      "label": "scifact_local_bm25",
+      "run_dir": "outputs/benchmark_runs/local_bm25_28db182_scifact_five_source_final_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/local_bm25_28db182_scifact_five_source"
+    },
+    {
+      "case_count": 10,
+      "label": "auto_dev",
+      "run_dir": "outputs/benchmark_runs/llm_rewrite_8731726_auto_dev_baseline_fresh_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_auto_dev_baseline_retrieval"
+    },
+    {
+      "case_count": 5,
+      "label": "auto_val",
+      "run_dir": "outputs/benchmark_runs/llm_rewrite_8731726_auto_val_baseline_fresh_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_auto_val_baseline_retrieval"
+    }
+  ],
+  "structured_chain": {
+    "api_schema": "scholar_agent.core.api_schemas.SearchRunResultResponse",
+    "generator": "scholar_agent.agents.synthesis.synthesize_answer",
+    "generator_kind": "deterministic_rule_based",
+    "llm_snapshot_required": false,
+    "synthesis_options": {
+      "evidence_snippet_chars": 240,
+      "max_cited_papers": 8,
+      "max_evidence_rows_per_paper": 3,
+      "max_findings": 5
+    }
+  },
+  "provenance_policy": {
+    "paper_scope": "public API highly_relevant_papers plus partially_relevant_papers",
+    "identity": "unified identity.py exact stable identifiers or exact title-author-year; no fuzzy title matching",
+    "source_fields": "read-only retrieval Snapshot reconstructed candidate",
+    "claim_policy": "every evidence, finding, summary citation, group rank and timeline rank must resolve exactly; unresolved claims fail the gate",
+    "candidate_order": "public category lists preserve frozen final rank order and every rank resolves to final_ranked"
+  },
+  "required_disabled_features": [
+    "enable_query_evolution",
+    "enable_refchain",
+    "enable_semantic_seed_expansion",
+    "enable_prf",
+    "enable_concept_projection",
+    "enable_lexical_normalization",
+    "enable_local_bm25_original_deepening"
+  ],
+  "execution": {
+    "network_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0
+  }
+}

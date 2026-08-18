@@ -1,0 +1,40 @@
+{
+  "annotation_status": "pending_human_labels",
+  "coverage_closure": {
+    "covered_by_new_public_sample": 439,
+    "covered_by_prior_package_reference": 32,
+    "uncovered_relation_count": 0
+  },
+  "direction_counts": {
+    "baseline_removed": 132,
+    "experiment_admitted": 339
+  },
+  "execution": {
+    "gold_or_qrels_used_for_generation": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "metrics": {
+    "admitted_false_admission_rate": null,
+    "cohen_kappa": null,
+    "paired_precision_at_20_difference": null,
+    "precision_at_20": null,
+    "removed_relevance_rate": null
+  },
+  "package": "lexical_normalization_v1_record160_all_top20_changes_v1",
+  "population": {
+    "baseline_returned_pair_count": 1396,
+    "case_count": 160,
+    "experiment_returned_pair_count": 1603,
+    "shared_top20_pair_count": 1264
+  },
+  "prior_package_overlap_relation_count": 32,
+  "prior_package_overlap_sample_count": 32,
+  "public_new_relation_count": 439,
+  "public_new_sample_count": 439,
+  "schema_version": "1",
+  "top20_change_relation_count": 471,
+  "unique_query_paper_count": 471,
+  "within_package_duplicate_relation_count": 0
+}

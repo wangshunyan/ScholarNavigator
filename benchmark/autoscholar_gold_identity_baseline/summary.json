@@ -1,0 +1,132 @@
+{
+  "audit": "autoscholar_gold_identity_regression",
+  "audit_implementation": {
+    "path": "src/scholar_agent/evaluation/autoscholar_gold_identity.py",
+    "sha256": "8bb3d79795878b103ccf229f5ef5942cc78c984efb45f51226144c4e64a1d175"
+  },
+  "cross_query_repeated_identity_count": 268,
+  "cross_query_repeated_relation_count": 657,
+  "current_evaluator_evaluable_relation_count": 2403,
+  "current_evaluator_global_repeated_relation_count": 394,
+  "current_evaluator_global_unique_identity_count": 2009,
+  "current_evaluator_gold_per_query_distribution": {
+    "1": 438,
+    "10": 3,
+    "11": 3,
+    "12": 3,
+    "13": 3,
+    "15": 1,
+    "16": 1,
+    "2": 228,
+    "3": 134,
+    "4": 88,
+    "5": 44,
+    "6": 27,
+    "7": 17,
+    "8": 5,
+    "9": 5
+  },
+  "dataset": {
+    "case_count": 1000,
+    "gold_relation_count": 2403,
+    "name": "auto_scholar_query",
+    "path": "benchmark/AutoScholarQuery_test.jsonl",
+    "sha256": "7d8c7f59b289a54912c38cf204d16dbfec14ca35de850b9978b4051ad43a8b36",
+    "split": "test"
+  },
+  "evaluator_implementation": {
+    "path": "src/scholar_agent/evaluation/metrics.py",
+    "sha256": "7cc2d0418c0ee27bdfb718b9ddebd9e5de3c4e7009e0e4ac19072ab47c8b5e04"
+  },
+  "execution": {
+    "effectiveness_metrics_generated": false,
+    "gold_scope": "offline_evaluator_input_only",
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "retrieval_invoked": false,
+    "snapshot_write_count": 0
+  },
+  "global_duplicate_relation_count": 394,
+  "global_unique_identity_count": 2009,
+  "gold_relation_count": 2403,
+  "identity_implementation": {
+    "external_crosswalk": false,
+    "fuzzy_title_matching": false,
+    "path": "src/scholar_agent/core/identity.py",
+    "sha256": "af52ba53c2e559ae87dac83373f0fc2bfeb38d9351ccfb75d7463d1caa2a1dc8"
+  },
+  "missing_field_relation_counts": {
+    "authors": 2403,
+    "doi": 2403,
+    "openalex_id": 2403,
+    "pubmed_id": 2403,
+    "s2orc_corpus_id": 2403,
+    "semantic_scholar_id": 2403,
+    "year": 2403
+  },
+  "normalized_title_multiple_identifier_count": 0,
+  "official_effectiveness_score": false,
+  "per_gold_identity_hashes_sha256": "bbe820a300d09a20f9571008fd7cedbfa9bf48ff0f6d2ad4e33fd98c76960337",
+  "queries_with_duplicate_evaluator_relations": 2,
+  "query_count": 1000,
+  "query_manifest": {
+    "case_count": 1000,
+    "order_matches_dataset": true,
+    "path": "benchmark/autoscholar_query_planning_input.jsonl",
+    "sha256": "def16ce0f99a567db34e62db283c83ef8c30b200390b6120dd8bbe6cd936eedb"
+  },
+  "raw_gold_per_query_distribution": {
+    "1": 438,
+    "10": 3,
+    "11": 3,
+    "12": 3,
+    "13": 3,
+    "15": 1,
+    "16": 1,
+    "2": 228,
+    "3": 134,
+    "4": 88,
+    "5": 44,
+    "6": 27,
+    "7": 17,
+    "8": 5,
+    "9": 5
+  },
+  "safe_evaluable_relation_count": 2403,
+  "safe_evaluable_relation_rate": 1.0,
+  "safe_evaluator_deduplicated_query_denominator_count": 2398,
+  "safe_global_unique_identity_count": 2009,
+  "safe_unique_gold_per_query_distribution": {
+    "1": 438,
+    "10": 3,
+    "11": 3,
+    "12": 4,
+    "13": 3,
+    "15": 1,
+    "2": 228,
+    "3": 134,
+    "4": 89,
+    "5": 43,
+    "6": 27,
+    "7": 17,
+    "8": 5,
+    "9": 5
+  },
+  "schema_version": "1",
+  "stable_identifier_multiple_title_variant_count": 2,
+  "stable_identifier_type_relation_counts": {
+    "arxiv": 2403
+  },
+  "terminal_count_closed": true,
+  "terminal_counts": {
+    "conservative_title_evidence_evaluable": 0,
+    "identifier_conflict": 0,
+    "identity_ambiguous": 0,
+    "insufficient_information": 0,
+    "stable_identifier_evaluable": 2403
+  },
+  "within_query_duplicate_relation_count": 5,
+  "zero_current_evaluable_gold_query_count": 0,
+  "zero_raw_gold_query_count": 0,
+  "zero_safe_evaluable_gold_query_count": 0
+}

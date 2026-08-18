@@ -1,0 +1,89 @@
+{
+  "allocation": {
+    "aggregate_volume_selection": "first_sorted_primary_volume",
+    "algorithm": "stable_round_robin_by_sorted_volume_identity_v1",
+    "atomic_roles": [
+      "pending",
+      "generation",
+      "resource_ledger",
+      "provider_raw_response",
+      "operation_audit_chain"
+    ],
+    "cross_filesystem_atomic_rename": false,
+    "resume_mapping_mutable": false
+  },
+  "bindings": {
+    "crash_consistency": {
+      "path": "benchmark/crash_consistency_v1_protocol.json",
+      "sha256": "24b1fbc1314275e3bfa56fc431df18a67102dbd90ccf482f5c12fd358356e920"
+    },
+    "disaster_recovery": {
+      "path": "benchmark/formal_run_disaster_recovery_v1_protocol.json",
+      "sha256": "e6b646df73fee75421e33894a73f60cb6f4e00f509a09a103766f68310a20467"
+    },
+    "execution_plan": {
+      "embedded_plan_sha256": "a75019fa8a4ed7ad66ffe316793ffd6330613316623b78e35f973260e63cb716",
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    "host_attestation": {
+      "path": "benchmark/formal_execution_host_attestation_v1_protocol.json",
+      "sha256": "095bbe731aa461dfa1999080cb916757ecce8f737c19e823aa1173b8663a7681"
+    },
+    "launch_control": {
+      "path": "benchmark/full1000_launch_control_v1_protocol.json",
+      "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+    },
+    "storage_governance": {
+      "path": "benchmark/formal_run_storage_governance_v1_protocol.json",
+      "sha256": "bb78967820aba3c223c0638adbda9b0779cc7cecffcb718fa22a06f352c9d5c1"
+    },
+    "storage_plan": {
+      "path": "benchmark/formal_run_storage_governance_v1_plan.json",
+      "sha256": "192fb54f90605d33883be0fd8a94111f030e7dc1a337fc062828abb68755d7d9"
+    }
+  },
+  "capacity": {
+    "aggregate_max_bytes": 2147483648,
+    "aggregate_max_files": 100,
+    "backup_reserve_bytes_per_volume": 10737418240,
+    "backup_reserve_inodes_per_volume": 10000,
+    "backup_shard_byte_remainder": 4,
+    "backup_shard_bytes_base": 105414603571,
+    "backup_shard_files": 10047,
+    "primary_reserve_bytes_per_volume": 10737418240,
+    "primary_reserve_inodes_per_volume": 10000,
+    "shard_max_bytes": 35030827008,
+    "shard_max_files": 3344,
+    "single_volume_backup_bytes_legacy": 2119029489664,
+    "single_volume_primary_bytes_legacy": 713501442048,
+    "unknown_observations": "not_available_fail_closed"
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "migration": {
+    "direct_directory_move": false,
+    "required_flow": [
+      "verified_backup",
+      "empty_target_restore",
+      "restored_hash_verification",
+      "new_host_attestation",
+      "new_storage_attestation"
+    ]
+  },
+  "population": {
+    "queries_per_shard": 50,
+    "query_count": 1000,
+    "shard_count": 20
+  },
+  "protocol": "formal_multivolume_storage_v1",
+  "protocol_sha256": "1fb5cc36a4db72dd65d06dd5033a06077f89cd3c6879e6d24731a77f870f452e",
+  "schema_version": "1",
+  "source_commit": "58114d2b6c00ffbdb87a6f89ab618b653833e15f"
+}

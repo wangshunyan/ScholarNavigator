@@ -1,0 +1,90 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "http_attempt_upper": 19280,
+  "protocol": "formal_shard_streaming_retention_v1",
+  "query_count": 1000,
+  "scenario_count": 9,
+  "scenarios": {
+    "archive_tamper": {
+      "status": "passed"
+    },
+    "backup_unavailable": {
+      "status": "passed"
+    },
+    "delete_interruption": {
+      "status": "passed"
+    },
+    "double_writer": {
+      "status": "passed"
+    },
+    "early_release": {
+      "status": "passed"
+    },
+    "restore_released_shard": {
+      "additional_adapter_calls": 0,
+      "status": "passed"
+    },
+    "window_1": {
+      "status": "passed"
+    },
+    "window_2": {
+      "status": "passed"
+    },
+    "window_4": {
+      "status": "passed"
+    }
+  },
+  "schema_version": "1",
+  "shard_count": 20,
+  "status": "streaming_retention_ready",
+  "synthetic_only": true,
+  "window_reports": {
+    "1": {
+      "active_shard_window": 1,
+      "adapter_call_count": 1000,
+      "aggregate_matches_uninterrupted": true,
+      "aggregate_query_count": 1000,
+      "archive_count": 20,
+      "duplicate_request_count": 0,
+      "eviction_receipt_count": 40,
+      "peak_resident_shards": 1,
+      "primary_capacity_qualified": true,
+      "required_primary_bytes": 82946555904,
+      "resource_ledger_conserved": true
+    },
+    "2": {
+      "active_shard_window": 2,
+      "adapter_call_count": 1000,
+      "aggregate_matches_uninterrupted": true,
+      "aggregate_query_count": 1000,
+      "archive_count": 20,
+      "duplicate_request_count": 0,
+      "eviction_receipt_count": 40,
+      "peak_resident_shards": 2,
+      "primary_capacity_qualified": true,
+      "required_primary_bytes": 117977382912,
+      "resource_ledger_conserved": true
+    },
+    "4": {
+      "active_shard_window": 4,
+      "adapter_call_count": 1000,
+      "aggregate_matches_uninterrupted": true,
+      "aggregate_query_count": 1000,
+      "archive_count": 20,
+      "duplicate_request_count": 0,
+      "eviction_receipt_count": 40,
+      "peak_resident_shards": 4,
+      "primary_capacity_qualified": true,
+      "required_primary_bytes": 188039036928,
+      "resource_ledger_conserved": true
+    }
+  }
+}

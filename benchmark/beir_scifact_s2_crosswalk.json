@@ -1,0 +1,655 @@
+{
+  "schema_version": "1",
+  "dataset": "beir_scifact",
+  "source": "Semantic Scholar Graph API /paper/CorpusId:{id}",
+  "connector_version": "semantic-scholar-corpusid-v1",
+  "requested_fields": [
+    "paperId",
+    "corpusId",
+    "externalIds"
+  ],
+  "entries": [
+    {
+      "s2orc_corpus_id": "791050",
+      "status": "success",
+      "semantic_scholar_id": "c159f6897e62c6b8afaf0dc938128e380430aaed",
+      "doi": "10.1136/bmj.h1111",
+      "arxiv_id": null,
+      "pubmed_id": "25810495",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "1897324",
+      "status": "success",
+      "semantic_scholar_id": "cc87cd4e1431b405ac4a69237f9aa5a892431194",
+      "doi": "10.1038/ncb2884",
+      "arxiv_id": null,
+      "pubmed_id": "24362629",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "1982286",
+      "status": "success",
+      "semantic_scholar_id": "a5a03bcb04e05c2e1bb71ae3bf459262092dbf00",
+      "doi": "10.1038/nm.2610",
+      "arxiv_id": null,
+      "pubmed_id": "22366949",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "2014909",
+      "status": "success",
+      "semantic_scholar_id": "349bdb1cbeaea7129de1c92499c54b394d500147",
+      "doi": "10.1038/ncb3355",
+      "arxiv_id": null,
+      "pubmed_id": "27183469",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "2425364",
+      "status": "success",
+      "semantic_scholar_id": "33bdc36b9b25dd1095541ad133b2dc68b668ce2f",
+      "doi": "10.1136/bmj.f1169",
+      "arxiv_id": null,
+      "pubmed_id": "23533188",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "3203590",
+      "status": "success",
+      "semantic_scholar_id": "3f362d531d0c319957b01773e0a6aab7c209927d",
+      "doi": "10.1016/0092-8674(95)90075-6",
+      "arxiv_id": null,
+      "pubmed_id": "7758108",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "3441524",
+      "status": "success",
+      "semantic_scholar_id": "6d4ecb3c95cd963dc11cef4062b0d69587fe9561",
+      "doi": "10.1038/nature24036",
+      "arxiv_id": null,
+      "pubmed_id": "29019983",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "4423559",
+      "status": "success",
+      "semantic_scholar_id": "ffe36f2ea31d44a35777333b63cf5b37193f1201",
+      "doi": "10.1038/nature04375",
+      "arxiv_id": null,
+      "pubmed_id": "16407953",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "4427392",
+      "status": "unavailable",
+      "semantic_scholar_id": null,
+      "doi": null,
+      "arxiv_id": null,
+      "pubmed_id": null,
+      "external_id_fields": [],
+      "error_type": "status_404",
+      "http_status": 404
+    },
+    {
+      "s2orc_corpus_id": "4942718",
+      "status": "success",
+      "semantic_scholar_id": "6036469e26cb357bef7bac0f5d150467e71adfae",
+      "doi": "10.1371/journal.pbio.1002341",
+      "arxiv_id": null,
+      "pubmed_id": "26735940",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "5289038",
+      "status": "unavailable",
+      "semantic_scholar_id": null,
+      "doi": null,
+      "arxiv_id": null,
+      "pubmed_id": null,
+      "external_id_fields": [],
+      "error_type": "status_404",
+      "http_status": 404
+    },
+    {
+      "s2orc_corpus_id": "5304891",
+      "status": "success",
+      "semantic_scholar_id": "3711c272d558714b834a0291e672ec83555e8b04",
+      "doi": "10.1038/nm.4139",
+      "arxiv_id": null,
+      "pubmed_id": "27376574",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "5531479",
+      "status": "failed",
+      "semantic_scholar_id": null,
+      "doi": null,
+      "arxiv_id": null,
+      "pubmed_id": null,
+      "external_id_fields": [],
+      "error_type": "status_429",
+      "http_status": 429
+    },
+    {
+      "s2orc_corpus_id": "5953485",
+      "status": "success",
+      "semantic_scholar_id": "9061ddcd49e44b5d8cd4a3cfcebf46bf92c08f2e",
+      "doi": "10.1016/j.cell.2013.03.024",
+      "arxiv_id": null,
+      "pubmed_id": "23622242",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "8290953",
+      "status": "failed",
+      "semantic_scholar_id": null,
+      "doi": null,
+      "arxiv_id": null,
+      "pubmed_id": null,
+      "external_id_fields": [],
+      "error_type": "status_429",
+      "http_status": 429
+    },
+    {
+      "s2orc_corpus_id": "8551160",
+      "status": "success",
+      "semantic_scholar_id": "67bd8bec2d703e8c83920ba8ec239aee88302dad",
+      "doi": "10.1016/j.cell.2006.06.010",
+      "arxiv_id": null,
+      "pubmed_id": "16814712",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "8774475",
+      "status": "success",
+      "semantic_scholar_id": "e32254e1932c80c11891da76484bb370a2259aea",
+      "doi": "10.1016/j.cell.2008.09.045",
+      "arxiv_id": null,
+      "pubmed_id": "19041750",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "9433958",
+      "status": "success",
+      "semantic_scholar_id": "7ea8a6e74e46f70f70c151746ef2df2bada07216",
+      "doi": "10.1038/nm.3108",
+      "arxiv_id": null,
+      "pubmed_id": "23455712",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "9745001",
+      "status": "success",
+      "semantic_scholar_id": "4fbef37fac6d46ad8a3ea699eb1f9a8ec9a14ded",
+      "doi": "10.1136/bmj.307.6908.828",
+      "arxiv_id": null,
+      "pubmed_id": "8401123",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "9767444",
+      "status": "success",
+      "semantic_scholar_id": "34a2db993502c57b8e44d8c6f779338c796cb43c",
+      "doi": "10.1073/pnas.1712514114",
+      "arxiv_id": null,
+      "pubmed_id": "29203668",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "9955779",
+      "status": "success",
+      "semantic_scholar_id": "3ddf6fa93361db3feb5e95d462d7361e04b081cf",
+      "doi": "10.1016/j.cell.2017.10.022",
+      "arxiv_id": null,
+      "pubmed_id": "29195073",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "10582939",
+      "status": "success",
+      "semantic_scholar_id": "9af1ad8a94072079df25b2d1cf32ad36e50ee76e",
+      "doi": "10.1001/jama.2012.316",
+      "arxiv_id": null,
+      "pubmed_id": "22436957",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "11369420",
+      "status": "failed",
+      "semantic_scholar_id": null,
+      "doi": null,
+      "arxiv_id": null,
+      "pubmed_id": null,
+      "external_id_fields": [],
+      "error_type": "status_429",
+      "http_status": 429
+    },
+    {
+      "s2orc_corpus_id": "12486491",
+      "status": "success",
+      "semantic_scholar_id": "e94c05d7763c9fe48388448c2248d855f4b7e895",
+      "doi": "10.1016/j.cell.2011.03.028",
+      "arxiv_id": null,
+      "pubmed_id": "21529712",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "12580014",
+      "status": "failed",
+      "semantic_scholar_id": null,
+      "doi": null,
+      "arxiv_id": null,
+      "pubmed_id": null,
+      "external_id_fields": [],
+      "error_type": "status_429",
+      "http_status": 429
+    },
+    {
+      "s2orc_corpus_id": "12670680",
+      "status": "success",
+      "semantic_scholar_id": "cdbe5d8d6cdd6c8b540fa9cca15ca2f469a23482",
+      "doi": "10.1038/nm.2159",
+      "arxiv_id": null,
+      "pubmed_id": "20512127",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "13770184",
+      "status": "success",
+      "semantic_scholar_id": "31a4dba65c1ffb15633d1ca4f436da1ab4f4f4a8",
+      "doi": "10.1016/s0140-6736(16)31679-8",
+      "arxiv_id": null,
+      "pubmed_id": "27733284",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "13906581",
+      "status": "failed",
+      "semantic_scholar_id": null,
+      "doi": null,
+      "arxiv_id": null,
+      "pubmed_id": null,
+      "external_id_fields": [],
+      "error_type": "status_429",
+      "http_status": 429
+    },
+    {
+      "s2orc_corpus_id": "14637235",
+      "status": "failed",
+      "semantic_scholar_id": null,
+      "doi": null,
+      "arxiv_id": null,
+      "pubmed_id": null,
+      "external_id_fields": [],
+      "error_type": "status_429",
+      "http_status": 429
+    },
+    {
+      "s2orc_corpus_id": "14767844",
+      "status": "success",
+      "semantic_scholar_id": "0f29dab7153c5880db72f5582894a27535c53b2d",
+      "doi": "10.1016/j.immuni.2006.04.007",
+      "arxiv_id": null,
+      "pubmed_id": "16782028",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "14803797",
+      "status": "success",
+      "semantic_scholar_id": "e820491f0bcaadbbc7daecfa505359f3106b8a58",
+      "doi": null,
+      "arxiv_id": null,
+      "pubmed_id": null,
+      "external_id_fields": [],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "16495649",
+      "status": "success",
+      "semantic_scholar_id": "d8d68f594d619a03eb2591cfd711ca0f0522f37b",
+      "doi": "10.1136/bmj.326.7391.684",
+      "arxiv_id": null,
+      "pubmed_id": "12663404",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "16787954",
+      "status": "success",
+      "semantic_scholar_id": "af0b1464efd428614b8e7f05d41ae9164a52867c",
+      "doi": "10.1038/nm.3937",
+      "arxiv_id": null,
+      "pubmed_id": "26343800",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "17930286",
+      "status": "success",
+      "semantic_scholar_id": "d24415c2b76fcfa331b033adc440aabee33f18dc",
+      "doi": "10.1136/bmj.c7357",
+      "arxiv_id": null,
+      "pubmed_id": "21245119",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "17997584",
+      "status": "success",
+      "semantic_scholar_id": "68b39259f8207845baa6f0045fcec8130abb6b2a",
+      "doi": "10.1016/j.immuni.2015.04.012",
+      "arxiv_id": null,
+      "pubmed_id": "25979421",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "18399038",
+      "status": "success",
+      "semantic_scholar_id": "6f12bcfc95f103cea7bee6f5181de9776b7b1b34",
+      "doi": "10.1038/ncomms10743",
+      "arxiv_id": null,
+      "pubmed_id": "26899176",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "21366394",
+      "status": "success",
+      "semantic_scholar_id": "a619f87679518c14b6bc85bd1256197f0859812e",
+      "doi": "10.1186/1479-5876-9-s2-p3",
+      "arxiv_id": null,
+      "pubmed_id": "21037587",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "22543403",
+      "status": "success",
+      "semantic_scholar_id": "2d663af8b8a3f7e4cac4e4326a305740529cd051",
+      "doi": "10.1038/nm.2828",
+      "arxiv_id": null,
+      "pubmed_id": "22869198",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "24294572",
+      "status": "success",
+      "semantic_scholar_id": "f4690482e87678c31c827517727f5ff5c27aa8a8",
+      "doi": "10.1016/j.molcel.2017.09.024",
+      "arxiv_id": null,
+      "pubmed_id": "29056325",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "28937856",
+      "status": "success",
+      "semantic_scholar_id": "12366b264432e38e881cb15143363c5f7b0446c1",
+      "doi": "10.1126/science.1094637",
+      "arxiv_id": null,
+      "pubmed_id": "14976264",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "31141365",
+      "status": "success",
+      "semantic_scholar_id": "42950f54c8d94bfadac6bb8c0a1e89707f0bd5fd",
+      "doi": "10.1016/j.stem.2011.07.015",
+      "arxiv_id": null,
+      "pubmed_id": "21885018",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "32159283",
+      "status": "success",
+      "semantic_scholar_id": "463cb829c4d45fb1a4b8b3de8d0898808f151d78",
+      "doi": "10.1001/jama.281.5.427",
+      "arxiv_id": null,
+      "pubmed_id": "9952202",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "33499189",
+      "status": "success",
+      "semantic_scholar_id": "887ef71d35d988a60315b140edcf5df5cbdc9114",
+      "doi": "10.1016/j.immuni.2006.10.019",
+      "arxiv_id": null,
+      "pubmed_id": "17188005",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "39281140",
+      "status": "success",
+      "semantic_scholar_id": "a6c9f74da135817cafe1f556f1770c113d4ba603",
+      "doi": "10.1001/jama.289.1.56",
+      "arxiv_id": null,
+      "pubmed_id": "12503977",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "39368721",
+      "status": "success",
+      "semantic_scholar_id": "7303403d07a61f8d99c77fd3183844f80141a940",
+      "doi": "10.1136/bmj.302.6775.493",
+      "arxiv_id": null,
+      "pubmed_id": "2012844",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "44172171",
+      "status": "success",
+      "semantic_scholar_id": "8c85c3a531eb0cae039f11d172d5bf97cb300893",
+      "doi": "10.1016/j.molcel.2018.04.016",
+      "arxiv_id": null,
+      "pubmed_id": "29804829",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    },
+    {
+      "s2orc_corpus_id": "45638119",
+      "status": "unavailable",
+      "semantic_scholar_id": null,
+      "doi": null,
+      "arxiv_id": null,
+      "pubmed_id": null,
+      "external_id_fields": [],
+      "error_type": "status_404",
+      "http_status": 404
+    },
+    {
+      "s2orc_corpus_id": "56893404",
+      "status": "success",
+      "semantic_scholar_id": "3e23d593707de3c8a0fedbe5cd12350d2b9cf320",
+      "doi": "10.1371/journal.pmed.0040118",
+      "arxiv_id": null,
+      "pubmed_id": "17407387",
+      "external_id_fields": [
+        "DOI",
+        "PubMed"
+      ],
+      "error_type": null,
+      "http_status": 200
+    }
+  ]
+}

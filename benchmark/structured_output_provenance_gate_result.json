@@ -1,0 +1,43 @@
+{
+  "artifact_sha256": {
+    "aggregate.json": "291d73f44cb05092b28cb2cb6b970480249c15c4eeefb3ad1c4f3d143d9de7d3",
+    "case_gate.jsonl": "d88263c969f1d5d19bab6ad7642befea0e348dfc11a34df5afcc25972f984f7a",
+    "provenance.jsonl": "b328aced4d4e93b9b90508c73a620df3456de7e00654ec0d44c087121848de77"
+  },
+  "audit": "structured_output_provenance_gate",
+  "case_count": 65,
+  "dataset_results": {
+    "auto_dev": {
+      "case_count": 10,
+      "evidence_row_count": 221,
+      "passed_count": 10,
+      "visible_candidate_count": 193
+    },
+    "auto_val": {
+      "case_count": 5,
+      "evidence_row_count": 109,
+      "passed_count": 5,
+      "visible_candidate_count": 96
+    },
+    "scifact_local_bm25": {
+      "case_count": 50,
+      "evidence_row_count": 941,
+      "passed_count": 50,
+      "visible_candidate_count": 885
+    }
+  },
+  "execution": {
+    "gold_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "gate_passed": true,
+  "issue_count": 0,
+  "provenance_claim_count": 4446,
+  "schema_version": "1",
+  "terminal_status_counts": {
+    "passed": 65
+  },
+  "unverified_claim_count": 0
+}

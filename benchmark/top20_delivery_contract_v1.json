@@ -1,0 +1,169 @@
+{
+  "analysis": "top20_delivery_fidelity_v1",
+  "analysis_population": {
+    "excluded_case_count": 2,
+    "exclusion_rule": "reuse the frozen Record160 excluded_no_successful_source rule exactly; no post-hoc exclusion is allowed",
+    "expected_final_result_count": 1396,
+    "main_case_count": 160,
+    "record_case_count": 162,
+    "selection_prohibitions": [
+      "gold",
+      "qrels",
+      "case_id",
+      "target_paper",
+      "quality_score",
+      "observed_delivery_result"
+    ]
+  },
+  "authoritative_input": {
+    "category_policy": "highly_and_partial",
+    "description": "production current_rules final_returned stage after rerank Top-20 window and category gate",
+    "maximum_results_per_query": 20,
+    "minimum_results_per_query": 0,
+    "operation_order": "rerank_all_then_take_first_20_then_apply_category_gate",
+    "stage": "final_returned"
+  },
+  "contract": {
+    "encoding": {
+      "json": "UTF-8, ensure_ascii=false, no NaN/Infinity",
+      "jsonl": "one canonical JSON object per UTF-8 line with LF terminator",
+      "text_boundary": "public API display protection is a declared deterministic transform; authoritative null and identity states remain distinct",
+      "unicode": "preserve Unicode code points through JSON and JSONL round-trip"
+    },
+    "export_versions": {
+      "backend_public_api": "search_run_result_response_v1",
+      "csv_table": "unsupported_if_no_production_export_exists",
+      "frontend_display": "frontend_top20_delivery_v1",
+      "json": "search_run_result_json_v1",
+      "jsonl": "search_batch_jsonl_v1",
+      "reproduction_capsule": "reproduction_capsule_v1"
+    },
+    "identity": {
+      "paper_identity": "scholar_agent.core.result_lineage.result_identity",
+      "query_identity": "opaque SHA-256 label derived only for diagnostics",
+      "version": "unified_identity_v1"
+    },
+    "nullable_fields": [
+      "paper.year",
+      "paper.venue",
+      "paper.identifiers.doi",
+      "paper.identifiers.arxiv_id",
+      "paper.identifiers.semantic_scholar_id",
+      "paper.identifiers.s2orc_corpus_id",
+      "paper.identifiers.openalex_id",
+      "paper.identifiers.pubmed_id",
+      "paper.urls.landing_page",
+      "paper.urls.pdf"
+    ],
+    "required_fields": [
+      "result_identity",
+      "authority_digest",
+      "rank",
+      "paper.title",
+      "paper.authors",
+      "paper.year",
+      "paper.venue",
+      "paper.abstract",
+      "paper.identifiers",
+      "paper.urls",
+      "paper.sources",
+      "relevance_score",
+      "category",
+      "matched_constraints",
+      "ranking_reason",
+      "evidence"
+    ],
+    "truncation": {
+      "default_limit_must_not_reduce_authoritative_result_count": true,
+      "maximum_results_per_query": 20,
+      "minimum_is_not_padded": true,
+      "pagination_preserves_global_order": true
+    }
+  },
+  "execution": {
+    "gold_access": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exports": {
+    "backend_public_api": {
+      "required": true,
+      "round_trip": "Pydantic JSON validation"
+    },
+    "csv_table": {
+      "required": false,
+      "when_absent": "unsupported_export"
+    },
+    "frontend_display": {
+      "key": "result_identity",
+      "required": true,
+      "unsafe_url_behavior": "disable clickability without deleting the result or mutating the authoritative URL"
+    },
+    "json": {
+      "required": true,
+      "round_trip": "JSON parse and Pydantic validation"
+    },
+    "jsonl": {
+      "required": true,
+      "round_trip": "line-by-line JSON parse and Pydantic validation"
+    },
+    "reproduction_capsule": {
+      "required": false,
+      "when_legacy_metadata_is_incomplete": "not_eligible"
+    }
+  },
+  "frozen_input": {
+    "component_assignments": {
+      "path": "benchmark/autoscholar_query_independence_baseline/query_assignments.jsonl",
+      "sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5"
+    },
+    "config_sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+    "observed_snapshot_key_count": 1093,
+    "record_results_sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+    "run_dir": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1",
+    "snapshot_dir": "outputs/benchmark_snapshots/autoscholar_current_rules_full1000_3cd47c1",
+    "snapshot_file_count": 1934,
+    "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5"
+  },
+  "implementation_base_commit": "9143ac2c16792a0b9b2ee26702f3e1ef7628fa8b",
+  "policy_isolation": {
+    "deterministic_tiebreak_v2": {
+      "audit_input_may_be_checked_separately": true,
+      "default_enabled": false,
+      "must_not_become_authoritative_current_rules_input": true
+    },
+    "production_default": "original_index_v1"
+  },
+  "reconstruction": {
+    "candidate_limit": 200,
+    "judgement_policy": "current_rules",
+    "required_exact_stages": [
+      "initial_deduplicated",
+      "initial_judged",
+      "initial_reranked",
+      "final_returned"
+    ],
+    "result_policy": "highly_and_partial",
+    "top_k": 20
+  },
+  "schema_version": "1",
+  "validation_invariants": [
+    "production reconstruction exactly matches frozen final_returned for all included queries",
+    "every eligible export preserves query result count, stable identity membership, and order position by position",
+    "paper fields never move across result identities and declared null, empty, and missing states remain distinguishable",
+    "pagination and default limits never drop, pad, or duplicate an authoritative result",
+    "frontend keys are stable result identities and are unique within every query",
+    "unsafe URLs alter clickability only and never mutate result membership or the authoritative URL digest",
+    "the production default remains original_index_v1 and explicit v2 audit inputs cannot silently replace it",
+    "all supported round trips reconstruct one identical contract digest",
+    "an absent production export is reported as unsupported_export instead of being simulated",
+    "snapshot tree remains unchanged and no network, LLM, evaluator, or quality path is used"
+  ],
+  "warnings": [
+    "This gate verifies delivery fidelity only; it does not establish relevance, Precision, Recall, F1, or an official score.",
+    "The machine-readable sample is a contract example, not an official competition submission or inferred scorer schema.",
+    "Unsupported or legacy-ineligible exports remain explicit and are not counted as passed."
+  ]
+}

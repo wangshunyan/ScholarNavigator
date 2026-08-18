@@ -1,0 +1,8 @@
+{
+  "agreement": null,
+  "annotation_status": "pending_human_labels",
+  "metrics": null,
+  "reason": "human labels have not been provided",
+  "sample_count": 200,
+  "schema_version": "1"
+}

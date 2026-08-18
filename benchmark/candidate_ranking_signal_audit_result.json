@@ -1,0 +1,156 @@
+{
+  "audit": "candidate_ranking_signal_separability",
+  "implementation_base_commit": "10082ff34f6604cc5250378a590d6f72335f464f",
+  "schema_version": "1",
+  "scope": "internal frozen-candidate gold capture audit; not an official score and not a human precision evaluation",
+  "completeness": {
+    "case_count": 65,
+    "candidate_count": 3919,
+    "provenance_complete_candidate_count": 3919,
+    "provenance_incomplete_candidate_count": 0,
+    "provenance_missing_candidate_count": 0,
+    "strict_comparable_case_count": 58,
+    "full_observed_evaluable_case_count": 56,
+    "strict_comparable_evaluable_case_count": 49
+  },
+  "datasets": {
+    "scifact_local_bm25": {
+      "case_count": 50,
+      "candidate_count": 3113,
+      "full_observed": {
+        "evaluable_case_count": 41,
+        "evaluable_gold_relation_count": 42,
+        "macro_gold_capture_at_20_50_100": {
+          "existing_composite_score": [0.6097560975609756, 0.7560975609756098, 0.7560975609756098],
+          "best_reciprocal_rank": [0.7195121951219512, 0.7560975609756098, 0.7560975609756098],
+          "support_list_count": [0.34146341463414637, 0.7560975609756098, 0.7560975609756098],
+          "support_source_count": [0.07317073170731707, 0.4878048780487805, 0.7560975609756098]
+        },
+        "matched_gold_relations_at_20_50_100": {
+          "existing_composite_score": [26, 32, 32],
+          "best_reciprocal_rank": [30, 32, 32],
+          "support_list_count": [15, 32, 32],
+          "support_source_count": [3, 20, 32]
+        },
+        "top_20_query_outcomes_improved_tied_regressed": {
+          "best_reciprocal_rank": [5, 35, 1],
+          "support_list_count": [1, 28, 12],
+          "support_source_count": [0, 19, 22]
+        },
+        "top_20_gold_candidates_entered_exited": {
+          "best_reciprocal_rank": [5, 2],
+          "support_list_count": [1, 17],
+          "support_source_count": [0, 28]
+        }
+      },
+      "strict_comparable": {
+        "evaluable_case_count": 40,
+        "evaluable_gold_relation_count": 41,
+        "macro_gold_capture_at_20_50_100": {
+          "existing_composite_score": [0.6, 0.75, 0.75],
+          "best_reciprocal_rank": [0.7125, 0.75, 0.75],
+          "support_list_count": [0.325, 0.75, 0.75],
+          "support_source_count": [0.075, 0.5, 0.75]
+        }
+      }
+    },
+    "auto_dev": {
+      "case_count": 10,
+      "candidate_count": 631,
+      "full_observed": {
+        "evaluable_case_count": 10,
+        "evaluable_gold_relation_count": 28,
+        "macro_gold_capture_at_20_50_100": {
+          "existing_composite_score": [0.125, 0.15, 0.15],
+          "best_reciprocal_rank": [0.0, 0.125, 0.15],
+          "support_list_count": [0.15, 0.15, 0.15],
+          "support_source_count": [0.15, 0.15, 0.15]
+        },
+        "matched_gold_relations_at_20_50_100": {
+          "existing_composite_score": [2, 3, 3],
+          "best_reciprocal_rank": [0, 2, 3],
+          "support_list_count": [3, 3, 3],
+          "support_source_count": [3, 3, 3]
+        },
+        "top_20_query_outcomes_improved_tied_regressed": {
+          "best_reciprocal_rank": [0, 8, 2],
+          "support_list_count": [1, 9, 0],
+          "support_source_count": [1, 9, 0]
+        },
+        "top_20_gold_candidates_entered_exited": {
+          "best_reciprocal_rank": [0, 2],
+          "support_list_count": [1, 0],
+          "support_source_count": [1, 0]
+        }
+      },
+      "strict_comparable": {
+        "evaluable_case_count": 6,
+        "evaluable_gold_relation_count": 23,
+        "macro_gold_capture_at_20_50_100": {
+          "existing_composite_score": [0.041666666666666664, 0.08333333333333333, 0.08333333333333333],
+          "best_reciprocal_rank": [0.0, 0.041666666666666664, 0.08333333333333333],
+          "support_list_count": [0.08333333333333333, 0.08333333333333333, 0.08333333333333333],
+          "support_source_count": [0.08333333333333333, 0.08333333333333333, 0.08333333333333333]
+        }
+      }
+    },
+    "auto_val": {
+      "case_count": 5,
+      "candidate_count": 175,
+      "full_observed": {
+        "evaluable_case_count": 5,
+        "evaluable_gold_relation_count": 12,
+        "macro_gold_capture_at_20_50_100": {
+          "existing_composite_score": [0.2, 0.2, 0.2],
+          "best_reciprocal_rank": [0.2, 0.2, 0.2],
+          "support_list_count": [0.2, 0.2, 0.2],
+          "support_source_count": [0.2, 0.2, 0.2]
+        },
+        "matched_gold_relations_at_20_50_100": {
+          "existing_composite_score": [1, 1, 1],
+          "best_reciprocal_rank": [1, 1, 1],
+          "support_list_count": [1, 1, 1],
+          "support_source_count": [1, 1, 1]
+        },
+        "top_20_query_outcomes_improved_tied_regressed": {
+          "best_reciprocal_rank": [0, 5, 0],
+          "support_list_count": [0, 5, 0],
+          "support_source_count": [0, 5, 0]
+        },
+        "top_20_gold_candidates_entered_exited": {
+          "best_reciprocal_rank": [0, 0],
+          "support_list_count": [0, 0],
+          "support_source_count": [0, 0]
+        }
+      },
+      "strict_comparable": {
+        "evaluable_case_count": 3,
+        "evaluable_gold_relation_count": 9,
+        "macro_gold_capture_at_20_50_100": {
+          "existing_composite_score": [0.3333333333333333, 0.3333333333333333, 0.3333333333333333],
+          "best_reciprocal_rank": [0.3333333333333333, 0.3333333333333333, 0.3333333333333333],
+          "support_list_count": [0.3333333333333333, 0.3333333333333333, 0.3333333333333333],
+          "support_source_count": [0.3333333333333333, 0.3333333333333333, 0.3333333333333333]
+        }
+      }
+    }
+  },
+  "strict_cross_dataset_conclusion": {
+    "best_reciprocal_rank": "not stable: SciFact Top-20 +0.1125, Auto dev Top-20/50 -0.0416667, Auto val tied",
+    "support_list_count": "not stable: SciFact Top-20 -0.275, Auto dev Top-20 +0.0416667, Auto val tied",
+    "support_source_count": "not stable: SciFact Top-20 -0.525 and Top-50 -0.25, Auto dev Top-20 +0.0416667, Auto val tied",
+    "provenance_signal_non_degrading_across_all_three_datasets": [],
+    "next_ranking_experiment_supported": false
+  },
+  "artifact_sha256": {
+    "aggregate.json": "d0303d5cf10d6837bfc3564b8fb4bd3bcf9bc5db1ae2f6e8f74d99a734f42a3a",
+    "case_signal_audit.jsonl": "964f9d6a7baa58a34acfb8c4e3c7c94dfc94cf3327bf670e1863a7a2aa7833fd",
+    "candidate_signal_audit.jsonl": "8f5af9bcfe1bdb259e7efbde4a773836905bc227bee38ecaba7edc4e29d0100d"
+  },
+  "execution": {
+    "network_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0,
+    "two_runs_byte_identical": true
+  }
+}

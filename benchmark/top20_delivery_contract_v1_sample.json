@@ -1,0 +1,42 @@
+{
+  "contract": "top20_delivery_contract_v1",
+  "query_identity": "query:example",
+  "results": [
+    {
+      "authority_digest": "synthetic-example-not-an-official-digest",
+      "category": "partially_relevant",
+      "evidence": [],
+      "matched_constraints": [],
+      "paper": {
+        "abstract": "Synthetic contract example only.",
+        "authors": [
+          "Example Author"
+        ],
+        "identifiers": {
+          "arxiv_id": null,
+          "doi": "10.0000/example",
+          "openalex_id": null,
+          "pubmed_id": null,
+          "s2orc_corpus_id": null,
+          "semantic_scholar_id": null
+        },
+        "sources": [
+          "example_source"
+        ],
+        "title": "Synthetic Delivery Contract Example",
+        "urls": {
+          "landing_page": "https://example.invalid/paper",
+          "pdf": null
+        },
+        "venue": null,
+        "year": null
+      },
+      "rank": 1,
+      "ranking_reason": "Synthetic contract example; not a scored result.",
+      "relevance_score": 0.5,
+      "result_identity": "result:example"
+    }
+  ],
+  "schema_version": "1",
+  "warning": "Machine-readable shape example only; not an official submission schema or score."
+}

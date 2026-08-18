@@ -1,0 +1,129 @@
+{
+  "audit": "autoscholar_query_gold_leakage_v1",
+  "direct_leak_query_count": 4,
+  "direct_leak_query_rate": 0.004,
+  "duplicates": {
+    "cross_query_duplicate_relation_count": 657,
+    "cross_query_repeated_identity_count": 268,
+    "leaked_cross_query_duplicate_relation_count": 5,
+    "mixed_leakage_repeated_identity_count": 5
+  },
+  "execution": {
+    "effectiveness_metrics_recomputed": false,
+    "gold_scope": "offline_evaluator_validity_audit_only",
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "retrieval_invoked": false,
+    "snapshot_write_count": 0
+  },
+  "frozen_set_diagnostics": {
+    "auto_dev": {
+      "case_count": 10,
+      "final_matched_relation_count": 2,
+      "final_matched_relation_level_counts": {
+        "identifier_or_url_exact": 0,
+        "no_detected_leakage": 2,
+        "normalized_title_full": 0,
+        "quoted_title_exact": 0,
+        "title_token_high_coverage": 0
+      },
+      "metric_scope": "descriptive frozen-hit stratification; no Recall/F1 recomputation",
+      "query_counts": {
+        "candidate_hit_query_non_leaked": 2,
+        "final_hit_query_non_leaked": 2,
+        "query_non_leaked": 10
+      },
+      "unmatched_frozen_gold_id_count": 0
+    },
+    "auto_val": {
+      "case_count": 5,
+      "final_matched_relation_count": 1,
+      "final_matched_relation_level_counts": {
+        "identifier_or_url_exact": 0,
+        "no_detected_leakage": 1,
+        "normalized_title_full": 0,
+        "quoted_title_exact": 0,
+        "title_token_high_coverage": 0
+      },
+      "metric_scope": "descriptive frozen-hit stratification; no Recall/F1 recomputation",
+      "query_counts": {
+        "candidate_hit_query_non_leaked": 1,
+        "final_hit_query_non_leaked": 1,
+        "query_non_leaked": 5
+      },
+      "unmatched_frozen_gold_id_count": 0
+    },
+    "autoscholar_record160": {
+      "case_count": 160,
+      "excluded_no_success_case_count": 2,
+      "final_matched_relation_count": 12,
+      "final_matched_relation_level_counts": {
+        "identifier_or_url_exact": 0,
+        "no_detected_leakage": 11,
+        "normalized_title_full": 1,
+        "quoted_title_exact": 0,
+        "title_token_high_coverage": 0
+      },
+      "metric_scope": "descriptive frozen-hit stratification; no Recall/F1 recomputation",
+      "query_counts": {
+        "candidate_hit_query_leaked": 2,
+        "candidate_hit_query_non_leaked": 15,
+        "final_hit_query_leaked": 1,
+        "final_hit_query_non_leaked": 11,
+        "query_leaked": 2,
+        "query_non_leaked": 158
+      },
+      "unmatched_frozen_gold_id_count": 0
+    },
+    "scifact": {
+      "case_count": 50,
+      "final_matched_relation_count": 20,
+      "final_matched_relation_level_counts": {
+        "identifier_or_url_exact": 0,
+        "no_detected_leakage": 19,
+        "normalized_title_full": 0,
+        "quoted_title_exact": 0,
+        "title_token_high_coverage": 1
+      },
+      "metric_scope": "descriptive frozen-hit stratification; no Recall/F1 recomputation",
+      "query_counts": {
+        "candidate_hit_query_leaked": 1,
+        "candidate_hit_query_non_leaked": 30,
+        "final_hit_query_leaked": 1,
+        "final_hit_query_non_leaked": 18,
+        "query_leaked": 1,
+        "query_non_leaked": 49
+      },
+      "unmatched_frozen_gold_id_count": 0
+    }
+  },
+  "interpretation": {
+    "automatic_data_removal": false,
+    "internal_metrics_only": true,
+    "non_leak_subset_replaces_full_results": false,
+    "risk_band_uses_preregistered_thresholds": true
+  },
+  "leaked_query_count": 14,
+  "leaked_query_rate": 0.014,
+  "leaked_relation_count": 15,
+  "leaked_relation_rate": 0.006242197253433208,
+  "protocol_version": "query-gold-leakage-protocol-v1",
+  "query_count": 1000,
+  "query_level_counts": {
+    "identifier_or_url_exact": 0,
+    "no_detected_leakage": 986,
+    "normalized_title_full": 4,
+    "quoted_title_exact": 0,
+    "title_token_high_coverage": 10
+  },
+  "relation_count": 2403,
+  "relation_level_counts": {
+    "identifier_or_url_exact": 0,
+    "no_detected_leakage": 2388,
+    "normalized_title_full": 5,
+    "quoted_title_exact": 0,
+    "title_token_high_coverage": 10
+  },
+  "schema_version": "1",
+  "validity_risk_band": "moderate"
+}

@@ -1,0 +1,61 @@
+{
+  "audit": "autoscholar_query_independence_v1",
+  "baseline": {
+    "components_path": "benchmark/autoscholar_query_independence_baseline/components.jsonl",
+    "components_sha256": "1da102c7928503e88d531fbf967ad2573378b2ea17ecaad4397c8d61669f1549",
+    "edges_path": "benchmark/autoscholar_query_independence_baseline/edges.jsonl",
+    "edges_sha256": "30cadc7cdd5fe360bc43057cbb6c9da6cc94d1c84d3fe788f1bdd08b03abc882",
+    "metric_diagnostics_path": "benchmark/autoscholar_query_independence_baseline/metric_diagnostics.jsonl",
+    "metric_diagnostics_sha256": "2212044c71227cc66601960b307ec89764fd21ac20a260a5accf05a0ebd729d5",
+    "query_assignments_path": "benchmark/autoscholar_query_independence_baseline/query_assignments.jsonl",
+    "query_assignments_sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5",
+    "summary_path": "benchmark/autoscholar_query_independence_baseline/summary.json",
+    "summary_sha256": "cd2952dd95e9d7993a45255face1de828de78b5fbf18264dafb6c9e32de717b3"
+  },
+  "dataset": {
+    "case_count": 1000,
+    "gold_relation_count": 2403,
+    "name": "auto_scholar_query",
+    "path": "benchmark/AutoScholarQuery_test.jsonl",
+    "sha256": "7d8c7f59b289a54912c38cf204d16dbfec14ca35de850b9978b4051ad43a8b36",
+    "split": "test"
+  },
+  "execution": {
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "frozen_replays": {
+    "existing65": {
+      "case_count": 65,
+      "path": "outputs/benchmark_runs/lexical_normalization_v1_005794c_replay_r5/case_comparison.jsonl",
+      "sha256": "0b8ccb832830242d9481bd3a83e2054857ec0b33177b2be66e96319d53a55dc1"
+    },
+    "record160": {
+      "artifact_case_count": 162,
+      "included_main_analysis_count": 160,
+      "path": "outputs/benchmark_runs/lexical_normalization_record160_813cf3a_r5/case_comparison.jsonl",
+      "sha256": "cc2372e329055fa82750e6bb0eb2bf0f33322c54a389952d032746d6d0a6a5d2"
+    }
+  },
+  "gate": "autoscholar_query_independence_regression",
+  "gold_identity_baseline": {
+    "path": "benchmark/autoscholar_gold_identity_baseline/gold_identity.jsonl",
+    "sha256": "429cf7145664b20893df8567d9eed463b8000ce859e4e2c3cc5290042bbefcfe"
+  },
+  "implementation": {
+    "path": "src/scholar_agent/evaluation/query_independence_audit.py",
+    "sha256": "cfc7075151d7eade07133277e6a3e30a5c5c56ef20af4a853e90905021995e2c"
+  },
+  "implementation_base_commit": "f8403af8cb10acf889cab76d268ebf8e28a17c5c",
+  "metric_semantics": {
+    "metric_version": "deduplicated_gold_identity_v2",
+    "non_official": true,
+    "scope": "parallel diagnostic strata only; frozen full results remain unchanged"
+  },
+  "protocol": {
+    "path": "benchmark/autoscholar_query_independence_protocol.json",
+    "sha256": "f7580e692f60f9018afaa4542aff189f193995f7ab37f3d4968e27906b9513cb"
+  },
+  "schema_version": "1"
+}

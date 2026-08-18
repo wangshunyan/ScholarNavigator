@@ -1,0 +1,89 @@
+{
+  "audit": "contest_official_scorer_alignment_v1",
+  "implementation_base_commit": "b17c8f3ac0e2f3ecfc6d6ca2042cadb879c47e27",
+  "status": "blocked_missing_exact_official_scorer_or_formula",
+  "execution": {
+    "academic_api_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0,
+    "benchmark_alignment_run_count": 0
+  },
+  "official_competition_evidence": {
+    "source": "user-provided official contest DOCX",
+    "filename": "2026年中国研究生人工智能大赛--华为赛题 (1).docx",
+    "size_bytes": 77729,
+    "sha256": "3dabb3c3c6e1c7c9ba99c1b4de44bc23ff564de426d10cac172e5eb0dd0198c1",
+    "package_revision": 8,
+    "created_utc": "2026-06-15T06:40:00Z",
+    "modified_utc": "2026-07-04T06:06:00Z",
+    "page_count": 3,
+    "scoring_statements": {
+      "f1_score_weight_percent": 70,
+      "runtime_efficiency_weight_percent": 20,
+      "structured_response_weight_percent": 10,
+      "public_automatic_score_percent": 30,
+      "hidden_automatic_score_percent": 30
+    },
+    "exact_scorer_attached": false,
+    "exact_f1_formula_present": false,
+    "official_input_schema_present": false,
+    "official_output_schema_present": false
+  },
+  "missing_official_semantics": [
+    "F1 formula and zero-denominator behavior",
+    "K value or whether the score is truncated at K",
+    "precision denominator when fewer than K papers are returned",
+    "paper identity and duplicate handling",
+    "unknown-document handling",
+    "unresolvable or unevaluable gold handling",
+    "per-query macro versus global micro aggregation",
+    "public and hidden split aggregation details"
+  ],
+  "repository_evidence": {
+    "contest_requirements_summary": {
+      "path": "docs/contest/requirements.md",
+      "sha256": "24197215df7917178a7789ecc59bfde365c9ae7b4ddaa782dcc40f03b7fd2cf0",
+      "authority": "derived repository summary",
+      "finding": "repeats weights but supplies no scorer, exact formula, K, identity, or aggregation contract"
+    },
+    "historical_scoring_rules": {
+      "path": "docs/contest/scoring_rules.md",
+      "state": "deleted historical repository document",
+      "content_sha256": "ee7d4766b18a11d98ccdd3d71a648466b4bdfb28df0a1d0fcb1011a81fa8439f",
+      "authority": "internal engineering guidance",
+      "finding": "labels its Top-K fields and formulas as standard or recommended project metrics, not an official contest scorer"
+    },
+    "current_internal_metrics": {
+      "path": "src/scholar_agent/evaluation/metrics.py",
+      "sha256": "7cc2d0418c0ee27bdfb718b9ddebd9e5de3c4e7009e0e4ac19072ab47c8b5e04",
+      "finding": "uses fixed-K precision denominators, unified identity matching, per-query F1@K, and macro averaging; these semantics are not specified by the official contest document"
+    }
+  },
+  "reference_repository_candidates_rejected_as_contest_scorer": [
+    {
+      "name": "AstaBench PaperFindingBench",
+      "commit": "36c9bc14a83b95851a4f5c4baaccdde6d1c0cafb",
+      "scorer_path": "third_party/asta-bench/astabench/evals/paper_finder/eval.py",
+      "scorer_sha256": "53a2b0ee4aee4f80d4b0182f32931c548d8d47c0c59af9641e67af2ee55bd041",
+      "task_path": "third_party/asta-bench/astabench/evals/paper_finder/task.py",
+      "task_sha256": "408182ad94b9f0102816c6a4a4175ca7c61916007488d3270d2519c9724e6cea",
+      "reason": "the contest document lists AstaBench only as a reference dataset/system and never designates its query-type-specific standard/adjusted F1 scorer as the contest scorer"
+    },
+    {
+      "name": "PaSa AutoScholarQuery metrics",
+      "commit": "2aaa6a9b1e48d24a2b7e21e8551f863dad9eeb84",
+      "scorer_path": "third_party/pasa/metrics.py",
+      "scorer_sha256": "578367248b22b58aba3b6a5c5e7780def2f46c2f2c087ac550d30fc2d3d75f27",
+      "reason": "the contest document lists PaSa only as a reference dataset/system; its script normalizes titles and reports averaged precision and recall rather than a contest F1 score"
+    }
+  ],
+  "decision": {
+    "scorer_adapter_implemented": false,
+    "fixture_alignment_executed": false,
+    "autoscholar_alignment_executed": false,
+    "scifact_alignment_executed": false,
+    "current_f1_at_k_is_officially_aligned": null,
+    "reason": "selecting or reconstructing a scorer would require guessing among materially different non-contest reference implementations"
+  },
+  "unblock_requirement": "obtain a versioned official contest scorer or an official specification defining the complete input schema, F1/K, identity, duplicate, unknown-document, unevaluable-gold, and aggregation semantics"
+}

@@ -1,0 +1,25 @@
+{
+  "addendum": "full1000_provider_ingest_capture_addendum_v1",
+  "authority": "future_new_run_only_not_historical_checkpoint",
+  "capture_contract": {
+    "protocol": "provider_ingest_provenance_v1",
+    "protocol_path": "benchmark/provider_ingest_provenance_v1_protocol.json",
+    "raw_response_retention": "exact_bytes_content_addressed_committed_read_only",
+    "required_manifest_binding": "provider_ingest_provenance_v1",
+    "required_resource_ledger_binding": true
+  },
+  "execution_plan": {
+    "embedded_plan_sha256": "a75019fa8a4ed7ad66ffe316793ffd6330613316623b78e35f973260e63cb716",
+    "file_sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613",
+    "path": "benchmark/full1000_execution_plan_v1.json"
+  },
+  "formal_validation_complete": false,
+  "historical_record162": {
+    "eligible": false,
+    "reason": "missing_parser_pre_raw_response_bytes",
+    "retroactive_inference_forbidden": true
+  },
+  "mutation_policy": "does_not_modify_bound_execution_plan",
+  "schema_version": "1",
+  "source_commit": "60e2f48fe94a2906404f8f47597f38439c734aa7"
+}

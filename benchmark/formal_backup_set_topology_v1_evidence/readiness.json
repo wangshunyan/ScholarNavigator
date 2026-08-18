@@ -1,0 +1,143 @@
+{
+  "controls_default_enabled": false,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_run_started": false,
+  "formal_validation_complete": false,
+  "full1000_blocker_cleared": false,
+  "missing_real_member_fields": {
+    "2": [
+      "backup_set_2.member_0.available_bytes",
+      "backup_set_2.member_0.available_inodes",
+      "backup_set_2.member_0.failure_domain_identity",
+      "backup_set_2.member_0.filesystem_identity",
+      "backup_set_2.member_0.quota_bytes",
+      "backup_set_2.member_0.quota_pool_identity",
+      "backup_set_2.member_1.available_bytes",
+      "backup_set_2.member_1.available_inodes",
+      "backup_set_2.member_1.failure_domain_identity",
+      "backup_set_2.member_1.filesystem_identity",
+      "backup_set_2.member_1.quota_bytes",
+      "backup_set_2.member_1.quota_pool_identity"
+    ],
+    "3": [
+      "backup_set_3.member_0.available_bytes",
+      "backup_set_3.member_0.available_inodes",
+      "backup_set_3.member_0.failure_domain_identity",
+      "backup_set_3.member_0.filesystem_identity",
+      "backup_set_3.member_0.quota_bytes",
+      "backup_set_3.member_0.quota_pool_identity",
+      "backup_set_3.member_1.available_bytes",
+      "backup_set_3.member_1.available_inodes",
+      "backup_set_3.member_1.failure_domain_identity",
+      "backup_set_3.member_1.filesystem_identity",
+      "backup_set_3.member_1.quota_bytes",
+      "backup_set_3.member_1.quota_pool_identity",
+      "backup_set_3.member_2.available_bytes",
+      "backup_set_3.member_2.available_inodes",
+      "backup_set_3.member_2.failure_domain_identity",
+      "backup_set_3.member_2.filesystem_identity",
+      "backup_set_3.member_2.quota_bytes",
+      "backup_set_3.member_2.quota_pool_identity"
+    ],
+    "4": [
+      "backup_set_4.member_0.available_bytes",
+      "backup_set_4.member_0.available_inodes",
+      "backup_set_4.member_0.failure_domain_identity",
+      "backup_set_4.member_0.filesystem_identity",
+      "backup_set_4.member_0.quota_bytes",
+      "backup_set_4.member_0.quota_pool_identity",
+      "backup_set_4.member_1.available_bytes",
+      "backup_set_4.member_1.available_inodes",
+      "backup_set_4.member_1.failure_domain_identity",
+      "backup_set_4.member_1.filesystem_identity",
+      "backup_set_4.member_1.quota_bytes",
+      "backup_set_4.member_1.quota_pool_identity",
+      "backup_set_4.member_2.available_bytes",
+      "backup_set_4.member_2.available_inodes",
+      "backup_set_4.member_2.failure_domain_identity",
+      "backup_set_4.member_2.filesystem_identity",
+      "backup_set_4.member_2.quota_bytes",
+      "backup_set_4.member_2.quota_pool_identity",
+      "backup_set_4.member_3.available_bytes",
+      "backup_set_4.member_3.available_inodes",
+      "backup_set_4.member_3.failure_domain_identity",
+      "backup_set_4.member_3.filesystem_identity",
+      "backup_set_4.member_3.quota_bytes",
+      "backup_set_4.member_3.quota_pool_identity"
+    ]
+  },
+  "per_member_capacity_thresholds": {
+    "2": [
+      {
+        "member_index": 0,
+        "required_bytes": 533012676608,
+        "required_inodes": 56321,
+        "required_writers": 2
+      },
+      {
+        "member_index": 1,
+        "required_bytes": 530865192960,
+        "required_inodes": 56221,
+        "required_writers": 2
+      }
+    ],
+    "3": [
+      {
+        "member_index": 0,
+        "required_bytes": 426130625878,
+        "required_inodes": 44623,
+        "required_writers": 2
+      },
+      {
+        "member_index": 1,
+        "required_bytes": 353921488213,
+        "required_inodes": 37834,
+        "required_writers": 2
+      },
+      {
+        "member_index": 2,
+        "required_bytes": 318890661205,
+        "required_inodes": 34490,
+        "required_writers": 2
+      }
+    ],
+    "4": [
+      {
+        "member_index": 0,
+        "required_bytes": 285112532992,
+        "required_inodes": 30413,
+        "required_writers": 2
+      },
+      {
+        "member_index": 1,
+        "required_bytes": 282965049344,
+        "required_inodes": 30313,
+        "required_writers": 2
+      },
+      {
+        "member_index": 2,
+        "required_bytes": 282965049344,
+        "required_inodes": 30313,
+        "required_writers": 2
+      },
+      {
+        "member_index": 3,
+        "required_bytes": 282965049344,
+        "required_inodes": 30313,
+        "required_writers": 2
+      }
+    ]
+  },
+  "protocol": "formal_backup_set_topology_v1",
+  "qualified_real_member_count": 0,
+  "schema_version": "1",
+  "single_target_compatibility_preserved": true,
+  "status": "not_ready_missing_qualified_members"
+}

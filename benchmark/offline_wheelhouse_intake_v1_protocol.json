@@ -1,0 +1,37 @@
+{
+  "dependency_lock": {
+    "path": "benchmark/python_dependency_lock_v1_manifest.json",
+    "protocol": "python_dependency_lock_v1",
+    "sha256": "d83da09ed13fb1e3b1868c2096912fce06f592b2be9a1d608533f089b19d8910"
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "intake": {
+    "allow_sdist": false,
+    "allowed_source_types": [
+      "trusted_internal_mirror",
+      "unknown",
+      "vendor_provided"
+    ],
+    "default_source_type": "unknown",
+    "max_compression_ratio": 200,
+    "max_file_count": 20000,
+    "max_member_uncompressed_bytes": 268435456,
+    "max_total_uncompressed_bytes": 1073741824,
+    "require_record_hashes": true,
+    "wheel_only": true
+  },
+  "manifest_output": "benchmark/offline_wheelhouse_intake_v1_manifest.json",
+  "protocol": "offline_wheelhouse_intake_v1",
+  "release_contract_output": "benchmark/offline_wheelhouse_intake_v1_release_contract.json",
+  "release_python_closure_output": "benchmark/offline_wheelhouse_intake_v1_release_closure.json",
+  "schema_version": "1",
+  "source_commit": "d6d37eb1f0d9a7cff1e41fce69d1b6b4d9175548",
+  "wheelhouse_default": "wheelhouse"
+}

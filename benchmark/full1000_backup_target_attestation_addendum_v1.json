@@ -1,0 +1,20 @@
+{
+  "active_shard_window": 4,
+  "addendum": "full1000_backup_target_attestation_addendum_v1",
+  "authoritative_plan_mode": "read_only",
+  "backup_target_requirement": {
+    "fault_domain": "verified_independent_device_and_management_domain",
+    "minimum_available_bytes": 2119029489664,
+    "minimum_available_inodes": 210940,
+    "minimum_quota_bytes": 2119029489664
+  },
+  "formal_validation_complete": false,
+  "launch_requirement": "fresh_non_synthetic_import_receipt_required",
+  "protocol": {
+    "path": "benchmark/formal_backup_target_attestation_v1_protocol.json",
+    "sha256": "2cf63cbfed4e602f8e2ace4f766be80e7298f3819570bcb4f64c1bfa745b87a3"
+  },
+  "schema_version": "1",
+  "source_commit": "8aad1925585ba6715dc66fcadce8decd3480a50e",
+  "status": "not_ready_no_qualified_backup_target"
+}

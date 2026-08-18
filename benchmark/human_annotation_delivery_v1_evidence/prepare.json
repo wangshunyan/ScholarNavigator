@@ -1,0 +1,15 @@
+{
+  "bundle_sha256": "37395b24914cb302859ee72fecfad237c6abf3382e68d0145cdd01e91d2df059",
+  "contract": "human_annotation_delivery_v1",
+  "execution": {
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "official_scorer_call_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "item_count_per_annotator": 471,
+  "schema_version": "1",
+  "state": "delivery_ready",
+  "statistics": null
+}

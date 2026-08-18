@@ -1,0 +1,60 @@
+{
+  "activation_allowed": false,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_validation_complete": false,
+  "missing_capacity_declarations": {
+    "arxiv": [
+      "requests_per_second",
+      "requests_per_minute",
+      "max_concurrency",
+      "burst",
+      "cooldown_steps",
+      "declaration_version",
+      "valid_from",
+      "valid_until"
+    ],
+    "openalex": [
+      "requests_per_second",
+      "requests_per_minute",
+      "max_concurrency",
+      "burst",
+      "cooldown_steps",
+      "declaration_version",
+      "valid_from",
+      "valid_until"
+    ],
+    "pubmed": [
+      "requests_per_second",
+      "requests_per_minute",
+      "max_concurrency",
+      "burst",
+      "cooldown_steps",
+      "declaration_version",
+      "valid_from",
+      "valid_until"
+    ],
+    "semantic_scholar": [
+      "requests_per_second",
+      "requests_per_minute",
+      "max_concurrency",
+      "burst",
+      "cooldown_steps",
+      "declaration_version",
+      "valid_from",
+      "valid_until"
+    ]
+  },
+  "missing_capacity_declarations_sha256": "cf92adb991084e802ca05a4859deabe327ac318ec9554bf3a9a00485670f644c",
+  "network_status": "not_checked",
+  "protocol": "formal_provider_pacing_v1",
+  "reason_code": "provider_capacity_declarations_missing",
+  "schema_version": "1",
+  "status": "not_ready_missing_provider_capacity_declarations"
+}

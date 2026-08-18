@@ -1,0 +1,77 @@
+{
+  "bindings": {
+    "backup_compaction": {
+      "path": "benchmark/formal_backup_compaction_v1_protocol.json",
+      "sha256": "d2cd787e26f31b025f73a97534fcfec5a70a23dedb8257e189ad89dacbb309a9"
+    },
+    "backup_set_topology": {
+      "path": "benchmark/formal_backup_set_topology_v1_protocol.json",
+      "sha256": "c810a5bdd64dbcf2739aef02c92ef156c246cbf0224303bf5a8e05a504b610ae"
+    },
+    "backup_target_attestation": {
+      "path": "benchmark/formal_backup_target_attestation_v1_protocol.json",
+      "sha256": "2cf63cbfed4e602f8e2ace4f766be80e7298f3819570bcb4f64c1bfa745b87a3"
+    },
+    "disaster_recovery": {
+      "path": "benchmark/formal_run_disaster_recovery_v1_protocol.json",
+      "sha256": "e6b646df73fee75421e33894a73f60cb6f4e00f509a09a103766f68310a20467"
+    },
+    "execution_plan": {
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    "host_attestation": {
+      "path": "benchmark/formal_execution_host_attestation_v1_protocol.json",
+      "sha256": "095bbe731aa461dfa1999080cb916757ecce8f737c19e823aa1173b8663a7681"
+    },
+    "launch_control": {
+      "path": "benchmark/full1000_launch_control_v1_protocol.json",
+      "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+    },
+    "portable_execution_site": {
+      "path": "benchmark/portable_execution_site_attestation_v1_protocol.json",
+      "sha256": "10d49ae0e80ddd00edfa84ba676985f5104cad1b428a7cb2ba613f95858d7ead"
+    }
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "kit": {
+    "challenge_lifetime_seconds": 86400,
+    "fixed_zip_timestamp": [
+      2024,
+      1,
+      1,
+      0,
+      0,
+      0
+    ],
+    "network_request_count": 0,
+    "project_dependency_count": 0,
+    "python_invocation": "python -I -S"
+  },
+  "policy": {
+    "ability_default_enabled": false,
+    "activation_requires_all_slots": true,
+    "complete_set_required_for_restore": true,
+    "identity_authentication": false,
+    "member_counts": [
+      2,
+      3,
+      4
+    ],
+    "member_redundancy_claimed": false,
+    "one_time_challenge": true,
+    "synthetic_member_can_activate_real_set": false,
+    "unknown_evidence_policy": "fail_closed"
+  },
+  "protocol": "formal_backup_set_member_intake_v1",
+  "protocol_sha256": "c5355780bb65e7b37f3bc4f398d62f6ef3791d998ce7803df959531e91aa0f23",
+  "schema_version": "1",
+  "source_commit": "851a113aed91f3764b16cb35a5b653debfc88426"
+}

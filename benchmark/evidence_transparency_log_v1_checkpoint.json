@@ -1,0 +1,21 @@
+{
+  "blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "checkpoint_sha256": "7f4f8529953af0b415dcb634ade6273068605065bfdef93930351a15b2cf4632",
+  "formal_validation_complete": false,
+  "identity_authentication": "not_provided_hash_chain_proves_content_consistency_not_publisher_identity",
+  "latest_release_identity": "candidate:f764eb3c0849c53512f9326d7a83429e1c430a7b:c3d05250dd7540d2",
+  "latest_release_status": "candidate_only",
+  "log_length": 1,
+  "log_sha256": "6c3ac03987ba8ae735af75c3c7120ad9795675b1431feebbbef77e5c65eec171",
+  "merkle_root": "2d2fee76aa56f48a7e4a204bdbb16995701f7f930abfa216e962af04bfb06473",
+  "protocol": "evidence_transparency_log_v1",
+  "public_release_count": 0,
+  "schema_version": "1",
+  "source_commit": "f764eb3c0849c53512f9326d7a83429e1c430a7b",
+  "status": "candidate_checkpoint_no_public_release",
+  "verification_command": "PYTHONPATH=src python scripts/check_evidence_transparency.py verify-log"
+}

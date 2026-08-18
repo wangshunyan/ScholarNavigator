@@ -1,0 +1,117 @@
+{
+  "analysis": "lexical_normalization_v1_cluster_significance_v1",
+  "bootstrap": {
+    "confidence_level": 0.95,
+    "iterations": 20000,
+    "method": "percentile_resampling_of_connected_components_with_replacement",
+    "seed": 20260721
+  },
+  "baseline": {
+    "paired_components_path": "benchmark/lexical_normalization_cluster_significance_baseline/paired_components.jsonl",
+    "paired_components_sha256": "cd59714c45cbcb505298ac69811eba04aae0933a0566c7715d128d8816842741",
+    "paired_queries_path": "benchmark/lexical_normalization_cluster_significance_baseline/paired_queries.jsonl",
+    "paired_queries_sha256": "6c460988df165db2cde7d2359392e573f6b42eb08322daa02f4f9d94c984cbb4",
+    "statistics_path": "benchmark/lexical_normalization_cluster_significance_baseline/statistics.json",
+    "statistics_sha256": "aba389050055044287d8048041ded2601bdc370afc703c187f83a5cfb6439aa0"
+  },
+  "cluster_assignment": {
+    "autoscholar": "reuse frozen component_id verbatim; never recompute edges or components",
+    "component_effect": "query-equal mean baseline and experiment metric within component",
+    "cross_dataset_weighting": "each included component receives equal weight; no dataset-level reweighting",
+    "estimand": "equal mean of component-level paired differences",
+    "scifact": "each SciFact query is an explicit singleton external component because it is outside the frozen AutoScholarQuery graph"
+  },
+  "comparison": {
+    "baseline": "current_rules",
+    "experiment": "lexical_normalization_v1",
+    "historical_query_level_results_are_read_only": true,
+    "tie_tolerance": 1e-12
+  },
+  "implementation_base_commit": "9f73ac8c8c6974c77641b29406bfb140cc8c0618",
+  "implementation": {
+    "path": "src/scholar_agent/evaluation/cluster_significance.py",
+    "sha256": "dd7b458d4b5c3ef86a227b3cfda959a607008ee932ac155b4f087782f2d69adb"
+  },
+  "inputs": {
+    "frozen_components": {
+      "path": "benchmark/autoscholar_query_independence_baseline/components.jsonl",
+      "sha256": "1da102c7928503e88d531fbf967ad2573378b2ea17ecaad4397c8d61669f1549"
+    },
+    "frozen_independence_manifest": {
+      "path": "benchmark/autoscholar_query_independence_manifest.json",
+      "sha256": "a02d755ee31124b5b9d526332963419af286212bb4d306c2de8774ad7e718a5a"
+    },
+    "frozen_metric_diagnostics": {
+      "path": "benchmark/autoscholar_query_independence_baseline/metric_diagnostics.jsonl",
+      "sha256": "2212044c71227cc66601960b307ec89764fd21ac20a260a5accf05a0ebd729d5"
+    },
+    "frozen_query_assignments": {
+      "path": "benchmark/autoscholar_query_independence_baseline/query_assignments.jsonl",
+      "sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5"
+    },
+    "historical_query_significance": {
+      "path": "benchmark/lexical_normalization_significance_result.json",
+      "sha256": "3b73cf6f817020f4b165b274357d709fbe27c728b634310b8036f5c4ebd67bb9"
+    },
+    "historical_record160_significance": {
+      "path": "benchmark/lexical_normalization_record160_result.json",
+      "sha256": "40d0b521e8470932f59f7b09e9bc3a44debac7eaee97fb2ce6bab1079faf956a"
+    },
+    "record160_cases": {
+      "path": "outputs/benchmark_runs/lexical_normalization_record160_813cf3a_r5/case_comparison.jsonl",
+      "sha256": "cc2372e329055fa82750e6bb0eb2bf0f33322c54a389952d032746d6d0a6a5d2"
+    },
+    "small65_cases": {
+      "path": "outputs/benchmark_runs/lexical_normalization_v1_005794c_replay_r5/case_comparison.jsonl",
+      "sha256": "0b8ccb832830242d9481bd3a83e2054857ec0b33177b2be66e96319d53a55dc1"
+    }
+  },
+  "large_cluster_sensitivity": {
+    "dominance_metrics": [
+      "maximum_absolute_contribution_share",
+      "absolute_contribution_herfindahl"
+    ],
+    "leave_one_out_cluster": "largest query_count, ties broken by component_id; selection never uses effect"
+  },
+  "metric_version": "deduplicated_gold_identity_v2",
+  "metrics": [
+    "candidate_recall",
+    "recall_at_20",
+    "f1_at_20"
+  ],
+  "permutation_test": {
+    "alternative": "two_sided",
+    "iterations": 20000,
+    "method": "monte_carlo_cluster_sign_flip",
+    "seed": 20260721,
+    "statistic": "absolute_equal_component_mean_difference"
+  },
+  "power_planning": {
+    "alpha": 0.05,
+    "future_component_count": 715,
+    "future_query_count": 1000,
+    "minimum_detectable_absolute_recall_lift": 0.01,
+    "method": "two_sided_normal_approximation_using_record160_full_component_difference_sd_and_frozen_full1000_component_count",
+    "structural_effective_sample_size": "N_queries_squared_divided_by_sum_component_size_squared",
+    "target_power": 0.8
+  },
+  "query_level_comparator": {
+    "bootstrap_iterations": 20000,
+    "estimand": "equal mean of query-level paired differences",
+    "permutation_iterations": 20000,
+    "purpose": "comparison only; does not replace historical query-level artifacts"
+  },
+  "schema_version": "1",
+  "views": {
+    "existing65_decontaminated": "frozen existing65 rows with included_decontaminated=true; unavailable-gold rows remain explicit exclusions",
+    "existing65_full": "all 65 frozen rows; unavailable-gold rows remain explicit exclusions",
+    "record160_decontaminated": "frozen Record160 rows with included_decontaminated=true",
+    "record160_full": "all 160 frozen included_main_analysis rows"
+  },
+  "warnings": [
+    "Internal Benchmark metrics only; not an official competition score.",
+    "Statistical non-significance is not evidence of no effect.",
+    "Cluster-aware results do not replace historical query-level artifacts.",
+    "Human Precision review remains required before any default-on recommendation."
+  ]
+}

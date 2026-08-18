@@ -1,0 +1,130 @@
+{
+  "attempts": {
+    "attempt_selection": "unique_supersession_tip_without_outcome_selection",
+    "max_attempts_per_shard": 2,
+    "retry_policy": "one_uniform_retry_for_an_incomplete_initial_attempt_only",
+    "silent_attempt_overwrite": false
+  },
+  "execution_contract": {
+    "budgets": {
+      "max_candidate_papers": 200,
+      "max_latency_seconds": 90.0,
+      "max_llm_calls": 20,
+      "max_search_rounds": 2,
+      "max_total_tokens": 50000
+    },
+    "current_year": 2026,
+    "evaluator": {
+      "name": "internal_offline_evaluator",
+      "score_scope": "not_invoked_by_readiness_gate",
+      "version": "deduplicated_gold_identity_v2"
+    },
+    "execution_profile": "balanced",
+    "experimental_features": {
+      "concept_projection": false,
+      "deterministic_tiebreak_v2": false,
+      "lexical_normalization_v1": false,
+      "llm_constrained_rewrite": false,
+      "local_bm25": false,
+      "prf_v1": false,
+      "query_evolution": false,
+      "refchain": false,
+      "rrf_fusion": false,
+      "semantic_seed_expansion": false
+    },
+    "judgement_policy": "current_rules",
+    "limit_per_source": 20,
+    "max_subqueries": 3,
+    "prompt": {
+      "manifest_path": "src/scholar_agent/prompts/manifest.json",
+      "manifest_sha256": "0882ddf98e2d00647c8dae979d70a85ea18cf0198c1838f22d1da77d7e411b44",
+      "used": false
+    },
+    "protocol_limits": {
+      "capsule_max_files": 512,
+      "connector_max_retries": {
+        "arxiv": 1,
+        "openalex": 1,
+        "pubmed": 0,
+        "semantic_scholar": 1
+      }
+    },
+    "query_adapter_policy": "adaptive",
+    "query_planner_version": "1.9.0",
+    "query_planning_policy": "current_rules",
+    "random_seed": 20260722,
+    "ranking_policy": "current_rules",
+    "result_policy": "highly_and_partial",
+    "sources": [
+      "openalex",
+      "arxiv",
+      "semantic_scholar",
+      "pubmed"
+    ],
+    "top_k": 20
+  },
+  "formal_validation_complete": false,
+  "input_hashes": {
+    "benchmark/autoscholar_query_planning_baseline.jsonl": "8442fd2ddba1ef29615749f7a1a75a77cb1f9393f9fc2bff9c96730dee198b37",
+    "benchmark/autoscholar_query_planning_hashes.jsonl": "6cf8662b3ac4ed881aa26db5d778dc3ba8f22b6372bd8d43bcf781be34db2665",
+    "benchmark/autoscholar_query_planning_input.jsonl": "def16ce0f99a567db34e62db283c83ef8c30b200390b6120dd8bbe6cd936eedb",
+    "benchmark/autoscholar_query_planning_manifest.json": "bc05800a560b26deebcf968abe1a42c25a292cd46e93b3c177909810a1ef009c",
+    "benchmark/autoscholar_query_planning_summary.json": "34f0c978dab600caf85b7bba04c9e27063191e48d8ee7fc04608cf04cbe64965",
+    "benchmark/crash_consistency_v1_protocol.json": "24b1fbc1314275e3bfa56fc431df18a67102dbd90ccf482f5c12fd358356e920",
+    "benchmark/execution_determinism_v1_protocol.json": "0640efea3d040c750c832a8f5722edb7fd20878100a0436546dc9554e1f9057a",
+    "benchmark/reproduction_capsule_v1_protocol.json": "e6f2d091ec122ab3144d69330dde69b197321daa1e4995d8e5fe0be20105db8c",
+    "benchmark/resource_accounting_integrity_v1_protocol.json": "b465d2e8f555418bb4a6ac492a0879d307830bdd158ef18ff39de481a6c08f97",
+    "benchmark/run_provenance_legacy_audit.json": "46197f1665cd827bf386b985b00ae0d8079bcffb1c56e48556953bd926cf084d",
+    "benchmark/sharded_execution_integrity_v1_protocol.json": "4ef1b886e08dda5314887c104b8e39d22ddf4fe0a20c4a17a7d3f1f632331f95",
+    "benchmark/top20_delivery_contract_v1.json": "bbe386cbee1cec4e2ec85c9280ace4e194620bdf4e4f7cee053f6dd06793f30b",
+    "src/scholar_agent/prompts/manifest.json": "0882ddf98e2d00647c8dae979d70a85ea18cf0198c1838f22d1da77d7e411b44"
+  },
+  "inputs": {
+    "planning_baseline": "benchmark/autoscholar_query_planning_baseline.jsonl",
+    "planning_hashes": "benchmark/autoscholar_query_planning_hashes.jsonl",
+    "planning_manifest": "benchmark/autoscholar_query_planning_manifest.json",
+    "planning_summary": "benchmark/autoscholar_query_planning_summary.json",
+    "query_input": "benchmark/autoscholar_query_planning_input.jsonl"
+  },
+  "legacy_artifacts": {
+    "authority": "historical_reference_only_not_checkpoint_or_shard_attempt",
+    "audit_path": "benchmark/run_provenance_legacy_audit.json",
+    "record160_or_162_completed_query_count": 162,
+    "required_missing_authority": [
+      "run_manifest_v1",
+      "atomic_commit_generation_chain",
+      "resource_ledger_v1",
+      "complete_source_lineage"
+    ],
+    "reuse_as_completed": false
+  },
+  "paths": {
+    "aggregate_directory": "outputs/benchmark_runs/autoscholar_full1000_current_rules_b20b2ad_v1/aggregate",
+    "run_directory": "outputs/benchmark_runs/autoscholar_full1000_current_rules_b20b2ad_v1",
+    "snapshot_directory": "outputs/benchmark_snapshots/autoscholar_full1000_current_rules_b20b2ad_v1"
+  },
+  "population": {
+    "query_count": 1000,
+    "selection": "all_queries_in_frozen_query_input_source_order"
+  },
+  "preflight": {
+    "credential_loading": "application_configuration_loader_at_live_execution_only",
+    "environment_file_read_by_gate": false,
+    "minimum_free_disk_bytes": 10737418240,
+    "network_probe": "disabled"
+  },
+  "protocol": "full1000_execution_readiness_v1",
+  "resume": {
+    "cancel_rule": "commit_current_authoritative_generation_then_stop_new_operations",
+    "completed_query_source": "selected_attempt_authoritative_generation_only",
+    "legacy_completed_query_count": 0,
+    "resume_rule": "resume_each_shard_from_latest_complete_generation_of_selected_attempt",
+    "start_mode": "full_restart_all_1000"
+  },
+  "schema_version": "1",
+  "sharding": {
+    "assignment_algorithm": "ordered_round_robin_v1",
+    "shard_count": 20
+  },
+  "source_commit": "b20b2adbb8af25439e3e38088d0f672b4030f93a"
+}

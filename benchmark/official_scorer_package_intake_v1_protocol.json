@@ -1,0 +1,91 @@
+{
+  "bindings": {
+    "clearance": {
+      "path": "benchmark/formal_validation_clearance_v1_protocol.json",
+      "sha256": "b37118f7741e8132eb3ab1436f7d73aff336d6351d601c8e86cc8f1c691903b5"
+    },
+    "external_scorer_handoff": {
+      "path": "benchmark/external_scorer_handoff_v1_protocol.json",
+      "sha256": "60adfa40f3ba09d25c980a7614416d947d15393110542048bed1318eed0b69b7"
+    },
+    "full1000_plan": {
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    "preregistration": {
+      "path": "benchmark/formal_validation_preregistration_v1_protocol.json",
+      "sha256": "b2ab16003cc843657896cda863deaab39bfb80f2b098e8eaf24e718304e8920a"
+    },
+    "quarantine": {
+      "path": "benchmark/formal_evidence_quarantine_v1_protocol.json",
+      "sha256": "63b9cc16123b63a6b30732878bfed76c03d744d1b0e862c7c9ddd2dca30dc7a4"
+    }
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "intake_contract": {
+    "archive": {
+      "maximum_archive_bytes": 8388608,
+      "maximum_compression_ratio": 50,
+      "maximum_member_bytes": 2097152,
+      "maximum_member_count": 16,
+      "sdist_allowed": false
+    },
+    "challenge": "single_use_bound_to_plan_commit_and_package",
+    "hash_authentication_boundary": "sha256_proves_content_integrity_not_event_organizer_identity",
+    "metric_directions": [
+      "higher_is_better",
+      "lower_is_better",
+      "not_provided"
+    ],
+    "metric_missing_semantics": [
+      "error",
+      "explicit_null",
+      "not_provided"
+    ],
+    "metric_types": [
+      "integer",
+      "number"
+    ],
+    "origin_evidence_types": [
+      "event_organizer_detached_signature_v1",
+      "event_organizer_offline_handoff_record_v1",
+      "unverified_origin"
+    ],
+    "required_real_material": [
+      "official_package",
+      "official_input_schema",
+      "official_output_schema",
+      "official_metric_namespace",
+      "verified_official_origin"
+    ],
+    "sandbox": "external_scorer_handoff_v1",
+    "unknown_policy": "unknown_or_not_provided_fail_closed"
+  },
+  "protocol": "official_scorer_package_intake_v1",
+  "protocol_sha256": "04001eb4f2597af8a6bfff0c39f9584290b175c58f20332a9b890bce1c4ce044",
+  "schema_version": "1",
+  "source_commit": "3a7038b0c4244ff09a4813c3176417747eb99ff8",
+  "synthetic_scenarios": {
+    "names": [
+      "qualified",
+      "missing_schema",
+      "unknown_namespace",
+      "entrypoint_tamper",
+      "extra_metric",
+      "nondeterministic_output",
+      "illegal_io",
+      "challenge_replay",
+      "cross_version_mixing",
+      "unverified_origin",
+      "revoked_reuse"
+    ],
+    "synthetic_only": true
+  }
+}

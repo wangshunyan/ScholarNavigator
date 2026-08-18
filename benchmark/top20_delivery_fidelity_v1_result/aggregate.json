@@ -1,0 +1,106 @@
+{
+  "analysis": "top20_delivery_fidelity_v1",
+  "closure": {
+    "authoritative_final_result_count": 1396,
+    "excluded_no_successful_source_count": 2,
+    "included_main_case_count": 160,
+    "maximum_results_per_query": 20,
+    "minimum_results_per_query": 0,
+    "observed_snapshot_key_count": 1093,
+    "queries_below_20_count": 121,
+    "record_case_count": 162
+  },
+  "contract_sha256": "bbe386cbee1cec4e2ec85c9280ace4e194620bdf4e4f7cee053f6dd06793f30b",
+  "delivery": {
+    "api_exact_query_count": 160,
+    "authority_digest_preserved_result_count": 1396,
+    "case_contract_sha256": "d601d7d4d47be13359de850837ce9e4a88ef82dbb507e5649a6eb742a57d3ff5",
+    "empty_string_field_occurrence_count": 7,
+    "frontend_key_unique_query_count": 160,
+    "json_exact_query_count": 160,
+    "jsonl_exact_query_count": 160,
+    "null_field_occurrence_count": 11624,
+    "pagination_exact_query_count": 160,
+    "result_contract_sha256": "67cb880d67c319a8e763e7c24e1a253b7c5d0b2639b384ad13727b64b9c059b1",
+    "unsafe_url_field_count": 0
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "official_submission_generated": false,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "exports": {
+    "backend_public_api": {
+      "status": "eligible"
+    },
+    "csv_table": {
+      "reason": "no_existing_production_csv_or_table_result_export",
+      "status": "unsupported_export"
+    },
+    "frontend_display": {
+      "status": "eligible"
+    },
+    "json": {
+      "status": "eligible"
+    },
+    "jsonl": {
+      "status": "eligible"
+    },
+    "reproduction_capsule": {
+      "reason": "legacy_metadata_incomplete:run_manifest_v1,committed_generation_chain",
+      "status": "not_eligible"
+    }
+  },
+  "frontend": {
+    "key": "result_identity",
+    "source_files": {
+      "frontend/src/components/scholar-navigator-app.tsx": {
+        "sha256": "cab9de99652f9739fb1603cfd9e1beee4a40cafbeab85addaa6ca9c81fc4e463",
+        "size": 98516
+      },
+      "frontend/src/lib/format.ts": {
+        "sha256": "e4e68c3eafdc07844a95514843f3f3f5d3b67a5a982d20d6f043fc9c5790de07",
+        "size": 1195
+      },
+      "frontend/src/lib/top20-delivery.ts": {
+        "sha256": "3039cb45e159aaad3282f9e01d136b14cf6ec7a6f6616a9ebfc0b3cb0245ec89",
+        "size": 507
+      }
+    },
+    "status": "passed",
+    "version": "frontend_top20_delivery_v1"
+  },
+  "implementation_base_commit": "9143ac2c16792a0b9b2ee26702f3e1ef7628fa8b",
+  "inputs": {
+    "component_assignments_sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5",
+    "config_sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+    "record_results_sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+    "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5"
+  },
+  "interpretation": {
+    "precision_recall_f1_or_official_score": false,
+    "relevance_claim_permitted": false,
+    "scope": "delivery_fidelity_only",
+    "warnings": [
+      "This gate verifies delivery fidelity only; it does not establish relevance, Precision, Recall, F1, or an official score.",
+      "The machine-readable sample is a contract example, not an official competition submission or inferred scorer schema.",
+      "Unsupported or legacy-ineligible exports remain explicit and are not counted as passed."
+    ]
+  },
+  "policy_isolation": {
+    "current_rules_delivery_query_count": 160,
+    "deterministic_tiebreak_v2_default_enabled": false,
+    "production_default": "original_index_v1",
+    "v2_used_for_authoritative_reconstruction": false
+  },
+  "schema_version": "1",
+  "status": "completed_with_unsupported_exports",
+  "unsupported_or_ineligible_exports": [
+    "csv_table",
+    "reproduction_capsule"
+  ]
+}

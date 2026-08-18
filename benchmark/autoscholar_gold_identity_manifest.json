@@ -1,0 +1,58 @@
+{
+  "audit_implementation": {
+    "path": "src/scholar_agent/evaluation/autoscholar_gold_identity.py",
+    "sha256": "8bb3d79795878b103ccf229f5ef5942cc78c984efb45f51226144c4e64a1d175"
+  },
+  "baseline": {
+    "gold_hashes_path": "benchmark/autoscholar_gold_identity_baseline/gold_hashes.jsonl",
+    "gold_hashes_sha256": "158ce970b26992dc052240c9a71a7d06bab3b6d0daa4d11856309b2eb99d1fe3",
+    "gold_rows_path": "benchmark/autoscholar_gold_identity_baseline/gold_identity.jsonl",
+    "gold_rows_sha256": "429cf7145664b20893df8567d9eed463b8000ce859e4e2c3cc5290042bbefcfe",
+    "query_rows_path": "benchmark/autoscholar_gold_identity_baseline/query_identity.jsonl",
+    "query_rows_sha256": "977220ced7655d5874eec07f5225e7bd5bdb9b529c1fbf93184a46224686f412",
+    "summary_path": "benchmark/autoscholar_gold_identity_baseline/summary.json",
+    "summary_sha256": "527a1764c91592a6647e60feb19eb015698b3f42b3902e93592add70feec6e13"
+  },
+  "baseline_update": {
+    "approval_token": "PROPOSE_AUTOSCHOLAR_GOLD_IDENTITY_BASELINE",
+    "tracked_mutation": "never; proposal artifacts require manual review and a separate tracked change"
+  },
+  "dataset": {
+    "case_count": 1000,
+    "gold_relation_count": 2403,
+    "name": "auto_scholar_query",
+    "path": "benchmark/AutoScholarQuery_test.jsonl",
+    "sha256": "7d8c7f59b289a54912c38cf204d16dbfec14ca35de850b9978b4051ad43a8b36",
+    "split": "test"
+  },
+  "execution": {
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "evaluator_implementation": {
+    "path": "src/scholar_agent/evaluation/metrics.py",
+    "sha256": "7cc2d0418c0ee27bdfb718b9ddebd9e5de3c4e7009e0e4ac19072ab47c8b5e04"
+  },
+  "gate": "autoscholar_gold_identity_regression",
+  "identity_implementation": {
+    "conflict_semantics": "same-field conflict within one relation or between records already linked by an exact shared identifier/strict title evidence",
+    "fuzzy_title_matching": false,
+    "path": "src/scholar_agent/core/identity.py",
+    "sha256": "af52ba53c2e559ae87dac83373f0fc2bfeb38d9351ccfb75d7463d1caa2a1dc8"
+  },
+  "implementation_base_commit": "edc3d2d0f87a48d9f1df84b829a4714b58f15ce1",
+  "query_manifest": {
+    "case_count": 1000,
+    "path": "benchmark/autoscholar_query_planning_input.jsonl",
+    "sha256": "def16ce0f99a567db34e62db283c83ef8c30b200390b6120dd8bbe6cd936eedb"
+  },
+  "schema_version": "1",
+  "terminal_policy": [
+    "stable_identifier_evaluable",
+    "conservative_title_evidence_evaluable",
+    "identifier_conflict",
+    "identity_ambiguous",
+    "insufficient_information"
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "protocol": "validation_evidence_freshness_v1",
+  "scenario_count": 4,
+  "scenarios": [
+    {
+      "changed_component_ids": [
+        "ranking_runtime"
+      ],
+      "minimum_rerun_gate_ids": [
+        "ranking_decisions",
+        "source_fusion",
+        "source_reliability",
+        "tiebreak_qualification",
+        "top20_delivery_fidelity"
+      ],
+      "scenario_id": "ranking_implementation_change",
+      "stale_claim_ids": [
+        "architecture_default_policy_isolation",
+        "architecture_offline_integrity_gates",
+        "contest_human_precision",
+        "evaluation_record160_population",
+        "evaluation_source_diagnostics",
+        "evaluation_source_fusion_coverage",
+        "evaluation_top20_delivery"
+      ],
+      "stale_evidence_ids": [
+        "human_precision_pending",
+        "ranking_decision_manifest",
+        "ranking_decision_protocol",
+        "source_fusion_aggregate",
+        "source_fusion_manifest",
+        "source_fusion_protocol",
+        "source_reliability_aggregate",
+        "source_reliability_manifest",
+        "source_reliability_protocol",
+        "tiebreak_aggregate",
+        "tiebreak_manifest",
+        "tiebreak_protocol",
+        "top20_delivery_aggregate",
+        "top20_delivery_contract",
+        "top20_delivery_manifest"
+      ],
+      "stale_gate_ids": [
+        "ranking_decisions",
+        "source_fusion",
+        "source_reliability",
+        "tiebreak_qualification",
+        "top20_delivery_fidelity"
+      ],
+      "violation_count": 0
+    },
+    {
+      "changed_component_ids": [
+        "human_annotation"
+      ],
+      "minimum_rerun_gate_ids": [
+        "human_annotation_delivery"
+      ],
+      "scenario_id": "human_annotation_interface_change",
+      "stale_claim_ids": [
+        "architecture_formal_evidence_quarantine_ready",
+        "architecture_formal_validation_clearance_gated",
+        "architecture_human_annotation_delivery_ready"
+      ],
+      "stale_evidence_ids": [
+        "formal_evidence_quarantine_readiness",
+        "formal_validation_clearance_current",
+        "human_annotation_delivery_dry_run",
+        "human_annotation_delivery_protocol",
+        "human_annotation_delivery_readiness"
+      ],
+      "stale_gate_ids": [
+        "human_annotation_delivery"
+      ],
+      "violation_count": 0
+    },
+    {
+      "changed_component_ids": [
+        "default_policy"
+      ],
+      "minimum_rerun_gate_ids": [
+        "evidence_registry"
+      ],
+      "scenario_id": "default_policy_change",
+      "stale_claim_ids": [
+        "architecture_default_policy_isolation",
+        "readme_operational_entrypoint"
+      ],
+      "stale_evidence_ids": [
+        "evidence_registry_gate"
+      ],
+      "stale_gate_ids": [
+        "evidence_registry"
+      ],
+      "violation_count": 0
+    },
+    {
+      "changed_component_ids": [],
+      "minimum_rerun_gate_ids": [],
+      "scenario_id": "non_semantic_python_comment",
+      "stale_claim_ids": [],
+      "stale_evidence_ids": [],
+      "stale_gate_ids": [],
+      "violation_count": 0
+    }
+  ],
+  "schema_version": "1",
+  "status": "synthetic_impact_verified"
+}

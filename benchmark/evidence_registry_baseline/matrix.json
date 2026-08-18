@@ -1,0 +1,625 @@
+{
+  "decision_counts": {
+    "blocked": 1,
+    "inconclusive": 4,
+    "negative": 11,
+    "promising_default_off": 2,
+    "unvalidated": 5,
+    "validated_default": 1
+  },
+  "default_enabled_strategy_ids": [
+    "current_rules"
+  ],
+  "evidence_status_counts": {
+    "evidence_unavailable": 20,
+    "tracked_machine_evidence": 4
+  },
+  "execution": {
+    "benchmark_run_count": 0,
+    "input_mode": "tracked_repository_evidence_only",
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "registry": "experiment_evidence_registry_v1",
+  "rows": [
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "holdout_regression"
+      ],
+      "call_completeness": {
+        "status": "historical_document_only"
+      },
+      "conclusion": "独立 holdout 将唯一召回 gold 判为弱相关，最终指标归零；历史文档要求继续默认关闭。",
+      "core_metrics": null,
+      "datasets": [
+        "AutoScholarQuery dev 0/10",
+        "AutoScholarQuery val 10/5",
+        "AutoScholarQuery holdout 20/30"
+      ],
+      "decision": "negative",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "judgement",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "calibrated_rules_v1"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "development_regression"
+      ],
+      "call_completeness": {
+        "status": "historical_document_only"
+      },
+      "conclusion": "SciFact 与 validation 持平，但 development 的 Recall@20/F1@20 退化，未形成跨数据集净增。",
+      "core_metrics": null,
+      "datasets": [
+        "SciFact fixed 50",
+        "AutoScholarQuery dev 0/10",
+        "AutoScholarQuery val 10/5"
+      ],
+      "decision": "negative",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_planning",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "concept_projection"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "no_incremental_gold"
+      ],
+      "call_completeness": {
+        "status": "historical_document_only"
+      },
+      "conclusion": "验证集新增独占候选但新增 gold 为 0，未通过预注册门槛。",
+      "core_metrics": null,
+      "datasets": [
+        "AutoScholarQuery dev 50/20",
+        "AutoScholarQuery val 70/20"
+      ],
+      "decision": "negative",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_planning",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "controlled_relaxation"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "no_incremental_gold"
+      ],
+      "call_completeness": {
+        "status": "historical_document_only"
+      },
+      "conclusion": "完整保留基线的组合查询仍未增加 gold，并增加请求与候选噪声。",
+      "core_metrics": null,
+      "datasets": [
+        "AutoScholarQuery dev 210/20",
+        "AutoScholarQuery val 230/20"
+      ],
+      "decision": "negative",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_planning",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "current_plus_disjunctive"
+    },
+    {
+      "blockers": [
+        "official_scorer_unavailable",
+        "full_1000_retrieval_baseline_incomplete"
+      ],
+      "call_completeness": {
+        "case_count": 65,
+        "gate_network_requests": 0,
+        "gate_snapshot_writes": 0,
+        "status": "frozen_replay_regression_passed"
+      },
+      "conclusion": "65 条冻结 Replay 回归基准通过；它是内部默认策略参考，不是 AutoScholarQuery 1000 条正式基线或官方成绩。",
+      "core_metrics": {
+        "auto_dev": {
+          "candidate_recall": 0.15,
+          "f1_at_20": 0.017857142857142856,
+          "recall_at_20": 0.125
+        },
+        "auto_val": {
+          "candidate_recall": 0.2,
+          "f1_at_20": 0.019047619047619046,
+          "recall_at_20": 0.2
+        },
+        "scifact": {
+          "candidate_recall": 0.12195121951219512,
+          "f1_at_20": 0.011614401858304297,
+          "recall_at_20": 0.12195121951219512
+        }
+      },
+      "datasets": [
+        "SciFact fixed 50",
+        "AutoScholarQuery dev 0/10",
+        "AutoScholarQuery val 10/5"
+      ],
+      "decision": "validated_default",
+      "default_enabled": true,
+      "efficiency_cost": {
+        "gate_case_count": 65,
+        "gate_network_requests": 0,
+        "gate_snapshot_writes": 0
+      },
+      "evidence_status": "tracked_machine_evidence",
+      "family": "default_composite",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "current_rules"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "holdout_regression"
+      ],
+      "call_completeness": {
+        "status": "historical_document_only"
+      },
+      "conclusion": "早期小样本通过，但预注册 40 条 holdout 的 Recall@20/F1@20 退化，最终保持实验状态。",
+      "core_metrics": null,
+      "datasets": [
+        "AutoScholarQuery dev 130/20",
+        "AutoScholarQuery val 150/20",
+        "AutoScholarQuery holdout 170/40"
+      ],
+      "decision": "negative",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_planning",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "disjunctive_facets"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "no_incremental_gold"
+      ],
+      "call_completeness": {
+        "status": "historical_document_only"
+      },
+      "conclusion": "开发和验证均未新增 gold，验证请求成本上升，未通过验收。",
+      "core_metrics": null,
+      "datasets": [
+        "AutoScholarQuery dev 0/10",
+        "AutoScholarQuery val 10/5"
+      ],
+      "decision": "negative",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_planning",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "facet_balanced"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "no_incremental_gold",
+        "efficiency_regression"
+      ],
+      "call_completeness": {
+        "status": "historical_document_only"
+      },
+      "conclusion": "验证集新增候选但新增 gold 为 0，且请求和弱/无关候选显著增加。",
+      "core_metrics": null,
+      "datasets": [
+        "AutoScholarQuery dev 250/20",
+        "AutoScholarQuery val 270/20"
+      ],
+      "decision": "negative",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_planning",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "facet_union"
+    },
+    {
+      "blockers": [
+        "human_precision_pending",
+        "cluster_inference_not_significant",
+        "official_scorer_unavailable"
+      ],
+      "call_completeness": {
+        "existing65_evaluable_queries": 56,
+        "network_requests": 0,
+        "record160_included_queries": 160,
+        "snapshot_writes": 0,
+        "status": "offline_paired_complete"
+      },
+      "conclusion": "内部点估计为正且无已知 query 退化，但簇级区间均含 0，人工 Precision 尚未完成，必须保持默认关闭。",
+      "core_metrics": {
+        "record160_cluster": {
+          "f1_at_20_delta": 0.0013326226012793177,
+          "f1_p_two_sided": 0.49687515624218787,
+          "recall_at_20_delta": 0.009328358208955223,
+          "recall_p_two_sided": 0.4937753112344383
+        },
+        "small_frozen_sets": {
+          "auto_dev_recall_at_20_delta": 0.024999999999999994,
+          "auto_val_recall_at_20_delta": 0,
+          "scifact_recall_at_20_delta": 0.02439024390243899
+        }
+      },
+      "datasets": [
+        "SciFact fixed 50",
+        "AutoScholarQuery dev 0/10",
+        "AutoScholarQuery val 10/5",
+        "AutoScholarQuery Record160"
+      ],
+      "decision": "promising_default_off",
+      "default_enabled": false,
+      "efficiency_cost": {
+        "candidate_pool_delta": 0,
+        "human_precision_complete": false
+      },
+      "evidence_status": "tracked_machine_evidence",
+      "family": "judgement_evidence_matching",
+      "metric_version": "deduplicated_gold_identity_v2",
+      "strategy_id": "lexical_normalization_v1"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "fallback_or_source_terminal_incomparability"
+      ],
+      "call_completeness": {
+        "status": "historical_document_only"
+      },
+      "conclusion": "历史评测存在来源终态与 fallback 可归因限制，未证明跨三个集合稳定净增。",
+      "core_metrics": null,
+      "datasets": [
+        "SciFact fixed 50",
+        "AutoScholarQuery dev 0/10",
+        "AutoScholarQuery val 10/5"
+      ],
+      "decision": "inconclusive",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_planning_llm",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "llm_constrained_rewrite"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "formal_evaluation_missing"
+      ],
+      "call_completeness": {
+        "status": "not_formally_evaluated"
+      },
+      "conclusion": "仅有实现与降级语义说明，没有跟踪的正式配对 Benchmark、成本收益或稳定性证据。",
+      "core_metrics": null,
+      "datasets": [],
+      "decision": "unvalidated",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "judgement_llm",
+      "metric_version": "not_applicable",
+      "strategy_id": "llm_judgement"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "formal_evaluation_missing"
+      ],
+      "call_completeness": {
+        "status": "not_formally_evaluated"
+      },
+      "conclusion": "仅有严格 JSON 与规则 fallback 的实现说明，没有跟踪的正式配对效果证据。",
+      "core_metrics": null,
+      "datasets": [],
+      "decision": "unvalidated",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_understanding_llm",
+      "metric_version": "not_applicable",
+      "strategy_id": "llm_query_understanding"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "dataset_evidence_incomplete"
+      ],
+      "call_completeness": {
+        "status": "historical_outputs_not_tracked"
+      },
+      "conclusion": "SciFact 缺少完整策略产物，且历史阶段曾受 provider/调用完整性阻断，不能形成跨集合结论。",
+      "core_metrics": null,
+      "datasets": [
+        "AutoScholarQuery dev 0/10",
+        "AutoScholarQuery val 10/5"
+      ],
+      "decision": "inconclusive",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_planning_llm",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "llm_semantic"
+    },
+    {
+      "blockers": [
+        "closed_corpus_only",
+        "official_scorer_unavailable"
+      ],
+      "call_completeness": {
+        "case_count": 50,
+        "evaluable_query_count": 41,
+        "failed_keys": 2,
+        "replay_network_requests": 0,
+        "status": "paired_complete_with_frozen_failures",
+        "success_keys": 361
+      },
+      "conclusion": "在 SciFact 官方封闭语料上显著增加内部召回，但不是开放网络成绩，且语料配置专属，保持默认关闭。",
+      "core_metrics": {
+        "baseline_candidate_recall": 0.12195121951219512,
+        "candidate_recall": 0.7560975609756098,
+        "f1_at_20": 0.04624643649033893,
+        "recall_at_20": 0.4634146341463415
+      },
+      "datasets": [
+        "SciFact fixed 50 closed corpus"
+      ],
+      "decision": "promising_default_off",
+      "default_enabled": false,
+      "efficiency_cost": {
+        "deduplicated_candidates": 1192,
+        "final_candidates": 185,
+        "local_query_latency_seconds": 2.4883147396613,
+        "raw_candidates": 2020
+      },
+      "evidence_status": "tracked_machine_evidence",
+      "family": "retrieval_source",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "local_bm25"
+    },
+    {
+      "blockers": [
+        "no_final_metric_gain",
+        "closed_corpus_only"
+      ],
+      "call_completeness": {
+        "case_count": 50,
+        "external_parity_cases": 50,
+        "network_requests": 0,
+        "snapshot_writes": 0,
+        "status": "offline_pair_complete"
+      },
+      "conclusion": "只新增 1 条候选 gold，最终 Recall@20/F1@20 均未提升；不建议继续。",
+      "core_metrics": {
+        "candidate_recall_baseline": 0.7560975609756098,
+        "candidate_recall_experiment": 0.7804878048780488,
+        "f1_at_20_delta": 0,
+        "recall_at_20_delta": 0
+      },
+      "datasets": [
+        "SciFact fixed 50 closed corpus"
+      ],
+      "decision": "negative",
+      "default_enabled": false,
+      "efficiency_cost": {
+        "deep_tail_candidates": 9000,
+        "global_retained": 7079,
+        "returned_tail_candidates": 123
+      },
+      "evidence_status": "tracked_machine_evidence",
+      "family": "benchmark_only_retrieval",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "local_bm25_original_deepening"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "no_strict_subset_gain",
+        "source_terminal_drift"
+      ],
+      "call_completeness": {
+        "status": "historical_document_only"
+      },
+      "conclusion": "严格可比子集没有增益，且全量结果受来源响应漂移影响，不满足继续门槛。",
+      "core_metrics": null,
+      "datasets": [
+        "SciFact fixed 50",
+        "AutoScholarQuery dev 0/10",
+        "AutoScholarQuery val 10/5"
+      ],
+      "decision": "negative",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_planning_feedback",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "prf_v1"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "formal_evaluation_missing"
+      ],
+      "call_completeness": {
+        "status": "no_standalone_tracked_evaluation"
+      },
+      "conclusion": "可选 adapter 已实现，但没有独立、跟踪的配对 Benchmark 证据。",
+      "core_metrics": null,
+      "datasets": [],
+      "decision": "unvalidated",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_adapter",
+      "metric_version": "not_applicable",
+      "strategy_id": "query_adapter_hybrid"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "formal_evaluation_missing"
+      ],
+      "call_completeness": {
+        "status": "no_standalone_tracked_evaluation"
+      },
+      "conclusion": "可选 adapter 已实现，但没有独立、跟踪的配对 Benchmark 证据。",
+      "core_metrics": null,
+      "datasets": [],
+      "decision": "unvalidated",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_adapter",
+      "metric_version": "not_applicable",
+      "strategy_id": "query_adapter_safe_original"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "insufficient_sample",
+        "source_failure"
+      ],
+      "call_completeness": {
+        "status": "small_sample_with_frozen_source_failures"
+      },
+      "conclusion": "开发 10 条只增加候选、没有新增 gold，且存在来源失败；样本不足以判断。",
+      "core_metrics": null,
+      "datasets": [
+        "AutoScholarQuery dev 0/10"
+      ],
+      "decision": "inconclusive",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_evolution",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "query_evolution_coverage_gap"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "insufficient_sample",
+        "source_failure"
+      ],
+      "call_completeness": {
+        "status": "small_sample_with_frozen_source_failures"
+      },
+      "conclusion": "开发 10 条未形成新增 gold，且来源失败与小样本阻止稳定结论。",
+      "core_metrics": null,
+      "datasets": [
+        "AutoScholarQuery dev 0/10"
+      ],
+      "decision": "inconclusive",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_evolution",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "query_evolution_seed_expansion"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "reference_source_failure",
+        "insufficient_sample"
+      ],
+      "call_completeness": {
+        "status": "source_failure_dominated"
+      },
+      "conclusion": "冻结 reference 请求失败主导且未产生扩展候选，不能评价引用链收益。",
+      "core_metrics": null,
+      "datasets": [
+        "AutoScholarQuery dev 0/10"
+      ],
+      "decision": "blocked",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "citation_expansion",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "refchain"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "formal_evaluation_missing"
+      ],
+      "call_completeness": {
+        "status": "no_standalone_tracked_evaluation"
+      },
+      "conclusion": "严格过滤选项已实现，但没有独立、跟踪的配对 Benchmark 证据。",
+      "core_metrics": null,
+      "datasets": [],
+      "decision": "unvalidated",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "result_filtering",
+      "metric_version": "not_applicable",
+      "strategy_id": "result_policy_highly_only"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "cross_dataset_regression"
+      ],
+      "call_completeness": {
+        "status": "historical_document_only"
+      },
+      "conclusion": "冻结候选排序消融在 SciFact 与 development 退化、validation 持平，未形成稳定价值。",
+      "core_metrics": null,
+      "datasets": [
+        "SciFact fixed 50",
+        "AutoScholarQuery dev 0/10",
+        "AutoScholarQuery val 10/5"
+      ],
+      "decision": "negative",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "ranking",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "rrf_fusion"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "no_incremental_gold",
+        "cross_dataset_regression"
+      ],
+      "call_completeness": {
+        "status": "historical_document_only"
+      },
+      "conclusion": "官方 ID 解析增加可用 seed，但推荐没有独立 gold，最终指标未满足三集合继续门槛。",
+      "core_metrics": null,
+      "datasets": [
+        "SciFact fixed 50",
+        "AutoScholarQuery dev 0/10",
+        "AutoScholarQuery val 10/5"
+      ],
+      "decision": "negative",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "recommendation_expansion",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "semantic_seed_expansion"
+    }
+  ],
+  "schema_version": "1",
+  "score_scope": "internal_benchmark_evidence_not_official_score",
+  "strategy_count": 24
+}

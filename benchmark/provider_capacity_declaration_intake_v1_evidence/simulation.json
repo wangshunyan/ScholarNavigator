@@ -1,0 +1,103 @@
+{
+  "accepted_scenario_count": 2,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "protocol": "provider_capacity_declaration_intake_v1",
+  "rejected_or_blocked_scenario_count": 9,
+  "scenario_count": 11,
+  "scenarios": [
+    {
+      "request_preservation": {
+        "admitted_attempt_count": 12050,
+        "budget_conserved": true,
+        "duplicate_request_count": 0,
+        "http_attempt_upper": 19280,
+        "intent_count": 9640,
+        "intent_order_sha256": "706aaf7916e448c7342ea55e06e86e605a0c4bd266f84d9a7283f29bf866f96c",
+        "pacing_request_contract_sha256": "04bb0ed6d51cacfa33f2db303b5df17545f0e9a6d3a77b335f853d56812bafb5",
+        "pacing_request_identity_sha256": "e594d5274fd54493cc0cbc79a5a4b588bb0e9ead750aed530d0ad26416dc6064",
+        "request_contract_sha256": "5702e77c74ad42785f35a5051f4509c89f229f9444f2e2213261188692f946f0",
+        "request_parameter_mutation_count": 0,
+        "request_set_unchanged": true,
+        "shard_count": 20,
+        "window_violation_count": 0
+      },
+      "scenario": "qualified_four_sources",
+      "status": "accepted"
+    },
+    {
+      "reason_code": "missing_real_declarations",
+      "scenario": "single_source_missing",
+      "status": "not_ready"
+    },
+    {
+      "reason_code": "capacity_declaration_expired",
+      "scenario": "expired",
+      "status": "rejected"
+    },
+    {
+      "reason_code": "capacity_unit_mismatch",
+      "scenario": "unit_mismatch",
+      "status": "rejected"
+    },
+    {
+      "reason_code": "capacity_burst_below_concurrency",
+      "scenario": "burst_conflict",
+      "status": "rejected"
+    },
+    {
+      "reason_code": "capacity_value_invalid",
+      "scenario": "zero_concurrency",
+      "status": "rejected"
+    },
+    {
+      "reason_code": "declaration_binding_invalid",
+      "scenario": "scope_drift",
+      "status": "rejected"
+    },
+    {
+      "reason_code": "challenge_replay",
+      "scenario": "challenge_replay",
+      "status": "rejected"
+    },
+    {
+      "reason_code": "declaration_digest_invalid",
+      "scenario": "declaration_tamper",
+      "status": "rejected"
+    },
+    {
+      "request_preservation": {
+        "admitted_attempt_count": 12050,
+        "budget_conserved": true,
+        "duplicate_request_count": 0,
+        "http_attempt_upper": 19280,
+        "intent_count": 9640,
+        "intent_order_sha256": "706aaf7916e448c7342ea55e06e86e605a0c4bd266f84d9a7283f29bf866f96c",
+        "pacing_request_contract_sha256": "04bb0ed6d51cacfa33f2db303b5df17545f0e9a6d3a77b335f853d56812bafb5",
+        "pacing_request_identity_sha256": "e594d5274fd54493cc0cbc79a5a4b588bb0e9ead750aed530d0ad26416dc6064",
+        "request_contract_sha256": "5702e77c74ad42785f35a5051f4509c89f229f9444f2e2213261188692f946f0",
+        "request_parameter_mutation_count": 0,
+        "request_set_unchanged": true,
+        "shard_count": 20,
+        "window_violation_count": 0
+      },
+      "scenario": "dynamic_reduction",
+      "status": "accepted"
+    },
+    {
+      "reason_code": "declaration_revoked",
+      "scenario": "revoked",
+      "status": "rejected"
+    }
+  ],
+  "schema_version": "1",
+  "status": "capacity_declarations_qualified",
+  "synthetic_only": true
+}

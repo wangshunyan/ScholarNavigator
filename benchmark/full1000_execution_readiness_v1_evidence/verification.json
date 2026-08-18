@@ -1,0 +1,18 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "network_status": "network_not_checked",
+  "protocol": "full1000_execution_readiness_v1",
+  "query_count": 1000,
+  "schema_version": "1",
+  "shard_count": 20,
+  "status": "execution_plan_ready_but_network_blocked",
+  "violations": []
+}

@@ -1,0 +1,24 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "http_attempt_upper": 19280,
+  "logical_source_request_count": 9640,
+  "protocol": "formal_provider_pacing_v1",
+  "protocol_sha256": "337a6004ab062a6ae690d33db223866d955c6c4951b62f9c83f35ab46b742b6c",
+  "real_capacity_status": "not_available",
+  "schema_version": "1",
+  "source_counts": {
+    "arxiv": 2410,
+    "openalex": 2410,
+    "pubmed": 2410,
+    "semantic_scholar": 2410
+  },
+  "status": "pacing_controls_ready"
+}

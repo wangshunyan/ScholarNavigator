@@ -1,0 +1,157 @@
+{
+  "analysis": "deterministic_tiebreak_qualification_v1",
+  "closure": {
+    "candidate_count": 4599,
+    "component_count": 134,
+    "excluded_no_successful_source_count": 2,
+    "included_main_case_count": 160,
+    "observed_snapshot_key_count": 1093,
+    "record_case_count": 162
+  },
+  "current_v2_comparison": {
+    "authoritative_identity_changed_query_count": 0,
+    "changed_candidate_count": 2,
+    "changed_query_count": 1,
+    "event_semantics_changed_query_count": 0,
+    "field_lineage_changed_query_count": 0,
+    "non_tie_order_changed_query_count": 0,
+    "returned_membership_changed_query_count": 0,
+    "score_or_category_changed_query_count": 0,
+    "top20_membership_changed_query_count": 0
+  },
+  "execution": {
+    "full1000_inference_performed": false,
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "implementation_base_commit": "0c05632c537bf7bc6d7a319e4094c6ddb7589aed",
+  "implementation_hashes": {
+    "qualification_sha256": "b6b9247bc0561dd3201ad3b88f808b646bfb553f61a81c373c3d8d4f59e0c6d7",
+    "reranker_sha256": "633f9b5984eb3e24821cffc73f30579402b24963ccdb14b7bbafd8934f105649"
+  },
+  "inputs": {
+    "component_assignments_sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5",
+    "config_sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+    "record_results_sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+    "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5"
+  },
+  "interpretation": {
+    "precision_recall_f1_or_official_score": false,
+    "relevance_claim_permitted": false,
+    "scope": "deterministic_tie_break_reproducibility_only",
+    "warnings": [
+      "This qualification addresses deterministic ordering only; it does not establish relevance, Precision, Recall, F1, or an official score.",
+      "qualified_for_review does not enable deterministic_tiebreak_v2 or change current_rules evidence conclusions.",
+      "Permutation profiles reorder one immutable deduplicated candidate pool; they do not re-run or alter production identity merging."
+    ]
+  },
+  "permutation_stability": {
+    "profile_count_per_query": 6,
+    "profiles": [
+      "canonical_input",
+      "reverse_input",
+      "reverse_source_blocks",
+      "rotate_source_blocks",
+      "deterministic_random",
+      "shard_completion_2_0_1"
+    ],
+    "stable_query_count": 160,
+    "unstable_query_count": 0
+  },
+  "policy": {
+    "exact_tie_float_tolerance": null,
+    "production_default": "original_index_v1",
+    "v2": {
+      "default_enabled": false,
+      "equality": "exact_python_value_equality_no_float_tolerance",
+      "exact_tie_key": [
+        {
+          "direction": "ascending",
+          "field": "category_tier"
+        },
+        {
+          "direction": "descending",
+          "field": "final_score"
+        },
+        {
+          "direction": "descending",
+          "field": "relevance_score"
+        },
+        {
+          "direction": "descending",
+          "field": "nonnegative_citation_count"
+        },
+        {
+          "direction": "descending",
+          "field": "year_or_zero"
+        },
+        {
+          "direction": "ascending",
+          "field": "title_casefold"
+        }
+      ],
+      "fallback_requires_registered_source_record": true,
+      "prohibited_inputs": [
+        "input_position",
+        "completion_order",
+        "process_state",
+        "gold",
+        "quality_result",
+        "case_id"
+      ],
+      "stable_key_precedence": [
+        "unified_stable_identifiers",
+        "unified_exact_title_author_year",
+        "registered_source_record_refs_and_normalized_field_summary_sha256"
+      ],
+      "version": "deterministic_tiebreak_v2"
+    },
+    "v2_enabled_by_default": false
+  },
+  "protocol_sha256": "e0850efb8b4338e65f0eaca150a579260c3aff3675c71c837a840661dfaa76d2",
+  "qualification": {
+    "automatic_enable_permitted": false,
+    "not_qualified_reasons": [],
+    "review_required": true,
+    "status": "qualified_for_review"
+  },
+  "schema_version": "1",
+  "status": "qualified_for_review",
+  "ties": {
+    "candidate_count": 2,
+    "cutline_group_count": 0,
+    "group_count": 1,
+    "groups": [
+      {
+        "crosses_top20_cutline": false,
+        "current_member_order": [
+          "paper:728fc72602a0ba783b04a752",
+          "paper:f620aeaf6e3c96567134a735"
+        ],
+        "group_size": 2,
+        "internal_order_changed": true,
+        "permutation_stable": true,
+        "query_identity": "2c766ab1f5a1040e5f4e11bd9d57eca652c1e0547537e8f6654867ce58d40f78",
+        "source_union": [
+          "pubmed"
+        ],
+        "tie_identity": "tie:dbe819570667d6df0314d4fc",
+        "top20_membership_changed": false,
+        "v2_member_order": [
+          "paper:f620aeaf6e3c96567134a735",
+          "paper:728fc72602a0ba783b04a752"
+        ]
+      }
+    ],
+    "internal_order_changed_group_count": 1,
+    "maximum_group_size": 2,
+    "source_attribution_counts": {
+      "pubmed": 1
+    },
+    "top20_membership_changed_group_count": 0
+  }
+}

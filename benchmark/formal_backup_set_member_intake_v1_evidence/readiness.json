@@ -1,0 +1,115 @@
+{
+  "activation_receipt": "not_available",
+  "disaster_recovery_recheck": "blocked_missing_backup_set_activation",
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "formal_validation_complete": false,
+  "full1000_run_started": false,
+  "launch_preflight_recheck": "blocked_missing_backup_set_activation",
+  "plans": [
+    {
+      "activation_status": "not_ready_missing_real_members",
+      "member_count": 2,
+      "missing_real_slot_count": 2,
+      "qualified_real_slot_count": 0,
+      "slots": [
+        {
+          "required_bytes": 533012676608,
+          "required_inodes": 56321,
+          "required_quota_bytes": 533012676608,
+          "slot": 0,
+          "status": "not_available"
+        },
+        {
+          "required_bytes": 530865192960,
+          "required_inodes": 56221,
+          "required_quota_bytes": 530865192960,
+          "slot": 1,
+          "status": "not_available"
+        }
+      ]
+    },
+    {
+      "activation_status": "not_ready_missing_real_members",
+      "member_count": 3,
+      "missing_real_slot_count": 3,
+      "qualified_real_slot_count": 0,
+      "slots": [
+        {
+          "required_bytes": 426130625878,
+          "required_inodes": 44623,
+          "required_quota_bytes": 426130625878,
+          "slot": 0,
+          "status": "not_available"
+        },
+        {
+          "required_bytes": 353921488213,
+          "required_inodes": 37834,
+          "required_quota_bytes": 353921488213,
+          "slot": 1,
+          "status": "not_available"
+        },
+        {
+          "required_bytes": 318890661205,
+          "required_inodes": 34490,
+          "required_quota_bytes": 318890661205,
+          "slot": 2,
+          "status": "not_available"
+        }
+      ]
+    },
+    {
+      "activation_status": "not_ready_missing_real_members",
+      "member_count": 4,
+      "missing_real_slot_count": 4,
+      "qualified_real_slot_count": 0,
+      "slots": [
+        {
+          "required_bytes": 285112532992,
+          "required_inodes": 30413,
+          "required_quota_bytes": 285112532992,
+          "slot": 0,
+          "status": "not_available"
+        },
+        {
+          "required_bytes": 282965049344,
+          "required_inodes": 30313,
+          "required_quota_bytes": 282965049344,
+          "slot": 1,
+          "status": "not_available"
+        },
+        {
+          "required_bytes": 282965049344,
+          "required_inodes": 30313,
+          "required_quota_bytes": 282965049344,
+          "slot": 2,
+          "status": "not_available"
+        },
+        {
+          "required_bytes": 282965049344,
+          "required_inodes": 30313,
+          "required_quota_bytes": 282965049344,
+          "slot": 3,
+          "status": "not_available"
+        }
+      ]
+    }
+  ],
+  "protocol": "formal_backup_set_member_intake_v1",
+  "qualified_real_member_count": 0,
+  "reason_code": "no_fresh_real_backup_set_member_attestations",
+  "schema_version": "1",
+  "status": "not_ready_missing_real_members",
+  "synthetic_member_accepted_as_real": false
+}

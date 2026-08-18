@@ -1,0 +1,65 @@
+{
+  "adjudication_protocol": {
+    "path": "benchmark/human_precision_adjudication_v1_protocol.json",
+    "sha256": "6d6d29f98f4115ab960afff29e6e00b55c7ef7aba5376524354badb04dd81145"
+  },
+  "alias": {
+    "algorithm": "sha256_seeded_item_identity_v1",
+    "length": 24,
+    "seeds": {
+      "A": "human_annotation_delivery_v1_annotator_a_42137",
+      "B": "human_annotation_delivery_v1_annotator_b_86491"
+    }
+  },
+  "annotation": {
+    "labels": [
+      "relevant",
+      "partially_relevant",
+      "not_relevant",
+      "insufficient_information"
+    ],
+    "notes_max_length": 1000,
+    "notes_optional": true
+  },
+  "annotators": [
+    {
+      "annotator_id": "anon-delivery-A",
+      "order_seed": 42137,
+      "side": "A"
+    },
+    {
+      "annotator_id": "anon-delivery-B",
+      "order_seed": 86491,
+      "side": "B"
+    }
+  ],
+  "contract": "human_annotation_delivery_v1",
+  "execution": {
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "official_scorer_call_count": 0,
+    "snapshot_write_count": 0
+  },
+  "expected_item_count": 471,
+  "public_item_fields": [
+    "alias",
+    "query",
+    "title",
+    "abstract",
+    "year"
+  ],
+  "readiness": {
+    "formal_validation_complete": false,
+    "real_label_state": "blocked_awaiting_real_annotators",
+    "statistics": null
+  },
+  "rubric": {
+    "current_sha256": "b6ce3491d5024b6b245f922221f7e8ec7f7546baa6ef57bf7ca38d3eebb9d0b5",
+    "prior_sha256": "2c4743364debefd4e315c6c92040341a1f18ad3fdf40893f7715af1f05e3c1c1"
+  },
+  "schema_version": "1",
+  "source_population": {
+    "current_count": 439,
+    "prior_referenced_count": 32
+  }
+}

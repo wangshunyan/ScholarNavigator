@@ -1,0 +1,183 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_validation_complete": false,
+  "missing_wheels": [
+    {
+      "groups": [
+        "runtime"
+      ],
+      "name": "annotated-doc",
+      "version": "0.0.4"
+    },
+    {
+      "groups": [
+        "runtime"
+      ],
+      "name": "annotated-types",
+      "version": "0.6.0"
+    },
+    {
+      "groups": [
+        "development",
+        "runtime"
+      ],
+      "name": "anyio",
+      "version": "4.13.0"
+    },
+    {
+      "groups": [
+        "development"
+      ],
+      "name": "certifi",
+      "version": "2025.8.3"
+    },
+    {
+      "groups": [
+        "runtime"
+      ],
+      "name": "click",
+      "version": "8.2.1"
+    },
+    {
+      "groups": [
+        "runtime"
+      ],
+      "name": "fastapi",
+      "version": "0.138.0"
+    },
+    {
+      "groups": [
+        "development",
+        "runtime"
+      ],
+      "name": "h11",
+      "version": "0.16.0"
+    },
+    {
+      "groups": [
+        "development"
+      ],
+      "name": "httpcore",
+      "version": "1.0.9"
+    },
+    {
+      "groups": [
+        "development"
+      ],
+      "name": "httpx",
+      "version": "0.28.1"
+    },
+    {
+      "groups": [
+        "development",
+        "runtime"
+      ],
+      "name": "idna",
+      "version": "3.7"
+    },
+    {
+      "groups": [
+        "development"
+      ],
+      "name": "iniconfig",
+      "version": "2.3.0"
+    },
+    {
+      "groups": [
+        "runtime"
+      ],
+      "name": "numpy",
+      "version": "2.4.6"
+    },
+    {
+      "groups": [
+        "development",
+        "runtime"
+      ],
+      "name": "packaging",
+      "version": "25.0"
+    },
+    {
+      "groups": [
+        "development"
+      ],
+      "name": "pluggy",
+      "version": "1.5.0"
+    },
+    {
+      "groups": [
+        "runtime"
+      ],
+      "name": "pydantic",
+      "version": "2.11.7"
+    },
+    {
+      "groups": [
+        "runtime"
+      ],
+      "name": "pydantic-core",
+      "version": "2.33.2"
+    },
+    {
+      "groups": [
+        "development"
+      ],
+      "name": "pygments",
+      "version": "2.19.1"
+    },
+    {
+      "groups": [
+        "development"
+      ],
+      "name": "pytest",
+      "version": "9.1.1"
+    },
+    {
+      "groups": [
+        "runtime"
+      ],
+      "name": "rank-bm25",
+      "version": "0.2.2"
+    },
+    {
+      "groups": [
+        "runtime"
+      ],
+      "name": "starlette",
+      "version": "1.2.0"
+    },
+    {
+      "groups": [
+        "runtime"
+      ],
+      "name": "typing-extensions",
+      "version": "4.15.0"
+    },
+    {
+      "groups": [
+        "runtime"
+      ],
+      "name": "typing-inspection",
+      "version": "0.4.2"
+    },
+    {
+      "groups": [
+        "runtime"
+      ],
+      "name": "uvicorn",
+      "version": "0.48.0"
+    }
+  ],
+  "protocol": "offline_wheelhouse_intake_v1",
+  "real_wheelhouse_qualified": false,
+  "schema_version": "1",
+  "status": "not_ready_missing_required_wheels",
+  "venv_results": []
+}

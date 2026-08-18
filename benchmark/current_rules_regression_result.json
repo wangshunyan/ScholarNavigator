@@ -1,0 +1,66 @@
+{
+  "baseline_profile_sha256": "393ba0b2f314ce4b0fc792de86e6da67fa97318ffce7f3c42621c3f3e4a29f2f",
+  "datasets": {
+    "auto_dev": {
+      "candidate_identity_sha256": "d6737a7b537b7c2dac81f71fcf6c4f2b9dccf42a173b99e6bf9c85c2396c3594",
+      "core_metrics": {
+        "candidate_recall": 0.15,
+        "f1_at_20": 0.017857142857142856,
+        "recall_at_20": 0.125
+      },
+      "core_metrics_sha256": "e42fd5c09a8df919e0a770fc504be8fc2eb8d76dd0b9edd9003194df3cc25c3a",
+      "gold_diagnostics_sha256": "4402852692678ed1a1c50596cdb4f761756403e2a34340ac0dc2e73531767ce2",
+      "query_count": 10,
+      "required_retrieval_key_count": 72,
+      "source_terminal_sha256": "b5c6ccc7b256ac4e8cb79f6fbce3e824453217a983a36404a76618d4150e0d5f"
+    },
+    "auto_val": {
+      "candidate_identity_sha256": "919fbee537b6903ee181469990bc54f3b7d5a21a945589126603501a89e1d730",
+      "core_metrics": {
+        "candidate_recall": 0.2,
+        "f1_at_20": 0.019047619047619046,
+        "recall_at_20": 0.2
+      },
+      "core_metrics_sha256": "194f082532b5cc8b69191637f756484a5ab3a314a9b05e27464571e9d4681d83",
+      "gold_diagnostics_sha256": "7224cf291f6b618b687bb74015e352607701a8eeae098183c383c11aa8fa2e6d",
+      "query_count": 5,
+      "required_retrieval_key_count": 34,
+      "source_terminal_sha256": "8a58b3902b16aedaeb705d1afcbac1891d6073fcd715475e5be2d871667efabe"
+    },
+    "scifact": {
+      "candidate_identity_sha256": "11e4980f4ccaa064e2969ffb903ead919139e8ac4fc8d104ec06d11f75e0387d",
+      "core_metrics": {
+        "candidate_recall": 0.12195121951219512,
+        "f1_at_20": 0.011614401858304297,
+        "recall_at_20": 0.12195121951219512
+      },
+      "core_metrics_sha256": "898d0e1d2d5377b9dee0ffa5227d5248c0dba224c827eae28e506e471aa32d04",
+      "evaluable_query_count": 41,
+      "gold_diagnostics_sha256": "f9d730c1e49d7f1954297636bf6a77b12591f4e26e2f3d35f5875d70053a0c96",
+      "query_count": 50,
+      "required_retrieval_key_count": 264,
+      "source_terminal_sha256": "11d2f7c65352081da8b2b9a1cc5936378c79adb6a98263cccb6c86174ca978f2"
+    }
+  },
+  "execution": {
+    "case_count": 65,
+    "drift_count": 0,
+    "external_record_in_gate": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "gate": "current_rules_frozen_replay_regression",
+  "interpretation": {
+    "engineering_gate_ready": true,
+    "formal_validation_progress": "Frozen dev/val/SciFact regression coverage only; this is not the independent 1000-query validation.",
+    "official_score": false
+  },
+  "manifest_sha256": "912a1488bc562dd6df44a248ea4d97199181ef207e561089f926c298194b337f",
+  "reproducibility": {
+    "byte_identical": true,
+    "observed_profile_sha256": "393ba0b2f314ce4b0fc792de86e6da67fa97318ffce7f3c42621c3f3e4a29f2f",
+    "regression_report_sha256": "08018899b0571cc7d974e53add8019314304fd8d172f0fe35a6528e1f9908750"
+  },
+  "schema_version": "1"
+}

@@ -1,0 +1,80 @@
+{
+  "activation": {
+    "credential_status": "not_checked",
+    "network_status": "not_checked",
+    "real_backup_created": false,
+    "real_run_started": false
+  },
+  "authority": {
+    "aggregate_requires_all_selected_shards": true,
+    "backup_source": "verified_committed_generations_only",
+    "compatibility_mirrors_authoritative": false,
+    "incomplete_or_revoked_attempts_excluded": true,
+    "launch_commit_mismatch_policy": "read_only_audit_only",
+    "resume_cursor_source": "latest_verified_committed_generation"
+  },
+  "backup": {
+    "content_address_algorithm": "sha256",
+    "incremental_parent_chain": true,
+    "manifest_publish": "same_directory_fsync_atomic_replace",
+    "prohibited_names": [
+      ".env",
+      "writer.lock"
+    ],
+    "prohibited_path_fragments": [
+      ".pending-",
+      ".tmp",
+      "__pycache__"
+    ],
+    "restore_requires_latest_backup": true
+  },
+  "bindings": {
+    "crash_consistency": {
+      "path": "benchmark/crash_consistency_v1_protocol.json",
+      "sha256": "24b1fbc1314275e3bfa56fc431df18a67102dbd90ccf482f5c12fd358356e920"
+    },
+    "execution_plan": {
+      "embedded_plan_sha256": "a75019fa8a4ed7ad66ffe316793ffd6330613316623b78e35f973260e63cb716",
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    "launch_control": {
+      "path": "benchmark/full1000_launch_control_v1_protocol.json",
+      "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+    },
+    "provider_capture_addendum": {
+      "path": "benchmark/full1000_provider_ingest_capture_addendum_v1.json",
+      "sha256": "38d87a09eb5b39ef14b53c26a523c6ade24682b14ce180cfd2b153cde9d7adc2"
+    },
+    "provider_ingest": {
+      "path": "benchmark/provider_ingest_provenance_v1_protocol.json",
+      "sha256": "29a4a687f8bec2d9c3f12f264b24e41df2519442182728dc424b101e578e6a77"
+    },
+    "resource_accounting": {
+      "path": "benchmark/resource_accounting_integrity_v1_protocol.json",
+      "sha256": "b465d2e8f555418bb4a6ac492a0879d307830bdd158ef18ff39de481a6c08f97"
+    },
+    "sharded_execution": {
+      "path": "benchmark/sharded_execution_integrity_v1_protocol.json",
+      "sha256": "4ef1b886e08dda5314887c104b8e39d22ddf4fe0a20c4a17a7d3f1f632331f95"
+    }
+  },
+  "formal_validation_complete": false,
+  "population": {
+    "query_count": 1000,
+    "query_order_sha256": "1d310756a0a5115ea33aec23939a4e9867302c85750448810252f174e5e74563",
+    "shard_count": 20
+  },
+  "protocol": "formal_run_disaster_recovery_v1",
+  "protocol_sha256": "db930449dc5903a7015fba72f557f25945f4b69f56b7ba84fedea03cce94393d",
+  "restore": {
+    "atomic_publish": true,
+    "empty_target_required": true,
+    "failed_restore_leaves_no_authoritative_partial": true,
+    "single_writer_lock": true,
+    "unknown_or_damaged_state": "fail_closed"
+  },
+  "schema_version": "1",
+  "score_scope": "disaster_recovery_only_not_quality_or_official_score",
+  "source_commit": "905b4d24aa50705eb6b95aa26a3e538795eb29d8"
+}

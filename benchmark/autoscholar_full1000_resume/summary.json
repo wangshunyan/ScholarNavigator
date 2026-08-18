@@ -1,0 +1,189 @@
+{
+  "audit": "autoscholar_full1000_snapshot_resume",
+  "bias_audit": {
+    "dataset_constraint": {
+      "false": {
+        "failed": 16,
+        "missing": 5,
+        "not_started": 5106,
+        "success": 1171,
+        "total": 6298
+      },
+      "true": {
+        "not_started": 459,
+        "success": 101,
+        "total": 560
+      }
+    },
+    "method_constraint": {
+      "false": {
+        "failed": 12,
+        "not_started": 3479,
+        "success": 804,
+        "total": 4295
+      },
+      "true": {
+        "failed": 4,
+        "missing": 5,
+        "not_started": 2086,
+        "success": 468,
+        "total": 2563
+      }
+    },
+    "query_length_quartile": {
+      "q1": {
+        "failed": 5,
+        "missing": 2,
+        "not_started": 1247,
+        "success": 337,
+        "total": 1591
+      },
+      "q2": {
+        "failed": 8,
+        "not_started": 1365,
+        "success": 319,
+        "total": 1692
+      },
+      "q3": {
+        "failed": 1,
+        "missing": 3,
+        "not_started": 1463,
+        "success": 304,
+        "total": 1771
+      },
+      "q4": {
+        "failed": 2,
+        "not_started": 1490,
+        "success": 312,
+        "total": 1804
+      }
+    },
+    "query_order_quartile": {
+      "q1": {
+        "failed": 6,
+        "missing": 5,
+        "not_started": 367,
+        "success": 722,
+        "total": 1100
+      },
+      "q2": {
+        "failed": 4,
+        "not_started": 1765,
+        "success": 185,
+        "total": 1954
+      },
+      "q3": {
+        "failed": 4,
+        "not_started": 1584,
+        "success": 186,
+        "total": 1774
+      },
+      "q4": {
+        "failed": 2,
+        "not_started": 1849,
+        "success": 179,
+        "total": 2030
+      }
+    },
+    "source": {
+      "arxiv": {
+        "failed": 6,
+        "not_started": 1028,
+        "success": 237,
+        "total": 1271
+      },
+      "openalex": {
+        "failed": 4,
+        "not_started": 1442,
+        "success": 64,
+        "total": 1510
+      },
+      "pubmed": {
+        "failed": 2,
+        "missing": 5,
+        "not_started": 1954,
+        "success": 959,
+        "total": 2920
+      },
+      "semantic_scholar": {
+        "failed": 4,
+        "not_started": 1141,
+        "success": 12,
+        "total": 1157
+      }
+    },
+    "subquery_count": {
+      "2": {
+        "failed": 13,
+        "not_started": 2663,
+        "success": 631,
+        "total": 3307
+      },
+      "3": {
+        "failed": 3,
+        "missing": 5,
+        "not_started": 2902,
+        "success": 641,
+        "total": 3551
+      }
+    },
+    "time_constraint": {
+      "false": {
+        "failed": 16,
+        "missing": 5,
+        "not_started": 5511,
+        "success": 1252,
+        "total": 6784
+      },
+      "true": {
+        "not_started": 54,
+        "success": 20,
+        "total": 74
+      }
+    }
+  },
+  "classification_closed": true,
+  "classification_counts": {
+    "failed": 16,
+    "missing": 5,
+    "not_started": 5565,
+    "success": 1272
+  },
+  "dataset": "auto_scholar_query",
+  "execution": {
+    "dataset_adapter_invoked": false,
+    "effectiveness_metrics_generated": false,
+    "evaluator_invoked": false,
+    "gold_fields_accessed": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "input_hashes": {
+    "frozen_plan_round": "2bb67fe11fa0c76df8dbeab121419c919b8f38fdabc53ccfa543a6f2c5065b3c",
+    "planning_baseline": "8442fd2ddba1ef29615749f7a1a75a77cb1f9393f9fc2bff9c96730dee198b37",
+    "query_input": "def16ce0f99a567db34e62db283c83ef8c30b200390b6120dd8bbe6cd936eedb",
+    "record_config": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+    "record_terminals_projection": "1bf8b4e239dc9ded36d742d6bcb231701e94d5784e565e6f2caae06415be7bf5",
+    "required_snapshot_state": "49529d4dc706a241aabb7fd047149fa722255048541546ecc9ada3b20a22549c",
+    "snapshot_manifest": "633252579b595605c2e925c1d5f626b2cf2ce4470a4af61eb473a89367cd8d17"
+  },
+  "record_terminal_case_count": 162,
+  "request_signature_drift_count": 0,
+  "required_key_count": 6858,
+  "resume_key_count": 5586,
+  "resume_source_counts": {
+    "arxiv": 1034,
+    "openalex": 1446,
+    "pubmed": 1961,
+    "semantic_scholar": 1145
+  },
+  "schedule": {
+    "max_consecutive_same_case": 1,
+    "max_consecutive_same_source": 1,
+    "policy_version": "autoscholar_full1000_resume_v1",
+    "requests_sha256": "9d59a48225325f2ffa670560ba0643039783b8e54b5184160766a7351b234fc5"
+  },
+  "schema_version": "1",
+  "scope": "missingness_and_execution_readiness_not_effectiveness"
+}

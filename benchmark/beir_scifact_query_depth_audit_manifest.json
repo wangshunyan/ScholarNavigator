@@ -1,0 +1,82 @@
+{
+  "audit": "scifact-query-depth-v1",
+  "base_commit": "fc9a1406d0471c5cdebfbc296e9f942759853824",
+  "dataset": "beir_scifact",
+  "split": "test",
+  "sample_query_count": 50,
+  "evaluable_gold_count": 42,
+  "target_indexed_query_miss_gold_count": 37,
+  "inputs": {
+    "dataset_sha256": "536e14446a0ba56ed1398ab1055f39fe852686ecad24a6306c80c490fa8e0165",
+    "sample_manifest_sha256": "a1c010060078a806cae5f79ee24e565b0546206144f9ac4e9fdc15d432318f9b",
+    "crosswalk_sha256": "ec7406107d13ddfd81ea1eca6f065c85dda25276f4ddb33abd568c5dd9d94d1c",
+    "baseline_results_sha256": "1fb1704d246801bb904882d8638dec4a6727637b3f3b42e4f20b69bf2ca75201",
+    "baseline_config_sha256": "37729b9c627b04b734a4ff03330122b9a2bf77bd71869f0b599fc6d7161727b8",
+    "oracle_gold_audit_sha256": "23d312a4e652efdd83a72cf8f515a166aa4545c1b622a7afa73f14e35fe41bd5",
+    "oracle_aggregate_sha256": "36629b8fe364018dd89904b9b55bdae67a6d5b1115bf72b1d136cb5d36a46b0b"
+  },
+  "request_plan": {
+    "planned_source_subquery_list_count": 800,
+    "unique_source_query_list_count": 650,
+    "unique_page_key_count": 978,
+    "max_depth": 200,
+    "prefixes": [20, 50, 100, 200],
+    "serial": true,
+    "request_wall_timeout_seconds": 35.0,
+    "max_retries": 1,
+    "consecutive_429_outage_threshold": 2,
+    "gold_fields_in_request_plan": false
+  },
+  "preflight": {
+    "openalex": {"status": "failed", "http_status": 429, "error_type": "http_429_rate_limit", "request_count": 2, "retry_count": 1},
+    "arxiv": {"status": "success", "http_status": 200, "error_type": null, "request_count": 1, "retry_count": 0},
+    "semantic_scholar": {"status": "success", "http_status": 200, "error_type": null, "request_count": 1, "retry_count": 0},
+    "pubmed": {"status": "success", "http_status": 200, "error_type": null, "request_count": 1, "retry_count": 0}
+  },
+  "snapshot": {
+    "file_count": 978,
+    "byte_count": 116395228,
+    "directory_sha256": "7b1e20e7424d40cb0e444d8179a48a84118407af8b735eddcfc828ba819589f3",
+    "page_status_by_source": {
+      "openalex": {"source_outage": 163},
+      "arxiv": {"success": 150, "failed": 9},
+      "semantic_scholar": {"success": 24, "failed": 25, "source_outage": 279},
+      "pubmed": {"success": 328}
+    },
+    "recorded_http_request_count": 667,
+    "retry_count": 34,
+    "error_count": 34,
+    "latency_seconds": 1345.362914009951,
+    "rate_limit_wait_seconds": 40.0,
+    "cache_hit_count": 0
+  },
+  "result": {
+    "retrieval_matched_gold_by_depth": {"20": 5, "50": 5, "100": 5, "200": 5},
+    "candidate_matched_gold_by_depth": {"20": 5, "50": 5, "100": 5, "200": 5},
+    "returned_gold_by_depth": {"20": 5, "50": 3, "100": 3, "200": 3},
+    "classification_counts": {
+      "current_depth_hit": 5,
+      "depth_21_50_hit": 0,
+      "depth_51_100_hit": 0,
+      "depth_101_200_hit": 0,
+      "depth_200_miss": 34,
+      "source_unavailable_or_incomplete": 3,
+      "identity_match_uncertain": 0
+    },
+    "target_37_classification_counts": {
+      "depth_200_miss": 34,
+      "source_unavailable_or_incomplete": 3
+    }
+  },
+  "replay": {
+    "http_request_count": 0,
+    "snapshot_write_count": 0,
+    "byte_identical_runs": true,
+    "artifact_hashes": {
+      "config.json": "c09c0cfcfded1140255cc8ac94af33598a7b7ede13ba053d8912ef3242e4c493",
+      "gold_depth_audit.jsonl": "c9cab5dc83bd9147c9b61fcfe43adebc85d42bc1f17c9ebccf3e6c7fac6f8f47",
+      "aggregate.json": "d82d715234544f3faef51d24283abb7df56e8b2312b6e35c6e3a782bdf6232f5"
+    }
+  },
+  "scope_note": "Gold is used only after retrieval replay for exact stable-identifier evaluation; this audit does not modify product retrieval."
+}

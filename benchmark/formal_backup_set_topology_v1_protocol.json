@@ -1,0 +1,78 @@
+{
+  "bindings": {
+    "backup_compaction": {
+      "path": "benchmark/formal_backup_compaction_v1_protocol.json",
+      "sha256": "d2cd787e26f31b025f73a97534fcfec5a70a23dedb8257e189ad89dacbb309a9"
+    },
+    "backup_target_attestation": {
+      "path": "benchmark/formal_backup_target_attestation_v1_protocol.json",
+      "sha256": "2cf63cbfed4e602f8e2ace4f766be80e7298f3819570bcb4f64c1bfa745b87a3"
+    },
+    "disaster_recovery": {
+      "path": "benchmark/formal_run_disaster_recovery_v1_protocol.json",
+      "sha256": "e6b646df73fee75421e33894a73f60cb6f4e00f509a09a103766f68310a20467"
+    },
+    "execution_plan": {
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    "host_attestation": {
+      "path": "benchmark/formal_execution_host_attestation_v1_protocol.json",
+      "sha256": "095bbe731aa461dfa1999080cb916757ecce8f737c19e823aa1173b8663a7681"
+    },
+    "launch_control": {
+      "path": "benchmark/full1000_launch_control_v1_protocol.json",
+      "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+    },
+    "multivolume_storage": {
+      "path": "benchmark/formal_multivolume_storage_v1_protocol.json",
+      "sha256": "ae6ecc5691ce9cde6a0780c4c4276067e1cefb3154ffe3ff3cefac1c54e87e5c"
+    },
+    "portable_execution_site": {
+      "path": "benchmark/portable_execution_site_attestation_v1_protocol.json",
+      "sha256": "10d49ae0e80ddd00edfa84ba676985f5104cad1b428a7cb2ba613f95858d7ead"
+    },
+    "shard_streaming_retention": {
+      "path": "benchmark/formal_shard_streaming_retention_v1_protocol.json",
+      "sha256": "5673ac2c73873c4c0f96cee14db93d37360f9f304d8a7c2a7181aa89f10a2099"
+    },
+    "storage_governance": {
+      "path": "benchmark/formal_run_storage_governance_v1_protocol.json",
+      "sha256": "bb78967820aba3c223c0638adbda9b0779cc7cecffcb718fa22a06f352c9d5c1"
+    }
+  },
+  "capacity_model_sha256": "569ceee71493d22b523d40bda7e9d4994e69477a2a6c0993a40dcb4225f33837",
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "policy": {
+    "ability_default_enabled": false,
+    "aggregate_member_index": 0,
+    "complete_set_required_for_restore": true,
+    "cross_member_atomic_rename_required": false,
+    "member_redundancy_claimed": false,
+    "one_complete_archive_per_shard": true,
+    "quota_pool_overlap_allowed": false,
+    "single_blob_split_allowed": false,
+    "single_target_default_changed": false
+  },
+  "population": {
+    "active_shard_window": 4,
+    "query_count": 1000,
+    "shard_count": 20,
+    "supported_member_counts": [
+      2,
+      3,
+      4
+    ]
+  },
+  "protocol": "formal_backup_set_topology_v1",
+  "protocol_sha256": "2ca567202f133147b49ecabaa74b74ea932398dc37f1edf909a3b553a91370bb",
+  "schema_version": "1",
+  "source_commit": "6acc9722438c79481609b01c0f64feac0cb98e24"
+}

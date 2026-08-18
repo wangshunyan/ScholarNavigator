@@ -1,0 +1,101 @@
+{
+  "audit": "relevance_filter_false_negative_calibration_v1",
+  "implementation_base_commit": "22a39e9362bc5ab93d08914ebc24ef23177ece96",
+  "manifest": "benchmark/relevance_filter_audit_manifest.json",
+  "scope": {
+    "network_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0,
+    "production_logic_changed": false,
+    "counterfactual": "remove exactly one frozen score rule or the return-category gate; no threshold search and no combinations",
+    "counterfactual_is_deployable_score": false
+  },
+  "scifact": {
+    "case_count": 50,
+    "evaluable_gold_relation_count": 42,
+    "local_bm25_candidate_gold_relation_count": 32,
+    "candidate_recall": 0.7560975609756098,
+    "filtered_gold_relation_count": 12,
+    "gold_false_negative_rate": 0.375,
+    "higher_ranked_non_gold_comparison_count": 340,
+    "filtered_root_causes": {
+      "query_parsing_missing": 0,
+      "field_text_missing": 0,
+      "morphology_or_abbreviation_mismatch": 6,
+      "constraint_penalty": 2,
+      "fixed_threshold": 2,
+      "category_priority": 2,
+      "other": 0
+    },
+    "gold_score_distribution": {
+      "count": 32,
+      "min": 0.0,
+      "q1": 0.34875,
+      "median": 0.55525,
+      "q3": 0.66,
+      "max": 0.715,
+      "mean": 0.49277187499999997
+    },
+    "higher_ranked_non_gold_score_distribution": {
+      "count": 340,
+      "min": 0.0,
+      "q1": 0.21,
+      "median": 0.34,
+      "q3": 0.551,
+      "max": 0.715,
+      "mean": 0.38548117647058827
+    },
+    "current": {
+      "recall_at_20": 0.4634146341463415,
+      "f1_at_20": 0.04624643649033893,
+      "returned_gold_relations": 20
+    },
+    "single_rule_counterfactuals": {
+      "remove_return_category_gate": {
+        "recall_at_20": 0.6097560975609756,
+        "f1_at_20": 0.06018371872030408,
+        "delta_gold_relations": 6
+      },
+      "each_individual_negative_score_component": {
+        "delta_recall_at_20": 0.0,
+        "delta_f1_at_20": 0.0,
+        "delta_gold_relations": 0
+      }
+    }
+  },
+  "auto_scholar_query": {
+    "development": {
+      "case_count": 10,
+      "candidate_gold_relation_count": 3,
+      "filtered_gold_relation_count": 1,
+      "gold_false_negative_rate": 0.3333333333333333,
+      "filtered_root_causes": {
+        "morphology_or_abbreviation_mismatch": 1
+      },
+      "all_single_rule_counterfactual_deltas": 0
+    },
+    "validation": {
+      "case_count": 5,
+      "candidate_gold_relation_count": 1,
+      "filtered_gold_relation_count": 0,
+      "gold_false_negative_rate": 0.0,
+      "all_single_rule_counterfactual_deltas": 0
+    },
+    "evidence_limit": "Only four frozen candidate-gold relations were observable across dev and validation; this is diagnostic evidence, not a population estimate."
+  },
+  "interpretation": {
+    "cross_dataset_observed_pattern": "conservative punctuation, morphology, or abbreviation mismatch",
+    "worth_default_off_followup": true,
+    "followup_scope": "separately benchmark a conservative lexical-normalization alternative; do not change thresholds or production defaults from this audit",
+    "reason": "The lexical pattern appears in six SciFact filtered gold relations and the one frozen Auto development false negative, while deleting any individual existing negative score component recovers no final gold."
+  },
+  "determinism": {
+    "run_1": "outputs/benchmark_runs/relevance_filter_audit_22a39e9_r1",
+    "run_2": "outputs/benchmark_runs/relevance_filter_audit_22a39e9_r2",
+    "aggregate_sha256": "1c3d9734f47985c952d015bcde06497fd8f4abf81fa4dfd086b24cd95207fa21",
+    "case_audit_sha256": "3f67b931edabf46f084bceff2181f34d54cae4713165aa9645615d39d66f9033",
+    "candidate_audit_sha256": "0c54226724cc8b88469878997bfaee593f256f8d92c8aa82307f050ec078a24d",
+    "filtered_gold_chains_sha256": "ea3ddd6da962b2eb10d5b416fd9ebdab28379b1cbe88061cc9f74dfecf43b42a",
+    "byte_identical": true
+  }
+}

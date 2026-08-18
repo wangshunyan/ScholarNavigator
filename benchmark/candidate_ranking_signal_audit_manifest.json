@@ -1,0 +1,79 @@
+{
+  "audit": "candidate_ranking_signal_separability",
+  "implementation_base_commit": "10082ff34f6604cc5250378a590d6f72335f464f",
+  "schema_version": "1",
+  "frozen_inputs": [
+    {
+      "case_count": 50,
+      "crosswalk_path": "benchmark/beir_scifact_s2_crosswalk.json",
+      "dataset": "beir_scifact",
+      "label": "scifact_local_bm25",
+      "run_dir": "outputs/benchmark_runs/local_bm25_28db182_scifact_five_source_final_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/local_bm25_28db182_scifact_five_source"
+    },
+    {
+      "case_count": 10,
+      "dataset": "auto_scholar_query",
+      "label": "auto_dev",
+      "run_dir": "outputs/benchmark_runs/llm_rewrite_8731726_auto_dev_baseline_fresh_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_auto_dev_baseline_retrieval"
+    },
+    {
+      "case_count": 5,
+      "dataset": "auto_scholar_query",
+      "label": "auto_val",
+      "run_dir": "outputs/benchmark_runs/llm_rewrite_8731726_auto_val_baseline_fresh_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_auto_val_baseline_retrieval"
+    }
+  ],
+  "candidate_scope": {
+    "stage": "initial_reranked",
+    "description": "unified-identity deduplicated and globally budgeted candidates before relevance filtering",
+    "filter_state": "frozen_and_reported_but_not_reapplied",
+    "gold_access": "after_candidate_and_score_reconstruction_only"
+  },
+  "signals": [
+    {
+      "name": "existing_composite_score",
+      "primary": "frozen initial_reranked rank validated against final_score and reconstructed score components",
+      "tie_break": "frozen deterministic current_rules order"
+    },
+    {
+      "name": "best_reciprocal_rank",
+      "primary": "1 / minimum positive source_rank across unique provenance lists; missing rank scores 0",
+      "tie_break": "stable unified candidate identity ascending"
+    },
+    {
+      "name": "support_list_count",
+      "primary": "count of unique (source, adapted_query) provenance lists",
+      "tie_break": "stable unified candidate identity ascending"
+    },
+    {
+      "name": "support_source_count",
+      "primary": "count of unique sources across provenance lists",
+      "tie_break": "stable unified candidate identity ascending"
+    }
+  ],
+  "cutoffs": [
+    20,
+    50,
+    100
+  ],
+  "strict_comparable_subset": {
+    "requires_case_success": true,
+    "requires_all_executed_retrieval_calls_success": true,
+    "requires_all_candidate_provenance_complete": true,
+    "non_executed_adaptive_calls_are_not_failures": true
+  },
+  "interpretation": {
+    "unmatched_candidates": "benchmark-unmatched only; not reliable human negatives",
+    "no_weight_fitting": true,
+    "no_signal_combination_search": true,
+    "production_change": false
+  },
+  "execution": {
+    "network_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0
+  }
+}

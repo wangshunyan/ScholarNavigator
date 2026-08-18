@@ -1,0 +1,133 @@
+{
+  "profiles": [
+    {
+      "downstream_excluded_count": 2,
+      "downstream_main_analysis_count": 160,
+      "expected_query_count": 162,
+      "frozen_files": [
+        {
+          "path": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1/config.json",
+          "sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+          "size_bytes": 37307
+        },
+        {
+          "path": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1/dataset_report.json",
+          "sha256": "58e34827db79efbb403f4ae331eb2ff08ed34ad0a7ccfc2f3667daf75954437f",
+          "size_bytes": 527
+        },
+        {
+          "path": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1/failures.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "path": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1/results.jsonl",
+          "sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+          "size_bytes": 62704960
+        },
+        {
+          "path": "outputs/benchmark_snapshots/autoscholar_current_rules_full1000_3cd47c1/manifest.json",
+          "sha256": "633252579b595605c2e925c1d5f626b2cf2ce4470a4af61eb473a89367cd8d17",
+          "size_bytes": 947027
+        },
+        {
+          "path": "benchmark/autoscholar_query_planning_input.jsonl",
+          "sha256": "def16ce0f99a567db34e62db283c83ef8c30b200390b6120dd8bbe6cd936eedb",
+          "size_bytes": 155536
+        },
+        {
+          "path": "benchmark/autoscholar_full1000_resume/resume_manifest.json",
+          "sha256": "61ab793bde734f1798dc04be048c06ead58bde844d85bb5dd4b903dea4906f81",
+          "size_bytes": 5425107
+        },
+        {
+          "path": "src/scholar_agent/prompts/manifest.json",
+          "sha256": "4a699e7fda4a04b79f69c414283c9cfdad8b050955f0d4e042b5ab610dff4ff5",
+          "size_bytes": 1056
+        }
+      ],
+      "missing_run_manifest_v1_fields": [
+        "determinism.parameters",
+        "determinism.random_seed",
+        "evaluator.name",
+        "evaluator.version",
+        "git.allowed_dirty_paths",
+        "lineage.checkpoint_id",
+        "lineage.parent",
+        "manifest_kind",
+        "outputs",
+        "progress.completed_count_claim",
+        "queries.order_sha256",
+        "queries.stable_identity_sha256",
+        "schema_version"
+      ],
+      "profile_id": "autoscholar_record160_analysis_input",
+      "results_path": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1/results.jsonl"
+    },
+    {
+      "downstream_excluded_count": null,
+      "downstream_main_analysis_count": null,
+      "expected_query_count": 1000,
+      "frozen_files": [
+        {
+          "path": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1/config.json",
+          "sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+          "size_bytes": 37307
+        },
+        {
+          "path": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1/dataset_report.json",
+          "sha256": "58e34827db79efbb403f4ae331eb2ff08ed34ad0a7ccfc2f3667daf75954437f",
+          "size_bytes": 527
+        },
+        {
+          "path": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1/failures.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 0
+        },
+        {
+          "path": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1/results.jsonl",
+          "sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+          "size_bytes": 62704960
+        },
+        {
+          "path": "outputs/benchmark_snapshots/autoscholar_current_rules_full1000_3cd47c1/manifest.json",
+          "sha256": "633252579b595605c2e925c1d5f626b2cf2ce4470a4af61eb473a89367cd8d17",
+          "size_bytes": 947027
+        },
+        {
+          "path": "benchmark/autoscholar_query_planning_input.jsonl",
+          "sha256": "def16ce0f99a567db34e62db283c83ef8c30b200390b6120dd8bbe6cd936eedb",
+          "size_bytes": 155536
+        },
+        {
+          "path": "benchmark/autoscholar_full1000_resume/resume_manifest.json",
+          "sha256": "61ab793bde734f1798dc04be048c06ead58bde844d85bb5dd4b903dea4906f81",
+          "size_bytes": 5425107
+        },
+        {
+          "path": "src/scholar_agent/prompts/manifest.json",
+          "sha256": "4a699e7fda4a04b79f69c414283c9cfdad8b050955f0d4e042b5ab610dff4ff5",
+          "size_bytes": 1056
+        }
+      ],
+      "missing_run_manifest_v1_fields": [
+        "determinism.parameters",
+        "determinism.random_seed",
+        "evaluator.name",
+        "evaluator.version",
+        "git.allowed_dirty_paths",
+        "lineage.checkpoint_id",
+        "lineage.parent",
+        "manifest_kind",
+        "outputs",
+        "progress.completed_count_claim",
+        "queries.order_sha256",
+        "queries.stable_identity_sha256",
+        "schema_version"
+      ],
+      "profile_id": "autoscholar_full1000_frozen_baseline",
+      "results_path": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1/results.jsonl"
+    }
+  ],
+  "schema_version": "1"
+}

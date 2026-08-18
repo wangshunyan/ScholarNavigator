@@ -1,0 +1,149 @@
+{
+  "audit": "autoscholar_query_gold_leakage_v1",
+  "classification": {
+    "mutually_exclusive_priority": [
+      "identifier_or_url_exact",
+      "quoted_title_exact",
+      "normalized_title_full",
+      "title_token_high_coverage",
+      "no_detected_leakage"
+    ],
+    "relation_unit": "ordered query-gold relation",
+    "rule_hits": "all deterministic rule hits are retained as evidence; terminal level uses the fixed priority"
+  },
+  "evidence": {
+    "identifier_snippet_context_characters": 48,
+    "quoted_span_pairs": [
+      "\"\"",
+      "“”",
+      "‘’",
+      "《》"
+    ],
+    "title_token_evidence": "matched informative title tokens in normalized title order"
+  },
+  "execution": {
+    "gold_scope": "offline_evaluator_validity_audit_only",
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "frozen_sets": {
+    "auto_dev": "existing frozen AutoScholarQuery development 0/10 Replay",
+    "auto_val": "existing frozen AutoScholarQuery validation 10/5 Replay",
+    "autoscholar_record160": "existing frozen 162-case Record audit; 160 cases with at least one successful source are analyzed and 2 no-success cases remain explicit",
+    "scifact": "existing frozen SciFact 50-case Replay, classified independently with the same detector"
+  },
+  "identifier_matching": {
+    "arxiv": "normalized arXiv ID with token boundaries, including bare ID, arXiv prefix, abs/pdf URL and 10.48550/arXiv DOI forms",
+    "doi": "normalized DOI with token boundaries, including doi prefix and doi.org URL forms",
+    "other_stable_ids": "exact normalized value with field-specific prefix or official URL when present",
+    "substring_only_without_boundaries": false,
+    "url_query_decoding": false
+  },
+  "interpretation": {
+    "high_validity_risk": "any direct identifier/title leakage affects at least 1 percent of queries, or any leakage level affects at least 5 percent of queries",
+    "hit_concentration": "descriptive only: compare leaked relation/query share among frozen matched results with its underlying share; no inferential significance claim",
+    "low_validity_risk": "all leakage affects less than 1 percent of queries",
+    "moderate_validity_risk": "between the low and high criteria",
+    "non_leak_subset": "diagnostic stratum reported beside full frozen results; never replaces the full result"
+  },
+  "normalization": {
+    "identifier": [
+      "unicode_nfkc",
+      "casefold",
+      "shared identity.py field normalizers"
+    ],
+    "query_and_title": [
+      "html_entity_unescape",
+      "unicode_nfkc",
+      "casefold",
+      "unicode punctuation and underscore to spaces",
+      "collapse whitespace"
+    ],
+    "semantic_or_fuzzy_matching": false,
+    "tokenizer": "Unicode word tokens excluding underscore"
+  },
+  "schema_version": "1",
+  "stopwords": [
+    "a",
+    "an",
+    "and",
+    "approach",
+    "approaches",
+    "are",
+    "as",
+    "at",
+    "based",
+    "be",
+    "been",
+    "being",
+    "by",
+    "can",
+    "could",
+    "did",
+    "do",
+    "does",
+    "evaluation",
+    "for",
+    "from",
+    "had",
+    "has",
+    "have",
+    "how",
+    "in",
+    "into",
+    "is",
+    "it",
+    "its",
+    "may",
+    "method",
+    "methods",
+    "might",
+    "model",
+    "models",
+    "novel",
+    "of",
+    "on",
+    "or",
+    "our",
+    "paper",
+    "problem",
+    "problems",
+    "proposed",
+    "research",
+    "result",
+    "results",
+    "should",
+    "study",
+    "studies",
+    "task",
+    "tasks",
+    "that",
+    "the",
+    "their",
+    "these",
+    "this",
+    "those",
+    "to",
+    "using",
+    "was",
+    "were",
+    "what",
+    "when",
+    "where",
+    "which",
+    "who",
+    "why",
+    "will",
+    "with",
+    "would"
+  ],
+  "thresholds": {
+    "high_coverage_minimum_informative_title_tokens": 5,
+    "high_coverage_ratio": 0.8,
+    "minimum_normalized_title_characters": 24,
+    "minimum_normalized_title_tokens": 3,
+    "shorter_titles_are_protected_from_all_title_rules": true
+  },
+  "version": "query-gold-leakage-protocol-v1"
+}

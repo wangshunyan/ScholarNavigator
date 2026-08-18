@@ -1,0 +1,190 @@
+{
+  "outputs": [
+    {
+      "query": "latest LLM reranking methods for scientific literature retrieval",
+      "requested_sources": ["openalex", "arxiv"],
+      "raw_count": 1,
+      "deduplicated_count": 1,
+      "papers": [
+        {
+          "title": "LLM Reranking for Scientific Literature Retrieval",
+          "authors": ["Alice Chen"],
+          "year": 2025,
+          "venue": "ACL",
+          "abstract": "This paper studies LLM reranking methods for scientific literature retrieval with ranking evidence and evaluation.",
+          "identifiers": {
+            "doi": "10.123/baseline",
+            "openalex_id": "WBASE"
+          },
+          "sources": ["fixture-openalex"],
+          "citation_count": 120
+        }
+      ],
+      "source_stats": [
+        {
+          "source": "fixture-openalex",
+          "returned_count": 1,
+          "latency_seconds": 0.01,
+          "error_message": null
+        }
+      ],
+      "warnings": [],
+      "latency_seconds": 0.01
+    },
+    {
+      "query": "LLM reranking methods scientific literature retrieval",
+      "requested_sources": ["openalex", "arxiv"],
+      "raw_count": 1,
+      "deduplicated_count": 1,
+      "papers": [
+        {
+          "title": "LLM Reranking for Scientific Literature Retrieval",
+          "authors": ["Alice Chen"],
+          "year": 2025,
+          "venue": "ACL",
+          "abstract": "This paper studies LLM reranking methods for scientific literature retrieval with ranking evidence and evaluation.",
+          "identifiers": {
+            "doi": "10.123/baseline",
+            "openalex_id": "WBASE"
+          },
+          "sources": ["fixture-arxiv"],
+          "citation_count": 120
+        }
+      ],
+      "source_stats": [
+        {
+          "source": "fixture-arxiv",
+          "returned_count": 1,
+          "latency_seconds": 0.01,
+          "error_message": null
+        }
+      ],
+      "warnings": [],
+      "latency_seconds": 0.01
+    },
+    {
+      "query": "recent advances LLM reranking methods scientific literature retrieval 2023-2026",
+      "requested_sources": ["openalex", "arxiv"],
+      "raw_count": 1,
+      "deduplicated_count": 1,
+      "papers": [
+        {
+          "title": "LLM Reranking for Scientific Literature Retrieval",
+          "authors": ["Alice Chen"],
+          "year": 2025,
+          "venue": "ACL",
+          "abstract": "This paper studies LLM reranking methods for scientific literature retrieval with ranking evidence and evaluation.",
+          "identifiers": {
+            "doi": "10.123/baseline",
+            "openalex_id": "WBASE"
+          },
+          "sources": ["fixture-openalex"],
+          "citation_count": 120
+        }
+      ],
+      "source_stats": [
+        {
+          "source": "fixture-openalex",
+          "returned_count": 1,
+          "latency_seconds": 0.01,
+          "error_message": "fixture simulated source warning"
+        }
+      ],
+      "warnings": ["fixture simulated source warning"],
+      "latency_seconds": 0.01
+    },
+    {
+      "query": "LLM reranking methods scientific literature retrieval recent advances",
+      "requested_sources": ["openalex", "arxiv"],
+      "raw_count": 1,
+      "deduplicated_count": 1,
+      "papers": [
+        {
+          "title": "Recent Advances in LLM Reranking for Scientific Literature Retrieval",
+          "authors": ["Bao Li"],
+          "year": 2025,
+          "venue": "SIGIR",
+          "abstract": "Recent advances in LLM reranking for scientific literature retrieval improve recall and evidence-aware ranking.",
+          "identifiers": {
+            "doi": "10.123/evolved",
+            "openalex_id": "WEVOLVED"
+          },
+          "sources": ["fixture-openalex"],
+          "citation_count": 80
+        }
+      ],
+      "source_stats": [
+        {
+          "source": "fixture-openalex",
+          "returned_count": 1,
+          "latency_seconds": 0.01,
+          "error_message": null
+        }
+      ],
+      "warnings": [],
+      "latency_seconds": 0.01
+    },
+    {
+      "query": "llm reranking retrieval methods literature scientific",
+      "requested_sources": ["openalex", "arxiv"],
+      "raw_count": 1,
+      "deduplicated_count": 1,
+      "papers": [
+        {
+          "title": "Recent Advances in LLM Reranking for Scientific Literature Retrieval",
+          "authors": ["Bao Li"],
+          "year": 2025,
+          "venue": "SIGIR",
+          "abstract": "Recent advances in LLM reranking for scientific literature retrieval improve recall and evidence-aware ranking.",
+          "identifiers": {
+            "doi": "10.123/evolved",
+            "openalex_id": "WEVOLVED"
+          },
+          "sources": ["fixture-arxiv"],
+          "citation_count": 80
+        }
+      ],
+      "source_stats": [
+        {
+          "source": "fixture-arxiv",
+          "returned_count": 1,
+          "latency_seconds": 0.01,
+          "error_message": null
+        }
+      ],
+      "warnings": [],
+      "latency_seconds": 0.01
+    },
+    {
+      "query": "LLM reranking methods literature retrieval scientific",
+      "requested_sources": ["openalex", "arxiv"],
+      "raw_count": 1,
+      "deduplicated_count": 1,
+      "papers": [
+        {
+          "title": "Recent Advances in LLM Reranking for Scientific Literature Retrieval",
+          "authors": ["Bao Li"],
+          "year": 2025,
+          "venue": "SIGIR",
+          "abstract": "Recent advances in LLM reranking for scientific literature retrieval improve recall and evidence-aware ranking.",
+          "identifiers": {
+            "doi": "10.123/evolved",
+            "openalex_id": "WEVOLVED"
+          },
+          "sources": ["fixture-openalex", "fixture-arxiv"],
+          "citation_count": 80
+        }
+      ],
+      "source_stats": [
+        {
+          "source": "fixture-openalex",
+          "returned_count": 1,
+          "latency_seconds": 0.01,
+          "error_message": null
+        }
+      ],
+      "warnings": [],
+      "latency_seconds": 0.01
+    }
+  ]
+}

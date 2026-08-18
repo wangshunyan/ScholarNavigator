@@ -1,0 +1,61 @@
+{
+  "aggregate_sha256": "c4ecc0fa6e358233c22c8feaab233a05ea49fa28665504156c9754ff9b57476e",
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "migration_method": "backup_verify_empty_restore_reattest",
+  "multivolume_result_sha256": "49bd5ddd7b429ea7a3c32d531ca88502dcd75751a7e5b1b00002da7e61000011",
+  "protocol": "formal_multivolume_storage_v1",
+  "query_count": 1000,
+  "result_equivalent": true,
+  "scenario_count": 9,
+  "scenarios": [
+    {
+      "scenario": "dual_volume_qualified_single_volume_each_insufficient",
+      "status": "multivolume_storage_ready"
+    },
+    {
+      "scenario": "capacity_fragmentation",
+      "status": "rejected"
+    },
+    {
+      "scenario": "inode_shortage",
+      "status": "rejected"
+    },
+    {
+      "scenario": "volume_disappeared",
+      "status": "rejected"
+    },
+    {
+      "scenario": "mount_identity_replaced",
+      "status": "rejected"
+    },
+    {
+      "scenario": "single_volume_enospc",
+      "status": "rejected"
+    },
+    {
+      "scenario": "cross_volume_restore",
+      "status": "authorized"
+    },
+    {
+      "scenario": "double_writer",
+      "status": "rejected"
+    },
+    {
+      "scenario": "aggregate_matches_uninterrupted",
+      "status": "equivalent"
+    }
+  ],
+  "schema_version": "1",
+  "shard_count": 20,
+  "status": "multivolume_storage_ready",
+  "topology_sha256": "7dba08c029e030025ab946c80d04001f93a91349dbb0cf22dfc999527797a77b",
+  "uninterrupted_result_sha256": "49bd5ddd7b429ea7a3c32d531ca88502dcd75751a7e5b1b00002da7e61000011"
+}

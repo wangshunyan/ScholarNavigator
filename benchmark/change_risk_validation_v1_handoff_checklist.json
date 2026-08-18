@@ -1,0 +1,36 @@
+{
+  "checklist": [
+    {
+      "action": "generate_plan_before_validation",
+      "required": true
+    },
+    {
+      "action": "execute_every_required_validation",
+      "required": true
+    },
+    {
+      "action": "record_explicit_skip_reasons",
+      "required": true
+    },
+    {
+      "action": "regenerate_plan_after_semantic_diff_change",
+      "required": true
+    },
+    {
+      "action": "upgrade_full_pytest_on_high_or_anomaly",
+      "required": true
+    },
+    {
+      "action": "verify_attestation_against_final_source_identity",
+      "required": true
+    },
+    {
+      "action": "confirm_head_upstream_and_preserved_submodule_state",
+      "required": true
+    }
+  ],
+  "formal_validation_complete": false,
+  "protocol": "change_risk_validation_v1",
+  "schema_version": "1",
+  "source_commit": "9654075256e719dd448bf56f53fe6f64c10f542a"
+}

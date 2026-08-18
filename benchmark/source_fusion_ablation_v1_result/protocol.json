@@ -1,0 +1,120 @@
+{
+  "analysis": "source_fusion_ablation_v1",
+  "analysis_population": {
+    "excluded_case_count": 2,
+    "exclusion_rule": "reuse the frozen Record160 rule excluded_no_successful_source; no new or post-hoc exclusion is allowed",
+    "main_case_count": 160,
+    "record_case_count": 162,
+    "selection_prohibitions": [
+      "gold",
+      "qrels",
+      "case_id",
+      "target_paper",
+      "quality_score",
+      "observed_ablation_result"
+    ]
+  },
+  "bootstrap": {
+    "confidence_level": 0.95,
+    "iterations": 20000,
+    "method": "percentile_resampling_of_frozen_query_connected_components_with_replacement",
+    "seed": 20260722,
+    "stream_derivation": "base seed XOR first 64 bits of SHA-256(source NUL metric)"
+  },
+  "comparison_family": {
+    "alpha": 0.05,
+    "correction": "holm_bonferroni",
+    "family_definition": "the four leave-one-source-out comparisons within each preregistered metric",
+    "permutation_iterations": 20000,
+    "permutation_method": "two_sided_cluster_sign_flip",
+    "permutation_seed": 20260722
+  },
+  "execution": {
+    "gold_access": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "frozen_input": {
+    "component_assignments": {
+      "path": "benchmark/autoscholar_query_independence_baseline/query_assignments.jsonl",
+      "sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5"
+    },
+    "config_sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+    "record_results_sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+    "run_dir": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1",
+    "snapshot_dir": "outputs/benchmark_snapshots/autoscholar_current_rules_full1000_3cd47c1",
+    "snapshot_file_count": 1934,
+    "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5"
+  },
+  "identity": {
+    "diagnostic_identity": "SHA-256 of the unified identity profile; no paper identifiers or titles are emitted",
+    "normalization_version": "unified_identity_v1",
+    "production_implementation": "scholar_agent.core.identity and scholar_agent.core.dedup"
+  },
+  "implementation_base_commit": "ae5a0cdb75efcdf78a6848b5adfc39e24cac2a63",
+  "metrics": {
+    "full_and_variants": [
+      "top20_fill_count",
+      "unified_identity_count"
+    ],
+    "leave_one_source_out_vs_full": [
+      "full_top20_identity_loss_count",
+      "top20_jaccard",
+      "rank_biased_overlap",
+      "shared_identity_mean_absolute_rank_displacement"
+    ],
+    "source_contribution": [
+      "source_exclusive_identity_count",
+      "source_redundant_identity_count",
+      "source_pair_overlap_count",
+      "source_empty_response_rate"
+    ],
+    "source_contribution_scope": "successful frozen response papers after production identity deduplication and before the global candidate limit",
+    "top20_scope": "production current_rules relevance selection after ranking, capped at 20"
+  },
+  "multiple_comparison_metrics": [
+    "top20_fill_count",
+    "unified_identity_count",
+    "full_top20_identity_loss_count",
+    "top20_jaccard",
+    "rank_biased_overlap",
+    "shared_identity_mean_absolute_rank_displacement"
+  ],
+  "ranking": {
+    "candidate_limit": 200,
+    "candidate_merge": "frozen logical call order, production unified identity deduplication, then production stable source-coverage truncation",
+    "full_reconstruction": "must exactly match frozen initial_deduplicated, initial_judged, initial_reranked and final_returned stages for every included query",
+    "judgement_policy": "current_rules",
+    "ranking_policy": "current_rules",
+    "result_policy": "highly_and_partial",
+    "top_k": 20
+  },
+  "rbo": {
+    "depth": 20,
+    "persistence": 0.9,
+    "version": "finite_extrapolated_rbo_v1"
+  },
+  "schema_version": "1",
+  "sources": [
+    "openalex",
+    "arxiv",
+    "semantic_scholar",
+    "pubmed"
+  ],
+  "statistical_unit": {
+    "component_effect": "query-equal mean within each frozen component",
+    "estimand": "equal mean over frozen connected components",
+    "membership": "reuse component_id from the frozen query assignment file without recomputation"
+  },
+  "terminal_semantics": {
+    "main_inclusion": "at least one configured source has at least one authoritative success Snapshot",
+    "source_state": "success, partial_failure, failed, or not_started; timeout is failure and cooldown without a Snapshot is not_started",
+    "subquery_timeout": "a zero-candidate timeout before source dispatch remains an unassigned terminal and is never attributed to a source"
+  },
+  "warnings": [
+    "Coverage and rank stability are not relevance, Precision, Recall, or an official score.",
+    "Frozen source failures remain in the fixed 160-query population and are not used for post-hoc filtering.",
+    "Full1000 completeness is outside this analysis."
+  ]
+}

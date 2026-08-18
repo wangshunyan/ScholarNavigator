@@ -1,0 +1,22 @@
+{
+  "analysis": "source_reliability_diagnostics_v1",
+  "files": {
+    "aggregate": {
+      "path": "aggregate.json",
+      "sha256": "65407e5c3dd992cd418e9f7c5509c2508cf1a688a676bd156a7b980a1f5bea87",
+      "size": 34669
+    },
+    "case_diagnostics": {
+      "path": "case_diagnostics.jsonl",
+      "sha256": "497decf2a56f3de84c80e5ec4a358582bddef712d84d46667d3e482d874b5de5",
+      "size": 1139305
+    },
+    "protocol": {
+      "path": "protocol.json",
+      "sha256": "2ff663743f8ade08481a19d4c8364b87e4ac401700d6cd3f90b84a139f6904e5",
+      "size": 8735
+    }
+  },
+  "schema_version": "1",
+  "status": "completed"
+}

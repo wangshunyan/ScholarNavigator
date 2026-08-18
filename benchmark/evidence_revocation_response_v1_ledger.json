@@ -1,0 +1,9 @@
+{
+  "events": [],
+  "formal_validation_complete": false,
+  "ledger_sha256": "633bae80ed531cad7ee577a1b515ddfbc41545e711d987f0fbc5ca91bbca54d3",
+  "protocol": "evidence_revocation_response_v1",
+  "protocol_sha256": "55558267bdf7193e5b69905b25b4920f34affbb3c259637f7b0647edbe220c84",
+  "schema_version": "1",
+  "source_commit": "1fe21cb0c384304b18a0956cb028cc0e7aa971a4"
+}

@@ -1,0 +1,154 @@
+{
+  "actions": {
+    "adjudicate": "adjudicator",
+    "annotate_a": "annotator_a",
+    "annotate_b": "annotator_b",
+    "approve_clearance": "clearance_approver",
+    "approve_revocation": "revocation_administrator",
+    "audit_evidence": "evidence_auditor",
+    "authorize_launch": "launch_authorizer",
+    "coordinate_human_package": "human_package_coordinator",
+    "execute_run": "execution_operator",
+    "receive_scorer": "scorer_recipient",
+    "seal_plan": "plan_sealer",
+    "sign_release": "release_signer"
+  },
+  "authorization": {
+    "alias_rebinding": "forbidden",
+    "append_only_hash_chain": true,
+    "cross_commit_reuse": "forbidden",
+    "posthoc_signature": "forbidden",
+    "revoked_authorization_use": "forbidden",
+    "wildcard_identity": "forbidden"
+  },
+  "bindings": {
+    "clearance": "formal_validation_clearance_v1",
+    "external_scorer": "external_scorer_handoff_v1",
+    "human_adjudication": "human_precision_adjudication_v1",
+    "launch": "full1000_launch_control_v1",
+    "preregistration": "formal_validation_preregistration_v1",
+    "quarantine": "formal_evidence_quarantine_v1",
+    "release_signing": "release_authenticity_signing_v1",
+    "revocation": "evidence_revocation_response_v1",
+    "standalone_audit": "standalone_auditor_bundle_v1",
+    "validation_readiness": "validation_readiness_bundle_v1"
+  },
+  "entrypoints": {
+    "evidence_revocation": [
+      "approve_revocation"
+    ],
+    "external_scorer_handoff": [
+      "receive_scorer"
+    ],
+    "formal_evidence_quarantine": [
+      "audit_evidence"
+    ],
+    "formal_validation_clearance": [
+      "approve_clearance"
+    ],
+    "formal_validation_preregistration": [
+      "seal_plan"
+    ],
+    "full1000_launch_control": [
+      "authorize_launch",
+      "execute_run"
+    ],
+    "human_precision_adjudication": [
+      "coordinate_human_package",
+      "annotate_a",
+      "annotate_b",
+      "adjudicate"
+    ],
+    "release_authenticity_signing": [
+      "sign_release"
+    ]
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "forbidden_combinations": [
+    [
+      "annotator_a",
+      "annotator_b"
+    ],
+    [
+      "annotator_a",
+      "adjudicator"
+    ],
+    [
+      "annotator_b",
+      "adjudicator"
+    ],
+    [
+      "execution_operator",
+      "launch_authorizer"
+    ],
+    [
+      "execution_operator",
+      "clearance_approver"
+    ],
+    [
+      "release_signer",
+      "revocation_administrator"
+    ]
+  ],
+  "identity": {
+    "allowed": "stable_opaque_id_and_role_binding_only",
+    "forbidden": [
+      "credential",
+      "email",
+      "hostname",
+      "operating_system_account",
+      "person_name",
+      "username"
+    ],
+    "real_identity_mapping": "not_available"
+  },
+  "minimum_independence": {
+    "clearance_approval_domains": 2,
+    "distinct_principals": 8,
+    "formal_clearance_requires_independent_auditor_and_approver": true
+  },
+  "protocol": "formal_validation_separation_of_duties_v1",
+  "protocol_sha256": "e3d806d102d70a290f7f3020284d8104f42d14163fc50135c0419ac4b5ada35b",
+  "real_blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "role_domains": {
+    "adjudicator": "independent_evaluation",
+    "annotator_a": "independent_evaluation",
+    "annotator_b": "independent_evaluation",
+    "clearance_approver": "clearance_governance",
+    "evidence_auditor": "assurance",
+    "execution_operator": "operations",
+    "human_package_coordinator": "operations",
+    "launch_authorizer": "governance",
+    "plan_sealer": "governance",
+    "release_signer": "publication",
+    "revocation_administrator": "incident_response",
+    "scorer_recipient": "external_evidence_intake"
+  },
+  "roles": [
+    "plan_sealer",
+    "launch_authorizer",
+    "execution_operator",
+    "human_package_coordinator",
+    "annotator_a",
+    "annotator_b",
+    "adjudicator",
+    "scorer_recipient",
+    "evidence_auditor",
+    "clearance_approver",
+    "release_signer",
+    "revocation_administrator"
+  ],
+  "schema_version": "1",
+  "source_commit": "0f3b987543b0aec7db9ced25e1047220dd441862"
+}

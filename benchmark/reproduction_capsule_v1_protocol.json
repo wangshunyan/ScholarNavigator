@@ -1,0 +1,29 @@
+{
+  "archive": {
+    "format": "uncompressed_ustar",
+    "file_mode": 420,
+    "gid": 0,
+    "mtime": 0,
+    "path_encoding": "utf8_nfc_posix_relative",
+    "uid": 0
+  },
+  "contract": "reproduction_capsule_v1",
+  "frozen_baseline_eligibility": {
+    "legacy_audit_path": "benchmark/run_provenance_legacy_audit.json",
+    "sha256": "46197f1665cd827bf386b985b00ae0d8079bcffb1c56e48556953bd926cf084d"
+  },
+  "limits": {
+    "max_archive_bytes": 67108864,
+    "max_file_count": 512,
+    "max_member_bytes": 16777216,
+    "max_total_unpacked_bytes": 50331648
+  },
+  "replay": {
+    "archived_code_execution": false,
+    "host_path": "SearchServiceFixtureBackend",
+    "network_allowed": false,
+    "snapshot_writes_allowed": false
+  },
+  "schema_version": "1",
+  "score_scope": "portable_replay_only_not_quality_or_official_score"
+}

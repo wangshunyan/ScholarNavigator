@@ -1,0 +1,42 @@
+{
+  "activation_allowed": false,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_validation_complete": false,
+  "launch_control_sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1",
+  "missing_declaration_count": 4,
+  "missing_declarations": [
+    {
+      "api_scope_alias": "openalex_polite_pool_optional",
+      "source": "openalex",
+      "status": "not_available"
+    },
+    {
+      "api_scope_alias": "public_anonymous",
+      "source": "arxiv",
+      "status": "not_available"
+    },
+    {
+      "api_scope_alias": "semantic_scholar_api_key_optional",
+      "source": "semantic_scholar",
+      "status": "not_available"
+    },
+    {
+      "api_scope_alias": "ncbi_api_key_optional",
+      "source": "pubmed",
+      "status": "not_available"
+    }
+  ],
+  "missing_declarations_sha256": "8be26049e0906e6cfcb257aeea0a3210705fbdf52c3867db2a4ae94957ec9690",
+  "network_status": "not_checked",
+  "pacing_protocol_sha256": "71059ef65106174794358c1646b6a4224613174624a38280ef22e580d3097575",
+  "protocol": "provider_capacity_declaration_intake_v1",
+  "schema_version": "1",
+  "status": "not_ready_missing_real_declarations"
+}

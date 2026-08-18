@@ -1,0 +1,173 @@
+{
+  "analysis": "lexical_normalization_v1_paired_significance",
+  "artifact_determinism": {
+    "byte_identical": true,
+    "manifest_sha256": "a540f7d43bddb6e19f981056ecdac9f3e0e988b7dcc8361eb65a3ea98dce4af8",
+    "paired_queries_sha256": "0b459be237db291cea9b82a49359c6b146e012805206fdc60c9ec01946b165fa",
+    "run_1": "outputs/benchmark_runs/lexical_normalization_significance_3cd47c1_r1",
+    "run_2": "outputs/benchmark_runs/lexical_normalization_significance_3cd47c1_r2",
+    "statistics_sha256": "7574bf06481d8547454623e396cdb0dac97dde225da80019389ff22a232beee5"
+  },
+  "candidate_recall": {
+    "all_datasets_mean_difference": 0.0,
+    "bootstrap_ci_95": [
+      0.0,
+      0.0
+    ],
+    "paired_permutation_p_two_sided": 1.0,
+    "reason": "The policy re-scores the exact same frozen candidate pool."
+  },
+  "datasets": {
+    "auto_dev": {
+      "f1_at_20": {
+        "baseline_mean": 0.017857142857142856,
+        "bootstrap_ci_95": [
+          0.0,
+          0.025
+        ],
+        "experiment_mean": 0.02619047619047619,
+        "mean_difference": 0.008333333333333335,
+        "outcomes": {
+          "improved": 1,
+          "regressed": 0,
+          "tied": 9
+        },
+        "paired_permutation_p_two_sided": 1.0
+      },
+      "query_count": 10,
+      "recall_at_20": {
+        "baseline_mean": 0.125,
+        "bootstrap_ci_95": [
+          0.0,
+          0.075
+        ],
+        "experiment_mean": 0.15,
+        "mean_difference": 0.025,
+        "outcomes": {
+          "improved": 1,
+          "regressed": 0,
+          "tied": 9
+        },
+        "paired_permutation_p_two_sided": 1.0
+      }
+    },
+    "auto_val": {
+      "f1_at_20": {
+        "baseline_mean": 0.019047619047619046,
+        "bootstrap_ci_95": [
+          0.0,
+          0.0
+        ],
+        "experiment_mean": 0.019047619047619046,
+        "mean_difference": 0.0,
+        "outcomes": {
+          "improved": 0,
+          "regressed": 0,
+          "tied": 5
+        },
+        "paired_permutation_p_two_sided": 1.0
+      },
+      "query_count": 5,
+      "recall_at_20": {
+        "baseline_mean": 0.2,
+        "bootstrap_ci_95": [
+          0.0,
+          0.0
+        ],
+        "experiment_mean": 0.2,
+        "mean_difference": 0.0,
+        "outcomes": {
+          "improved": 0,
+          "regressed": 0,
+          "tied": 5
+        },
+        "paired_permutation_p_two_sided": 1.0
+      }
+    },
+    "scifact": {
+      "f1_at_20": {
+        "baseline_mean": 0.04624643649033893,
+        "bootstrap_ci_95": [
+          0.0,
+          0.006968641114982578
+        ],
+        "experiment_mean": 0.048569316861999785,
+        "mean_difference": 0.0023228803716608595,
+        "outcomes": {
+          "improved": 1,
+          "regressed": 0,
+          "tied": 40
+        },
+        "paired_permutation_p_two_sided": 1.0
+      },
+      "query_count": 41,
+      "recall_at_20": {
+        "baseline_mean": 0.4634146341463415,
+        "bootstrap_ci_95": [
+          0.0,
+          0.07317073170731707
+        ],
+        "experiment_mean": 0.4878048780487805,
+        "mean_difference": 0.024390243902439025,
+        "outcomes": {
+          "improved": 1,
+          "regressed": 0,
+          "tied": 40
+        },
+        "paired_permutation_p_two_sided": 1.0
+      }
+    }
+  },
+  "interpretation": {
+    "default_remains_off": true,
+    "human_precision_review_required": true,
+    "internal_metric_only": true,
+    "significance_conclusion": "The observed Recall@20/F1@20 gains are positive but are supported by only two improved queries. The paired two-sided permutation tests do not show evidence that the gains exceed small-sample sign variation.",
+    "warning": "Non-significance is not evidence of no effect."
+  },
+  "pairing": {
+    "all_evaluable_query_count": 56,
+    "duplicate_query_count": 0,
+    "identity_unavailable_query_count": 9,
+    "input_query_count": 65,
+    "strict_comparable_query_count": 56
+  },
+  "pooled_query_equal": {
+    "f1_at_20": {
+      "baseline_mean": 0.038748453927025354,
+      "bootstrap_ci_95": [
+        0.0,
+        0.008078231292517005
+      ],
+      "experiment_mean": 0.04193722943722944,
+      "mean_difference": 0.0031887755102040817,
+      "outcomes": {
+        "improved": 2,
+        "regressed": 0,
+        "tied": 54
+      },
+      "paired_permutation_p_two_sided": 0.5,
+      "power_required_queries_for_absolute_0_01": 23
+    },
+    "query_count": 56,
+    "recall_at_20": {
+      "baseline_mean": 0.3794642857142857,
+      "bootstrap_ci_95": [
+        0.0,
+        0.0625
+      ],
+      "estimated_power_at_1000_for_absolute_0_01": 0.6352248111317311,
+      "experiment_mean": 0.4017857142857143,
+      "mean_difference": 0.022321428571428572,
+      "outcomes": {
+        "improved": 2,
+        "regressed": 0,
+        "tied": 54
+      },
+      "paired_permutation_p_two_sided": 0.5,
+      "power_required_queries_for_absolute_0_01": 1477
+    },
+    "strict_subset_identical": true
+  },
+  "schema_version": "1"
+}

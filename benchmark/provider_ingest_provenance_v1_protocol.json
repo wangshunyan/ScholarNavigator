@@ -1,0 +1,90 @@
+{
+  "capture": {
+    "content_addressed_raw_bytes": true,
+    "exact_response_bytes_required": true,
+    "raw_response_directory": "provider_ingest/raw",
+    "request_headers_recorded": false,
+    "request_url_recorded": false,
+    "response_body_trusted": false,
+    "sensitive_query_parameters_recorded": false
+  },
+  "envelope": {
+    "count_invariants": [
+      "parsed_equals_accepted_plus_rejected",
+      "every_started_call_has_one_envelope",
+      "raw_length_and_sha256_match",
+      "replay_preserves_parsed_order_and_source_identity"
+    ],
+    "identity_fields": [
+      "run_identity",
+      "query_identity",
+      "source",
+      "attempt_identity",
+      "request_sequence"
+    ],
+    "parser_version": "production_connector_parser_v1"
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "pagination": {
+    "cross_request_cursor_reuse": "forbidden",
+    "cycle_policy": "violation",
+    "cursor_storage": "sha256_only",
+    "duplicate_envelope_policy": "violation"
+  },
+  "protocol": "provider_ingest_provenance_v1",
+  "raw_response": {
+    "allowed_content_types": [
+      "application/atom+xml",
+      "application/json",
+      "application/xml",
+      "text/xml"
+    ],
+    "compression_metadata": [
+      "identity",
+      "gzip"
+    ],
+    "encoding_states": [
+      "known",
+      "not_available"
+    ],
+    "no_body_terminals": [
+      "adapter_exception",
+      "connection_failure",
+      "http_error",
+      "rate_limited",
+      "timeout"
+    ]
+  },
+  "rejection_reason_codes": [
+    "identity_invalid",
+    "malformed_document",
+    "malformed_record",
+    "missing_required_field",
+    "record_not_object",
+    "unknown_schema"
+  ],
+  "schema_version": "1",
+  "source_commit": "60e2f48fe94a2906404f8f47597f38439c734aa7",
+  "sources": [
+    "arxiv",
+    "openalex",
+    "pubmed",
+    "semantic_scholar"
+  ],
+  "terminal_states": [
+    "adapter_exception",
+    "connection_failure",
+    "http_error",
+    "malformed_response",
+    "partial_success",
+    "rate_limited",
+    "success",
+    "timeout"
+  ]
+}

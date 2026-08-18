@@ -1,0 +1,86 @@
+{
+  "audit": "autoscholar_query_planning_regression",
+  "case_count": 1000,
+  "dataset": {
+    "case_count": 1000,
+    "full_dataset_path": "benchmark/AutoScholarQuery_test.jsonl",
+    "full_dataset_sha256": "7d8c7f59b289a54912c38cf204d16dbfec14ca35de850b9978b4051ad43a8b36",
+    "full_dataset_sha256_provenance": "previously verified canonical Benchmark config; not re-read by this gold-blind audit",
+    "name": "auto_scholar_query",
+    "selection": "all records in source order",
+    "split": "test"
+  },
+  "effectiveness_metrics_generated": false,
+  "execution": {
+    "connector_invoked": false,
+    "evaluator_invoked": false,
+    "gold_fields_accessed": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "latency": {
+    "artifact": "runtime.json",
+    "included_in_regression": false,
+    "reason": "wall_clock_is_nondeterministic"
+  },
+  "official_score": false,
+  "per_query_plan_hashes_sha256": "a4964e74324e5e894611d14d5b4dc1aa001684d62239669dc48bf66c2146245e",
+  "plan_config_sha256": "7dcd7b08b9f71aa4627119ace521bf945c1f3ac960f92d858e99fb5c68a6d785",
+  "prompt_manifest_sha256": "0882ddf98e2d00647c8dae979d70a85ea18cf0198c1838f22d1da77d7e411b44",
+  "quality": {
+    "budget_consistent_count": 1000,
+    "cases_above_global_candidate_budget": 410,
+    "duplicate_subquery_total": 0,
+    "empty_subquery_total": 0,
+    "external_explicit_constraint_case_count": 0,
+    "missing_plan_field_total": 0,
+    "planned_result_capacity_before_global_budget_total": 192800,
+    "planned_source_query_slot_total": 9640,
+    "schema_valid_count": 1000,
+    "serialization_valid_count": 1000,
+    "subquery_total": 2410,
+    "text_extracted_constraint_case_count": 1000
+  },
+  "query_input_sha256": "def16ce0f99a567db34e62db283c83ef8c30b200390b6120dd8bbe6cd936eedb",
+  "query_length": {
+    "max": 221,
+    "mean": 103.622,
+    "min": 36,
+    "p50": 103.0,
+    "p95": 155.0,
+    "p99": 186.0
+  },
+  "query_planner_version": "1.9.0",
+  "schema_version": "1",
+  "subquery_count_distribution": {
+    "2": 590,
+    "3": 410
+  },
+  "subquery_purpose_counts": {
+    "application_expansion": 13,
+    "benchmark_dataset_expansion": 62,
+    "dataset_dimension": 48,
+    "domain_biomedical_expansion": 4,
+    "domain_cs_expansion": 15,
+    "domain_ml_expansion": 7,
+    "method_comparison_expansion": 3,
+    "method_dimension": 305,
+    "normalized_keywords": 884,
+    "original_query": 1000,
+    "paper_finding_expansion": 57,
+    "recent_progress_expansion": 9,
+    "survey_expansion": 3
+  },
+  "terminal_counts": {
+    "success": 1000
+  },
+  "text_extracted_constraint_field_counts": {
+    "datasets": 65,
+    "domains": 1000,
+    "methods": 305,
+    "must_include_terms": 1000,
+    "time_range": 9
+  },
+  "warning_counts": {}
+}

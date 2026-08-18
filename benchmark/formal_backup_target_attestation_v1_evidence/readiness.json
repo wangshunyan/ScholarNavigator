@@ -1,0 +1,31 @@
+{
+  "active_shard_window": 4,
+  "current_target_identity": "not_available",
+  "disaster_recovery_recheck": "blocked_missing_backup_target",
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "fault_domain_evidence": "not_available",
+  "formal_blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "formal_validation_complete": false,
+  "full1000_run_started": false,
+  "host_site_recheck": "blocked_missing_backup_target",
+  "launch_preflight_recheck": "blocked_missing_backup_target",
+  "protocol": "formal_backup_target_attestation_v1",
+  "reason_code": "no_fresh_real_backup_target_attestation",
+  "required_available_bytes": 2119029489664,
+  "required_available_inodes": 210940,
+  "required_quota_bytes": 2119029489664,
+  "schema_version": "1",
+  "status": "not_ready_no_qualified_backup_target",
+  "streaming_retention_recheck": "blocked_missing_backup_target"
+}

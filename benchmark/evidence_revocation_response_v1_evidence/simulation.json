@@ -1,0 +1,60 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "protocol": "evidence_revocation_response_v1",
+  "scenario_count": 5,
+  "scenarios": [
+    {
+      "active_incident_count": 1,
+      "impacted_claim_count": 1,
+      "impacted_evidence_count": 1,
+      "minimum_rerun_gate_ids": [
+        "completion_bias",
+        "constraint_decisions",
+        "ranking_decisions",
+        "source_fusion",
+        "source_reliability",
+        "tiebreak_qualification",
+        "top20_delivery_fidelity"
+      ],
+      "scenario": "ranking_evidence_revoked"
+    },
+    {
+      "active_incident_count": 1,
+      "scenario": "human_delivery_revoked",
+      "source_reliability_preserved": true
+    },
+    {
+      "active_incident_count": 1,
+      "invalidated_publication_targets": [
+        "clearance_receipt",
+        "release_candidate",
+        "standalone_auditor_bundle",
+        "validation_readiness_bundle"
+      ],
+      "scenario": "default_policy_evidence_revoked"
+    },
+    {
+      "active_incident_count": 0,
+      "replacement_evidence_id": "completion_bias_aggregate",
+      "scenario": "fully_gated_supersession_and_restoration"
+    },
+    {
+      "rejected": [
+        "deleted_event",
+        "forged_event",
+        "reordered_events"
+      ],
+      "scenario": "ledger_attacks"
+    }
+  ],
+  "schema_version": "1",
+  "status": "revocation_controls_ready"
+}

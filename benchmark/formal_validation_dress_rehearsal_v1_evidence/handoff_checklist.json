@@ -1,0 +1,146 @@
+{
+  "checklist_sha256": "9c93c8c6b8296a3ae225541475f23e62d2dd54a36f2e793481206e611a5ea609",
+  "execution": {
+    "academic_api_request_count": 0,
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "protocol": "formal_validation_dress_rehearsal_v1",
+  "real_blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "schema_version": "1",
+  "status": "synthetic_rehearsal_handoff_ready",
+  "steps": [
+    {
+      "command": "PYTHONPATH=src python scripts/check_formal_validation_preregistration.py verify",
+      "expected_exit_codes": [
+        0
+      ],
+      "failure_rollback": "stop_before_any_external_evidence_intake",
+      "human_checkpoint": "confirm sealed protocol and dependency hashes",
+      "input_prerequisites": [
+        "tracked preregistration protocol",
+        "tracked preregistration seal"
+      ],
+      "order": 1,
+      "step": "verify_preregistration"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_full1000_launch_control.py prepare --authoritative-root <empty-run-root> --output <prepared.json>",
+      "expected_exit_codes": [
+        0,
+        3
+      ],
+      "failure_rollback": "discard unstarted prepared state and keep run root empty",
+      "human_checkpoint": "confirm network and credentials are activated outside this rehearsal",
+      "input_prerequisites": [
+        "fresh Full1000 plan",
+        "empty authoritative run root",
+        "capture addendum"
+      ],
+      "order": 2,
+      "step": "prepare_and_authorize_full1000"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_provider_ingest_provenance.py verify --bundle <provider-envelope.json> --archive <raw-response.tar> --ledger <resource-ledger.json>",
+      "expected_exit_codes": [
+        0
+      ],
+      "failure_rollback": "stop affected attempt and resume only from last committed generation",
+      "human_checkpoint": "confirm raw response, ledger and generation bindings",
+      "input_prerequisites": [
+        "completed committed attempt",
+        "provider raw response archive",
+        "authoritative resource ledger"
+      ],
+      "order": 3,
+      "step": "verify_execution_and_provider_provenance"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_human_annotation_delivery.py ingest --package-root <delivery-package> --annotator-a <a.json> --annotator-b <b.json> --output <intake>",
+      "expected_exit_codes": [
+        0,
+        3
+      ],
+      "failure_rollback": "retain locked originals and return to missing-label or adjudication queue",
+      "human_checkpoint": "confirm independent anonymous coverage and all disagreements adjudicated",
+      "input_prerequisites": [
+        "471 locked annotator-A rows",
+        "471 locked annotator-B rows",
+        "validated package hash"
+      ],
+      "order": 4,
+      "step": "ingest_human_annotations"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_external_scorer_handoff.py run --package <scorer-package> --handoff <canonical-handoff.json>",
+      "expected_exit_codes": [
+        0,
+        3
+      ],
+      "failure_rollback": "retain immutable input and reject partial or malformed output",
+      "human_checkpoint": "confirm exact official package metadata is provided before real scoring",
+      "input_prerequisites": [
+        "complete canonical Full1000 handoff",
+        "verified external scorer package"
+      ],
+      "order": 5,
+      "step": "run_external_scorer"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_formal_evidence_quarantine.py audit-contamination --manifest <intake.json> --evidence-root <evidence-root>",
+      "expected_exit_codes": [
+        0,
+        2
+      ],
+      "failure_rollback": "mark affected claims stale and schedule preregistered rerun",
+      "human_checkpoint": "confirm no posthoc protected component changed after intake",
+      "input_prerequisites": [
+        "locked evidence intake manifests",
+        "current quarantine protocol"
+      ],
+      "order": 6,
+      "step": "audit_quarantine_and_freshness"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_formal_validation_clearance.py issue-receipt --evidence <clearance-evidence.json> --output <receipt.json>",
+      "expected_exit_codes": [
+        0,
+        3
+      ],
+      "failure_rollback": "do not publish receipt; preserve all blockers and incident state",
+      "human_checkpoint": "confirm all three external blockers are independently satisfied",
+      "input_prerequisites": [
+        "fresh Full1000 evidence",
+        "validated real human evidence",
+        "validated official scorer output"
+      ],
+      "order": 7,
+      "step": "evaluate_clearance"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_standalone_auditor_bundle.py build --output <auditor-bundle.zip>",
+      "expected_exit_codes": [
+        0,
+        3
+      ],
+      "failure_rollback": "withhold release bundle and keep prior verified publication state",
+      "human_checkpoint": "confirm declared blockers and externally unverifiable references",
+      "input_prerequisites": [
+        "verified clearance state",
+        "fresh readiness bundle",
+        "empty revocation incident set"
+      ],
+      "order": 8,
+      "step": "build_and_verify_auditor_handoff"
+    }
+  ],
+  "synthetic_rehearsal_only": true
+}

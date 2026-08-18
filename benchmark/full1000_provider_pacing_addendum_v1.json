@@ -1,0 +1,25 @@
+{
+  "activation_requirement": "fresh_complete_external_capacity_declarations_for_all_sources",
+  "addendum_sha256": "6a86c4e3fb36061316a6388c8d0733847291468b3f2ebb0e180b7c0ac5409965",
+  "contract": "full1000_provider_pacing_addendum_v1",
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_provider_pacing_protocol_sha256": "337a6004ab062a6ae690d33db223866d955c6c4951b62f9c83f35ab46b742b6c",
+  "formal_validation_complete": false,
+  "full1000_execution_plan_sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613",
+  "historical_request_set_mutated": false,
+  "http_attempt_upper": 19280,
+  "launch_control_protocol_sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1",
+  "logical_source_request_count": 9640,
+  "network_status": "not_checked",
+  "real_capacity_status": "not_available",
+  "request_intents_sha256": "981d26367e41c56b287bb9293dc39674e90291042ae4440e0aa17da59107e47c",
+  "request_manifest_sha256": "4a281e69e864490b7cb1bf20bc9f8fcb940ce4443e4305751244eaa1bb6bf50f",
+  "schema_version": "1",
+  "source_commit": "38eca0b1a8a1744b73c88ac480704b92ae0b530a"
+}

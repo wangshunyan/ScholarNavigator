@@ -1,0 +1,35 @@
+{
+  "addendum": "full1000_backup_set_member_intake_addendum_v1",
+  "activation_receipt_contract": "backup_set_activation_receipt_v1",
+  "backup_set_topology_protocol_sha256": "c810a5bdd64dbcf2739aef02c92ef156c246cbf0224303bf5a8e05a504b610ae",
+  "current_activation_receipt": "not_available",
+  "execution_plan_sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613",
+  "formal_validation_complete": false,
+  "launch_authorization_requirements": {
+    "all_slots_fresh": true,
+    "all_slots_recovery_verified": true,
+    "complete_set_required": true,
+    "duplicate_device_or_quota_pool_allowed": false,
+    "real_member_attestations_required": true,
+    "synthetic_activation_allowed": false
+  },
+  "protocol": "formal_backup_set_member_intake_v1",
+  "protocol_sha256": "c5355780bb65e7b37f3bc4f398d62f6ef3791d998ce7803df959531e91aa0f23",
+  "real_member_status": {
+    "2": {
+      "missing_slots": 2,
+      "qualified_slots": 0
+    },
+    "3": {
+      "missing_slots": 3,
+      "qualified_slots": 0
+    },
+    "4": {
+      "missing_slots": 4,
+      "qualified_slots": 0
+    }
+  },
+  "schema_version": "1",
+  "source_commit": "851a113aed91f3764b16cb35a5b653debfc88426",
+  "status": "not_ready_missing_real_members"
+}

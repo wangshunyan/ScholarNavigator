@@ -1,0 +1,1870 @@
+{
+  "artifact_contracts": {
+    "change_risk_validation": "benchmark/change_risk_validation_v1_protocol.json",
+    "clearance": "benchmark/formal_validation_clearance_v1_protocol.json",
+    "evidence_transparency": "benchmark/evidence_transparency_log_v1_protocol.json",
+    "external_scorer_handoff": "benchmark/external_scorer_handoff_v1_protocol.json",
+    "formal_external_blocker_action_pack": "benchmark/formal_external_blocker_action_pack_v1_protocol.json",
+    "formal_execution_host_attestation": "benchmark/formal_execution_host_attestation_v1_protocol.json",
+    "formal_multivolume_storage": "benchmark/formal_multivolume_storage_v1_protocol.json",
+    "formal_network_request_manifest": "benchmark/formal_network_request_manifest_v1_protocol.json",
+    "formal_provider_health_supervisor": "benchmark/formal_provider_health_supervisor_v1_protocol.json",
+    "formal_provider_pacing": "benchmark/formal_provider_pacing_v1_protocol.json",
+    "formal_run_storage_governance": "benchmark/formal_run_storage_governance_v1_protocol.json",
+    "formal_scheduler_fairness": "benchmark/formal_scheduler_fairness_v1_protocol.json",
+    "formal_shard_streaming_retention": "benchmark/formal_shard_streaming_retention_v1_protocol.json",
+    "formal_validation_dress_rehearsal": "benchmark/formal_validation_dress_rehearsal_v1_protocol.json",
+    "formal_validation_preregistration": "benchmark/formal_validation_preregistration_v1_protocol.json",
+    "formal_validation_separation_of_duties": "benchmark/formal_validation_separation_of_duties_v1_protocol.json",
+    "human_annotation_assignment_activation": "benchmark/human_annotation_assignment_activation_v1_protocol.json",
+    "human_adjudication_activation": "benchmark/human_adjudication_activation_v1_protocol.json",
+    "human_annotation_delivery": "benchmark/human_annotation_delivery_v1_protocol.json",
+    "human_annotation_submission_intake": "benchmark/human_annotation_submission_intake_v1_protocol.json",
+    "human_annotator_qualification_intake": "benchmark/human_annotator_qualification_intake_v1_protocol.json",
+    "portable_execution_site_attestation": "benchmark/portable_execution_site_attestation_v1_protocol.json",
+    "provider_capacity_declaration_intake": "benchmark/provider_capacity_declaration_intake_v1_protocol.json",
+    "readiness": "benchmark/validation_readiness_bundle_v1_contract.json",
+    "release_authenticity_signing": "benchmark/release_authenticity_signing_v1_protocol.json",
+    "formal_backup_target_attestation": "benchmark/formal_backup_target_attestation_v1_protocol.json",
+    "formal_backup_compaction": "benchmark/formal_backup_compaction_v1_protocol.json",
+    "formal_backup_member_discovery": "benchmark/formal_backup_member_discovery_v1_protocol.json",
+    "formal_backup_target_registration": "benchmark/formal_backup_target_registration_v1_protocol.json",
+    "formal_backup_member_enrollment": "benchmark/formal_backup_member_enrollment_v1_protocol.json",
+    "formal_backup_set_member_intake": "benchmark/formal_backup_set_member_intake_v1_protocol.json",
+    "formal_backup_set_topology": "benchmark/formal_backup_set_topology_v1_protocol.json",
+    "official_scorer_package_intake": "benchmark/official_scorer_package_intake_v1_protocol.json"
+  },
+  "cli_contracts": {
+    "change_risk_validation": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_validation_scope.py",
+      "probes": [
+        {
+          "arguments": [
+            "plan",
+            "--from",
+            "HEAD",
+            "--to",
+            "HEAD"
+          ],
+          "command": "plan",
+          "expected_exit_code": 0,
+          "probe_id": "plan"
+        },
+        {
+          "arguments": [
+            "--freshness",
+            "benchmark/__public_contract_missing__.json",
+            "plan-worktree"
+          ],
+          "command": "plan-worktree",
+          "expected_exit_code": 2,
+          "probe_id": "plan_worktree_missing_input"
+        },
+        {
+          "arguments": [
+            "verify-execution"
+          ],
+          "command": "verify-execution",
+          "expected_exit_code": 4,
+          "probe_id": "verify_execution_usage"
+        },
+        {
+          "arguments": [
+            "audit-current"
+          ],
+          "command": "audit-current",
+          "expected_exit_code": 0,
+          "probe_id": "audit_current"
+        }
+      ]
+    },
+    "evidence_revocation": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_evidence_revocation.py",
+      "probes": [
+        {
+          "arguments": [
+            "audit-current"
+          ],
+          "command": "audit-current",
+          "expected_exit_code": 0,
+          "probe_id": "audit_current"
+        },
+        {
+          "arguments": [
+            "simulate-incident"
+          ],
+          "command": "simulate-incident",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_incident"
+        },
+        {
+          "arguments": [
+            "verify-ledger"
+          ],
+          "command": "verify-ledger",
+          "expected_exit_code": 0,
+          "probe_id": "verify_ledger"
+        },
+        {
+          "arguments": [
+            "impact"
+          ],
+          "command": "impact",
+          "expected_exit_code": 0,
+          "probe_id": "impact"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 0,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "evidence_transparency": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_evidence_transparency.py",
+      "probes": [
+        {
+          "arguments": [
+            "build-log"
+          ],
+          "command": "build-log",
+          "expected_exit_code": 0,
+          "probe_id": "build_log"
+        },
+        {
+          "arguments": [
+            "append-dry-run",
+            "--log",
+            "benchmark/evidence_transparency_log_v1_log.json",
+            "--record",
+            "{temp}/missing-record.json"
+          ],
+          "command": "append-dry-run",
+          "expected_exit_code": 2,
+          "probe_id": "append_dry_run"
+        },
+        {
+          "arguments": [
+            "verify-log"
+          ],
+          "command": "verify-log",
+          "expected_exit_code": 0,
+          "probe_id": "verify_log"
+        },
+        {
+          "arguments": [
+            "prove-inclusion",
+            "--sequence",
+            "0"
+          ],
+          "command": "prove-inclusion",
+          "expected_exit_code": 0,
+          "probe_id": "prove_inclusion"
+        },
+        {
+          "arguments": [
+            "prove-consistency",
+            "--old-log",
+            "benchmark/evidence_transparency_log_v1_log.json",
+            "--new-log",
+            "benchmark/evidence_transparency_log_v1_log.json"
+          ],
+          "command": "prove-consistency",
+          "expected_exit_code": 0,
+          "probe_id": "prove_consistency"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "external_scorer_handoff": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_external_scorer_handoff.py",
+      "probes": [
+        {
+          "arguments": [
+            "prepare",
+            "--output",
+            "{temp}/prepared"
+          ],
+          "command": "prepare",
+          "expected_exit_code": 3,
+          "probe_id": "prepare"
+        },
+        {
+          "arguments": [
+            "verify-package",
+            "--package",
+            "{temp}/missing"
+          ],
+          "command": "verify-package",
+          "expected_exit_code": 2,
+          "probe_id": "verify_package"
+        },
+        {
+          "arguments": [
+            "run",
+            "--package",
+            "{temp}/missing",
+            "--handoff",
+            "{temp}/missing-handoff",
+            "--output",
+            "{temp}/run"
+          ],
+          "command": "run",
+          "expected_exit_code": 2,
+          "probe_id": "run"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_execution_host_attestation": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_execution_host.py",
+      "probes": [
+        {
+          "arguments": [
+            "probe",
+            "--primary-root",
+            "{temp}/missing-primary"
+          ],
+          "command": "probe",
+          "expected_exit_code": 3,
+          "probe_id": "probe"
+        },
+        {
+          "arguments": [
+            "verify-attestation",
+            "--attestation",
+            "{temp}/missing-attestation.json"
+          ],
+          "command": "verify-attestation",
+          "expected_exit_code": 2,
+          "probe_id": "verify_attestation"
+        },
+        {
+          "arguments": [
+            "simulate-profile"
+          ],
+          "command": "simulate-profile",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_profile"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_multivolume_storage": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_multivolume_storage.py",
+      "probes": [
+        {
+          "arguments": [
+            "build-topology",
+            "--profiles",
+            "{temp}/missing-profiles.json"
+          ],
+          "command": "build-topology",
+          "expected_exit_code": 2,
+          "probe_id": "build_topology_missing_profile"
+        },
+        {
+          "arguments": [
+            "verify-capacity",
+            "--profiles",
+            "{temp}/missing-profiles.json",
+            "--topology",
+            "{temp}/missing-topology.json"
+          ],
+          "command": "verify-capacity",
+          "expected_exit_code": 2,
+          "probe_id": "verify_capacity_missing_profile"
+        },
+        {
+          "arguments": [
+            "simulate-run"
+          ],
+          "command": "simulate-run",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_run"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_network_request_manifest": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_network_request_manifest.py",
+      "probes": [
+        {
+          "arguments": [
+            "build"
+          ],
+          "command": "build",
+          "expected_exit_code": 4,
+          "probe_id": "build_usage"
+        },
+        {
+          "arguments": [
+            "verify",
+            "--bundle",
+            "{temp}/missing-request-bundle"
+          ],
+          "command": "verify",
+          "expected_exit_code": 3,
+          "probe_id": "verify_missing_bundle"
+        },
+        {
+          "arguments": [
+            "audit-snapshots"
+          ],
+          "command": "audit-snapshots",
+          "expected_exit_code": 0,
+          "probe_id": "audit_snapshots"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 0,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_provider_health_supervisor": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_provider_health.py",
+      "probes": [
+        {
+          "arguments": [
+            "verify-policy"
+          ],
+          "command": "verify-policy",
+          "expected_exit_code": 0,
+          "probe_id": "verify_policy"
+        },
+        {
+          "arguments": [
+            "simulate-run"
+          ],
+          "command": "simulate-run",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_run"
+        },
+        {
+          "arguments": [
+            "verify-resume"
+          ],
+          "command": "verify-resume",
+          "expected_exit_code": 0,
+          "probe_id": "verify_resume"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_provider_pacing": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_provider_pacing.py",
+      "probes": [
+        {
+          "arguments": [
+            "verify-policy"
+          ],
+          "command": "verify-policy",
+          "expected_exit_code": 0,
+          "probe_id": "verify_policy"
+        },
+        {
+          "arguments": [
+            "simulate-capacity"
+          ],
+          "command": "simulate-capacity",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_capacity"
+        },
+        {
+          "arguments": [
+            "verify-resume"
+          ],
+          "command": "verify-resume",
+          "expected_exit_code": 0,
+          "probe_id": "verify_resume"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_run_storage_governance": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_run_storage.py",
+      "probes": [
+        {
+          "arguments": [
+            "build-plan"
+          ],
+          "command": "build-plan",
+          "expected_exit_code": 0,
+          "probe_id": "build_plan"
+        },
+        {
+          "arguments": [
+            "verify-capacity",
+            "--primary-root",
+            "{temp}/missing-primary",
+            "--backup-root",
+            "{temp}/missing-backup"
+          ],
+          "command": "verify-capacity",
+          "expected_exit_code": 3,
+          "probe_id": "verify_capacity"
+        },
+        {
+          "arguments": [
+            "simulate-pressure"
+          ],
+          "command": "simulate-pressure",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_pressure"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_scheduler_fairness": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_scheduler_fairness.py",
+      "probes": [
+        {
+          "arguments": [
+            "verify-policy"
+          ],
+          "command": "verify-policy",
+          "expected_exit_code": 0,
+          "probe_id": "verify_policy"
+        },
+        {
+          "arguments": [
+            "simulate-load"
+          ],
+          "command": "simulate-load",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_load"
+        },
+        {
+          "arguments": [
+            "verify-resume"
+          ],
+          "command": "verify-resume",
+          "expected_exit_code": 0,
+          "probe_id": "verify_resume"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_shard_streaming_retention": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_shard_retention.py",
+      "probes": [
+        {
+          "arguments": [
+            "build-addendum"
+          ],
+          "command": "build-addendum",
+          "expected_exit_code": 0,
+          "probe_id": "build_addendum"
+        },
+        {
+          "arguments": [
+            "verify-capacity",
+            "--addendum",
+            "{temp}/missing-addendum.json",
+            "--primary-available-bytes",
+            "587336777728",
+            "--primary-available-inodes",
+            "100000",
+            "--primary-quota-bytes",
+            "587336777728",
+            "--backup-available-bytes",
+            "not_available",
+            "--backup-available-inodes",
+            "not_available",
+            "--backup-quota-bytes",
+            "not_available",
+            "--backup-failure-domain-independent",
+            "not_available"
+          ],
+          "command": "verify-capacity",
+          "expected_exit_code": 2,
+          "probe_id": "verify_capacity_missing_addendum"
+        },
+        {
+          "arguments": [
+            "simulate-streaming"
+          ],
+          "command": "simulate-streaming",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_streaming"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_validation_clearance": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_validation_clearance.py",
+      "probes": [
+        {
+          "arguments": [
+            "audit-current"
+          ],
+          "command": "audit-current",
+          "expected_exit_code": 3,
+          "probe_id": "audit_current"
+        },
+        {
+          "arguments": [
+            "evaluate",
+            "--evidence",
+            "{temp}/missing.json"
+          ],
+          "command": "evaluate",
+          "expected_exit_code": 2,
+          "probe_id": "evaluate"
+        },
+        {
+          "arguments": [
+            "issue-receipt",
+            "--evidence",
+            "{temp}/missing.json",
+            "--receipt",
+            "{temp}/receipt.json"
+          ],
+          "command": "issue-receipt",
+          "expected_exit_code": 2,
+          "probe_id": "issue_receipt"
+        },
+        {
+          "arguments": [
+            "verify-receipt",
+            "--evidence",
+            "{temp}/missing.json",
+            "--receipt",
+            "{temp}/missing-receipt.json"
+          ],
+          "command": "verify-receipt",
+          "expected_exit_code": 2,
+          "probe_id": "verify_receipt"
+        }
+      ]
+    },
+    "formal_validation_dress_rehearsal": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_validation_dress_rehearsal.py",
+      "probes": [
+        {
+          "arguments": [
+            "--repository-root",
+            "{temp}",
+            "run"
+          ],
+          "command": "run",
+          "expected_exit_code": 2,
+          "probe_id": "run_fail_closed"
+        },
+        {
+          "arguments": [
+            "verify"
+          ],
+          "command": "verify",
+          "expected_exit_code": 0,
+          "probe_id": "verify"
+        },
+        {
+          "arguments": [
+            "simulate-failure"
+          ],
+          "command": "simulate-failure",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_failure"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_validation_preregistration": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_validation_preregistration.py",
+      "probes": [
+        {
+          "arguments": [
+            "build",
+            "--output",
+            "{temp}/seal.json"
+          ],
+          "command": "build",
+          "expected_exit_code": 0,
+          "probe_id": "build"
+        },
+        {
+          "arguments": [
+            "verify"
+          ],
+          "command": "verify",
+          "expected_exit_code": 0,
+          "probe_id": "verify"
+        },
+        {
+          "arguments": [
+            "simulate-amendment"
+          ],
+          "command": "simulate-amendment",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_amendment"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_validation_separation_of_duties": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_validation_roles.py",
+      "probes": [
+        {
+          "arguments": [
+            "verify-policy"
+          ],
+          "command": "verify-policy",
+          "expected_exit_code": 0,
+          "probe_id": "verify_policy"
+        },
+        {
+          "arguments": [
+            "simulate-ceremony"
+          ],
+          "command": "simulate-ceremony",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_ceremony"
+        },
+        {
+          "arguments": [
+            "verify-authorization"
+          ],
+          "command": "verify-authorization",
+          "expected_exit_code": 4,
+          "probe_id": "verify_authorization_usage"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "human_annotation_delivery": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_human_annotation_delivery.py",
+      "probes": [
+        {
+          "arguments": [
+            "prepare",
+            "--package",
+            "{temp}/package"
+          ],
+          "command": "prepare",
+          "expected_exit_code": 0,
+          "probe_id": "prepare"
+        },
+        {
+          "arguments": [
+            "verify-package",
+            "--package",
+            "{temp}/missing"
+          ],
+          "command": "verify-package",
+          "expected_exit_code": 4,
+          "probe_id": "verify_package"
+        },
+        {
+          "arguments": [
+            "ingest",
+            "--package",
+            "{temp}/missing",
+            "--annotator-a",
+            "{temp}/a.json",
+            "--annotator-b",
+            "{temp}/b.json"
+          ],
+          "command": "ingest",
+          "expected_exit_code": 4,
+          "probe_id": "ingest"
+        },
+        {
+          "arguments": [
+            "dry-run",
+            "--package",
+            "{temp}/unused"
+          ],
+          "command": "dry-run",
+          "expected_exit_code": 0,
+          "probe_id": "dry_run"
+        },
+        {
+          "arguments": [
+            "audit-readiness",
+            "--package",
+            "{temp}/missing"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "portable_execution_site_attestation": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_portable_execution_site.py",
+      "probes": [
+        {
+          "arguments": [
+            "build-kit"
+          ],
+          "command": "build-kit",
+          "expected_exit_code": 4,
+          "probe_id": "build_kit_usage"
+        },
+        {
+          "arguments": [
+            "import-attestation"
+          ],
+          "command": "import-attestation",
+          "expected_exit_code": 4,
+          "probe_id": "import_attestation_usage"
+        },
+        {
+          "arguments": [
+            "simulate-site"
+          ],
+          "command": "simulate-site",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_site"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        },
+        {
+          "arguments": [
+            "verify-kit",
+            "--kit",
+            "{temp}/missing-site-kit.zip"
+          ],
+          "command": "verify-kit",
+          "expected_exit_code": 2,
+          "probe_id": "verify_missing_kit"
+        }
+      ]
+    },
+    "provider_capacity_declaration_intake": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_provider_capacity_intake.py",
+      "probes": [
+        {
+          "arguments": [
+            "build-kit",
+            "--source",
+            "openalex",
+            "--challenge",
+            "b3dd480b5f5d3baac43ca40a120eb6aa95a710646fcfbef625fb77e36f3a577f",
+            "--issued-epoch",
+            "1700000000",
+            "--output",
+            "{temp}/openalex-capacity-kit.zip"
+          ],
+          "command": "build-kit",
+          "expected_exit_code": 0,
+          "probe_id": "build_kit"
+        },
+        {
+          "arguments": [
+            "verify-declaration",
+            "--kit",
+            "{temp}/missing-kit.zip",
+            "--declaration",
+            "{temp}/missing-declaration.json",
+            "--current-epoch",
+            "1700000100"
+          ],
+          "command": "verify-declaration",
+          "expected_exit_code": 2,
+          "probe_id": "verify_missing_declaration"
+        },
+        {
+          "arguments": [
+            "import-dry-run",
+            "--bundle-dir",
+            "{temp}/missing-bundle",
+            "--ledger",
+            "{temp}/challenge-ledger.json",
+            "--current-epoch",
+            "1700000100"
+          ],
+          "command": "import-dry-run",
+          "expected_exit_code": 2,
+          "probe_id": "import_missing_bundle"
+        },
+        {
+          "arguments": [
+            "simulate-matrix"
+          ],
+          "command": "simulate-matrix",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_matrix"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "release_authenticity_signing": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_release_authenticity.py",
+      "probes": [
+        {
+          "arguments": [
+            "generate-test-key"
+          ],
+          "command": "generate-test-key",
+          "expected_exit_code": 4,
+          "probe_id": "generate_test_key_usage"
+        },
+        {
+          "arguments": [
+            "sign-dry-run"
+          ],
+          "command": "sign-dry-run",
+          "expected_exit_code": 4,
+          "probe_id": "sign_dry_run_usage"
+        },
+        {
+          "arguments": [
+            "verify"
+          ],
+          "command": "verify",
+          "expected_exit_code": 4,
+          "probe_id": "verify_usage"
+        },
+        {
+          "arguments": [
+            "verify-trust-root"
+          ],
+          "command": "verify-trust-root",
+          "expected_exit_code": 0,
+          "probe_id": "verify_trust_root"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "run_provenance": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_run_provenance.py",
+      "probes": [
+        {
+          "arguments": [
+            "generate",
+            "--spec",
+            "{temp}/missing.json",
+            "--output",
+            "{temp}/manifest.json"
+          ],
+          "command": "generate",
+          "expected_exit_code": 4,
+          "probe_id": "generate"
+        },
+        {
+          "arguments": [
+            "validate",
+            "--manifest",
+            "{temp}/missing.json"
+          ],
+          "command": "validate",
+          "expected_exit_code": 2,
+          "probe_id": "validate"
+        },
+        {
+          "arguments": [
+            "audit-legacy",
+            "--profile",
+            "benchmark/run_provenance_legacy_profiles.json"
+          ],
+          "command": "audit-legacy",
+          "expected_exit_code": 2,
+          "probe_id": "audit_legacy"
+        }
+      ]
+    },
+    "validation_readiness": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_validation_readiness.py",
+      "probes": [
+        {
+          "arguments": [
+            "generate",
+            "--contract",
+            "benchmark/__public_contract_missing__.json",
+            "--bundle",
+            "{temp}/missing"
+          ],
+          "command": "generate",
+          "expected_exit_code": 2,
+          "probe_id": "generate"
+        },
+        {
+          "arguments": [
+            "verify",
+            "--contract",
+            "benchmark/__public_contract_missing__.json",
+            "--bundle",
+            "{temp}/missing"
+          ],
+          "command": "verify",
+          "expected_exit_code": 2,
+          "probe_id": "verify"
+        }
+      ]
+    },
+    "formal_backup_compaction": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_backup_compaction.py",
+      "probes": [
+        {
+          "arguments": [
+            "build-policy"
+          ],
+          "command": "build-policy",
+          "expected_exit_code": 0,
+          "probe_id": "build_policy"
+        },
+        {
+          "arguments": [
+            "calculate-capacity"
+          ],
+          "command": "calculate-capacity",
+          "expected_exit_code": 0,
+          "probe_id": "calculate_capacity"
+        },
+        {
+          "arguments": [
+            "simulate-compaction"
+          ],
+          "command": "simulate-compaction",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_compaction"
+        },
+        {
+          "arguments": [
+            "verify-recovery"
+          ],
+          "command": "verify-recovery",
+          "expected_exit_code": 0,
+          "probe_id": "verify_recovery"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_backup_set_topology": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_backup_set.py",
+      "probes": [
+        {
+          "arguments": [
+            "build-topology",
+            "--members",
+            "4"
+          ],
+          "command": "build-topology",
+          "expected_exit_code": 0,
+          "probe_id": "build_topology"
+        },
+        {
+          "arguments": [
+            "calculate-capacity"
+          ],
+          "command": "calculate-capacity",
+          "expected_exit_code": 0,
+          "probe_id": "calculate_capacity"
+        },
+        {
+          "arguments": [
+            "verify-set"
+          ],
+          "command": "verify-set",
+          "expected_exit_code": 0,
+          "probe_id": "verify_set"
+        },
+        {
+          "arguments": [
+            "simulate-set",
+            "--members",
+            "4"
+          ],
+          "command": "simulate-set",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_set"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_backup_member_discovery": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_backup_member_discovery.py",
+      "probes": [
+        {
+          "arguments": [
+            "discover"
+          ],
+          "command": "discover",
+          "expected_exit_code": 3,
+          "probe_id": "discover"
+        },
+        {
+          "arguments": [
+            "verify-candidate",
+            "--candidate",
+            "{temp}/missing-candidate.json"
+          ],
+          "command": "verify-candidate",
+          "expected_exit_code": 2,
+          "probe_id": "verify_candidate_missing"
+        },
+        {
+          "arguments": [
+            "match-topology",
+            "--candidates",
+            "{temp}/missing-candidates.json"
+          ],
+          "command": "match-topology",
+          "expected_exit_code": 2,
+          "probe_id": "match_topology_missing"
+        },
+        {
+          "arguments": [
+            "simulate-profiles"
+          ],
+          "command": "simulate-profiles",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_profiles"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_backup_target_registration": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_backup_target_registration.py",
+      "probes": [
+        {
+          "arguments": [
+            "register-dry-run"
+          ],
+          "command": "register-dry-run",
+          "expected_exit_code": 4,
+          "probe_id": "register_dry_run_usage"
+        },
+        {
+          "arguments": [
+            "verify-registration"
+          ],
+          "command": "verify-registration",
+          "expected_exit_code": 4,
+          "probe_id": "verify_registration_usage"
+        },
+        {
+          "arguments": [
+            "probe-target"
+          ],
+          "command": "probe-target",
+          "expected_exit_code": 4,
+          "probe_id": "probe_target_usage"
+        },
+        {
+          "arguments": [
+            "simulate-profiles"
+          ],
+          "command": "simulate-profiles",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_profiles"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_backup_member_enrollment": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_backup_member_enrollment.py",
+      "probes": [
+        {
+          "arguments": ["build-kit"],
+          "command": "build-kit",
+          "expected_exit_code": 4,
+          "probe_id": "build_kit_usage"
+        },
+        {
+          "arguments": ["run-enrollment-dry-run"],
+          "command": "run-enrollment-dry-run",
+          "expected_exit_code": 4,
+          "probe_id": "run_enrollment_usage"
+        },
+        {
+          "arguments": ["verify-member-package"],
+          "command": "verify-member-package",
+          "expected_exit_code": 4,
+          "probe_id": "verify_member_package_usage"
+        },
+        {
+          "arguments": ["simulate-matrix"],
+          "command": "simulate-matrix",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_matrix"
+        },
+        {
+          "arguments": ["audit-readiness"],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_external_blocker_action_pack": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_external_blocker_actions.py",
+      "probes": [
+        {
+          "arguments": [
+            "build-pack"
+          ],
+          "command": "build-pack",
+          "expected_exit_code": 4,
+          "probe_id": "build_pack_usage"
+        },
+        {
+          "arguments": [
+            "verify-pack"
+          ],
+          "command": "verify-pack",
+          "expected_exit_code": 0,
+          "probe_id": "verify_pack"
+        },
+        {
+          "arguments": [
+            "audit-chains",
+            "--unsupported"
+          ],
+          "command": "audit-chains",
+          "expected_exit_code": 4,
+          "probe_id": "audit_chains_usage"
+        },
+        {
+          "arguments": [
+            "audit-readiness",
+            "--unsupported"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 4,
+          "probe_id": "audit_readiness_usage"
+        }
+      ]
+    },
+    "formal_backup_set_member_intake": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_backup_set_intake.py",
+      "probes": [
+        {
+          "arguments": [
+            "build-slot-kit"
+          ],
+          "command": "build-slot-kit",
+          "expected_exit_code": 4,
+          "probe_id": "build_slot_kit_usage"
+        },
+        {
+          "arguments": [
+            "verify-member",
+            "--kit",
+            "{temp}/missing-kit.zip",
+            "--attestation",
+            "{temp}/missing-member.json",
+            "--observation-epoch",
+            "10000"
+          ],
+          "command": "verify-member",
+          "expected_exit_code": 2,
+          "probe_id": "verify_member_missing"
+        },
+        {
+          "arguments": [
+            "import-member-dry-run",
+            "--kit",
+            "{temp}/missing-kit.zip",
+            "--attestation",
+            "{temp}/missing-member.json",
+            "--observation-epoch",
+            "10000"
+          ],
+          "command": "import-member-dry-run",
+          "expected_exit_code": 2,
+          "probe_id": "import_member_missing"
+        },
+        {
+          "arguments": [
+            "activate-set-dry-run",
+            "--members",
+            "4",
+            "--bundle",
+            "{temp}/missing-bundle.json",
+            "--observation-epoch",
+            "10000"
+          ],
+          "command": "activate-set-dry-run",
+          "expected_exit_code": 2,
+          "probe_id": "activate_set_missing"
+        },
+        {
+          "arguments": [
+            "simulate-matrix"
+          ],
+          "command": "simulate-matrix",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_matrix"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "formal_backup_target_attestation": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_formal_backup_target.py",
+      "probes": [
+        {
+          "arguments": [
+            "build-kit"
+          ],
+          "command": "build-kit",
+          "expected_exit_code": 4,
+          "probe_id": "build_kit_usage"
+        },
+        {
+          "arguments": [
+            "verify-attestation"
+          ],
+          "command": "verify-attestation",
+          "expected_exit_code": 4,
+          "probe_id": "verify_attestation_usage"
+        },
+        {
+          "arguments": [
+            "import-dry-run"
+          ],
+          "command": "import-dry-run",
+          "expected_exit_code": 4,
+          "probe_id": "import_dry_run_usage"
+        },
+        {
+          "arguments": [
+            "simulate-targets"
+          ],
+          "command": "simulate-targets",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_targets"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "human_annotation_assignment_activation": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_human_annotation_assignment.py",
+      "probes": [
+        {
+          "arguments": [
+            "prepare"
+          ],
+          "command": "prepare",
+          "expected_exit_code": 4,
+          "probe_id": "prepare_usage"
+        },
+        {
+          "arguments": [
+            "issue-dry-run"
+          ],
+          "command": "issue-dry-run",
+          "expected_exit_code": 4,
+          "probe_id": "issue_dry_run_usage"
+        },
+        {
+          "arguments": [
+            "verify-receipt"
+          ],
+          "command": "verify-receipt",
+          "expected_exit_code": 4,
+          "probe_id": "verify_receipt_usage"
+        },
+        {
+          "arguments": [
+            "simulate-matrix"
+          ],
+          "command": "simulate-matrix",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_matrix"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "human_annotation_submission_intake": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_human_annotation_submission.py",
+      "probes": [
+        {
+          "arguments": [
+            "verify-submission"
+          ],
+          "command": "verify-submission",
+          "expected_exit_code": 4,
+          "probe_id": "verify_submission_usage"
+        },
+        {
+          "arguments": [
+            "import-dry-run"
+          ],
+          "command": "import-dry-run",
+          "expected_exit_code": 4,
+          "probe_id": "import_dry_run_usage"
+        },
+        {
+          "arguments": [
+            "build-adjudication-queue"
+          ],
+          "command": "build-adjudication-queue",
+          "expected_exit_code": 4,
+          "probe_id": "build_adjudication_queue_usage"
+        },
+        {
+          "arguments": [
+            "simulate-matrix"
+          ],
+          "command": "simulate-matrix",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_matrix"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "human_adjudication_activation": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_human_adjudication_activation.py",
+      "probes": [
+        {
+          "arguments": [
+            "issue-dry-run"
+          ],
+          "command": "issue-dry-run",
+          "expected_exit_code": 4,
+          "probe_id": "issue_dry_run_usage"
+        },
+        {
+          "arguments": [
+            "verify-adjudication"
+          ],
+          "command": "verify-adjudication",
+          "expected_exit_code": 4,
+          "probe_id": "verify_adjudication_usage"
+        },
+        {
+          "arguments": [
+            "score-dry-run"
+          ],
+          "command": "score-dry-run",
+          "expected_exit_code": 4,
+          "probe_id": "score_dry_run_usage"
+        },
+        {
+          "arguments": [
+            "simulate-matrix"
+          ],
+          "command": "simulate-matrix",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_matrix"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "human_annotator_qualification_intake": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_human_annotator_qualification.py",
+      "probes": [
+        {
+          "arguments": [
+            "build-kit"
+          ],
+          "command": "build-kit",
+          "expected_exit_code": 4,
+          "probe_id": "build_kit_usage"
+        },
+        {
+          "arguments": [
+            "verify-submission"
+          ],
+          "command": "verify-submission",
+          "expected_exit_code": 4,
+          "probe_id": "verify_submission_usage"
+        },
+        {
+          "arguments": [
+            "import-dry-run"
+          ],
+          "command": "import-dry-run",
+          "expected_exit_code": 4,
+          "probe_id": "import_dry_run_usage"
+        },
+        {
+          "arguments": [
+            "simulate-matrix"
+          ],
+          "command": "simulate-matrix",
+          "expected_exit_code": 0,
+          "probe_id": "simulate_matrix"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    },
+    "official_scorer_package_intake": {
+      "exit_codes": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "path": "scripts/check_official_scorer_intake.py",
+      "probes": [
+        {
+          "arguments": [
+            "build-kit"
+          ],
+          "command": "build-kit",
+          "expected_exit_code": 4,
+          "probe_id": "build_kit_usage"
+        },
+        {
+          "arguments": [
+            "verify-package"
+          ],
+          "command": "verify-package",
+          "expected_exit_code": 4,
+          "probe_id": "verify_package_usage"
+        },
+        {
+          "arguments": [
+            "conformance-dry-run",
+            "--matrix"
+          ],
+          "command": "conformance-dry-run",
+          "expected_exit_code": 0,
+          "probe_id": "conformance_matrix"
+        },
+        {
+          "arguments": [
+            "import-dry-run"
+          ],
+          "command": "import-dry-run",
+          "expected_exit_code": 4,
+          "probe_id": "import_dry_run_usage"
+        },
+        {
+          "arguments": [
+            "audit-readiness"
+          ],
+          "command": "audit-readiness",
+          "expected_exit_code": 3,
+          "probe_id": "audit_readiness"
+        }
+      ]
+    }
+  },
+  "documentation_files": [
+    "docs/architecture.md",
+    "docs/change-risk-validation.md",
+    "docs/evaluation.md",
+    "docs/evidence-transparency-log.md",
+    "docs/external-scorer-handoff.md",
+    "docs/formal-execution-host-attestation.md",
+    "docs/formal-backup-compaction.md",
+    "docs/formal-backup-set-topology.md",
+    "docs/formal-backup-target-registration.md",
+    "docs/formal-multivolume-storage.md",
+    "docs/formal-provider-pacing.md",
+    "docs/formal-run-storage-governance.md",
+    "docs/formal-scheduler-fairness.md",
+    "docs/formal-shard-streaming-retention.md",
+    "docs/formal-validation-clearance.md",
+    "docs/formal-validation-dress-rehearsal.md",
+    "docs/formal-validation-separation-of-duties.md",
+    "docs/human-adjudication-activation.md",
+    "docs/human-annotation-delivery.md",
+    "docs/human-annotator-qualification-intake.md",
+    "docs/official-scorer-package-intake.md",
+    "docs/portable-execution-site-attestation.md",
+    "docs/provider-capacity-declaration-intake.md",
+    "docs/release-authenticity-signing.md",
+    "docs/validation-readiness.md"
+  ],
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "extension_policies": {},
+  "formal_validation_complete": false,
+  "frontend_types": "frontend/src/types/api.ts",
+  "protocol": "public_contract_compatibility_v1",
+  "schema_version": "1",
+  "source_commit": "62e009a9134f1446b90c892c6de438adc1e7995e",
+  "version_governance": {
+    "current_write_version": "1",
+    "migration_registry": {},
+    "supported_read_versions": [
+      "1"
+    ]
+  }
+}

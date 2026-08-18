@@ -1,0 +1,25 @@
+{
+  "candidate_checkpoint_sha256": "7f4f8529953af0b415dcb634ade6273068605065bfdef93930351a15b2cf4632",
+  "controls_ready": true,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_validation_complete": false,
+  "identity_authentication": "not_provided_hash_chain_proves_content_consistency_not_publisher_identity",
+  "log_length": 1,
+  "merkle_root": "2d2fee76aa56f48a7e4a204bdbb16995701f7f930abfa216e962af04bfb06473",
+  "protocol": "evidence_transparency_log_v1",
+  "real_blocker_count": 3,
+  "real_blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "schema_version": "1",
+  "status": "no_public_release_checkpoint"
+}

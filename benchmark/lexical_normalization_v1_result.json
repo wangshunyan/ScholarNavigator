@@ -1,0 +1,137 @@
+{
+  "experiment": "lexical_normalization_v1",
+  "implementation_base_commit": "005794ced76151934c3e3ca0b695717fce03fcf0",
+  "manifest": "benchmark/lexical_normalization_v1_manifest.json",
+  "scope": {
+    "network_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0,
+    "production_default": "off",
+    "candidate_pool_changed": false,
+    "weights_thresholds_category_gate_and_ranking_changed": false
+  },
+  "datasets": {
+    "scifact": {
+      "case_count": 50,
+      "evaluable_case_count": 41,
+      "identity_unavailable_case_count": 9,
+      "evaluable_gold_relation_count": 42,
+      "candidate_recall": 0.7560975609756098,
+      "candidate_gold_relation_count": 32,
+      "candidate_count": 3113,
+      "baseline": {
+        "recall_at_20": 0.4634146341463415,
+        "f1_at_20": 0.04624643649033893,
+        "returned_gold_relations": 20
+      },
+      "experiment": {
+        "recall_at_20": 0.4878048780487805,
+        "f1_at_20": 0.048569316861999785,
+        "returned_gold_relations": 21
+      },
+      "delta": {
+        "recall_at_20": 0.02439024390243899,
+        "f1_at_20": 0.0023228803716608543,
+        "gold_relations": 1
+      },
+      "query_outcomes": {
+        "improved": 1,
+        "tied": 49,
+        "regressed": 0
+      },
+      "prior_lexical_false_negatives": {
+        "count": 6,
+        "recovered_final_gold": 1,
+        "not_recovered": 5
+      },
+      "benchmark_non_gold_admitted": 203,
+      "lost_gold_matching_candidates": 1,
+      "lost_unique_gold_relations": 0
+    },
+    "auto_dev": {
+      "case_count": 10,
+      "evaluable_case_count": 10,
+      "evaluable_gold_relation_count": 28,
+      "candidate_recall": 0.15,
+      "candidate_gold_relation_count": 3,
+      "candidate_count": 631,
+      "baseline": {
+        "recall_at_20": 0.125,
+        "f1_at_20": 0.017857142857142856,
+        "returned_gold_relations": 2
+      },
+      "experiment": {
+        "recall_at_20": 0.15,
+        "f1_at_20": 0.02619047619047619,
+        "returned_gold_relations": 3
+      },
+      "delta": {
+        "recall_at_20": 0.024999999999999994,
+        "f1_at_20": 0.008333333333333335,
+        "gold_relations": 1
+      },
+      "query_outcomes": {
+        "improved": 1,
+        "tied": 9,
+        "regressed": 0
+      },
+      "prior_lexical_false_negatives": {
+        "count": 1,
+        "recovered_final_gold": 1,
+        "not_recovered": 0
+      },
+      "benchmark_non_gold_admitted": 38,
+      "lost_unique_gold_relations": 0
+    },
+    "auto_val": {
+      "case_count": 5,
+      "evaluable_case_count": 5,
+      "evaluable_gold_relation_count": 12,
+      "candidate_recall": 0.2,
+      "candidate_gold_relation_count": 1,
+      "candidate_count": 175,
+      "baseline": {
+        "recall_at_20": 0.2,
+        "f1_at_20": 0.019047619047619046,
+        "returned_gold_relations": 1
+      },
+      "experiment": {
+        "recall_at_20": 0.2,
+        "f1_at_20": 0.019047619047619046,
+        "returned_gold_relations": 1
+      },
+      "delta": {
+        "recall_at_20": 0.0,
+        "f1_at_20": 0.0,
+        "gold_relations": 0
+      },
+      "query_outcomes": {
+        "improved": 0,
+        "tied": 5,
+        "regressed": 0
+      },
+      "prior_lexical_false_negatives": {
+        "count": 0,
+        "recovered_final_gold": 0,
+        "not_recovered": 0
+      },
+      "benchmark_non_gold_admitted": 15,
+      "lost_unique_gold_relations": 0
+    }
+  },
+  "interpretation": {
+    "acceptance_gate_passed": true,
+    "reason": "SciFact improved and AutoScholarQuery development and validation did not regress.",
+    "recommendation": "Continue as a default-off candidate for a larger independent precision-focused validation; do not enable by default from these small paired sets.",
+    "caveat": "Benchmark non-gold admissions are qrels-unmatched candidates, not proof of true irrelevance."
+  },
+  "determinism": {
+    "run_1": "outputs/benchmark_runs/lexical_normalization_v1_005794c_replay_r5",
+    "run_2": "outputs/benchmark_runs/lexical_normalization_v1_005794c_replay_r6",
+    "manifest_sha256": "2ebc8289dc59661501d8fd4381c941b15697a4fb4d008122110d34c615d8bdbc",
+    "aggregate_sha256": "5d7b58dd433a9641efdc9216f41b98ecf26d6f1da2633d4fdc281fb70f1e48b6",
+    "case_comparison_sha256": "0b8ccb832830242d9481bd3a83e2054857ec0b33177b2be66e96319d53a55dc1",
+    "candidate_diagnostics_sha256": "d671c11c230dc40c0822c1eac598cbd5d8cceafbe356f007453382ed14b2666c",
+    "byte_identical": true
+  }
+}

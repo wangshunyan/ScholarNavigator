@@ -1,0 +1,108 @@
+{
+  "always_validations": [
+    "deterministic_plan_double_run",
+    "sensitive_scan",
+    "git_diff_check",
+    "head_upstream_check"
+  ],
+  "component_risk": {
+    "default_registered_component": "high",
+    "frontend": [
+      "frontend_reproducible_build"
+    ],
+    "targeted": [
+      "completion_bias",
+      "constraint_decision",
+      "external_scorer",
+      "human_annotation",
+      "human_precision",
+      "ranking_decision",
+      "source_fusion",
+      "source_reliability"
+    ]
+  },
+  "component_tests": {
+    "completion_bias": [
+      "tests/test_completion_bias_audit.py"
+    ],
+    "constraint_decision": [
+      "tests/test_constraint_decision_audit.py"
+    ],
+    "external_scorer": [
+      "tests/test_external_scorer_handoff.py"
+    ],
+    "frontend_reproducible_build": [
+      "tests/test_frontend_reproducible_build.py"
+    ],
+    "human_annotation": [
+      "tests/test_human_annotation_delivery.py"
+    ],
+    "human_precision": [
+      "tests/test_human_precision_adjudication.py"
+    ],
+    "ranking_decision": [
+      "tests/test_ranking_decision_audit.py"
+    ],
+    "source_fusion": [
+      "tests/test_source_fusion_ablation.py"
+    ],
+    "source_reliability": [
+      "tests/test_source_reliability_diagnostics.py"
+    ]
+  },
+  "control_output_paths": [
+    "benchmark/change_risk_validation_v1_evidence/attestation.json",
+    "benchmark/change_risk_validation_v1_evidence/audit.json",
+    "benchmark/change_risk_validation_v1_evidence/plan.json"
+  ],
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "frontend_prefixes": [
+    "frontend/",
+    "src/scholar_agent/app/api",
+    "src/scholar_agent/app/schemas",
+    "src/scholar_agent/models/"
+  ],
+  "full_pytest_triggers": [
+    "high_risk_component",
+    "targeted_check_failed",
+    "validation_evidence_missing",
+    "unregistered_semantic_change",
+    "tested_commit_differs_from_final_head"
+  ],
+  "high_paths": [
+    "AGENTS.md",
+    "pytest.ini",
+    "requirements-dev.txt",
+    "requirements.txt"
+  ],
+  "high_prefixes": [
+    "benchmark/",
+    "src/scholar_agent/agents/",
+    "src/scholar_agent/connectors/",
+    "src/scholar_agent/services/"
+  ],
+  "ignored_existing_paths": [
+    "third_party/paper-qa"
+  ],
+  "low_prefixes": [
+    "docs/"
+  ],
+  "protocol": "change_risk_validation_v1",
+  "protocol_sha256": "dd7e7249ec0f98e6dd4c2aba92d0e5a3104a0dcb448217b890a5a00a507f3790",
+  "risk_levels": [
+    "low",
+    "targeted",
+    "high",
+    "frontend"
+  ],
+  "schema_version": "1",
+  "source_commit": "9654075256e719dd448bf56f53fe6f64c10f542a",
+  "unregistered_semantic_files": "fail_closed"
+}

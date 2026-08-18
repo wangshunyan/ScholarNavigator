@@ -1,0 +1,586 @@
+{
+  "code_identity": {
+    "implementation_base_commit": "b0667d658ed8b8df5bc7f2ffde7625ba0aed0d19",
+    "implementation_base_commit_exists": true,
+    "implementation_base_is_ancestor_of_head": true,
+    "implementation_file_count": 231,
+    "implementation_tree_sha256": "5064b6173df2d7aaecdbe8085abf4f342f93fa0fbabbe80aff61f13c72897e03"
+  },
+  "dependency_graph": {
+    "completion_bias_aggregate": [
+      "completion_bias_protocol"
+    ],
+    "completion_bias_manifest": [
+      "completion_bias_aggregate"
+    ],
+    "completion_bias_protocol": [],
+    "constraint_decision_manifest": [
+      "constraint_decision_protocol"
+    ],
+    "constraint_decision_protocol": [],
+    "evidence_registry_gate": [],
+    "evidence_revocation_ledger": [
+      "evidence_revocation_protocol"
+    ],
+    "evidence_revocation_protocol": [],
+    "evidence_revocation_simulation": [
+      "evidence_revocation_ledger",
+      "evidence_revocation_protocol"
+    ],
+    "evidence_transparency_checkpoint": [
+      "evidence_transparency_protocol"
+    ],
+    "evidence_transparency_protocol": [],
+    "evidence_transparency_readiness": [
+      "evidence_transparency_checkpoint",
+      "evidence_transparency_protocol",
+      "evidence_transparency_simulation"
+    ],
+    "evidence_transparency_simulation": [
+      "evidence_transparency_protocol"
+    ],
+    "external_scorer_protocol": [],
+    "external_scorer_readiness": [
+      "external_scorer_protocol",
+      "full1000_resume_summary",
+      "official_scorer_blocked"
+    ],
+    "external_scorer_synthetic_matrix": [
+      "external_scorer_protocol"
+    ],
+    "formal_backup_compaction_capacity": [
+      "formal_backup_compaction_protocol"
+    ],
+    "formal_backup_compaction_protocol": [
+      "formal_backup_target_protocol",
+      "formal_shard_retention_protocol"
+    ],
+    "formal_backup_compaction_readiness": [
+      "formal_backup_compaction_capacity",
+      "formal_backup_compaction_protocol",
+      "formal_backup_compaction_simulation"
+    ],
+    "formal_backup_compaction_simulation": [
+      "formal_backup_compaction_protocol"
+    ],
+    "formal_backup_member_enrollment_protocol": [],
+    "formal_backup_member_enrollment_readiness": [
+      "formal_backup_member_enrollment_protocol"
+    ],
+    "formal_backup_member_enrollment_simulation": [
+      "formal_backup_member_enrollment_protocol"
+    ],
+    "formal_backup_set_capacity": [
+      "formal_backup_set_protocol"
+    ],
+    "formal_backup_set_intake_addendum": [
+      "formal_backup_set_intake_protocol"
+    ],
+    "formal_backup_set_intake_protocol": [
+      "formal_backup_set_protocol",
+      "formal_backup_target_protocol"
+    ],
+    "formal_backup_set_intake_readiness": [
+      "formal_backup_set_intake_addendum",
+      "formal_backup_set_intake_protocol",
+      "formal_backup_set_intake_simulation"
+    ],
+    "formal_backup_set_intake_simulation": [
+      "formal_backup_set_intake_protocol"
+    ],
+    "formal_backup_set_protocol": [
+      "formal_backup_compaction_protocol",
+      "formal_backup_target_protocol"
+    ],
+    "formal_backup_set_readiness": [
+      "formal_backup_set_capacity",
+      "formal_backup_set_protocol",
+      "formal_backup_set_simulation"
+    ],
+    "formal_backup_set_simulation": [
+      "formal_backup_set_protocol"
+    ],
+    "formal_backup_target_addendum": [
+      "formal_backup_target_protocol"
+    ],
+    "formal_backup_target_protocol": [],
+    "formal_backup_target_readiness": [
+      "formal_backup_target_addendum",
+      "formal_backup_target_protocol",
+      "formal_backup_target_simulation"
+    ],
+    "formal_backup_target_registration_protocol": [],
+    "formal_backup_target_registration_readiness": [
+      "formal_backup_target_registration_protocol"
+    ],
+    "formal_backup_target_registration_simulation": [
+      "formal_backup_target_registration_protocol"
+    ],
+    "formal_backup_target_simulation": [
+      "formal_backup_target_protocol"
+    ],
+    "formal_dress_rehearsal_protocol": [],
+    "formal_dress_rehearsal_readiness": [
+      "formal_dress_rehearsal_protocol"
+    ],
+    "formal_evidence_quarantine_protocol": [],
+    "formal_evidence_quarantine_readiness": [
+      "external_scorer_readiness",
+      "formal_evidence_quarantine_protocol",
+      "human_annotation_delivery_readiness"
+    ],
+    "formal_execution_host_addendum": [
+      "formal_execution_host_protocol"
+    ],
+    "formal_execution_host_attestation": [
+      "formal_execution_host_protocol"
+    ],
+    "formal_execution_host_protocol": [],
+    "formal_execution_host_readiness": [
+      "formal_execution_host_addendum",
+      "formal_execution_host_attestation",
+      "formal_execution_host_protocol",
+      "formal_execution_host_simulation"
+    ],
+    "formal_execution_host_simulation": [
+      "formal_execution_host_protocol"
+    ],
+    "formal_external_blocker_action_pack": [
+      "formal_external_blocker_action_protocol"
+    ],
+    "formal_external_blocker_action_protocol": [],
+    "formal_external_blocker_action_readiness": [
+      "formal_external_blocker_action_pack",
+      "formal_external_blocker_action_protocol"
+    ],
+    "formal_multivolume_addendum": [
+      "formal_multivolume_protocol"
+    ],
+    "formal_multivolume_protocol": [],
+    "formal_multivolume_readiness": [
+      "formal_multivolume_addendum",
+      "formal_multivolume_protocol",
+      "formal_multivolume_simulation"
+    ],
+    "formal_multivolume_simulation": [
+      "formal_multivolume_protocol"
+    ],
+    "formal_network_request_bundle": [
+      "formal_network_request_intents",
+      "formal_network_request_launch_addendum",
+      "formal_network_request_manifest",
+      "formal_network_request_protocol",
+      "formal_network_request_snapshot_audit"
+    ],
+    "formal_network_request_intents": [
+      "formal_network_request_protocol"
+    ],
+    "formal_network_request_launch_addendum": [
+      "formal_network_request_manifest",
+      "formal_network_request_snapshot_audit"
+    ],
+    "formal_network_request_manifest": [
+      "formal_network_request_intents",
+      "formal_network_request_protocol"
+    ],
+    "formal_network_request_protocol": [],
+    "formal_network_request_snapshot_audit": [
+      "formal_network_request_manifest",
+      "formal_network_request_protocol"
+    ],
+    "formal_preregistration_protocol": [],
+    "formal_preregistration_readiness": [
+      "formal_preregistration_seal"
+    ],
+    "formal_preregistration_seal": [
+      "formal_preregistration_protocol"
+    ],
+    "formal_preregistration_simulation": [
+      "formal_preregistration_protocol"
+    ],
+    "formal_provider_health_addendum": [
+      "formal_provider_health_protocol"
+    ],
+    "formal_provider_health_protocol": [],
+    "formal_provider_health_readiness": [
+      "formal_provider_health_addendum",
+      "formal_provider_health_protocol",
+      "formal_provider_health_simulation"
+    ],
+    "formal_provider_health_simulation": [
+      "formal_provider_health_protocol"
+    ],
+    "formal_provider_pacing_addendum": [
+      "formal_network_request_launch_addendum",
+      "formal_provider_pacing_protocol"
+    ],
+    "formal_provider_pacing_policy": [
+      "formal_network_request_manifest",
+      "formal_provider_pacing_protocol"
+    ],
+    "formal_provider_pacing_protocol": [],
+    "formal_provider_pacing_readiness": [
+      "formal_provider_pacing_policy",
+      "formal_provider_pacing_protocol"
+    ],
+    "formal_provider_pacing_resume": [
+      "formal_provider_pacing_protocol"
+    ],
+    "formal_provider_pacing_simulation": [
+      "formal_provider_pacing_policy",
+      "formal_provider_pacing_protocol"
+    ],
+    "formal_run_disaster_recovery_protocol": [
+      "full1000_execution_plan",
+      "full1000_launch_control_protocol",
+      "provider_ingest_capture_addendum",
+      "provider_ingest_protocol"
+    ],
+    "formal_run_disaster_recovery_readiness": [
+      "formal_run_disaster_recovery_protocol"
+    ],
+    "formal_run_disaster_recovery_simulation": [
+      "formal_run_disaster_recovery_protocol"
+    ],
+    "formal_run_storage_addendum": [
+      "formal_run_storage_plan",
+      "formal_run_storage_protocol"
+    ],
+    "formal_run_storage_plan": [
+      "formal_run_storage_protocol"
+    ],
+    "formal_run_storage_protocol": [],
+    "formal_run_storage_readiness": [
+      "formal_run_storage_addendum",
+      "formal_run_storage_plan",
+      "formal_run_storage_protocol",
+      "formal_run_storage_simulation"
+    ],
+    "formal_run_storage_simulation": [
+      "formal_run_storage_plan",
+      "formal_run_storage_protocol"
+    ],
+    "formal_scheduler_fairness_addendum": [
+      "formal_scheduler_fairness_protocol"
+    ],
+    "formal_scheduler_fairness_protocol": [],
+    "formal_scheduler_fairness_readiness": [
+      "formal_scheduler_fairness_addendum",
+      "formal_scheduler_fairness_protocol",
+      "formal_scheduler_fairness_simulation"
+    ],
+    "formal_scheduler_fairness_simulation": [
+      "formal_scheduler_fairness_protocol"
+    ],
+    "formal_shard_retention_addendum": [
+      "formal_shard_retention_protocol"
+    ],
+    "formal_shard_retention_protocol": [],
+    "formal_shard_retention_readiness": [
+      "formal_shard_retention_addendum",
+      "formal_shard_retention_protocol",
+      "formal_shard_retention_simulation"
+    ],
+    "formal_shard_retention_simulation": [
+      "formal_shard_retention_protocol"
+    ],
+    "formal_validation_clearance_current": [
+      "external_scorer_readiness",
+      "formal_validation_clearance_protocol",
+      "full1000_execution_plan",
+      "human_annotation_delivery_readiness"
+    ],
+    "formal_validation_clearance_protocol": [],
+    "formal_validation_roles_assignments": [
+      "formal_validation_roles_protocol"
+    ],
+    "formal_validation_roles_protocol": [],
+    "formal_validation_roles_readiness": [
+      "formal_validation_roles_assignments",
+      "formal_validation_roles_protocol"
+    ],
+    "formal_validation_roles_simulation": [
+      "formal_validation_roles_protocol"
+    ],
+    "frontend_reproducible_build_protocol": [],
+    "frontend_reproducible_build_qualification": [
+      "frontend_reproducible_build_protocol",
+      "frontend_reproducible_release_contract",
+      "release_candidate_reproducibility"
+    ],
+    "frontend_reproducible_release_contract": [
+      "frontend_reproducible_build_protocol"
+    ],
+    "full1000_execution_dry_run": [
+      "full1000_execution_plan"
+    ],
+    "full1000_execution_plan": [
+      "full1000_execution_protocol"
+    ],
+    "full1000_execution_preflight": [
+      "full1000_execution_plan"
+    ],
+    "full1000_execution_protocol": [],
+    "full1000_execution_verification": [
+      "full1000_execution_plan"
+    ],
+    "full1000_launch_control_protocol": [
+      "full1000_execution_plan",
+      "provider_ingest_capture_addendum",
+      "provider_ingest_protocol"
+    ],
+    "full1000_launch_control_readiness": [
+      "full1000_launch_control_protocol"
+    ],
+    "full1000_launch_control_simulation": [
+      "full1000_launch_control_protocol"
+    ],
+    "full1000_resume_summary": [],
+    "human_adjudication_activation_protocol": [
+      "formal_validation_roles_protocol",
+      "human_annotation_submission_protocol",
+      "human_precision_pending"
+    ],
+    "human_adjudication_activation_readiness": [
+      "human_adjudication_activation_protocol",
+      "human_annotation_submission_readiness"
+    ],
+    "human_adjudication_activation_simulation": [
+      "human_adjudication_activation_protocol",
+      "human_annotation_submission_simulation"
+    ],
+    "human_annotation_assignment_protocol": [
+      "formal_validation_roles_protocol",
+      "human_annotation_delivery_protocol",
+      "human_annotator_qualification_protocol"
+    ],
+    "human_annotation_assignment_readiness": [
+      "human_annotation_assignment_protocol",
+      "human_annotation_delivery_readiness",
+      "human_annotator_qualification_readiness"
+    ],
+    "human_annotation_assignment_simulation": [
+      "human_annotation_assignment_protocol",
+      "human_annotation_delivery_dry_run",
+      "human_annotator_qualification_simulation"
+    ],
+    "human_annotation_delivery_dry_run": [
+      "human_annotation_delivery_protocol"
+    ],
+    "human_annotation_delivery_protocol": [],
+    "human_annotation_delivery_readiness": [
+      "human_annotation_delivery_dry_run",
+      "human_annotation_delivery_protocol"
+    ],
+    "human_annotation_submission_protocol": [
+      "formal_validation_roles_protocol",
+      "human_annotation_assignment_protocol",
+      "human_annotation_delivery_protocol",
+      "human_annotator_qualification_protocol"
+    ],
+    "human_annotation_submission_readiness": [
+      "human_annotation_assignment_readiness",
+      "human_annotation_submission_protocol",
+      "human_annotator_qualification_readiness"
+    ],
+    "human_annotation_submission_simulation": [
+      "human_annotation_assignment_simulation",
+      "human_annotation_delivery_dry_run",
+      "human_annotation_submission_protocol"
+    ],
+    "human_annotator_qualification_protocol": [
+      "formal_validation_roles_protocol",
+      "human_annotation_delivery_protocol"
+    ],
+    "human_annotator_qualification_readiness": [
+      "human_annotation_delivery_readiness",
+      "human_annotator_qualification_protocol"
+    ],
+    "human_annotator_qualification_simulation": [
+      "formal_validation_roles_simulation",
+      "human_annotator_qualification_protocol"
+    ],
+    "human_precision_pending": [],
+    "official_scorer_blocked": [],
+    "official_scorer_intake_protocol": [
+      "external_scorer_protocol"
+    ],
+    "official_scorer_intake_readiness": [
+      "external_scorer_readiness",
+      "official_scorer_intake_protocol"
+    ],
+    "official_scorer_intake_simulation": [
+      "external_scorer_synthetic_matrix",
+      "official_scorer_intake_protocol"
+    ],
+    "offline_wheelhouse_install_test": [
+      "offline_wheelhouse_manifest"
+    ],
+    "offline_wheelhouse_manifest": [
+      "offline_wheelhouse_protocol"
+    ],
+    "offline_wheelhouse_protocol": [],
+    "offline_wheelhouse_release_review": [
+      "offline_wheelhouse_install_test",
+      "offline_wheelhouse_manifest"
+    ],
+    "offline_wheelhouse_synthetic": [
+      "offline_wheelhouse_protocol"
+    ],
+    "offline_wheelhouse_verification": [
+      "offline_wheelhouse_manifest"
+    ],
+    "portable_execution_site_addendum": [
+      "portable_execution_site_protocol"
+    ],
+    "portable_execution_site_protocol": [],
+    "portable_execution_site_readiness": [
+      "portable_execution_site_addendum",
+      "portable_execution_site_protocol",
+      "portable_execution_site_simulation"
+    ],
+    "portable_execution_site_simulation": [
+      "portable_execution_site_protocol"
+    ],
+    "provider_capacity_intake_addendum": [
+      "formal_provider_pacing_protocol",
+      "provider_capacity_intake_protocol"
+    ],
+    "provider_capacity_intake_contract": [
+      "provider_capacity_intake_protocol"
+    ],
+    "provider_capacity_intake_protocol": [],
+    "provider_capacity_intake_readiness": [
+      "provider_capacity_intake_contract",
+      "provider_capacity_intake_protocol"
+    ],
+    "provider_capacity_intake_simulation": [
+      "provider_capacity_intake_contract",
+      "provider_capacity_intake_protocol"
+    ],
+    "provider_ingest_capture_addendum": [
+      "full1000_execution_plan",
+      "provider_ingest_protocol"
+    ],
+    "provider_ingest_fixture_matrix": [
+      "provider_ingest_protocol"
+    ],
+    "provider_ingest_frozen_audit": [
+      "provider_ingest_protocol"
+    ],
+    "provider_ingest_protocol": [],
+    "public_contract_baseline": [
+      "public_contract_protocol"
+    ],
+    "public_contract_current": [
+      "public_contract_baseline",
+      "public_contract_protocol"
+    ],
+    "public_contract_protocol": [],
+    "python_dependency_lock_manifest": [
+      "python_dependency_lock_protocol"
+    ],
+    "python_dependency_lock_offline_install": [
+      "python_dependency_lock_manifest"
+    ],
+    "python_dependency_lock_protocol": [],
+    "python_dependency_lock_release_review": [
+      "python_dependency_lock_manifest",
+      "python_dependency_lock_offline_install"
+    ],
+    "python_dependency_lock_verification": [
+      "python_dependency_lock_manifest"
+    ],
+    "ranking_decision_manifest": [
+      "ranking_decision_protocol"
+    ],
+    "ranking_decision_protocol": [],
+    "release_authenticity_protocol": [],
+    "release_authenticity_readiness": [
+      "release_authenticity_protocol",
+      "release_authenticity_trust_root"
+    ],
+    "release_authenticity_trust_root": [
+      "release_authenticity_protocol"
+    ],
+    "release_candidate_contract": [],
+    "release_candidate_python_lock": [
+      "release_candidate_contract"
+    ],
+    "release_candidate_reproducibility": [
+      "release_candidate_contract",
+      "release_candidate_python_lock"
+    ],
+    "source_fusion_aggregate": [
+      "source_fusion_protocol"
+    ],
+    "source_fusion_manifest": [
+      "source_fusion_aggregate"
+    ],
+    "source_fusion_protocol": [],
+    "source_reliability_aggregate": [
+      "source_reliability_protocol"
+    ],
+    "source_reliability_manifest": [
+      "source_reliability_aggregate"
+    ],
+    "source_reliability_protocol": [],
+    "standalone_auditor_bundle_contract": [],
+    "standalone_auditor_bundle_readiness": [
+      "standalone_auditor_bundle_contract"
+    ],
+    "tiebreak_aggregate": [
+      "tiebreak_protocol"
+    ],
+    "tiebreak_manifest": [
+      "tiebreak_aggregate"
+    ],
+    "tiebreak_protocol": [],
+    "top20_delivery_aggregate": [
+      "top20_delivery_contract"
+    ],
+    "top20_delivery_contract": [],
+    "top20_delivery_manifest": [
+      "top20_delivery_aggregate"
+    ],
+    "validation_freshness_current": [
+      "validation_freshness_protocol"
+    ],
+    "validation_freshness_protocol": [],
+    "validation_freshness_synthetic_impact": [
+      "validation_freshness_current",
+      "validation_freshness_protocol"
+    ]
+  },
+  "files": {
+    "README.md": {
+      "sha256": "2e72ee6060b18aa9eff1d87a073fc6b003757c9b2e7925afdd3ec0f71915f02e",
+      "size": 783
+    },
+    "claims.json": {
+      "sha256": "8d01987304283774b306d3098327b71b233f3f784232551312228efadb808857",
+      "size": 39793
+    },
+    "competition_checklist.md": {
+      "sha256": "3a1dfe64dcbf1212eefac506e407f709eb7322f2e1519adeb2cbfa352faf75fb",
+      "size": 913
+    },
+    "evidence_index.json": {
+      "sha256": "c43947850fdd80e218e61015748fc44c0662133afd177fe45cbb70515d51cdcc",
+      "size": 83217
+    },
+    "missing_inputs.json": {
+      "sha256": "c8d19df63c02253023fb48856a5aab7345ec21c8289f8c2aa62434a9391aa3b5",
+      "size": 1771
+    },
+    "readiness.json": {
+      "sha256": "4d13257b7427f763d82141ce1d0829f7469d985f337b588d1a0e3a868cd5d2b9",
+      "size": 12143
+    }
+  },
+  "generation_command": "PYTHONPATH=src python scripts/check_validation_readiness.py generate --contract benchmark/validation_readiness_bundle_v1_contract.json --bundle benchmark/validation_readiness_bundle_v1_release",
+  "protocol": "validation_readiness_bundle_v1",
+  "schema_version": "1",
+  "status": "ready_with_declared_blockers",
+  "verification_command": "PYTHONPATH=src python scripts/check_validation_readiness.py verify --contract benchmark/validation_readiness_bundle_v1_contract.json --bundle benchmark/validation_readiness_bundle_v1_release"
+}

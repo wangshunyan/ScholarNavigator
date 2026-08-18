@@ -1,0 +1,77 @@
+{
+  "analysis": "lexical_normalization_v1_paired_significance",
+  "bootstrap": {
+    "confidence_level": 0.95,
+    "iterations": 20000,
+    "method": "paired_query_resampling_percentile",
+    "seed": 20260721
+  },
+  "combined_scope": {
+    "dataset_weighting": "none",
+    "duplicate_query_policy": "exclude_every_member_of_an_exact_normalized_query_duplicate_group",
+    "query_weighting": "equal"
+  },
+  "comparison": {
+    "baseline": "current_rules",
+    "experiment": "lexical_normalization_v1",
+    "tie_tolerance": 1e-12
+  },
+  "implementation_base_commit": "3cd47c16e78802bed165c0663ae7091f3cc21f4c",
+  "inputs": {
+    "frozen_experiment_manifest": {
+      "path": "benchmark/lexical_normalization_v1_manifest.json",
+      "sha256": "2ebc8289dc59661501d8fd4381c941b15697a4fb4d008122110d34c615d8bdbc"
+    },
+    "primary_replay": {
+      "aggregate": {
+        "path": "outputs/benchmark_runs/lexical_normalization_v1_005794c_replay_r5/aggregate.json",
+        "sha256": "5d7b58dd433a9641efdc9216f41b98ecf26d6f1da2633d4fdc281fb70f1e48b6"
+      },
+      "case_comparison": {
+        "path": "outputs/benchmark_runs/lexical_normalization_v1_005794c_replay_r5/case_comparison.jsonl",
+        "sha256": "0b8ccb832830242d9481bd3a83e2054857ec0b33177b2be66e96319d53a55dc1"
+      }
+    },
+    "reproducibility_replay": {
+      "aggregate": {
+        "path": "outputs/benchmark_runs/lexical_normalization_v1_005794c_replay_r6/aggregate.json",
+        "sha256": "5d7b58dd433a9641efdc9216f41b98ecf26d6f1da2633d4fdc281fb70f1e48b6"
+      },
+      "case_comparison": {
+        "path": "outputs/benchmark_runs/lexical_normalization_v1_005794c_replay_r6/case_comparison.jsonl",
+        "sha256": "0b8ccb832830242d9481bd3a83e2054857ec0b33177b2be66e96319d53a55dc1"
+      }
+    }
+  },
+  "metrics": [
+    "candidate_recall",
+    "recall_at_20",
+    "f1_at_20"
+  ],
+  "permutation_test": {
+    "alternative": "two_sided",
+    "exact_nonzero_pair_limit": 20,
+    "iterations": 100000,
+    "method": "paired_sign_flip",
+    "seed": 20260721,
+    "statistic": "absolute_mean_paired_difference"
+  },
+  "power_planning": {
+    "alpha": 0.05,
+    "future_validation_query_count": 1000,
+    "minimum_detectable_absolute_lift": 0.01,
+    "method": "normal_approximation_paired_mean_using_observed_difference_sd",
+    "target_power": 0.8,
+    "two_sided": true
+  },
+  "schema_version": "1",
+  "scopes": {
+    "all_evaluable": "evaluable_gold_count_gt_zero_and_not_duplicate_query",
+    "strict_comparable": "all_evaluable_plus_candidate_identity_parity_and_shared_frozen_retrieval_terminal_signature"
+  },
+  "warnings": [
+    "Internal Benchmark metrics only; not an official competition score.",
+    "Statistical non-significance is not evidence of no effect.",
+    "Human Precision review remains required before any default-on recommendation."
+  ]
+}

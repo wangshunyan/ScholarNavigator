@@ -1,0 +1,31 @@
+{
+  "addendum": "full1000_provider_health_addendum_v1",
+  "addendum_sha256": "c2812d2a33e5ef75b14c788cd1203c873494d9d72c754e0b2bf67989c01c6bdd",
+  "execution_plan": {
+    "path": "benchmark/full1000_execution_plan_v1.json",
+    "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+  },
+  "formal_validation_complete": false,
+  "launch_control": {
+    "path": "benchmark/full1000_launch_control_v1_protocol.json",
+    "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+  },
+  "preregistration": {
+    "path": "benchmark/formal_validation_preregistration_v1_seal.json",
+    "sha256": "7236611c13d6f61a3ec98128344bf97fc9e4295628fe60147badeaf2b5576d7d"
+  },
+  "provider_health_protocol_sha256": "a7b7a255ccea46d441466c6f13a8666909c44af332f1ed27481e5b7f71705fd7",
+  "real_provider_health_observed": false,
+  "requirements": {
+    "failed_queries_remain_in_authoritative_coverage": true,
+    "failure_counters_not_reset": true,
+    "pause_blocks_new_query_page_and_retry": true,
+    "policy_bound_before_first_formal_request": true,
+    "resume_from_last_complete_generation": true,
+    "resume_requires_fresh_host_capacity_authorization_and_protocol": true,
+    "source_switch_on_resume": false,
+    "threshold_change_on_resume": false
+  },
+  "schema_version": "1",
+  "source_commit": "d732c7727a732d171ad9b762b28f89b9e9053c4a"
+}

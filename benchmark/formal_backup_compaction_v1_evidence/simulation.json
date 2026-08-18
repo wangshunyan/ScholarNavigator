@@ -1,0 +1,68 @@
+{
+  "active_shard_window": 4,
+  "adapter_call_count": 1000,
+  "aggregate_matches_uninterrupted": true,
+  "compacted_baseline_count": 3,
+  "duplicate_request_count": 0,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "history_root_rewritten": false,
+  "incremental_root_count": 6,
+  "new_backup_required_bytes": 1028812963840,
+  "old_backup_required_bytes": 2119029489664,
+  "protocol": "formal_backup_compaction_v1",
+  "query_count": 1000,
+  "resource_ledger_conserved": true,
+  "retained_root_count": 10,
+  "scenario_count": 12,
+  "scenarios": {
+    "aggregate_equivalence": {
+      "status": "passed"
+    },
+    "baseline_damage_fallback": {
+      "status": "passed"
+    },
+    "compaction_interruption": {
+      "status": "passed"
+    },
+    "index_tamper": {
+      "status": "passed"
+    },
+    "multiple_compactions": {
+      "status": "passed"
+    },
+    "normal_incremental": {
+      "status": "passed"
+    },
+    "old_root_verification": {
+      "status": "passed"
+    },
+    "parent_chain_missing": {
+      "status": "passed"
+    },
+    "restore_after_400": {
+      "status": "passed"
+    },
+    "single_shard_replacement": {
+      "status": "passed"
+    },
+    "unique_blob_delete": {
+      "status": "passed"
+    },
+    "window_4_continuous_archive": {
+      "status": "passed"
+    }
+  },
+  "schema_version": "1",
+  "selected_resource_ledger_query_count": 1000,
+  "shard_count": 20,
+  "status": "backup_compaction_ready",
+  "synthetic_only": true
+}

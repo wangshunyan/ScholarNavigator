@@ -1,0 +1,66 @@
+{
+  "audit_sha256": "868fd39cfe185c7c2dbd865863e38908a7e3bcfff0daa60b46f6abc307b4ef48",
+  "credential_status": "not_checked",
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "fixture_only": true,
+  "formal_validation_complete": false,
+  "network_status": "not_checked",
+  "operation_count": 27,
+  "protocol": "full1000_launch_control_v1",
+  "query_count": 1000,
+  "scenario_count": 10,
+  "scenarios": [
+    {
+      "blocked": true,
+      "scenario": "audit_chain_break"
+    },
+    {
+      "blocked": true,
+      "scenario": "authorization_tamper"
+    },
+    {
+      "blocked": true,
+      "scenario": "direct_runner_without_seal"
+    },
+    {
+      "blocked": true,
+      "scenario": "duplicate_start"
+    },
+    {
+      "blocked": true,
+      "scenario": "non_empty_or_legacy_output"
+    },
+    {
+      "blocked": true,
+      "scenario": "partial_aggregate"
+    },
+    {
+      "blocked": true,
+      "scenario": "plan_or_commit_drift"
+    },
+    {
+      "blocked": true,
+      "scenario": "revoked_start"
+    },
+    {
+      "blocked": true,
+      "scenario": "stale_attempt"
+    },
+    {
+      "blocked": true,
+      "scenario": "unauthorized_resume"
+    }
+  ],
+  "schema_version": "1",
+  "selected_attempts_sha256": "d746e9be08a808b11c3dcf159ab5dd1bd160a97ecfd650e3db99b81168f6b3b8",
+  "shard_count": 20,
+  "status": "launch_controls_ready",
+  "violations": []
+}

@@ -1,0 +1,46 @@
+{
+  "authority": {
+    "accepted": [
+      "committed_generation_resource_ledger_v1",
+      "selected_final_shard_attempt_ledger"
+    ],
+    "rejected": [
+      "compatibility_file",
+      "file_size_inference",
+      "historical_report",
+      "log_inference"
+    ]
+  },
+  "contract": "resource_accounting_integrity_v1",
+  "execution": {
+    "gold_accessed": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_codes": {
+    "0": "passed",
+    "2": "accounting_or_budget_violation",
+    "3": "not_eligible_or_missing_authoritative_ledger",
+    "4": "usage_error"
+  },
+  "invariants": [
+    "run_totals_equal_query_sum",
+    "query_totals_equal_operation_sum",
+    "reserve_equals_consumed_plus_released",
+    "budget_limits_not_exceeded",
+    "one_entry_per_adapter_or_llm_operation",
+    "cache_hits_and_rejections_do_not_fake_external_calls",
+    "retry_and_pagination_are_distinct",
+    "no_consumption_after_cancellation",
+    "resume_uses_committed_selected_attempt_only",
+    "shard_aggregate_uses_selected_final_attempts_only"
+  ],
+  "ledger_contract": "resource_ledger_v1",
+  "identity_policy": "opaque_sha256_run_query_source_attempt",
+  "missing_usage_semantics": "unknown_or_not_available_never_numeric_zero",
+  "sensitive_error_policy": "classify_without_echoing_raw_error_or_request_context",
+  "schema_version": "1",
+  "score_scope": "resource_accounting_only_not_quality_or_official_score"
+}

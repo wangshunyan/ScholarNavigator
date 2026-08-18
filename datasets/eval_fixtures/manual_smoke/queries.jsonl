@@ -1,0 +1,5 @@
+{"case_id":"case_001","query":"latest LLM reranking methods for scientific literature retrieval","top_k":5,"run_profile":"fast","current_year":2026,"enable_query_evolution":false,"enable_refchain":false}
+{"case_id":"case_002","query":"benchmark datasets for scientific literature search agents","top_k":5,"run_profile":"fast","current_year":2026,"enable_query_evolution":false,"enable_refchain":false}
+{"case_id":"case_003","query":"citation graph methods for paper recommendation","top_k":5,"run_profile":"fast","current_year":2026,"enable_query_evolution":false,"enable_refchain":false}
+{"case_id":"case_004","query":"retrieval augmented generation evaluation benchmark papers","top_k":5,"run_profile":"fast","current_year":2026,"enable_query_evolution":false,"enable_refchain":false}
+{"case_id":"case_005","query":"neural ranking methods for academic search","top_k":5,"run_profile":"fast","current_year":2026,"enable_query_evolution":false,"enable_refchain":false}

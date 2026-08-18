@@ -1,0 +1,55 @@
+{
+  "adapter_call_count": 1000,
+  "aggregate_matches_single_target": true,
+  "duplicate_request_count": 0,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "member_count": 4,
+  "protocol": "formal_backup_set_topology_v1",
+  "query_count": 1000,
+  "resource_ledger_conserved": true,
+  "resource_ledger_query_count": 1000,
+  "scenario_count": 10,
+  "scenarios": {
+    "aggregate_equivalence": {
+      "status": "passed"
+    },
+    "capacity_uneven_assignment": {
+      "status": "passed"
+    },
+    "cross_set_member_replacement": {
+      "status": "passed"
+    },
+    "double_writer": {
+      "status": "passed"
+    },
+    "member_missing": {
+      "status": "passed"
+    },
+    "member_tamper": {
+      "status": "passed"
+    },
+    "quota_pool_overlap": {
+      "status": "passed"
+    },
+    "restore_resume_without_repeat": {
+      "status": "passed"
+    },
+    "single_member_insufficient": {
+      "status": "passed"
+    },
+    "single_shard_replacement": {
+      "status": "passed"
+    }
+  },
+  "schema_version": "1",
+  "status": "backup_set_ready",
+  "synthetic_only": true
+}

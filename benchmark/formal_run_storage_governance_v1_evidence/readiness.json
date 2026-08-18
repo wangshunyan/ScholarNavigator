@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_validation_complete": false,
+  "full1000_blocker_cleared": false,
+  "missing_capacity_fields": [
+    "backup.available_bytes",
+    "backup.available_inodes",
+    "backup.filesystem_quota_bytes",
+    "primary.available_bytes",
+    "primary.available_inodes",
+    "primary.filesystem_quota_bytes"
+  ],
+  "protocol": "formal_run_storage_governance_v1",
+  "real_backup_created": false,
+  "real_run_started": false,
+  "schema_version": "1",
+  "status": "not_ready_capacity_unverified",
+  "storage_plan_sha256": "0649036b8d9797eede6e83c0e7b3c01df5a8d8d388355420f40ca4f6dea0e0f3"
+}

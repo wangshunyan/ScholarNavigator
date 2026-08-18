@@ -1,0 +1,25 @@
+{
+  "addendum_sha256": "a292302ead79a32b0eeb2e35065cd584dcdae50486b64a48cb48486b1c8af240",
+  "contract": "full1000_network_request_manifest_addendum_v1",
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "full1000_plan_sha256": "a75019fa8a4ed7ad66ffe316793ffd6330613316623b78e35f973260e63cb716",
+  "historical_snapshot_authority": "historical_reference_only",
+  "http_attempt_upper": 19280,
+  "intents_sha256": "69046436454f95efd5a0f1b521704e94b55737767d4ccfafeaee7400a86305d6",
+  "launch_control_protocol_sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1",
+  "launch_requirement": "regenerate_and_verify_identical_request_manifest_before_authorization",
+  "logical_source_request_count": 9640,
+  "network_status": "network_not_checked",
+  "provider_ingest_provenance_protocol_sha256": "29a4a687f8bec2d9c3f12f264b24e41df2519442182728dc424b101e578e6a77",
+  "request_manifest_sha256": "5c7e685c50b856d9d9b8c24449369c5d39f0d6af54417a509c51d77d3f4cfd97",
+  "schema_version": "1",
+  "snapshot_gap_report_sha256": "d4ef30ceec1832f2e09d5f10e8c228046ddc9c9fee7e54daa9e463d904686523",
+  "source_commit": "fae8a7a56c2c6ef877e36dd8901e8a19de6af318"
+}

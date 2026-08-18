@@ -1,0 +1,50 @@
+{
+  "blocker_count": 3,
+  "blockers": [
+    {
+      "blocker_id": "full1000_incomplete",
+      "evidence_ids": [
+        "full1000_resume_summary"
+      ],
+      "future_integration_point": "complete the frozen resume plan, then create and verify a new immutable full-run evidence artifact",
+      "missing_external_input": "a completed 1000-query run with authoritative terminal records for every planned query",
+      "non_substitutes": [
+        "Record160 coverage",
+        "delivery fidelity",
+        "source diagnostics"
+      ],
+      "status": "blocked"
+    },
+    {
+      "blocker_id": "human_precision_missing",
+      "evidence_ids": [
+        "human_precision_pending"
+      ],
+      "future_integration_point": "import two independent human annotations and adjudicate all disagreements through human_precision_adjudication_v1",
+      "missing_external_input": "complete independent human labels and adjudication for the frozen blind package",
+      "non_substitutes": [
+        "LLM proxy judging",
+        "coverage ablation",
+        "stability checks"
+      ],
+      "status": "blocked"
+    },
+    {
+      "blocker_id": "official_scorer_schema_missing",
+      "evidence_ids": [
+        "official_scorer_blocked"
+      ],
+      "future_integration_point": "bind a versioned official scorer or complete official scoring specification before implementing the adapter",
+      "missing_external_input": "an exact official scorer or complete official schema and formula",
+      "non_substitutes": [
+        "LLM proxy judging",
+        "Top-20 delivery fidelity",
+        "internal evaluator metrics"
+      ],
+      "status": "blocked"
+    }
+  ],
+  "formal_validation_complete": false,
+  "protocol": "validation_readiness_bundle_v1",
+  "schema_version": "1"
+}

@@ -1,0 +1,51 @@
+{
+  "bindings": {
+    "backup_member_discovery": {
+      "path": "benchmark/formal_backup_member_discovery_v1_protocol.json",
+      "sha256": "3063e4db5ed7ab126886ad3d131eaf424ca732b9410c64c971e73acc7e0708a4"
+    },
+    "backup_set_member_intake": {
+      "path": "benchmark/formal_backup_set_member_intake_v1_protocol.json",
+      "sha256": "7c3a68a8e59237fc00093928eb8c1368d8fc194de04397a341cc3d6c95a90d44"
+    },
+    "backup_set_topology": {
+      "path": "benchmark/formal_backup_set_topology_v1_protocol.json",
+      "sha256": "c810a5bdd64dbcf2739aef02c92ef156c246cbf0224303bf5a8e05a504b610ae"
+    },
+    "backup_target_attestation": {
+      "path": "benchmark/formal_backup_target_attestation_v1_protocol.json",
+      "sha256": "2cf63cbfed4e602f8e2ace4f766be80e7298f3819570bcb4f64c1bfa745b87a3"
+    }
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "policy": {
+    "activation_side_effect": false,
+    "candidate_status": "registered_candidate",
+    "directory_recursion": false,
+    "identity_authentication": false,
+    "network_or_account_scan": false,
+    "output_absolute_paths": false,
+    "probe_cleanup_required": true,
+    "quota_or_failure_domain_unknown": "not_available_downstream_fail_closed",
+    "registered_paths_only": true
+  },
+  "private_registration_schema": {
+    "allowed_probe_scope": "exact_registered_directory_only",
+    "operator_identity": "sha256_opaque",
+    "path": "absolute_operator_private_not_committed",
+    "purpose": "full1000_backup_member_candidate",
+    "revocations": "top_level_alias_list",
+    "target_alias": "backup-target-slug"
+  },
+  "protocol": "formal_backup_target_registration_v1",
+  "protocol_sha256": "ed6a806bbc6aa6b8af3a8743029351a335de624fd2c78ab36043af3d8ebdab4d",
+  "schema_version": "1",
+  "source_commit": "29fc5556c0b6af65a96673b170cbbcae50735e06"
+}

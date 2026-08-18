@@ -1,0 +1,19 @@
+{
+  "contract": "result_lineage_v1",
+  "fixture": {
+    "path": "datasets/eval_fixtures/resilience/four_source_results.json",
+    "sha256": "f3fe9abb29c719c5ce97cb7fadc6dd69f4988819737b7d9999f5c45acba37c37",
+    "size_bytes": 3161
+  },
+  "frozen_baseline_eligibility": {
+    "path": "benchmark/run_provenance_legacy_audit.json",
+    "sha256": "46197f1665cd827bf386b985b00ae0d8079bcffb1c56e48556953bd926cf084d",
+    "size_bytes": 5777
+  },
+  "query_identity": "query:8886dc081abc9633ed4a0c67604f5af337bf6c8529727e076cbcfe5227f2373b",
+  "schema_version": "1",
+  "score_scope": "lineage_only_not_quality_or_official_score",
+  "source_terminal_overrides": {
+    "pubmed": "partial_completion"
+  }
+}

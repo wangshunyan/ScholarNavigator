@@ -1,0 +1,964 @@
+{
+  "analysis": "lexical_normalization_v1_cluster_significance_v1",
+  "execution": {
+    "components_recomputed": false,
+    "input_mode": "frozen_replay_and_frozen_component_assignments",
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "historical_query_level_references": {
+    "historical_query_significance": {
+      "path": "benchmark/lexical_normalization_significance_result.json",
+      "sha256": "3b73cf6f817020f4b165b274357d709fbe27c728b634310b8036f5c4ebd67bb9"
+    },
+    "historical_record160_significance": {
+      "path": "benchmark/lexical_normalization_record160_result.json",
+      "sha256": "40d0b521e8470932f59f7b09e9bc3a44debac7eaee97fb2ce6bab1079faf956a"
+    }
+  },
+  "historical_query_level_results_read_only": {
+    "existing65_full": {
+      "f1_at_20": {
+        "baseline_mean": 0.038748453927025354,
+        "bootstrap_ci_95": [
+          0.0,
+          0.008078231292517005
+        ],
+        "experiment_mean": 0.04193722943722944,
+        "mean_difference": 0.0031887755102040817,
+        "outcomes": {
+          "improved": 2,
+          "regressed": 0,
+          "tied": 54
+        },
+        "paired_permutation_p_two_sided": 0.5,
+        "power_required_queries_for_absolute_0_01": 23
+      },
+      "query_count": 56,
+      "recall_at_20": {
+        "baseline_mean": 0.3794642857142857,
+        "bootstrap_ci_95": [
+          0.0,
+          0.0625
+        ],
+        "estimated_power_at_1000_for_absolute_0_01": 0.6352248111317311,
+        "experiment_mean": 0.4017857142857143,
+        "mean_difference": 0.022321428571428572,
+        "outcomes": {
+          "improved": 2,
+          "regressed": 0,
+          "tied": 54
+        },
+        "paired_permutation_p_two_sided": 0.5,
+        "power_required_queries_for_absolute_0_01": 1477
+      },
+      "strict_subset_identical": true
+    },
+    "record160_full": {
+      "candidate_recall": {
+        "bootstrap_ci_95": [
+          0.0,
+          0.0
+        ],
+        "mean_difference": 0.0,
+        "paired_permutation_p_two_sided": 1.0
+      },
+      "f1_at_20": {
+        "bootstrap_ci_95": [
+          0.0,
+          0.0028273809523809523
+        ],
+        "mean_difference": 0.0011160714285714285,
+        "paired_permutation_p_two_sided": 0.5
+      },
+      "recall_at_20": {
+        "bootstrap_ci_95": [
+          0.0,
+          0.021875
+        ],
+        "mean_difference": 0.0078125,
+        "paired_permutation_p_two_sided": 0.5
+      }
+    }
+  },
+  "interpretation_limits": [
+    "Internal Benchmark metrics only; not an official competition score.",
+    "Statistical non-significance is not evidence of no effect.",
+    "Cluster-aware results do not replace historical query-level artifacts.",
+    "Human Precision review remains required before any default-on recommendation."
+  ],
+  "manifest_protocol_sha256": "ef19da4da78f113183c75366890563b786bb090b499d218e60973a1b1e31165f",
+  "power_planning": {
+    "alpha": 0.05,
+    "available": true,
+    "estimated_power_at_frozen_full1000_component_count": 0.8527416653129579,
+    "future_component_count": 715,
+    "future_query_count": 1000,
+    "method": "two_sided_normal_approximation_using_record160_full_component_difference_sd_and_frozen_full1000_component_count",
+    "minimum_detectable_absolute_recall_lift": 0.01,
+    "pilot_component_difference_sd": 0.08888784655369612,
+    "pilot_view": "record160_full",
+    "required_component_count_for_target_power": 621,
+    "structural_effective_sample_size": 98.56100926473488,
+    "target_power": 0.8
+  },
+  "schema_version": "1",
+  "statistical_protocol": {
+    "bootstrap": {
+      "confidence_level": 0.95,
+      "iterations": 20000,
+      "method": "percentile_resampling_of_connected_components_with_replacement",
+      "seed": 20260721
+    },
+    "cluster_assignment": {
+      "autoscholar": "reuse frozen component_id verbatim; never recompute edges or components",
+      "component_effect": "query-equal mean baseline and experiment metric within component",
+      "cross_dataset_weighting": "each included component receives equal weight; no dataset-level reweighting",
+      "estimand": "equal mean of component-level paired differences",
+      "scifact": "each SciFact query is an explicit singleton external component because it is outside the frozen AutoScholarQuery graph"
+    },
+    "large_cluster_sensitivity": {
+      "dominance_metrics": [
+        "maximum_absolute_contribution_share",
+        "absolute_contribution_herfindahl"
+      ],
+      "leave_one_out_cluster": "largest query_count, ties broken by component_id; selection never uses effect"
+    },
+    "metrics": [
+      "candidate_recall",
+      "recall_at_20",
+      "f1_at_20"
+    ],
+    "permutation_test": {
+      "alternative": "two_sided",
+      "iterations": 20000,
+      "method": "monte_carlo_cluster_sign_flip",
+      "seed": 20260721,
+      "statistic": "absolute_equal_component_mean_difference"
+    },
+    "power_planning": {
+      "alpha": 0.05,
+      "future_component_count": 715,
+      "future_query_count": 1000,
+      "method": "two_sided_normal_approximation_using_record160_full_component_difference_sd_and_frozen_full1000_component_count",
+      "minimum_detectable_absolute_recall_lift": 0.01,
+      "structural_effective_sample_size": "N_queries_squared_divided_by_sum_component_size_squared",
+      "target_power": 0.8
+    }
+  },
+  "views": {
+    "existing65_decontaminated": {
+      "all_included_queries_have_one_component": true,
+      "component_count": 41,
+      "component_equal_metrics": {
+        "candidate_recall": {
+          "baseline_mean": 0.7560975609756098,
+          "bootstrap_ci_95": {
+            "high": 0.0,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_component_sign_flip_all_ties",
+            "nonzero_unit_count": 0,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.7560975609756098,
+          "large_cluster_sensitivity": {
+            "absolute_contribution_herfindahl": null,
+            "full_mean_difference": 0.0,
+            "largest_component_difference": 0.0,
+            "largest_query_count": 1,
+            "largest_query_count_component_id": "external:scifact:02c000a36dcd047f5738",
+            "maximum_absolute_contribution_share": null,
+            "mean_difference_without_largest_query_count_component": 0.0
+          },
+          "mean_paired_difference": 0.0,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 0,
+            "regressed": 0,
+            "tied": 41
+          },
+          "paired_difference_sd": 0.0,
+          "standardized_mean_difference_dz": null,
+          "unit_count": 41
+        },
+        "f1_at_20": {
+          "baseline_mean": 0.04624643649033893,
+          "bootstrap_ci_95": {
+            "high": 0.006968641114982578,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_component_sign_flip",
+            "nonzero_unit_count": 1,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.048569316861999785,
+          "large_cluster_sensitivity": {
+            "absolute_contribution_herfindahl": 1.0,
+            "full_mean_difference": 0.0023228803716608595,
+            "largest_component_difference": 0.0,
+            "largest_query_count": 1,
+            "largest_query_count_component_id": "external:scifact:02c000a36dcd047f5738",
+            "maximum_absolute_contribution_share": 1.0,
+            "mean_difference_without_largest_query_count_component": 0.0023809523809523807
+          },
+          "mean_paired_difference": 0.0023228803716608595,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 1,
+            "regressed": 0,
+            "tied": 40
+          },
+          "paired_difference_sd": 0.014873691608438672,
+          "standardized_mean_difference_dz": 0.15617376188860607,
+          "unit_count": 41
+        },
+        "recall_at_20": {
+          "baseline_mean": 0.4634146341463415,
+          "bootstrap_ci_95": {
+            "high": 0.07317073170731707,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_component_sign_flip",
+            "nonzero_unit_count": 1,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.4878048780487805,
+          "large_cluster_sensitivity": {
+            "absolute_contribution_herfindahl": 1.0,
+            "full_mean_difference": 0.024390243902439025,
+            "largest_component_difference": 0.0,
+            "largest_query_count": 1,
+            "largest_query_count_component_id": "external:scifact:02c000a36dcd047f5738",
+            "maximum_absolute_contribution_share": 1.0,
+            "mean_difference_without_largest_query_count_component": 0.025
+          },
+          "mean_paired_difference": 0.024390243902439025,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 1,
+            "regressed": 0,
+            "tied": 40
+          },
+          "paired_difference_sd": 0.15617376188860607,
+          "standardized_mean_difference_dz": 0.15617376188860607,
+          "unit_count": 41
+        }
+      },
+      "excluded_query_count": 24,
+      "excluded_reason_counts": {
+        "cross_stratum_contaminated_component": 15,
+        "identity_unavailable_gold": 9,
+        "missing_paired_metric": 9
+      },
+      "gold_count": 42,
+      "historical_query_equal_comparator": {
+        "candidate_recall": {
+          "baseline_mean": 0.7560975609756098,
+          "bootstrap_ci_95": {
+            "high": 0.0,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_query_sign_flip_all_ties",
+            "nonzero_unit_count": 0,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.7560975609756098,
+          "mean_paired_difference": 0.0,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 0,
+            "regressed": 0,
+            "tied": 41
+          },
+          "paired_difference_sd": 0.0,
+          "standardized_mean_difference_dz": null,
+          "unit": "query_comparator_only",
+          "unit_count": 41
+        },
+        "f1_at_20": {
+          "baseline_mean": 0.04624643649033893,
+          "bootstrap_ci_95": {
+            "high": 0.006968641114982578,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_query_sign_flip",
+            "nonzero_unit_count": 1,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.048569316861999785,
+          "mean_paired_difference": 0.0023228803716608595,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 1,
+            "regressed": 0,
+            "tied": 40
+          },
+          "paired_difference_sd": 0.014873691608438672,
+          "standardized_mean_difference_dz": 0.15617376188860607,
+          "unit": "query_comparator_only",
+          "unit_count": 41
+        },
+        "recall_at_20": {
+          "baseline_mean": 0.4634146341463415,
+          "bootstrap_ci_95": {
+            "high": 0.07317073170731707,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_query_sign_flip",
+            "nonzero_unit_count": 1,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.4878048780487805,
+          "mean_paired_difference": 0.024390243902439025,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 1,
+            "regressed": 0,
+            "tied": 40
+          },
+          "paired_difference_sd": 0.15617376188860607,
+          "standardized_mean_difference_dz": 0.15617376188860607,
+          "unit": "query_comparator_only",
+          "unit_count": 41
+        }
+      },
+      "included_query_count": 41,
+      "input_query_count": 65
+    },
+    "existing65_full": {
+      "all_included_queries_have_one_component": true,
+      "component_count": 55,
+      "component_equal_metrics": {
+        "candidate_recall": {
+          "baseline_mean": 0.6090909090909091,
+          "bootstrap_ci_95": {
+            "high": 0.0,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_component_sign_flip_all_ties",
+            "nonzero_unit_count": 0,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.6090909090909091,
+          "large_cluster_sensitivity": {
+            "absolute_contribution_herfindahl": null,
+            "full_mean_difference": 0.0,
+            "largest_component_difference": 0.0,
+            "largest_query_count": 2,
+            "largest_query_count_component_id": "component:83744d094e70146d8e1d",
+            "maximum_absolute_contribution_share": null,
+            "mean_difference_without_largest_query_count_component": 0.0
+          },
+          "mean_paired_difference": 0.0,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 0,
+            "regressed": 0,
+            "tied": 55
+          },
+          "paired_difference_sd": 0.0,
+          "standardized_mean_difference_dz": null,
+          "unit_count": 55
+        },
+        "f1_at_20": {
+          "baseline_mean": 0.03945297127115309,
+          "bootstrap_ci_95": {
+            "high": 0.008225108225108226,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_component_sign_flip",
+            "nonzero_unit_count": 2,
+            "p_value_two_sided": 0.495875206239688
+          },
+          "experiment_mean": 0.04269972451790634,
+          "large_cluster_sensitivity": {
+            "absolute_contribution_herfindahl": 0.5022222222222223,
+            "full_mean_difference": 0.003246753246753247,
+            "largest_component_difference": 0.0,
+            "largest_query_count": 2,
+            "largest_query_count_component_id": "component:83744d094e70146d8e1d",
+            "maximum_absolute_contribution_share": 0.5333333333333333,
+            "mean_difference_without_largest_query_count_component": 0.003306878306878307
+          },
+          "mean_paired_difference": 0.003246753246753247,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 2,
+            "regressed": 0,
+            "tied": 53
+          },
+          "paired_difference_sd": 0.016906585317634913,
+          "standardized_mean_difference_dz": 0.19204074541099822,
+          "unit_count": 55
+        },
+        "recall_at_20": {
+          "baseline_mean": 0.38636363636363635,
+          "bootstrap_ci_95": {
+            "high": 0.06363636363636363,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_component_sign_flip",
+            "nonzero_unit_count": 2,
+            "p_value_two_sided": 0.5070746462676866
+          },
+          "experiment_mean": 0.4090909090909091,
+          "large_cluster_sensitivity": {
+            "absolute_contribution_herfindahl": 0.6799999999999999,
+            "full_mean_difference": 0.022727272727272728,
+            "largest_component_difference": 0.0,
+            "largest_query_count": 2,
+            "largest_query_count_component_id": "component:83744d094e70146d8e1d",
+            "maximum_absolute_contribution_share": 0.7999999999999999,
+            "mean_difference_without_largest_query_count_component": 0.023148148148148147
+          },
+          "mean_paired_difference": 0.022727272727272728,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 2,
+            "regressed": 0,
+            "tied": 53
+          },
+          "paired_difference_sd": 0.13838291675576017,
+          "standardized_mean_difference_dz": 0.16423467043540768,
+          "unit_count": 55
+        }
+      },
+      "excluded_query_count": 9,
+      "excluded_reason_counts": {
+        "identity_unavailable_gold": 9,
+        "missing_paired_metric": 9
+      },
+      "gold_count": 82,
+      "historical_query_equal_comparator": {
+        "candidate_recall": {
+          "baseline_mean": 0.5982142857142857,
+          "bootstrap_ci_95": {
+            "high": 0.0,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_query_sign_flip_all_ties",
+            "nonzero_unit_count": 0,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.5982142857142857,
+          "mean_paired_difference": 0.0,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 0,
+            "regressed": 0,
+            "tied": 56
+          },
+          "paired_difference_sd": 0.0,
+          "standardized_mean_difference_dz": null,
+          "unit": "query_comparator_only",
+          "unit_count": 56
+        },
+        "f1_at_20": {
+          "baseline_mean": 0.038748453927025354,
+          "bootstrap_ci_95": {
+            "high": 0.008078231292517005,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_query_sign_flip",
+            "nonzero_unit_count": 2,
+            "p_value_two_sided": 0.5022748862556872
+          },
+          "experiment_mean": 0.04193722943722944,
+          "mean_paired_difference": 0.0031887755102040817,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 2,
+            "regressed": 0,
+            "tied": 54
+          },
+          "paired_difference_sd": 0.016757801456349825,
+          "standardized_mean_difference_dz": 0.19028602997297112,
+          "unit": "query_comparator_only",
+          "unit_count": 56
+        },
+        "recall_at_20": {
+          "baseline_mean": 0.3794642857142857,
+          "bootstrap_ci_95": {
+            "high": 0.0625,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_query_sign_flip",
+            "nonzero_unit_count": 2,
+            "p_value_two_sided": 0.5018249087545623
+          },
+          "experiment_mean": 0.4017857142857143,
+          "mean_paired_difference": 0.022321428571428572,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 2,
+            "regressed": 0,
+            "tied": 54
+          },
+          "paired_difference_sd": 0.13715274923739817,
+          "standardized_mean_difference_dz": 0.16274867762798056,
+          "unit": "query_comparator_only",
+          "unit_count": 56
+        }
+      },
+      "included_query_count": 56,
+      "input_query_count": 65
+    },
+    "record160_decontaminated": {
+      "all_included_queries_have_one_component": true,
+      "component_count": 88,
+      "component_equal_metrics": {
+        "candidate_recall": {
+          "baseline_mean": 0.06477272727272727,
+          "bootstrap_ci_95": {
+            "high": 0.0,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_component_sign_flip_all_ties",
+            "nonzero_unit_count": 0,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.06477272727272727,
+          "large_cluster_sensitivity": {
+            "absolute_contribution_herfindahl": null,
+            "full_mean_difference": 0.0,
+            "largest_component_difference": 0.0,
+            "largest_query_count": 1,
+            "largest_query_count_component_id": "component:00b5bb009d053fa0ff3a",
+            "maximum_absolute_contribution_share": null,
+            "mean_difference_without_largest_query_count_component": 0.0
+          },
+          "mean_paired_difference": 0.0,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 0,
+            "regressed": 0,
+            "tied": 88
+          },
+          "paired_difference_sd": 0.0,
+          "standardized_mean_difference_dz": null,
+          "unit_count": 88
+        },
+        "f1_at_20": {
+          "baseline_mean": 0.004935861240209067,
+          "bootstrap_ci_95": {
+            "high": 0.0032467532467532465,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_component_sign_flip",
+            "nonzero_unit_count": 1,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.006018112322460149,
+          "large_cluster_sensitivity": {
+            "absolute_contribution_herfindahl": 1.0,
+            "full_mean_difference": 0.0010822510822510823,
+            "largest_component_difference": 0.0,
+            "largest_query_count": 1,
+            "largest_query_count_component_id": "component:00b5bb009d053fa0ff3a",
+            "maximum_absolute_contribution_share": 1.0,
+            "mean_difference_without_largest_query_count_component": 0.0010946907498631637
+          },
+          "mean_paired_difference": 0.0010822510822510823,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 1,
+            "regressed": 0,
+            "tied": 87
+          },
+          "paired_difference_sd": 0.010152415064552877,
+          "standardized_mean_difference_dz": 0.10660035817780524,
+          "unit_count": 88
+        },
+        "recall_at_20": {
+          "baseline_mean": 0.030681818181818185,
+          "bootstrap_ci_95": {
+            "high": 0.03409090909090909,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_component_sign_flip",
+            "nonzero_unit_count": 1,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.042045454545454546,
+          "large_cluster_sensitivity": {
+            "absolute_contribution_herfindahl": 1.0,
+            "full_mean_difference": 0.011363636363636364,
+            "largest_component_difference": 0.0,
+            "largest_query_count": 1,
+            "largest_query_count_component_id": "component:00b5bb009d053fa0ff3a",
+            "maximum_absolute_contribution_share": 1.0,
+            "mean_difference_without_largest_query_count_component": 0.011494252873563218
+          },
+          "mean_paired_difference": 0.011363636363636364,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 1,
+            "regressed": 0,
+            "tied": 87
+          },
+          "paired_difference_sd": 0.10660035817780522,
+          "standardized_mean_difference_dz": 0.10660035817780522,
+          "unit_count": 88
+        }
+      },
+      "excluded_query_count": 74,
+      "excluded_reason_counts": {
+        "cross_stratum_contaminated_component": 72,
+        "identity_unavailable_gold": 2,
+        "missing_paired_metric": 2,
+        "no_successful_source": 2
+      },
+      "gold_count": 173,
+      "historical_query_equal_comparator": {
+        "candidate_recall": {
+          "baseline_mean": 0.06477272727272727,
+          "bootstrap_ci_95": {
+            "high": 0.0,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_query_sign_flip_all_ties",
+            "nonzero_unit_count": 0,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.06477272727272727,
+          "mean_paired_difference": 0.0,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 0,
+            "regressed": 0,
+            "tied": 88
+          },
+          "paired_difference_sd": 0.0,
+          "standardized_mean_difference_dz": null,
+          "unit": "query_comparator_only",
+          "unit_count": 88
+        },
+        "f1_at_20": {
+          "baseline_mean": 0.004935861240209067,
+          "bootstrap_ci_95": {
+            "high": 0.0032467532467532465,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_query_sign_flip",
+            "nonzero_unit_count": 1,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.006018112322460149,
+          "mean_paired_difference": 0.0010822510822510823,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 1,
+            "regressed": 0,
+            "tied": 87
+          },
+          "paired_difference_sd": 0.010152415064552877,
+          "standardized_mean_difference_dz": 0.10660035817780524,
+          "unit": "query_comparator_only",
+          "unit_count": 88
+        },
+        "recall_at_20": {
+          "baseline_mean": 0.030681818181818185,
+          "bootstrap_ci_95": {
+            "high": 0.03409090909090909,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_query_sign_flip",
+            "nonzero_unit_count": 1,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.042045454545454546,
+          "mean_paired_difference": 0.011363636363636364,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 1,
+            "regressed": 0,
+            "tied": 87
+          },
+          "paired_difference_sd": 0.10660035817780522,
+          "standardized_mean_difference_dz": 0.10660035817780522,
+          "unit": "query_comparator_only",
+          "unit_count": 88
+        }
+      },
+      "included_query_count": 88,
+      "input_query_count": 162
+    },
+    "record160_full": {
+      "all_included_queries_have_one_component": true,
+      "component_count": 134,
+      "component_equal_metrics": {
+        "candidate_recall": {
+          "baseline_mean": 0.07176320777067045,
+          "bootstrap_ci_95": {
+            "high": 0.0,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_component_sign_flip_all_ties",
+            "nonzero_unit_count": 0,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.07176320777067045,
+          "large_cluster_sensitivity": {
+            "absolute_contribution_herfindahl": null,
+            "full_mean_difference": 0.0,
+            "largest_component_difference": 0.0,
+            "largest_query_count": 14,
+            "largest_query_count_component_id": "component:83744d094e70146d8e1d",
+            "maximum_absolute_contribution_share": null,
+            "mean_difference_without_largest_query_count_component": 0.0
+          },
+          "mean_paired_difference": 0.0,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 0,
+            "regressed": 0,
+            "tied": 134
+          },
+          "paired_difference_sd": 0.0,
+          "standardized_mean_difference_dz": null,
+          "unit_count": 134
+        },
+        "f1_at_20": {
+          "baseline_mean": 0.006513997034762771,
+          "bootstrap_ci_95": {
+            "high": 0.0033759772565742714,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_component_sign_flip",
+            "nonzero_unit_count": 2,
+            "p_value_two_sided": 0.49687515624218787
+          },
+          "experiment_mean": 0.00784661963604209,
+          "large_cluster_sensitivity": {
+            "absolute_contribution_herfindahl": 0.5022222222222221,
+            "full_mean_difference": 0.0013326226012793177,
+            "largest_component_difference": 0.0,
+            "largest_query_count": 14,
+            "largest_query_count_component_id": "component:83744d094e70146d8e1d",
+            "maximum_absolute_contribution_share": 0.5333333333333332,
+            "mean_difference_without_largest_query_count_component": 0.0013426423200859291
+          },
+          "mean_paired_difference": 0.0013326226012793177,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 2,
+            "regressed": 0,
+            "tied": 132
+          },
+          "paired_difference_sd": 0.010891388233342106,
+          "standardized_mean_difference_dz": 0.12235562379456123,
+          "unit_count": 134
+        },
+        "recall_at_20": {
+          "baseline_mean": 0.04228559583037195,
+          "bootstrap_ci_95": {
+            "high": 0.026119402985074626,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_component_sign_flip",
+            "nonzero_unit_count": 2,
+            "p_value_two_sided": 0.4937753112344383
+          },
+          "experiment_mean": 0.05161395403932717,
+          "large_cluster_sensitivity": {
+            "absolute_contribution_herfindahl": 0.6800000000000002,
+            "full_mean_difference": 0.009328358208955223,
+            "largest_component_difference": 0.0,
+            "largest_query_count": 14,
+            "largest_query_count_component_id": "component:83744d094e70146d8e1d",
+            "maximum_absolute_contribution_share": 0.8,
+            "mean_difference_without_largest_query_count_component": 0.009398496240601503
+          },
+          "mean_paired_difference": 0.009328358208955223,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 2,
+            "regressed": 0,
+            "tied": 132
+          },
+          "paired_difference_sd": 0.08888784655369612,
+          "standardized_mean_difference_dz": 0.10494526046730213,
+          "unit_count": 134
+        }
+      },
+      "excluded_query_count": 2,
+      "excluded_reason_counts": {
+        "identity_unavailable_gold": 2,
+        "missing_paired_metric": 2,
+        "no_successful_source": 2
+      },
+      "gold_count": 392,
+      "historical_query_equal_comparator": {
+        "candidate_recall": {
+          "baseline_mean": 0.06885416666666667,
+          "bootstrap_ci_95": {
+            "high": 0.0,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_query_sign_flip_all_ties",
+            "nonzero_unit_count": 0,
+            "p_value_two_sided": 1.0
+          },
+          "experiment_mean": 0.06885416666666667,
+          "mean_paired_difference": 0.0,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 0,
+            "regressed": 0,
+            "tied": 160
+          },
+          "paired_difference_sd": 0.0,
+          "standardized_mean_difference_dz": null,
+          "unit": "query_comparator_only",
+          "unit_count": 160
+        },
+        "f1_at_20": {
+          "baseline_mean": 0.006563999406390711,
+          "bootstrap_ci_95": {
+            "high": 0.0028273809523809523,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_query_sign_flip",
+            "nonzero_unit_count": 2,
+            "p_value_two_sided": 0.4990750462476876
+          },
+          "experiment_mean": 0.00768007083496214,
+          "mean_paired_difference": 0.0011160714285714285,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 2,
+            "regressed": 0,
+            "tied": 158
+          },
+          "paired_difference_sd": 0.00997337359564061,
+          "standardized_mean_difference_dz": 0.11190510591714588,
+          "unit": "query_comparator_only",
+          "unit_count": 160
+        },
+        "recall_at_20": {
+          "baseline_mean": 0.03979166666666666,
+          "bootstrap_ci_95": {
+            "high": 0.021875,
+            "iterations": 20000,
+            "low": 0.0,
+            "method": "component_resampling_percentile"
+          },
+          "cluster_sign_flip": {
+            "evaluated_permutations": 20000,
+            "method": "monte_carlo_query_sign_flip",
+            "nonzero_unit_count": 2,
+            "p_value_two_sided": 0.504224788760562
+          },
+          "experiment_mean": 0.04760416666666666,
+          "mean_paired_difference": 0.0078125,
+          "median_paired_difference": 0.0,
+          "outcomes": {
+            "improved": 2,
+            "regressed": 0,
+            "tied": 158
+          },
+          "paired_difference_sd": 0.08136934872511692,
+          "standardized_mean_difference_dz": 0.09601281222481327,
+          "unit": "query_comparator_only",
+          "unit_count": 160
+        }
+      },
+      "included_query_count": 160,
+      "input_query_count": 162
+    }
+  }
+}

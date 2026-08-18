@@ -1,0 +1,80 @@
+{
+  "audit": "autoscholar_query_gold_leakage_v1",
+  "data": {
+    "cross_query_duplicate_relation_count": 657,
+    "cross_query_repeated_identity_count": 268,
+    "gold_relation_count": 2403,
+    "query_count": 1000
+  },
+  "frozen_hit_diagnostics": {
+    "auto_dev": {
+      "candidate_hit_queries": {"leaked": 0, "non_leaked": 2},
+      "final_hit_queries": {"leaked": 0, "non_leaked": 2},
+      "leaked_queries": 0,
+      "query_count": 10
+    },
+    "auto_val": {
+      "candidate_hit_queries": {"leaked": 0, "non_leaked": 1},
+      "final_hit_queries": {"leaked": 0, "non_leaked": 1},
+      "leaked_queries": 0,
+      "query_count": 5
+    },
+    "autoscholar_record160": {
+      "candidate_hit_queries": {"leaked": 2, "non_leaked": 15},
+      "excluded_no_success_case_count": 2,
+      "final_hit_queries": {"leaked": 1, "non_leaked": 11},
+      "leaked_queries": 2,
+      "query_count": 160
+    },
+    "scifact": {
+      "candidate_hit_queries": {"leaked": 1, "non_leaked": 30},
+      "final_hit_queries": {"leaked": 1, "non_leaked": 18},
+      "leaked_queries": 1,
+      "query_count": 50
+    }
+  },
+  "interpretation": {
+    "automatic_sample_removal": false,
+    "internal_evidence_has_significant_leakage_risk": false,
+    "internal_metrics_only": true,
+    "recommended_reporting": "report full results and a parallel non-leaked diagnostic stratum; never replace the full result or present either as an official score",
+    "risk_band": "moderate",
+    "small_leaked_strata_warning": true
+  },
+  "leakage": {
+    "direct_leak_query_count": 4,
+    "direct_leak_query_rate": 0.004,
+    "leaked_cross_query_duplicate_relation_count": 5,
+    "leaked_query_count": 14,
+    "leaked_query_rate": 0.014,
+    "leaked_relation_count": 15,
+    "leaked_relation_rate": 0.006242197253433208,
+    "mixed_leakage_repeated_identity_count": 5,
+    "query_level_counts": {
+      "identifier_or_url_exact": 0,
+      "no_detected_leakage": 986,
+      "normalized_title_full": 4,
+      "quoted_title_exact": 0,
+      "title_token_high_coverage": 10
+    },
+    "relation_level_counts": {
+      "identifier_or_url_exact": 0,
+      "no_detected_leakage": 2388,
+      "normalized_title_full": 5,
+      "quoted_title_exact": 0,
+      "title_token_high_coverage": 10
+    }
+  },
+  "protocol": {
+    "path": "benchmark/autoscholar_query_gold_leakage_protocol.json",
+    "sha256": "5e4e01b37bc6dd38a71fd196086f1837089711b0ce426c25f84411cd14cb9d2f",
+    "version": "query-gold-leakage-protocol-v1"
+  },
+  "reproducibility": {
+    "queries_sha256": "74d24f495bd74a85a6f7dd77ddb57acbd5f486305aa6ac112cbfddc02dfa5576",
+    "relations_sha256": "74b217b9cc8a200bce8e7968f67a645241feac76d254464328cb563ae474594e",
+    "runs_byte_identical": true,
+    "summary_sha256": "48e634ccef251f87ad0516e4f709194dc7339063329e864223e8eb3635157166"
+  },
+  "schema_version": "1"
+}

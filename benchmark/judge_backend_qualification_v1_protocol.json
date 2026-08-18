@@ -1,0 +1,123 @@
+{
+  "analysis": {
+    "causal_claims_allowed": false,
+    "concurrency_window": "batch_index_divided_by_declared_max_concurrency",
+    "input_length_buckets_characters": [
+      0,
+      1024,
+      2048,
+      4096,
+      8192,
+      16384
+    ],
+    "text_features": {
+      "boundary_characters": "angle_brace_curly_brace_or_control_character_v1",
+      "empty_abstract": "any_item_abstract_empty_v1",
+      "markdown": "code_fence_inline_code_link_heading_or_emphasis_v1",
+      "unicode": "any_non_ascii_codepoint_v1"
+    }
+  },
+  "candidate_discovery": {
+    "allowed_persisted_fields": [
+      "candidate_id",
+      "provider",
+      "model",
+      "available",
+      "reason",
+      "request_options"
+    ],
+    "forbidden_persisted_fields": [
+      "api_key",
+      "authorization",
+      "base_url",
+      "endpoint",
+      "headers",
+      "secret"
+    ],
+    "source": "project_runtime_config",
+    "strategy": "all_distinct_configured_provider_model_pairs"
+  },
+  "canaries": {
+    "count": 24,
+    "path": "benchmark/judge_backend_qualification_v1_canaries.jsonl",
+    "sha256": "4b6d1c1335252cfa932e59d8fd9eb4934658caee62825049c21dec72b3b06b68"
+  },
+  "contract": "judge_backend_qualification_v1",
+  "frozen_evidence": [
+    {
+      "calls_path": "benchmark/llm_relevance_judging_v1_record160_incomplete/calls.jsonl",
+      "calls_sha256": "b2538101f73dbb7e78ab6307d625781df4ff53f528dfffe182c1d3bc808467f6",
+      "contract": "llm_relevance_judging_v1",
+      "manifest_path": "benchmark/llm_relevance_judging_v1_record160_incomplete/manifest.json",
+      "manifest_sha256": "4f7765445dc0e4cf1ef3d52433cf30d113acfc864b3fd2cc0d35f90dbc06e4de",
+      "protocol_path": "benchmark/llm_relevance_judging_v1_protocol.json",
+      "protocol_sha256": "91d78648be99358cab4256ac00bcf12205a4ce3352847a8c8cef86cfa972c2c6",
+      "status_path": "benchmark/llm_relevance_judging_v1_record160_incomplete/status.json",
+      "status_sha256": "468696d91612a0bb20a19b3e21aa1431ac176ef90795734660a77ab9e63833e4"
+    },
+    {
+      "calls_path": "benchmark/llm_relevance_judging_v1_1_record160_incomplete/calls.jsonl",
+      "calls_sha256": "b5561e05c8b188c31129ccab40ae576df43022fc1f05841096c378ad61fd8ec3",
+      "contract": "llm_relevance_judging_v1_1",
+      "manifest_path": "benchmark/llm_relevance_judging_v1_1_record160_incomplete/manifest.json",
+      "manifest_sha256": "949b38847337a27681c21e1bbf0e4b233ffe97aef281a70517a95ce9c8272aae",
+      "protocol_path": "benchmark/llm_relevance_judging_v1_1_protocol.json",
+      "protocol_sha256": "080bea17ced0120130f85d88a90d712c07be0df9cd4cb0b1c43defd615d00a0c",
+      "status_path": "benchmark/llm_relevance_judging_v1_1_record160_incomplete/status.json",
+      "status_sha256": "ed836ceeda568d177c136effff4244369dc070ad60f896ab0ebdcf707d8c18c7"
+    }
+  ],
+  "probe": {
+    "attempts_per_canary": 1,
+    "fallback_allowed": false,
+    "labels_persisted": false,
+    "max_candidates": 8,
+    "max_concurrency": 1,
+    "max_logical_calls_per_candidate": 24,
+    "max_supplier_total_tokens_per_candidate": 120000,
+    "native_mode": "structured_json",
+    "request_options": {
+      "max_tokens": 1024,
+      "timeout_seconds": 60.0
+    },
+    "required_http_attempts_per_logical_call": 1,
+    "required_usage_fields": [
+      "prompt_tokens",
+      "completion_tokens",
+      "total_tokens"
+    ],
+    "temperature": 0
+  },
+  "prompt": {
+    "name": "judge_backend_qualification_v1",
+    "system_path": "src/scholar_agent/prompts/judge_backend_qualification_v1/system.md",
+    "system_sha256": "71d200bbff3bd8a2b326109fdcebd15604f7c1ea9480439af9d61f015c81a618",
+    "user_path": "src/scholar_agent/prompts/judge_backend_qualification_v1/user.md",
+    "user_sha256": "70fce2586cb36dd5953a79dcdcd60e468ba15354f0e1d627d65ebf8099e3111b",
+    "version": "1.0.0"
+  },
+  "qualification_thresholds": {
+    "fallback_count": 0,
+    "item_binding_success_count": 24,
+    "missing_usage_count": 0,
+    "provider_failure_count": 0,
+    "schema_success_count": 24,
+    "strict_success_count": 24,
+    "unexpected_http_retry_count": 0
+  },
+  "response_schema": {
+    "client_validation": "strict_pydantic_extra_forbid",
+    "evidence": "exact_expected_synthetic_token",
+    "item_binding": "exact_opaque_canary_id",
+    "labels": [
+      "relevant",
+      "partially_relevant",
+      "not_relevant",
+      "insufficient_information"
+    ],
+    "malformed_output_recovery": "forbidden",
+    "top_level_key": "labels"
+  },
+  "schema_version": "1",
+  "score_scope": "backend_conformance_only_not_relevance_quality_or_official_score"
+}

@@ -1,0 +1,174 @@
+{
+  "analysis": "ranking_decision_audit_v1",
+  "analysis_population": {
+    "excluded_case_count": 2,
+    "exclusion_rule": "reuse the frozen Record160 excluded_no_successful_source rule exactly; no post-hoc exclusion is allowed",
+    "expected_candidate_count": 4599,
+    "main_case_count": 160,
+    "record_case_count": 162,
+    "selection_prohibitions": [
+      "gold",
+      "qrels",
+      "case_id",
+      "target_paper",
+      "quality_score",
+      "observed_ranking_result"
+    ]
+  },
+  "decision_catalog": {
+    "catalog_sources": [
+      "scholar_agent.agents.judgement.production_judgement_decision_catalog",
+      "scholar_agent.agents.reranker.production_ranking_decision_catalog"
+    ],
+    "category_order": [
+      "highly_relevant",
+      "partially_relevant",
+      "weakly_relevant",
+      "irrelevant",
+      "insufficient_evidence"
+    ],
+    "category_thresholds": {
+      "comparison": "greater_than_or_equal",
+      "highly_relevant": 0.72,
+      "partially_relevant": 0.45,
+      "weakly_relevant": 0.25
+    },
+    "floating_point": {
+      "finite_only": true,
+      "judgement_component_decimals": 6,
+      "judgement_score_decimals": 4,
+      "reconstruction_absolute_tolerance": 5e-06,
+      "rerank_component_decimals": 4,
+      "rerank_score_decimals": 4,
+      "stable_report_decimals": 8
+    },
+    "judgement_components": [
+      "topic_match",
+      "must_have_match",
+      "method_match",
+      "dataset_match",
+      "paper_type_match",
+      "domain_match",
+      "venue_match",
+      "temporal_match",
+      "venue_mismatch_penalty",
+      "temporal_mismatch_penalty",
+      "paper_type_mismatch_penalty",
+      "missing_abstract_penalty",
+      "missing_metadata_penalty",
+      "constraint_coverage_adjustment",
+      "clamp_adjustment",
+      "hard_constraint_adjustment"
+    ],
+    "missing_value_semantics": {
+      "abstract": "empty abstract contributes no abstract lexical evidence; configured missing_abstract_penalty remains explicit",
+      "citation_count": "negative values rank as zero",
+      "feature_vector": "missing feature vector is insufficient evidence for this audit",
+      "identifiers": "null identifiers reduce authority and metadata identifier components without fallback inference",
+      "paper_text": "empty title and abstract force insufficient_evidence with score zero",
+      "rerank_key": "all production ranking-key fields must be present after schema defaults; no audit fallback is permitted",
+      "venue": "null or empty venue contributes no venue authority component",
+      "year": "null year is zero in tie-break and uses the production missing-year timeliness value"
+    },
+    "rerank_components": [
+      "relevance_score",
+      "authority_score",
+      "timeliness_score",
+      "metadata_score",
+      "category_multiplier",
+      "final_score",
+      "relevance_weight",
+      "authority_weight",
+      "timeliness_weight",
+      "metadata_weight"
+    ],
+    "rerank_key": [
+      {"direction": "ascending", "field": "category_tier"},
+      {"direction": "descending", "field": "final_score"},
+      {"direction": "descending", "field": "relevance_score"},
+      {"direction": "descending", "field": "nonnegative_citation_count"},
+      {"direction": "descending", "field": "year_or_zero"},
+      {"direction": "ascending", "field": "title_casefold"},
+      {"direction": "ascending", "field": "original_index"}
+    ],
+    "result_policy": {
+      "allowed_categories": ["highly_relevant", "partially_relevant"],
+      "operation_order": "rerank_all_then_take_first_20_then_apply_category_gate",
+      "top_k": 20
+    },
+    "special_category_reasons": [
+      "missing_title_and_abstract",
+      "minimum_evidence_count_not_met",
+      "excluded_term_hard_constraint",
+      "constraint_guard_applied"
+    ],
+    "version": "current-rules-ranking-decision-v1"
+  },
+  "diagnostics": {
+    "category_and_source_counts": true,
+    "component_contribution_distributions": true,
+    "cross_category_movement": true,
+    "irrelevant_or_weak_without_failed_constraint_dimensions": true,
+    "source_deep_dives": ["arxiv", "openalex"],
+    "threshold_and_top20_margin_distributions": true,
+    "tie_group_analysis": true
+  },
+  "execution": {
+    "gold_access": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "frozen_input": {
+    "component_assignments": {
+      "path": "benchmark/autoscholar_query_independence_baseline/query_assignments.jsonl",
+      "sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5"
+    },
+    "config_sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+    "observed_snapshot_key_count": 1093,
+    "record_results_sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+    "run_dir": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1",
+    "snapshot_dir": "outputs/benchmark_snapshots/autoscholar_current_rules_full1000_3cd47c1",
+    "snapshot_file_count": 1934,
+    "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5"
+  },
+  "implementation_base_commit": "1dedb9a787a520864fc56c91a4e998658c956139",
+  "production_inputs": {
+    "dedup_sha256": "db4162ef6359e1d973e666d68af657da0901d37b8d202db68214cfe2011b343d",
+    "identity_sha256": "af52ba53c2e559ae87dac83373f0fc2bfeb38d9351ccfb75d7463d1caa2a1dc8",
+    "judgement_config_sha256": "2680c6a438c9bb1b30cab09c95003e68c5f39097887308c6f9efe1701e5dcf1f",
+    "judgement_sha256_at_protocol_freeze": "0aebe27e90887194da02fd288cc842ab363a2fb79114406ebeecf7dde52bfd06",
+    "reranker_sha256_at_protocol_freeze": "3ff949d689fb5f3ef9c7d5850b94ad16791ff36534a718523499beb96dadce25",
+    "selection_sha256": "b1eead068d2fb2fbe4cd4a75ad606acc9ba041cfb6816634bc0240568447f544"
+  },
+  "reconstruction": {
+    "candidate_limit": 200,
+    "judgement_policy": "current_rules",
+    "required_exact_stages": [
+      "initial_deduplicated",
+      "initial_judged",
+      "initial_reranked",
+      "final_returned"
+    ],
+    "result_policy": "highly_and_partial",
+    "top_k": 20
+  },
+  "schema_version": "1",
+  "validation_invariants": [
+    "every budget-retained candidate has exactly one opaque decision record",
+    "recorded judgement components reconstruct the final judgement score within the frozen tolerance",
+    "recorded category and adjacent threshold margins agree with production threshold and guard semantics",
+    "the recorded production sort key reconstructs every reranked position without reimplementing scoring",
+    "the first-20 rank window and highly_and_partial category gate reconstruct final_returned exactly",
+    "all component and ranking values are finite JSON numbers",
+    "every tie is resolved by the registered production key and exact input permutation behavior is reported",
+    "the same identity cannot occupy multiple reranked or final positions",
+    "snapshot tree remains unchanged and no network, LLM, evaluator, or quality path is used"
+  ],
+  "warnings": [
+    "This audit explains existing score, category, rerank, and Top-20 decisions only; it does not establish relevance, Precision, Recall, F1, or an official score.",
+    "A high score, category, source count, or Top-20 position is not a human relevance judgement.",
+    "Boundary probes validate implementation semantics only and must not be used to tune thresholds, weights, or ranking rules."
+  ]
+}

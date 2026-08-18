@@ -1,0 +1,118 @@
+{
+  "package": "lexical_normalization_v1_blinded_precision_audit_v1",
+  "implementation_base_commit": "2c2aee359ce39ccfbf038003bec4ce7e609a2801",
+  "manifest": "benchmark/lexical_normalization_precision_annotation_manifest.json",
+  "tracked_package": "benchmark/lexical_normalization_precision_annotation",
+  "scope": {
+    "network_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0,
+    "gold_or_qrels_used_for_sampling": false,
+    "automatic_relevance_label_count": 0,
+    "annotation_status": "pending_human_labels"
+  },
+  "sampling": {
+    "maximum_query_paper_pairs": 200,
+    "eligible_query_paper_pairs": 502,
+    "selected_query_paper_pairs": 200,
+    "unique_selected_query_paper_pairs": 200,
+    "significant_absolute_rank_change": 5,
+    "by_dataset": {
+      "scifact": 84,
+      "auto_dev": 71,
+      "auto_val": 45
+    },
+    "by_stratum": {
+      "normalization_added": 71,
+      "baseline_only": 48,
+      "shared_rank_shifted": 81
+    },
+    "cell_counts": {
+      "scifact/normalization_added": {
+        "population": 204,
+        "sample": 28
+      },
+      "scifact/baseline_only": {
+        "population": 54,
+        "sample": 28
+      },
+      "scifact/shared_rank_shifted": {
+        "population": 110,
+        "sample": 28
+      },
+      "auto_dev/normalization_added": {
+        "population": 39,
+        "sample": 28
+      },
+      "auto_dev/baseline_only": {
+        "population": 15,
+        "sample": 15
+      },
+      "auto_dev/shared_rank_shifted": {
+        "population": 35,
+        "sample": 28
+      },
+      "auto_val/normalization_added": {
+        "population": 15,
+        "sample": 15
+      },
+      "auto_val/baseline_only": {
+        "population": 5,
+        "sample": 5
+      },
+      "auto_val/shared_rank_shifted": {
+        "population": 25,
+        "sample": 25
+      }
+    }
+  },
+  "blinding": {
+    "public_fields": [
+      "sample_id",
+      "query",
+      "title",
+      "abstract",
+      "year"
+    ],
+    "public_sample_id_count": 200,
+    "unique_public_sample_id_count": 200,
+    "forbidden_field_count": 15,
+    "leak_check_passed": true,
+    "strategy_mapping_location": "private/mapping.json"
+  },
+  "annotation": {
+    "labels": [
+      "relevant",
+      "partially_relevant",
+      "not_relevant",
+      "insufficient_information"
+    ],
+    "independent_annotators": 2,
+    "adjudication_on_disagreement": true,
+    "cohen_kappa_available_after_labels": true,
+    "precision_metrics_available_after_labels": true,
+    "current_cohen_kappa": null,
+    "current_precision_metrics": null,
+    "current_false_admission_rate": null
+  },
+  "determinism": {
+    "run_1": "outputs/benchmark_runs/lexical_precision_annotation_2c2aee3_r1",
+    "run_2": "outputs/benchmark_runs/lexical_precision_annotation_2c2aee3_r2",
+    "tree_sha256": "08a12db33a6d4705af1ccb2978437eea857290a45e963046d0ee3730c232c7a5",
+    "source_manifest_sha256": "926ada68707c95e74ee146b935259e8738c4e59d614cc9bacd38d9a7ed5cea78",
+    "blind_samples_sha256": "ab9d5db2a7dcd661b24569e30a59b1b8746b0d0ed4e7270c39503528a9f92b59",
+    "annotator_1_template_sha256": "36a43225186958037b6a7741e111a5d8054560c04ff0f48d9b4f5ec1e8e064e3",
+    "annotator_2_template_sha256": "d78a7f3570782ea89b769113f204212b0727ddac63c2beae08b77541f90dbd89",
+    "adjudication_template_sha256": "25251e37485e8da73c0dadee4d698ce2cfd5c46dcad6d7e1d12c796d281e901e",
+    "private_mapping_sha256": "8bc9e928dc0b508e8be58084d462f4d0494f09aec4c03afdefb0eefe0b9b2285",
+    "summary_sha256": "c0afbdfb41b62c8bbe027011eec79822e7ae76f299dfdad538abf5441ea97cac",
+    "byte_identical": true
+  },
+  "required_human_actions": [
+    "Give both annotators only the public blind samples, schema and their separate template; keep private mapping hidden.",
+    "Have both annotators label all 200 samples independently without discussion.",
+    "Reveal only disagreement sample IDs to a third adjudicator and complete final labels for those rows.",
+    "Run the score CLI with both completed label files, adjudication file and private mapping.",
+    "Review kappa, insufficient-information coverage and sampling-frame caveats before drawing a Precision conclusion."
+  ]
+}

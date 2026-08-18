@@ -1,0 +1,20 @@
+{
+  "controls_ready": true,
+  "credential_status": "not_checked",
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_validation_complete": false,
+  "full1000_completed": false,
+  "network_status": "not_checked",
+  "protocol": "formal_run_disaster_recovery_v1",
+  "real_backup_created": false,
+  "real_run_started": false,
+  "schema_version": "1",
+  "status": "external_run_not_started"
+}

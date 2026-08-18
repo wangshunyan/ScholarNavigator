@@ -1,0 +1,139 @@
+{
+  "blinding": {
+    "allowed_item_fields": [
+      "item_id",
+      "query",
+      "title",
+      "abstract",
+      "year"
+    ],
+    "forbidden_fields": [
+      "strategy",
+      "policy",
+      "arm",
+      "direction",
+      "rank",
+      "score",
+      "gold",
+      "qrels",
+      "judgement",
+      "case_id",
+      "query_id",
+      "source",
+      "sources",
+      "dataset",
+      "paper_id",
+      "identifiers",
+      "stratum",
+      "transition"
+    ],
+    "item_identity": "sha256_of_v1_1_package_binding_and_opaque_package_item_id",
+    "unblind_condition": "both_rounds_complete_all_disagreements_adjudicated_and_labels_lock_valid"
+  },
+  "contract": "llm_relevance_judging_v1_1",
+  "inputs": {
+    "cluster_assignments": {
+      "path": "benchmark/autoscholar_query_independence_baseline/query_assignments.jsonl",
+      "sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5"
+    },
+    "current_package": {
+      "expected_item_count": 439,
+      "manifest_path": "benchmark/lexical_normalization_record160_precision_annotation/manifest.json",
+      "manifest_sha256": "3447a7350003957ced2ffbd0f9aaeeec9ad41da9553afb28833f55b4e6916ae6",
+      "mapping_path": "benchmark/lexical_normalization_record160_precision_annotation/private/mapping.json",
+      "mapping_sha256": "a8b0fb8d889655151c726678707879793ecf7065c1473a9a1fac8911530e8299",
+      "public_path": "benchmark/lexical_normalization_record160_precision_annotation/public/blind_samples.jsonl",
+      "public_sha256": "5b9cb83266d51a7e4bbde71f4bbe3645d60ff5872796ad968a56de50dd54771f",
+      "rubric_path": "benchmark/lexical_normalization_record160_precision_annotation/public/annotation_schema.json",
+      "rubric_sha256": "b6ce3491d5024b6b245f922221f7e8ec7f7546baa6ef57bf7ca38d3eebb9d0b5"
+    },
+    "prior_package": {
+      "expected_referenced_item_count": 32,
+      "manifest_path": "benchmark/lexical_normalization_precision_annotation/manifest.json",
+      "manifest_sha256": "088b7697e4b592452f74ff41b887b9940e9d2eba1c4993d9922fac1dadd1a11e",
+      "public_path": "benchmark/lexical_normalization_precision_annotation/public/blind_samples.jsonl",
+      "public_sha256": "ab9d5db2a7dcd661b24569e30a59b1b8746b0d0ed4e7270c39503528a9f92b59"
+    },
+    "record160_cases": {
+      "expected_query_count": 160,
+      "path": "outputs/benchmark_runs/lexical_normalization_record160_813cf3a_r5/case_comparison.jsonl",
+      "sha256": "cc2372e329055fa82750e6bb0eb2bf0f33322c54a389952d032746d6d0a6a5d2"
+    }
+  },
+  "judge": {
+    "adjudicator_prompt": {
+      "name": "llm_relevance_adjudicator_v1_1",
+      "system_path": "src/scholar_agent/prompts/llm_relevance_judging_v1_1/adjudicator_system.md",
+      "system_sha256": "78fbdcc4ff07f41935faecbb3866c4b38d6193efc79bdaf89e2c8e6865e6bd04",
+      "user_path": "src/scholar_agent/prompts/llm_relevance_judging_v1_1/adjudicator_user.md",
+      "user_sha256": "855266a0fd36e616e301c6a4725ee4e06b1100ecb84a9fefdb8ffc5b4fe81aa3",
+      "version": "1.1.0"
+    },
+    "batch_size": 1,
+    "complete_attempt_budget_in_one_run": true,
+    "evidence_max_characters": 240,
+    "independent_rounds": [
+      "independent_1",
+      "independent_2"
+    ],
+    "logical_retry_backoff_seconds": 1.0,
+    "max_concurrency": 4,
+    "max_logical_attempts_per_batch": 2,
+    "request_options": {
+      "max_tokens": 1024,
+      "timeout_seconds": 60.0
+    },
+    "judge_prompt": {
+      "name": "llm_relevance_judge_v1_1",
+      "system_path": "src/scholar_agent/prompts/llm_relevance_judging_v1_1/judge_system.md",
+      "system_sha256": "a0e18f3b45be62197776b964c7a213558258d61f631451ac2743ffb23287f9d1",
+      "user_path": "src/scholar_agent/prompts/llm_relevance_judging_v1_1/judge_user.md",
+      "user_sha256": "8cced0eb0bcde314fb517aa587cb4185404622d956e4eb36bf80499e466e8153",
+      "version": "1.1.0"
+    },
+    "structured_output": {
+      "client_validation": "strict_pydantic_extra_forbid",
+      "malformed_output_recovery": "forbidden",
+      "provider_mode": "native_json_object",
+      "top_level_adjudication_key": "decisions",
+      "top_level_judge_key": "labels"
+    },
+    "temperature": 0
+  },
+  "predecessor": {
+    "calls_path": "benchmark/llm_relevance_judging_v1_record160_incomplete/calls.jsonl",
+    "calls_sha256": "b2538101f73dbb7e78ab6307d625781df4ff53f528dfffe182c1d3bc808467f6",
+    "contract": "llm_relevance_judging_v1",
+    "failure_classification": {
+      "batch_member_mismatch_attempt_count": 1,
+      "strict_schema_invalid_attempt_count": 8,
+      "truncation_confirmed": false
+    },
+    "inherit_locked_labels": false,
+    "manifest_path": "benchmark/llm_relevance_judging_v1_record160_incomplete/manifest.json",
+    "manifest_sha256": "4f7765445dc0e4cf1ef3d52433cf30d113acfc864b3fd2cc0d35f90dbc06e4de",
+    "status_path": "benchmark/llm_relevance_judging_v1_record160_incomplete/status.json",
+    "status_sha256": "468696d91612a0bb20a19b3e21aa1431ac176ef90795734660a77ab9e63833e4"
+  },
+  "rubric": {
+    "labels": [
+      "relevant",
+      "partially_relevant",
+      "not_relevant",
+      "insufficient_information"
+    ],
+    "positive_labels": [
+      "relevant",
+      "partially_relevant"
+    ]
+  },
+  "schema_version": "1",
+  "score_scope": "internal_llm_proxy_not_human_or_official",
+  "statistics": {
+    "bootstrap_iterations": 20000,
+    "cluster_assignment": "reuse_frozen_component_id_without_recomputing_clusters",
+    "cluster_bootstrap_seed": 20260722,
+    "query_bootstrap_seed": 20260722,
+    "top_k": 20
+  }
+}

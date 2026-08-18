@@ -1,0 +1,120 @@
+{
+  "bindings": {
+    "checkpoint_resume": {
+      "path": "benchmark/crash_consistency_v1_protocol.json",
+      "sha256": "24b1fbc1314275e3bfa56fc431df18a67102dbd90ccf482f5c12fd358356e920"
+    },
+    "execution_plan": {
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    "launch_control": {
+      "path": "benchmark/full1000_launch_control_v1_protocol.json",
+      "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+    },
+    "preregistration": {
+      "path": "benchmark/formal_validation_preregistration_v1_seal.json",
+      "sha256": "7236611c13d6f61a3ec98128344bf97fc9e4295628fe60147badeaf2b5576d7d"
+    },
+    "provider_health": {
+      "path": "benchmark/formal_provider_health_supervisor_v1_protocol.json",
+      "sha256": "1b943279958c6b5f586a1ccfbe607d3f021cff7e54a4a271d911f73092eba61e"
+    },
+    "provider_health_addendum": {
+      "path": "benchmark/full1000_provider_health_addendum_v1.json",
+      "sha256": "fb25f7000d54c94648d6068765ac9c71124f7cffa9278ae99f8b2d5e29551569"
+    },
+    "resource_ledger": {
+      "path": "benchmark/resource_accounting_integrity_v1_protocol.json",
+      "sha256": "b465d2e8f555418bb4a6ac492a0879d307830bdd158ef18ff39de481a6c08f97"
+    },
+    "shard_contract": {
+      "path": "benchmark/sharded_execution_integrity_v1_protocol.json",
+      "sha256": "4ef1b886e08dda5314887c104b8e39d22ddf4fe0a20c4a17a7d3f1f632331f95"
+    }
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "limits": {
+    "attempt_upper": 19280,
+    "backpressure_continuation_queue_threshold": 8,
+    "backpressure_source_concurrency": 2,
+    "global_concurrency": 12,
+    "max_logical_steps": 200000,
+    "max_pages_per_query_source": 2,
+    "per_shard_concurrency": 2,
+    "per_source_concurrency": 3,
+    "retry_limits": {
+      "arxiv": 1,
+      "openalex": 1,
+      "pubmed": 0,
+      "semantic_scholar": 1
+    }
+  },
+  "population": {
+    "query_count": 1000,
+    "query_order_sha256": "1d310756a0a5115ea33aec23939a4e9867302c85750448810252f174e5e74563",
+    "query_stable_identity_sha256": "31e2daab09e10db78a91d0bf07fd292a9dc2c56ca077bf6c7d92974e81ea7cfb",
+    "shard_count": 20,
+    "sources": [
+      "arxiv",
+      "openalex",
+      "pubmed",
+      "semantic_scholar"
+    ]
+  },
+  "protocol": "formal_scheduler_fairness_v1",
+  "protocol_sha256": "801ce45275b5bcd9a7c2818abfe0dc053d95a39ab836fddafe511760ef0af881",
+  "scheduler_policy": {
+    "admission_identity_inputs": [
+      "global_query_ordinal",
+      "shard_index",
+      "source_ordinal",
+      "operation_kind",
+      "attempt_or_page_ordinal",
+      "runtime_state"
+    ],
+    "continuation_order": "round_then_kind_then_global_query_ordinal_then_source_ordinal",
+    "first_attempt_barrier": "all_query_source_initial_operations_admitted_before_page_or_retry",
+    "initial_order": "query_round_robin_with_rotating_source_then_authoritative_query_order",
+    "prohibited_priority_inputs": [
+      "case_id",
+      "completion_speed",
+      "gold",
+      "paper_identity",
+      "provider_yield",
+      "quality_metric",
+      "query_text_or_type",
+      "result_content"
+    ],
+    "resume_cursor": "exact_pause_checkpoint_cursor_without_reset",
+    "terminal_coverage": "preserve_all_queries_in_authoritative_order_including_fail_cancel"
+  },
+  "schema_version": "1",
+  "source_commit": "46bd9d27e1a4e98bb4afa78c6bb6cdf77ab5d278",
+  "state_machine": {
+    "states": [
+      "ready",
+      "running",
+      "pause_required",
+      "paused",
+      "resume_eligible",
+      "cancel_required",
+      "cancelled",
+      "completed",
+      "invalid"
+    ],
+    "transition_rules": {
+      "cancel": "running_to_cancel_required_to_cancelled_after_inflight_drain",
+      "complete": "running_to_completed_after_full_terminal_coverage",
+      "pause": "running_to_pause_required_to_paused_after_inflight_drain",
+      "resume": "paused_to_resume_eligible_to_running_with_exact_cursor"
+    }
+  }
+}

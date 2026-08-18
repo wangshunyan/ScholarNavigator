@@ -1,0 +1,206 @@
+{
+  "analysis": "constraint_decision_audit_v1",
+  "analysis_population": {
+    "excluded_case_count": 2,
+    "exclusion_rule": "reuse the frozen Record160 excluded_no_successful_source rule exactly; no post-hoc exclusion is allowed",
+    "main_case_count": 160,
+    "record_case_count": 162,
+    "selection_prohibitions": [
+      "gold",
+      "qrels",
+      "case_id",
+      "target_paper",
+      "quality_score",
+      "observed_constraint_result"
+    ]
+  },
+  "constraint_catalog": {
+    "catalog_source": "scholar_agent.agents.judgement.production_constraint_catalog",
+    "combination_rule": "current_rules computes all applicable dimensions, then applies the existing fixed judgement guard sequence and highly_and_partial result policy; the audit records every failed dimension rather than only the first",
+    "decision_states": [
+      "passed",
+      "failed",
+      "not_applicable",
+      "unknown"
+    ],
+    "field_order": [
+      "exclude_terms",
+      "must_include_terms",
+      "methods",
+      "datasets",
+      "domains",
+      "paper_types",
+      "venues",
+      "time_range"
+    ],
+    "fields": {
+      "datasets": {
+        "activation": "non-empty datasets; explicit_fields controls the additional guard penalty",
+        "combination": "any expected dataset term matches",
+        "enforcement": "scoring_and_explicit_soft_guard",
+        "evidence_fields": [
+          "title",
+          "abstract"
+        ],
+        "missing_value": "unknown when both title and abstract are empty; production match result remains auditable"
+      },
+      "domains": {
+        "activation": "QueryConstraint.domains is schema-visible but has no candidate-level predicate; current_rules domain scoring uses QueryAnalysis.domain instead",
+        "combination": "not applicable to candidate constraint decisions",
+        "enforcement": "planning_only_not_consumed_by_candidate_predicate",
+        "evidence_fields": [],
+        "missing_value": "not_applicable"
+      },
+      "exclude_terms": {
+        "activation": "non-empty exclude_terms",
+        "combination": "passes only when no excluded term matches",
+        "enforcement": "hard_guard",
+        "evidence_fields": [
+          "title",
+          "abstract"
+        ],
+        "missing_value": "unknown when both title and abstract are empty; production no-match result is recorded separately"
+      },
+      "methods": {
+        "activation": "non-empty methods",
+        "combination": "any expected method term matches",
+        "enforcement": "scoring_only",
+        "evidence_fields": [
+          "title",
+          "abstract"
+        ],
+        "missing_value": "unknown when both title and abstract are empty"
+      },
+      "must_include_terms": {
+        "activation": "non-empty must_include_terms; explicit_fields controls the all-terms guard",
+        "combination": "all expected terms must match for the explicit guard",
+        "enforcement": "scoring_and_explicit_guard",
+        "evidence_fields": [
+          "title",
+          "abstract"
+        ],
+        "missing_value": "unknown when both title and abstract are empty; production match result remains auditable"
+      },
+      "paper_types": {
+        "activation": "non-empty paper_types",
+        "combination": "any configured production paper-type alias matches",
+        "enforcement": "scoring_and_soft_guard",
+        "evidence_fields": [
+          "title",
+          "abstract"
+        ],
+        "missing_value": "unknown when both title and abstract are empty; production match result remains auditable"
+      },
+      "time_range": {
+        "activation": "time_range is present",
+        "combination": "year satisfies both present inclusive bounds",
+        "enforcement": "scoring_and_out_of_range_guard",
+        "evidence_fields": [
+          "year"
+        ],
+        "missing_value": "unknown when year is null; production constraint result is false but the out-of-range guard is not applied"
+      },
+      "venues": {
+        "activation": "non-empty venues",
+        "combination": "any normalized expected venue is a substring of the normalized paper venue",
+        "enforcement": "scoring_only",
+        "evidence_fields": [
+          "venue"
+        ],
+        "missing_value": "unknown when venue is null or empty; production constraint result is false"
+      }
+    },
+    "normalization": {
+      "term_match": "current_rules casefolded term-boundary predicate with lexical_normalization_policy=off",
+      "venue_match": "current_rules casefold plus removal of spaces, underscores, and hyphens",
+      "version": "current-rules-v1"
+    },
+    "predicate_version": "constraint-predicates-current-rules-v1"
+  },
+  "execution": {
+    "gold_access": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "frozen_input": {
+    "component_assignments": {
+      "path": "benchmark/autoscholar_query_independence_baseline/query_assignments.jsonl",
+      "sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5"
+    },
+    "config_sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+    "observed_snapshot_key_count": 1093,
+    "record_results_sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+    "run_dir": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1",
+    "snapshot_dir": "outputs/benchmark_snapshots/autoscholar_current_rules_full1000_3cd47c1",
+    "snapshot_file_count": 1934,
+    "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5"
+  },
+  "implementation_base_commit": "5ae4741291cf21e26ab3212ef78feecea0b49558",
+  "predicate_inputs": {
+    "dedup_sha256": "db4162ef6359e1d973e666d68af657da0901d37b8d202db68214cfe2011b343d",
+    "identity_sha256": "af52ba53c2e559ae87dac83373f0fc2bfeb38d9351ccfb75d7463d1caa2a1dc8",
+    "judgement_config_sha256": "2680c6a438c9bb1b30cab09c95003e68c5f39097887308c6f9efe1701e5dcf1f",
+    "judgement_sha256_at_freeze": "17e94e61be56671cabc2b5d4c501b32eeed417935db1b0af884b4b3208a2a49e",
+    "reranker_sha256": "3ff949d689fb5f3ef9c7d5850b94ad16791ff36534a718523499beb96dadce25",
+    "selection_sha256": "b1eead068d2fb2fbe4cd4a75ad606acc9ba041cfb6816634bc0240568447f544"
+  },
+  "query_structure": {
+    "reuse": "source_reliability_diagnostics_v1 fixed query-visible syntax strata",
+    "strata": [
+      "length_bucket",
+      "has_quote",
+      "has_boolean_operator",
+      "has_year",
+      "unicode_class"
+    ]
+  },
+  "reconstruction": {
+    "candidate_limit": 200,
+    "judgement_policy": "current_rules",
+    "required_exact_stages": [
+      "initial_deduplicated",
+      "initial_judged",
+      "initial_reranked",
+      "final_returned"
+    ],
+    "result_policy": "highly_and_partial",
+    "top_k": 20
+  },
+  "schema_version": "1",
+  "shadow_analysis": {
+    "constraint_leave_out": "remove exactly one applicable QueryConstraint field for all candidates in a query, call the production current_rules judgement, reranker, and selector, and never combine removals",
+    "metrics": [
+      "restored_survivor_identity_count",
+      "lost_survivor_identity_count",
+      "top20_fill_delta",
+      "top20_identity_added_count",
+      "top20_identity_removed_count"
+    ],
+    "order_invariance": "reorder each constraint value list and explicit_fields without changing values, then require production judgement/category/score, ranking, and selected identities to remain identical",
+    "warning": "shadow results describe rule selectivity and interaction only; they are not deployable alternatives or quality measurements"
+  },
+  "statistical_method": {
+    "confidence_interval": "deterministic 20000-iteration percentile cluster bootstrap",
+    "estimand": "equal mean over frozen query connected components after query-equal aggregation within component",
+    "iterations": 20000,
+    "seed": 20260722
+  },
+  "validation_invariants": [
+    "every budget-retained candidate has exactly one opaque decision record",
+    "decision records reconstruct production judgement categories, constraint survivors, ranking, and final selected identities exactly",
+    "all applicable constraints are emitted and all non-applicable constraints are explicit",
+    "all failed and unknown constraints are retained; first-failure-only traces are forbidden",
+    "reason codes agree with the referenced field-state and production predicate result",
+    "null, empty, and present field states are not silently conflated",
+    "field aliases are resolved only through the production Paper schema and predicate helpers",
+    "constraint value order and explicit_fields order cannot alter production outputs",
+    "snapshot tree remains unchanged and no network, LLM, evaluator, or quality path is used"
+  ],
+  "warnings": [
+    "This audit explains current_rules constraint selectivity and interactions only; it does not establish relevance, Precision, Recall, or an official score.",
+    "A failed or unknown constraint dimension is not by itself proof that the paper should be excluded or included.",
+    "Single-constraint leave-out is a read-only shadow analysis and must not be interpreted as a recommendation to relax production rules."
+  ]
+}

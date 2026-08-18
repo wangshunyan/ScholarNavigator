@@ -1,0 +1,92 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "full1000_run_started": false,
+  "passed_count": 12,
+  "protocol": "formal_backup_target_attestation_v1",
+  "request_count": 0,
+  "scenario_count": 12,
+  "scenarios": [
+    {
+      "expected_status": "backup_target_qualified",
+      "observed_status": "backup_target_qualified",
+      "passed": true,
+      "scenario": "qualified"
+    },
+    {
+      "expected_status": "not_ready_no_qualified_backup_target",
+      "observed_status": "not_ready_no_qualified_backup_target",
+      "passed": true,
+      "scenario": "capacity_insufficient"
+    },
+    {
+      "expected_status": "not_ready_no_qualified_backup_target",
+      "observed_status": "not_ready_no_qualified_backup_target",
+      "passed": true,
+      "scenario": "inode_insufficient"
+    },
+    {
+      "expected_status": "not_ready_no_qualified_backup_target",
+      "observed_status": "not_ready_no_qualified_backup_target",
+      "passed": true,
+      "scenario": "quota_unknown"
+    },
+    {
+      "expected_status": "not_ready_no_qualified_backup_target",
+      "observed_status": "not_ready_no_qualified_backup_target",
+      "passed": true,
+      "scenario": "same_device_alias"
+    },
+    {
+      "expected_status": "not_ready_no_qualified_backup_target",
+      "observed_status": "not_ready_no_qualified_backup_target",
+      "passed": true,
+      "scenario": "same_host_domain"
+    },
+    {
+      "expected_status": "not_ready_no_qualified_backup_target",
+      "observed_status": "not_ready_no_qualified_backup_target",
+      "passed": true,
+      "scenario": "remote_evidence_insufficient"
+    },
+    {
+      "expected_status": "not_ready_no_qualified_backup_target",
+      "observed_status": "not_ready_no_qualified_backup_target",
+      "passed": true,
+      "scenario": "recovery_failure"
+    },
+    {
+      "expected_status": "attestation_or_failure_domain_violation",
+      "observed_status": "attestation_or_failure_domain_violation",
+      "passed": true,
+      "scenario": "capacity_drop_after_import"
+    },
+    {
+      "expected_status": "attestation_or_failure_domain_violation",
+      "observed_status": "attestation_or_failure_domain_violation",
+      "passed": true,
+      "scenario": "challenge_replay"
+    },
+    {
+      "expected_status": "attestation_or_failure_domain_violation",
+      "observed_status": "attestation_or_failure_domain_violation",
+      "passed": true,
+      "scenario": "target_replacement"
+    },
+    {
+      "expected_status": "attestation_or_failure_domain_violation",
+      "observed_status": "attestation_or_failure_domain_violation",
+      "passed": true,
+      "scenario": "tampered_attestation"
+    }
+  ],
+  "schema_version": "1",
+  "status": "backup_target_qualified"
+}

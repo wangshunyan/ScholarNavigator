@@ -1,0 +1,332 @@
+{
+  "blocker_count": 3,
+  "claim_count": 53,
+  "claim_evidence_coverage_rate": 1.0,
+  "code_identity": {
+    "implementation_base_commit": "b0667d658ed8b8df5bc7f2ffde7625ba0aed0d19",
+    "implementation_base_commit_exists": true,
+    "implementation_base_is_ancestor_of_head": true,
+    "implementation_file_count": 231,
+    "implementation_tree_sha256": "5064b6173df2d7aaecdbe8085abf4f342f93fa0fbabbe80aff61f13c72897e03"
+  },
+  "consistency_assertion_count": 20,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "protocol": "validation_readiness_bundle_v1",
+  "read_only_gate_count": 50,
+  "read_only_gates": [
+    {
+      "exit_code": 0,
+      "gate_id": "completion_bias",
+      "output_sha256": "dfd8a93426216bf7d04375122dadc4502ff394b2c1aafe2019e9aebd5cd6db10",
+      "status": "completed"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "constraint_decisions",
+      "output_sha256": "176b4001c30ec4aa84413268c2000186a3726fa08f6e22c839be83f3f9f94d79",
+      "status": "completed"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "evidence_registry",
+      "output_sha256": "c46fc3d964dbd46142d120fe1de23c6db6210967997da5e18ea68043afa9dbc9",
+      "status": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "evidence_revocation",
+      "output_sha256": "d88ab5ca5a82105dafd1430096226ae76e76dd7bcea8097fabe764399b761bee",
+      "status": "revocation_controls_ready"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "evidence_transparency",
+      "output_sha256": "00d230f023a057eed18045417e72450c0b9a300713c4ba692d20435060096813",
+      "status": "no_public_release_checkpoint"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "external_scorer_handoff",
+      "output_sha256": "09090400f80130d1fa2f9aafe9df4c6a512da985d22defe1a5cc5770ad8e2610",
+      "status": "blocked_missing_official_scorer_or_complete_input"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_backup_compaction",
+      "output_sha256": "0fa3a0513288423e17899392e8c850ec36f1abf1e91952a39b7dd98ef394427e",
+      "status": "not_ready_missing_qualified_backup_target"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_backup_member_enrollment",
+      "output_sha256": "e7cead0b48b41716fdc074dd736585a7561a6ec392860356cbc9444c63b9973d",
+      "status": "no_real_enrolled_members"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_backup_set_member_intake",
+      "output_sha256": "cb3858081465c5e09090b4fd1975669e67f449f27f366d4d384c10b2b95b456f",
+      "status": "not_ready_missing_real_members"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_backup_set_topology",
+      "output_sha256": "42192e2c820dc252f5e7f6d48dd4322cf3e647db0ce8536b68a5a1e1e74f0bfa",
+      "status": "not_ready_missing_qualified_members"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_backup_target_attestation",
+      "output_sha256": "6e47e4541c188a1139d012f43e3f8971031ae24d2dd1d90c6d754a1af66adc14",
+      "status": "not_ready_no_qualified_backup_target"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_backup_target_registration",
+      "output_sha256": "d175ca9390873840862e58f987277d0e52bda01758ada7c1b95601f2a1203a6d",
+      "status": "no_real_registered_candidates"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_evidence_quarantine",
+      "output_sha256": "93aab19c45d4ed85a160e7b68b9cac3eb45defd2085aa5b44b1ef6a7bb4d70c3",
+      "status": "blocked_no_real_formal_evidence"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_execution_host_attestation",
+      "output_sha256": "f4c37a4a7ddab4f0b0a57d1c7f0a3116c064a00bf47522b6cb7907ea89a667bf",
+      "status": "not_ready_unverified_or_insufficient_host"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "formal_external_blocker_actions",
+      "output_sha256": "04059a3237b17a15db1e78e0931db1a864e7ecd3c9435ed47df9ec1d75454f50",
+      "status": "external_action_pack_ready"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_multivolume_storage",
+      "output_sha256": "da35b918f66a742f7060fb7b039f292d4e64e960a7dfded467cb6101171e2249",
+      "status": "not_ready_missing_qualified_volumes"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "formal_network_request_manifest",
+      "output_sha256": "5af2a1fd4ad562b79b177a766132e649afd419524c0501b8e0d241c95aa6f653",
+      "status": "request_manifest_ready_network_blocked"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_provider_health_supervisor",
+      "output_sha256": "e9670f36a018e1670683ff5610eed384a4cb8a5450010a6b9a71ae1dd4ec297d",
+      "status": "external_provider_health_not_observed"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_provider_pacing",
+      "output_sha256": "3cbba36535f31e08c4789b18f173af051110ba4a8bfb82a0a1ba21c1040306fd",
+      "status": "not_ready_missing_provider_capacity_declarations"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_run_disaster_recovery",
+      "output_sha256": "8af19ecb7cc0a147636472bb22ebc312cb9e88744e261283c5bf847362dcb253",
+      "status": "external_run_not_started"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_run_storage_governance",
+      "output_sha256": "d150ed6dd37b838b83055c024d4740775af1c0c1046db7a0579339ae3d23255d",
+      "status": "not_ready_capacity_unverified"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_scheduler_fairness",
+      "output_sha256": "48934c8593292669a38fe8a4d0dad73a505a72e6c26ff980f4e22a9a6235b9d0",
+      "status": "external_run_not_started"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_shard_streaming_retention",
+      "output_sha256": "2b08977937afa4b9ecbb4e436e28fcab3092e9df0ece5341dcc6aabba06727fd",
+      "status": "not_ready_missing_qualified_backup"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_validation_clearance",
+      "output_sha256": "580194bba27a5f51a2675e5175ad8866d2d1abbb93db1189ae116c6d0ace8c56",
+      "status": "partially_satisfied"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_validation_dress_rehearsal",
+      "output_sha256": "d29da606056d50317e6fcf125d1ae30fd99238fc1edca0a1a2f969a2f0ec4360",
+      "status": "real_external_evidence_still_blocked"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_validation_preregistration",
+      "output_sha256": "333cc0573111500407447fb05c759fbc3ed6de12d916850ecc1cd5ce8de68680",
+      "status": "sealed_with_external_evidence_blockers"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "formal_validation_roles",
+      "output_sha256": "98bb8bf0ece63d58d1c7987d1ed078909fd390b81955ad9c526b7517c52f70f6",
+      "status": "not_ready_missing_real_role_assignments"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "full1000_execution_readiness",
+      "output_sha256": "191eaabc03447bbc22c3931646cc3f4b55e88ea1f753ba03a35f5de8742b5a18",
+      "status": "execution_plan_ready_but_network_blocked"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "full1000_launch_control",
+      "output_sha256": "d47297dcef20db55360853288e91dace4cd4052712c45a7e45412fc06f8a73d3",
+      "status": "external_activation_blocked"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "human_adjudication_activation",
+      "output_sha256": "dd9bfdb66664082aabbde2990911b2d9625cde4b2be972a9fc79ec4200783052",
+      "status": "not_ready_missing_real_labels_or_adjudication"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "human_annotation_assignment_activation",
+      "output_sha256": "ccbb9fec3c1e9bb38846a4d7386d0c32ddf70ef10c07cb56346ad55d0f386ae0",
+      "status": "not_ready_missing_real_qualified_principals"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "human_annotation_delivery",
+      "output_sha256": "1125d9d17b485a61900599691c960d2cf225c461579484bfd00ac46526e658f2",
+      "status": "verified"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "human_annotation_submission_intake",
+      "output_sha256": "35e9bc20fcec310eb323b0d0ee3197c483c9c42329214be7937c7ef140b694e5",
+      "status": "not_ready_missing_real_submissions"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "human_annotator_qualification_intake",
+      "output_sha256": "e2130e1cf79b4b178fc851cfdb6c025539dc8297ef22024b532e07c1002d57e2",
+      "status": "not_ready_missing_real_qualified_principals"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "official_scorer_package_intake",
+      "output_sha256": "0b0530f8ecf1b09ef2b6e2075c6c977fe1783a74d296b16c5736328f801e00d7",
+      "status": "not_ready_missing_verified_official_package"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "offline_wheelhouse_intake",
+      "output_sha256": "36ebe2de38dae886754ba1e43c0cc728ad8eae6d665518330730a7e518bd1cdb",
+      "status": "not_ready_missing_required_wheels"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "portable_execution_site_attestation",
+      "output_sha256": "b57ef478064d60cf863b742a1b4f124b6584778a80a72e9486327750ac8715bc",
+      "status": "not_ready_no_qualified_external_site"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "provider_capacity_declaration_intake",
+      "output_sha256": "853665d123fa409d1fe8c14a49a5e38618647edcf8f3b5ebfb8ff5179e96bc7b",
+      "status": "not_ready_missing_real_declarations"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "provider_ingest_provenance",
+      "output_sha256": "83481ac5ff55ddf040eb823535b259f664c9c35e12d2df0241f17585ebaf1352",
+      "status": "passed"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "public_contract_compatibility",
+      "output_sha256": "985942eac0d7bd309d63e24d6ecae6451008473630c24176b135c836662e223c",
+      "status": "contracts_compatible"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "python_dependency_lock",
+      "output_sha256": "779ab9ef98572cd87a0d4bd784e6eb6fbc0339db380c052f1b4ec4b8332e824e",
+      "status": "not_ready_missing_verified_version_or_artifact"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "ranking_decisions",
+      "output_sha256": "6af8b57503c213ea1493eb56439acef11a1a308f15a8a87662bf48aa78f0230b",
+      "status": "completed"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "release_authenticity_signing",
+      "output_sha256": "9fd9f2120b6f5461b5ae9f62b205c7e6c932599b4cc212069bf2fd821eb714a1",
+      "status": "not_ready_missing_real_trust_anchor_or_signer"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "release_candidate_reproducibility",
+      "output_sha256": "e1786657d28fbb9ecae71d57ed7b7bb2f81c7b1fd5f8c04aa1049faa946b27f9",
+      "status": "qualified"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "source_fusion",
+      "output_sha256": "780d15d947346ba0034ce492ae1e11a0fc82d36425f516a01288bd4dfea73dc2",
+      "status": "completed"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "source_reliability",
+      "output_sha256": "38e983880b0245a17035798ac63170bb960fdd66c3652c1443e4dda5a5e92fab",
+      "status": "completed"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "standalone_auditor_bundle",
+      "output_sha256": "d284c8ded94e971356ced1cd299a3dce49cbd375e31ed44db8475b8f599f3d62",
+      "status": "verified_with_declared_blockers"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "tiebreak_qualification",
+      "output_sha256": "67c762bf3f4bfe9fd402d80bb89536859f8425f2ec07bd22eb72172785a42216",
+      "status": "qualified_for_review"
+    },
+    {
+      "exit_code": 3,
+      "gate_id": "top20_delivery_fidelity",
+      "output_sha256": "e22d910aac9e2287d6db590995e7c1c5db4667d1fdf905a2fde4065799fadf17",
+      "status": "completed_with_unsupported_exports"
+    },
+    {
+      "exit_code": 0,
+      "gate_id": "validation_evidence_freshness",
+      "output_sha256": "29b7c9b1e7f0d6d040f1f522de73523ae91ddf4b83034dd288490a95726dc280",
+      "status": "fresh_with_declared_blockers"
+    }
+  ],
+  "schema_version": "1",
+  "status": "ready_with_declared_blockers",
+  "workspace": {
+    "preserved_nested_worktree_count": 1,
+    "preserved_nested_worktree_state_verified": true,
+    "unexpected_nested_worktree_entry_count": 0
+  }
+}

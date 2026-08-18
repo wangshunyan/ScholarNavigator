@@ -1,0 +1,27 @@
+{
+  "controls_ready": true,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_run_started": false,
+  "formal_validation_complete": false,
+  "missing_observations": [
+    "backup_failure_domain_identity",
+    "backup_volume",
+    "primary_filesystem_quota_bytes",
+    "primary_max_concurrent_writers"
+  ],
+  "network_checked": false,
+  "observed_primary_volume_count": 1,
+  "primary_capacity_observed": true,
+  "primary_inode_capacity_observed": true,
+  "protocol": "formal_multivolume_storage_v1",
+  "schema_version": "1",
+  "single_directory_not_counted_as_independent_volume": true,
+  "status": "not_ready_missing_qualified_volumes"
+}

@@ -1,0 +1,91 @@
+{
+  "experiment": "lexical_normalization_v1",
+  "implementation_base_commit": "005794ced76151934c3e3ca0b695717fce03fcf0",
+  "policy": {
+    "config_field": "lexical_normalization_policy",
+    "default": "off",
+    "experimental_value": "lexical_normalization_v1",
+    "applies_only_to_facets": [
+      "topic",
+      "must_have",
+      "method",
+      "domain"
+    ],
+    "excluded_facets": [
+      "dataset",
+      "exclude",
+      "paper_type",
+      "venue",
+      "time",
+      "task"
+    ]
+  },
+  "normalization": {
+    "version": "lexical-normalization-v1",
+    "ordered_steps": [
+      "unicode_nfkc",
+      "casefold",
+      "strip_english_possessive_suffix",
+      "collapse_dotted_letter_abbreviations",
+      "split_unicode_punctuation_and_hyphens",
+      "apply_conservative_english_singular_plural_variants"
+    ],
+    "matching": "contiguous_whole_token_sequence",
+    "plural_rules": [
+      "consonant+y plural ies -> y when token length > 4",
+      "ch/sh/x/z/ss plural es -> remove es when token length > 4",
+      "terminal s -> remove s when token length > 4 except ss/us/is"
+    ],
+    "short_token_rule": "tokens of length <= 3 are preserved exactly and never singularized",
+    "score_semantics": "existing field weights and facet caps; each diagnostic impact is the marginal capped score increase in original term order"
+  },
+  "non_goals": [
+    "no synonyms",
+    "no semantic expansion",
+    "no fuzzy edit distance",
+    "no stemming beyond the listed singular/plural rules",
+    "no acronym expansion beyond punctuation-equivalent dotted letters",
+    "no gold, title, case ID, crosswalk, or dataset-specific rules"
+  ],
+  "frozen_inputs": [
+    {
+      "label": "scifact",
+      "dataset": "beir_scifact",
+      "run_dir": "outputs/benchmark_runs/local_bm25_28db182_scifact_five_source_final_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/local_bm25_28db182_scifact_five_source",
+      "crosswalk_path": "benchmark/beir_scifact_s2_crosswalk.json",
+      "prior_filtered_gold_path": "outputs/benchmark_runs/relevance_filter_audit_22a39e9_r1/filtered_gold_chains.jsonl",
+      "required_candidate_source": "local_bm25",
+      "case_count": 50
+    },
+    {
+      "label": "auto_dev",
+      "dataset": "auto_scholar_query",
+      "run_dir": "outputs/benchmark_runs/llm_rewrite_8731726_auto_dev_baseline_fresh_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_auto_dev_baseline_retrieval",
+      "prior_filtered_gold_path": "outputs/benchmark_runs/relevance_filter_audit_22a39e9_r1/filtered_gold_chains.jsonl",
+      "case_count": 10
+    },
+    {
+      "label": "auto_val",
+      "dataset": "auto_scholar_query",
+      "run_dir": "outputs/benchmark_runs/llm_rewrite_8731726_auto_val_baseline_fresh_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_auto_val_baseline_retrieval",
+      "prior_filtered_gold_path": "outputs/benchmark_runs/relevance_filter_audit_22a39e9_r1/filtered_gold_chains.jsonl",
+      "case_count": 5
+    }
+  ],
+  "frozen_invariants": {
+    "candidate_identity_and_order": true,
+    "query_analysis": true,
+    "score_weights": true,
+    "negative_penalties": true,
+    "thresholds": true,
+    "category_gate": true,
+    "reranker": true,
+    "top_k": 20,
+    "network_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0
+  }
+}

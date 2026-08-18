@@ -1,0 +1,16 @@
+{
+  "contract": "human_annotation_delivery_v1",
+  "execution": {
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "official_scorer_call_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_validation_complete": false,
+  "item_count": 471,
+  "real_annotator_submission_count": 0,
+  "schema_version": "1",
+  "state": "blocked_awaiting_real_annotators",
+  "statistics": null
+}

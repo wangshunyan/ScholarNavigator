@@ -1,0 +1,69 @@
+{
+  "closure": {
+    "http_attempt_upper": 19280,
+    "query_count": 1000,
+    "selected_generation_upper": 1040,
+    "shard_count": 20
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "protocol": "formal_run_storage_governance_v1",
+  "scenario_count": 9,
+  "scenarios": {
+    "backup_space_insufficient": {
+      "reason_code": "available_bytes_below_required",
+      "status": "passed"
+    },
+    "capacity_drop": {
+      "previous_generation_preserved": true,
+      "reason_code": "capacity_dropped_before_commit",
+      "status": "passed"
+    },
+    "dual_writer": {
+      "reason_code": "concurrent_writer_rejected",
+      "status": "passed"
+    },
+    "enospc": {
+      "previous_generation_preserved": true,
+      "reason_code": "storage_bytes_unavailable",
+      "status": "passed"
+    },
+    "exact_boundary": {
+      "remaining_bytes": 0,
+      "status": "passed"
+    },
+    "inode_exhaustion": {
+      "previous_generation_preserved": true,
+      "reason_code": "storage_inodes_unavailable",
+      "status": "passed"
+    },
+    "normal_capacity": {
+      "committed_bytes": 1000000,
+      "committed_files": 1000,
+      "query_count": 1000,
+      "status": "passed"
+    },
+    "oversized_response": {
+      "accepted": false,
+      "attempt_terminal": true,
+      "capture_enabled": true,
+      "captured_bytes": 0,
+      "reason_code": "capture_size_exceeded",
+      "status": "passed"
+    },
+    "unsafe_cleanup": {
+      "reason_code": "protected_authoritative_artifact",
+      "status": "passed"
+    }
+  },
+  "schema_version": "1",
+  "status": "storage_controls_ready",
+  "storage_plan_sha256": "0649036b8d9797eede6e83c0e7b3c01df5a8d8d388355420f40ca4f6dea0e0f3"
+}

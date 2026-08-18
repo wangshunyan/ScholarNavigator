@@ -1,0 +1,84 @@
+{
+  "bindings": {
+    "adjudication": {
+      "path": "benchmark/human_precision_adjudication_v1_protocol.json",
+      "sha256": "6d6d29f98f4115ab960afff29e6e00b55c7ef7aba5376524354badb04dd81145"
+    },
+    "clearance": {
+      "path": "benchmark/formal_validation_clearance_v1_protocol.json",
+      "sha256": "b37118f7741e8132eb3ab1436f7d73aff336d6351d601c8e86cc8f1c691903b5"
+    },
+    "delivery": {
+      "path": "benchmark/human_annotation_delivery_v1_protocol.json",
+      "sha256": "e691bf1990abcc39a3dc28ab9790aae24f91caf99a20609812bc9f616826f647"
+    },
+    "preregistration": {
+      "path": "benchmark/formal_validation_preregistration_v1_protocol.json",
+      "sha256": "b2ab16003cc843657896cda863deaab39bfb80f2b098e8eaf24e718304e8920a"
+    },
+    "quarantine": {
+      "path": "benchmark/formal_evidence_quarantine_v1_protocol.json",
+      "sha256": "63b9cc16123b63a6b30732878bfed76c03d744d1b0e862c7c9ddd2dca30dc7a4"
+    },
+    "separation_of_duties": {
+      "path": "benchmark/formal_validation_separation_of_duties_v1_protocol.json",
+      "sha256": "8f7b7978a680e3349fe323de5f98b8e51f1f1258d6206f4399b11006fefb3a26"
+    }
+  },
+  "calibration": {
+    "allowed_labels": [
+      "relevant",
+      "partially_relevant",
+      "not_relevant",
+      "insufficient_information"
+    ],
+    "item_count": 6,
+    "notes_max_length": 160,
+    "required_correct": 6,
+    "synthetic_only": true
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "real_label_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "intake_contract": {
+    "alias_rebinding": "forbidden_by_principal_commitment",
+    "challenge": "single_use_role_commit_and_protocol_bound",
+    "coordinator_submission": "forbidden",
+    "identity_fields": "opaque_principal_and_commitment_only",
+    "posthoc_signature": "forbidden",
+    "real_package_distribution": false,
+    "role_assignment_state": "ready_for_real_assignment_only"
+  },
+  "protocol": "human_annotator_qualification_intake_v1",
+  "protocol_sha256": "51353fb70348f256005054b74812a636a285eb0979f7b0d86f8805c3af32df03",
+  "roles": [
+    "annotator_a",
+    "annotator_b",
+    "adjudicator"
+  ],
+  "schema_version": "1",
+  "source_commit": "fdd0f8744d99c5802e867db63b0c0ee032972e09",
+  "synthetic_scenarios": {
+    "names": [
+      "qualified_three_roles",
+      "same_principal",
+      "annotator_is_adjudicator",
+      "coordinator_proxy",
+      "calibration_incomplete",
+      "illegal_label",
+      "challenge_replay",
+      "identity_alias",
+      "commit_drift",
+      "qualification_tamper",
+      "revoked_reuse",
+      "expired_qualification"
+    ],
+    "synthetic_only": true
+  }
+}

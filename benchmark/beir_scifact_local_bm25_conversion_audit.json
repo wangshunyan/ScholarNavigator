@@ -1,0 +1,98 @@
+{
+  "audit": "beir_scifact_local_bm25_candidate_conversion_v1",
+  "implementation_base_commit": "d385334bb0e1f480415ca86fec3e1877a3c95d4a",
+  "dataset_manifest": "benchmark/beir_scifact_manifest.json",
+  "sample_manifest": "benchmark/beir_scifact_sample_manifest.json",
+  "local_bm25_manifest": "benchmark/beir_scifact_local_bm25_manifest.json",
+  "configuration": {
+    "case_count": 50,
+    "evaluable_query_count": 41,
+    "evaluable_gold_relation_count": 42,
+    "top_k": 20,
+    "query_planning_policy": "current_rules",
+    "ranking_policy": "current_rules",
+    "result_policy": "highly_and_partial",
+    "network_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "inputs": {
+    "baseline_run": "outputs/benchmark_runs/local_bm25_28db182_scifact_baseline_final_replay_r1",
+    "experiment_run": "outputs/benchmark_runs/local_bm25_28db182_scifact_five_source_final_replay_r1",
+    "snapshot_dir": "outputs/benchmark_snapshots/local_bm25_28db182_scifact_five_source",
+    "snapshot_tree_sha256": "ce58a60bd387a9f020985f449313975dcfe9bb344b06c7367308b3150b1ce624",
+    "corpus_sha256": "dec31c8182f3d744c7d2c09423756fd1d17cbef75808db13ba01cc0aab4d1ac6",
+    "crosswalk_sha256": "ec7406107d13ddfd81ea1eca6f065c85dda25276f4ddb33abd568c5dd9d94d1c",
+    "paired_external_terminal_parity": true
+  },
+  "score_reconstruction": {
+    "bm25": "same frozen corpus, unicode-word-casefold-v1 tokenizer, k1=1.5, b=0.75, epsilon=0.25; no cache write",
+    "reranker": "same frozen candidate papers and frozen Judgement labels/features; every reconstructed rank/category/final_score validated against Replay",
+    "gold_access": "after candidate, judgement, and ranking reconstruction only"
+  },
+  "gold_chain": {
+    "candidate_gold_relation_count": 32,
+    "candidate_gold_unique_paper_count": 30,
+    "unique_trace_count": 32,
+    "local_list_hit_count": 64,
+    "best_local_rank_min": 1,
+    "best_local_rank_max": 11,
+    "identity_merge_evidence_without_loss_count": 29,
+    "budget_truncation_case_count": 0,
+    "loss_classification": {
+      "identity_merge_loss": 0,
+      "candidate_budget_truncation": 0,
+      "weak_or_irrelevant_filter": 12,
+      "ranking_outside_top_20": 0,
+      "successfully_returned": 20
+    },
+    "filtered_categories": {
+      "weakly_relevant": 6,
+      "irrelevant": 6
+    }
+  },
+  "metrics": {
+    "candidate_recall": 0.7560975609756098,
+    "current": {
+      "recall_at_20": 0.4634146341463415,
+      "f1_at_20": 0.04624643649033893,
+      "gold_relations": 20,
+      "unique_papers": 19
+    },
+    "current_ranking_without_relevance_filter": {
+      "recall_at_20": 0.6097560975609756,
+      "f1_at_20": 0.06018371872030408,
+      "gold_relations": 26,
+      "delta_gold_relations": 6
+    },
+    "local_bm25_best_rank_top20": {
+      "recall_at_20": 0.7560975609756098,
+      "f1_at_20": 0.07412100095026924,
+      "gold_relations": 32,
+      "delta_gold_relations": 12
+    },
+    "gold_first_candidate_pool_oracle": {
+      "recall_at_20": 0.7560975609756098,
+      "f1_at_20": 0.07412100095026924,
+      "gold_relations": 32,
+      "delta_gold_relations": 12,
+      "achievable_score": false
+    }
+  },
+  "interpretation": {
+    "primary_observed_loss": "relevance_filtering",
+    "immediate_filter_recovery_gold_relations": 6,
+    "residual_rank_gap_after_filter_skip_gold_relations": 6,
+    "pure_ranking_terminal_loss_gold_relations": 0,
+    "next_audit_priority": "relevance_filter_calibration",
+    "production_change_made": false
+  },
+  "determinism": {
+    "run_1": "outputs/benchmark_runs/local_bm25_conversion_d385334_r1",
+    "run_2": "outputs/benchmark_runs/local_bm25_conversion_d385334_r2",
+    "aggregate_sha256": "cdf2d2ee25360cf44edb4409bc88709802ba546c972a799de23a48da955e5ff5",
+    "case_audit_sha256": "e94bee0d98ac257a156baf732c6b9cf3dba5d5d1cff2157cee8092a0b5aae339",
+    "gold_chains_sha256": "096f893343461367fb4a8fb5d956fcf070269ac894cabbad20aef7615828388f",
+    "byte_identical": true
+  }
+}

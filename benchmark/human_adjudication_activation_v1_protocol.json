@@ -1,0 +1,121 @@
+{
+  "adjudication": {
+    "absolute_precision_at_20": "unsupported_from_change_only_package",
+    "accepted_result_contract": "human_adjudication_result_v1",
+    "complete_current_item_count": 439,
+    "complete_delivery_item_count": 471,
+    "complete_prior_chain_item_count": 32,
+    "dispute_population": "all_and_only_submission_intake_disagreements",
+    "label_contract": "human_precision_adjudication_v1",
+    "rationale_max_length": 1000,
+    "rationale_required": true,
+    "statistics_scope": "human_internal_non_official",
+    "statistics_unlock": "existing_change_only_cluster_aware_scorer_only"
+  },
+  "bindings": {
+    "assignment": {
+      "path": "benchmark/human_annotation_assignment_activation_v1_protocol.json",
+      "sha256": "b00d909e394ef312d974fce84c1ab9ddea6efa8d4f92ee5fb6934b70f7cf4372"
+    },
+    "clearance": {
+      "path": "benchmark/formal_validation_clearance_v1_protocol.json",
+      "sha256": "b37118f7741e8132eb3ab1436f7d73aff336d6351d601c8e86cc8f1c691903b5"
+    },
+    "human_precision_adjudication": {
+      "path": "benchmark/human_precision_adjudication_v1_protocol.json",
+      "sha256": "6d6d29f98f4115ab960afff29e6e00b55c7ef7aba5376524354badb04dd81145"
+    },
+    "preregistration": {
+      "path": "benchmark/formal_validation_preregistration_v1_protocol.json",
+      "sha256": "b2ab16003cc843657896cda863deaab39bfb80f2b098e8eaf24e718304e8920a"
+    },
+    "qualification": {
+      "path": "benchmark/human_annotator_qualification_intake_v1_protocol.json",
+      "sha256": "dbaa904fa64d325b388c3143b77b399e85a49bb78c1bbeb53399e5a88b04d43c"
+    },
+    "quarantine": {
+      "path": "benchmark/formal_evidence_quarantine_v1_protocol.json",
+      "sha256": "63b9cc16123b63a6b30732878bfed76c03d744d1b0e862c7c9ddd2dca30dc7a4"
+    },
+    "separation_of_duties": {
+      "path": "benchmark/formal_validation_separation_of_duties_v1_protocol.json",
+      "sha256": "8f7b7978a680e3349fe323de5f98b8e51f1f1258d6206f4399b11006fefb3a26"
+    },
+    "submission_intake": {
+      "path": "benchmark/human_annotation_submission_intake_v1_protocol.json",
+      "sha256": "04b4dfcb7c65e11107f31ee88de5e3443a63ac9aaaea30b60558a6cd4024b5ea"
+    }
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "official_scorer_call_count": 0,
+    "quality_metric_count": 0,
+    "real_label_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "protocol": "human_adjudication_activation_v1",
+  "protocol_sha256": "5a792f16ebd0a1b193ab29bcfdc808bc2620c307cec8de5f813ab56988c9cc24",
+  "schema_version": "1",
+  "source_commit": "e8add06c729156223466d51e8f718cdfb59e9035",
+  "state_machine": {
+    "states": [
+      "queue_ready",
+      "issued",
+      "acknowledged",
+      "adjudication_submitted",
+      "validated",
+      "statistics_eligible",
+      "revoked",
+      "invalid"
+    ],
+    "transitions": {
+      "acknowledged": [
+        "adjudication_submitted",
+        "invalid",
+        "revoked"
+      ],
+      "adjudication_submitted": [
+        "invalid",
+        "revoked",
+        "validated"
+      ],
+      "issued": [
+        "acknowledged",
+        "invalid",
+        "revoked"
+      ],
+      "queue_ready": [
+        "invalid",
+        "issued",
+        "revoked"
+      ],
+      "statistics_eligible": [
+        "invalid",
+        "revoked"
+      ],
+      "validated": [
+        "invalid",
+        "revoked",
+        "statistics_eligible"
+      ]
+    }
+  },
+  "synthetic_scenarios": [
+    "no_disagreement",
+    "valid_multiple_disagreements",
+    "missing_disagreement",
+    "extra_disagreement",
+    "illegal_label",
+    "forged_disagreement",
+    "wrong_adjudicator",
+    "duplicate_submission",
+    "post_lock_tamper",
+    "old_commit",
+    "revoked_upstream",
+    "partial_independent_submissions",
+    "complete_statistics_unlock"
+  ]
+}

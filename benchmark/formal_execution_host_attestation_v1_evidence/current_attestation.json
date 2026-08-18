@@ -1,0 +1,196 @@
+{
+  "attestation_sha256": "e3dca9495b6f97f8c1f4e7f55a1a35ae3227c0167b1c17eaafc6feb1dbe1f05b",
+  "authoritative_output_root_identity": "9042de8f53f16c89e66d63d4f1fa3107fee562c5291cec078b205d8c84f3fbf4",
+  "backup_target_identity": "not_available",
+  "binding_sha256s": {
+    "crash_consistency": "24b1fbc1314275e3bfa56fc431df18a67102dbd90ccf482f5c12fd358356e920",
+    "disaster_recovery": "e6b646df73fee75421e33894a73f60cb6f4e00f509a09a103766f68310a20467",
+    "execution_plan": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613",
+    "launch_control": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1",
+    "runtime_hermeticity": "dd6a384e3854a75f6a0ab1fef520c9da0e9e3ac07d45f13f8ffd01c4d4390b41",
+    "storage_governance": "bb78967820aba3c223c0638adbda9b0779cc7cecffcb718fa22a06f352c9d5c1",
+    "storage_plan": "192fb54f90605d33883be0fd8a94111f030e7dc1a337fc062828abb68755d7d9"
+  },
+  "capabilities": {
+    "advisory_lock": {
+      "observed": null,
+      "reason_code": "lock_contention_rejected",
+      "required": null,
+      "status": "passed"
+    },
+    "atomic_replace": {
+      "observed": null,
+      "reason_code": "same_filesystem_atomic_replace_verified",
+      "required": null,
+      "status": "passed"
+    },
+    "backup_available_bytes": {
+      "observed": null,
+      "reason_code": "backup_available_bytes_not_available",
+      "required": 2119029489664,
+      "status": "not_available"
+    },
+    "backup_available_inodes": {
+      "observed": null,
+      "reason_code": "backup_available_inodes_not_available",
+      "required": 210940,
+      "status": "not_available"
+    },
+    "backup_filesystem_quota_bytes": {
+      "observed": null,
+      "reason_code": "backup_filesystem_quota_bytes_not_available",
+      "required": 2119029489664,
+      "status": "not_available"
+    },
+    "backup_filesystem_type": {
+      "observed": null,
+      "reason_code": "backup_filesystem_type_not_available",
+      "required": null,
+      "status": "not_available"
+    },
+    "case_semantics": {
+      "observed": {
+        "case_sensitive": false
+      },
+      "reason_code": "case_semantics_observed",
+      "required": null,
+      "status": "passed"
+    },
+    "directory_fsync": {
+      "observed": null,
+      "reason_code": "directory_fsync_verified",
+      "required": null,
+      "status": "passed"
+    },
+    "file_fsync": {
+      "observed": null,
+      "reason_code": "file_fsync_verified",
+      "required": null,
+      "status": "passed"
+    },
+    "independent_backup_fault_domain": {
+      "observed": null,
+      "reason_code": "backup_fault_domain_not_available",
+      "required": null,
+      "status": "not_available"
+    },
+    "nofile_soft_limit": {
+      "observed": 1048575,
+      "reason_code": "nofile_soft_limit_verified",
+      "required": 256,
+      "status": "passed"
+    },
+    "nonempty_restore_rejection": {
+      "observed": null,
+      "reason_code": "nonempty_restore_rejected",
+      "required": null,
+      "status": "passed"
+    },
+    "path_max": {
+      "observed": 1024,
+      "reason_code": "path_max_verified",
+      "required": 1024,
+      "status": "passed"
+    },
+    "primary_available_bytes": {
+      "observed": 586263035904,
+      "reason_code": "primary_available_bytes_below_required",
+      "required": 713501442048,
+      "status": "failed"
+    },
+    "primary_available_inodes": {
+      "observed": 5735500000,
+      "reason_code": "primary_available_inodes_verified",
+      "required": 76980,
+      "status": "passed"
+    },
+    "primary_filesystem_quota_bytes": {
+      "observed": "not_available",
+      "reason_code": "primary_filesystem_quota_bytes_not_available",
+      "required": 713501442048,
+      "status": "not_available"
+    },
+    "primary_filesystem_type": {
+      "observed": "apfs",
+      "reason_code": "primary_filesystem_type_observed",
+      "required": null,
+      "status": "passed"
+    },
+    "process_soft_limit": {
+      "observed": 2666,
+      "reason_code": "process_soft_limit_verified",
+      "required": 64,
+      "status": "passed"
+    },
+    "temporary_directory": {
+      "observed": {
+        "cleanup_policy": "automatic",
+        "same_device": true
+      },
+      "reason_code": "same_filesystem_temporary_directory_verified",
+      "required": null,
+      "status": "passed"
+    },
+    "unicode_semantics": {
+      "observed": {
+        "normalization_sensitive": false
+      },
+      "reason_code": "unicode_semantics_observed",
+      "required": null,
+      "status": "passed"
+    },
+    "write_permission": {
+      "observed": null,
+      "reason_code": "temporary_write_and_cleanup_verified",
+      "required": null,
+      "status": "passed"
+    }
+  },
+  "contract": "host_attestation_manifest_v1",
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "failed_capabilities": [
+    "primary_available_bytes"
+  ],
+  "formal_validation_complete": false,
+  "host_scope_identity": "b4eaaa42c1452808bc193bb70e3df64a18ce736fd57a19418c6a679138a5e50a",
+  "identity_authentication": false,
+  "missing_observations": [
+    "backup_available_bytes",
+    "backup_available_inodes",
+    "backup_filesystem_quota_bytes",
+    "backup_filesystem_type",
+    "independent_backup_fault_domain",
+    "primary_filesystem_quota_bytes"
+  ],
+  "observed_head": "e47c5393cdd9f67d38ab8e38749664ca0a3310a1",
+  "primary_target_identity": "0f5ac19f55d258da427e1b94444adc53ab79a86aa1aaedd9f5d6b4c160c10a05",
+  "protocol": "formal_execution_host_attestation_v1",
+  "protocol_sha256": "2328b088f19f0e45eeec7c0d75c6cd983c32cb3d8783ba77613d83e0543a920e",
+  "runtime": {
+    "architecture": "arm64",
+    "filesystem_type_backup": "not_available",
+    "filesystem_type_primary": "apfs",
+    "os_family": "Darwin",
+    "python_implementation": "CPython",
+    "python_version": "3.13.5"
+  },
+  "schema_version": "1",
+  "source_commit": "e47c5393cdd9f67d38ab8e38749664ca0a3310a1",
+  "status": "not_ready_unverified_or_insufficient_host",
+  "storage_requirements": {
+    "backup": {
+      "bytes": 2119029489664,
+      "inodes": 210940
+    },
+    "primary": {
+      "bytes": 713501442048,
+      "inodes": 76980
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "audit_schema_version": "1",
+  "description": "Frozen-input manifest for the pure-Replay cross-strategy candidate-union audit at 6340304.",
+  "datasets": [
+    {
+      "name": "auto_dev10",
+      "excluded_strategies": {},
+      "strategies": [
+        {
+          "strategy": "current_rules",
+          "run_dir": "outputs/benchmark_runs/llm_rewrite_8731726_auto_dev_baseline_fresh_replay_r1",
+          "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_auto_dev_baseline_retrieval"
+        },
+        {
+          "strategy": "concept_projection",
+          "run_dir": "outputs/benchmark_runs/concept_projection_0a0feb6_v3/auto_dev_concept_projection_replay_r2",
+          "snapshot_dir": "outputs/benchmark_snapshots/concept_projection_0a0feb6_v3_auto_dev"
+        },
+        {
+          "strategy": "llm_constrained_rewrite",
+          "run_dir": "outputs/benchmark_runs/llm_rewrite_8731726_auto_dev_replay_r2",
+          "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_auto_dev_retrieval"
+        },
+        {
+          "strategy": "query_evolution",
+          "run_dir": "outputs/benchmark_runs/qe_fixed_cc48797_dev10_qe_replay2",
+          "snapshot_dir": "outputs/benchmark_snapshots/qe_fixed_cc48797_dev10"
+        },
+        {
+          "strategy": "llm_semantic",
+          "run_dir": "outputs/benchmark_runs/20260720_llm_semantic_dev_final_r2",
+          "snapshot_dir": "outputs/benchmark_snapshots/llm_semantic_dev_retrieval_20260720"
+        }
+      ]
+    },
+    {
+      "name": "auto_val5",
+      "excluded_strategies": {},
+      "strategies": [
+        {
+          "strategy": "current_rules",
+          "run_dir": "outputs/benchmark_runs/llm_rewrite_8731726_auto_val_baseline_fresh_replay_r1",
+          "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_auto_val_baseline_retrieval"
+        },
+        {
+          "strategy": "concept_projection",
+          "run_dir": "outputs/benchmark_runs/concept_projection_0a0feb6_v3/auto_val_concept_projection_replay_r2",
+          "snapshot_dir": "outputs/benchmark_snapshots/concept_projection_0a0feb6_v3_auto_val"
+        },
+        {
+          "strategy": "llm_constrained_rewrite",
+          "run_dir": "outputs/benchmark_runs/llm_rewrite_8731726_auto_val_replay_r2",
+          "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_auto_val_retrieval"
+        },
+        {
+          "strategy": "query_evolution",
+          "run_dir": "outputs/benchmark_runs/qe_fixed_cc48797_val5_qe_replay2",
+          "snapshot_dir": "outputs/benchmark_snapshots/qe_fixed_cc48797_val5"
+        },
+        {
+          "strategy": "llm_semantic",
+          "run_dir": "outputs/benchmark_runs/20260720_llm_semantic_val_replay_fixed",
+          "snapshot_dir": "outputs/benchmark_snapshots/llm_semantic_val_retrieval_20260720"
+        }
+      ]
+    },
+    {
+      "name": "scifact50",
+      "excluded_strategies": {
+        "llm_semantic": "no complete frozen SciFact Replay product",
+        "query_evolution": "no complete frozen SciFact Replay product"
+      },
+      "strategies": [
+        {
+          "strategy": "current_rules",
+          "run_dir": "outputs/benchmark_runs/llm_rewrite_8731726_scifact_baseline_fresh_replay_r1",
+          "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_scifact_baseline_retrieval"
+        },
+        {
+          "strategy": "concept_projection",
+          "run_dir": "outputs/benchmark_runs/concept_projection_0a0feb6_v3/scifact_concept_projection_replay_r2",
+          "snapshot_dir": "outputs/benchmark_snapshots/concept_projection_0a0feb6_v3_scifact"
+        },
+        {
+          "strategy": "llm_constrained_rewrite",
+          "run_dir": "outputs/benchmark_runs/llm_rewrite_8731726_scifact_replay_r2",
+          "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_scifact_retrieval"
+        }
+      ]
+    }
+  ]
+}

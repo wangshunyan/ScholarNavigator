@@ -1,0 +1,71 @@
+{
+  "adapter_contract": {
+    "cache_identity": "production_retriever_cache_key_v1",
+    "connector_request_specs": "production_connector_request_spec_v1",
+    "initial_variant": "first_production_adaptive_variant",
+    "parameter_serialization": "sorted_name_value_pairs_utf8_v1",
+    "query_planner_version": "1.9.0",
+    "request_identity": "query_subquery_source_and_request_spec_sha256_v1"
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "full1000_plan_sha256": "a75019fa8a4ed7ad66ffe316793ffd6330613316623b78e35f973260e63cb716",
+  "historical_snapshot_audit": {
+    "authority": "historical_reference_only_not_completion_or_checkpoint",
+    "expected_key_count": 1093,
+    "source_reliability_protocol": "benchmark/source_reliability_diagnostics_v1_protocol.json"
+  },
+  "input_hashes": {
+    "benchmark/autoscholar_query_planning_baseline.jsonl": "8442fd2ddba1ef29615749f7a1a75a77cb1f9393f9fc2bff9c96730dee198b37",
+    "benchmark/autoscholar_query_planning_hashes.jsonl": "6cf8662b3ac4ed881aa26db5d778dc3ba8f22b6372bd8d43bcf781be34db2665",
+    "benchmark/autoscholar_query_planning_input.jsonl": "def16ce0f99a567db34e62db283c83ef8c30b200390b6120dd8bbe6cd936eedb",
+    "benchmark/autoscholar_query_planning_manifest.json": "bc05800a560b26deebcf968abe1a42c25a292cd46e93b3c177909810a1ef009c",
+    "benchmark/autoscholar_query_planning_summary.json": "34f0c978dab600caf85b7bba04c9e27063191e48d8ee7fc04608cf04cbe64965",
+    "benchmark/full1000_execution_plan_v1.json": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613",
+    "benchmark/full1000_launch_control_v1_protocol.json": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1",
+    "benchmark/provider_ingest_provenance_v1_protocol.json": "29a4a687f8bec2d9c3f12f264b24e41df2519442182728dc424b101e578e6a77",
+    "benchmark/source_reliability_diagnostics_v1_protocol.json": "9df9f920d0f52869bef808fddc73a8dbead39fdf9edd8b0ff467b8147fa075db"
+  },
+  "inputs": {
+    "full1000_plan": "benchmark/full1000_execution_plan_v1.json",
+    "planning_baseline": "benchmark/autoscholar_query_planning_baseline.jsonl",
+    "query_input": "benchmark/autoscholar_query_planning_input.jsonl"
+  },
+  "limit_per_source": 20,
+  "pagination": {
+    "cursor_rule": "response_dependent_cursor_or_identifier_values_are_never_materialized_before_response",
+    "materialized_followup_count": 0,
+    "page_budget": 1,
+    "pubmed_child_rule": "esearch_idlist_to_single_efetch_in_response_order"
+  },
+  "protocol": "formal_network_request_manifest_v1",
+  "query_adapter_version": "1",
+  "schema_version": "1",
+  "selection_prohibitions": [
+    "gold",
+    "qrels",
+    "case_id",
+    "target_paper",
+    "retrieval_result",
+    "source_yield",
+    "quality_metric"
+  ],
+  "shard_count": 20,
+  "source_commit": "fae8a7a56c2c6ef877e36dd8901e8a19de6af318",
+  "sources": [
+    "openalex",
+    "arxiv",
+    "semantic_scholar",
+    "pubmed"
+  ],
+  "warnings": [
+    "Request intent coverage does not establish retrieval completion, relevance, quality, or an official score.",
+    "The 1093 frozen Snapshot keys are historical references only and never satisfy the new Full1000 execution plan.",
+    "No credential, header, environment value, raw URL, query text, or response-dependent cursor is emitted."
+  ]
+}

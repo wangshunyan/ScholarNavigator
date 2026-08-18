@@ -1,0 +1,100 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "protocol": "formal_validation_preregistration_v1",
+  "report_sha256": "ffe86b141e595623fd1ea845e7b9da0fd6d712d34b6506b50694eba4e40f4cb9",
+  "scenario_count": 7,
+  "scenarios": [
+    {
+      "changed_pointers": [],
+      "evidence_intake_present": false,
+      "scenario": "legal_seal",
+      "semantic_changed": false,
+      "state": "sealed",
+      "valid": true
+    },
+    {
+      "changed_pointers": [
+        "/statistics/report_precision"
+      ],
+      "evidence_intake_present": false,
+      "scenario": "before_evidence_amendment",
+      "semantic_changed": true,
+      "state": "amended_before_evidence",
+      "valid": true
+    },
+    {
+      "changed_pointers": [
+        "/human_annotation/coverage_threshold"
+      ],
+      "evidence_intake_present": true,
+      "scenario": "post_evidence_threshold_change",
+      "semantic_changed": true,
+      "state": "invalid_post_evidence_change",
+      "valid": false
+    },
+    {
+      "changed_pointers": [
+        "/population/exclusion_rules"
+      ],
+      "evidence_intake_present": true,
+      "scenario": "posthoc_exclusion",
+      "semantic_changed": true,
+      "state": "invalid_post_evidence_change",
+      "valid": false
+    },
+    {
+      "changed_pointers": [
+        "/statistics/resampling_unit"
+      ],
+      "evidence_intake_present": true,
+      "scenario": "statistics_method_replacement",
+      "semantic_changed": true,
+      "state": "invalid_post_evidence_change",
+      "valid": false
+    },
+    {
+      "changed_pointers": [
+        "/official_scorer/metric_namespace"
+      ],
+      "evidence_intake_present": true,
+      "scenario": "invented_official_metric",
+      "semantic_changed": true,
+      "state": "invalid_post_evidence_change",
+      "valid": false
+    },
+    {
+      "changed_pointers": [
+        "/documentation/typo"
+      ],
+      "evidence_intake_present": true,
+      "scenario": "nonsemantic_erratum",
+      "semantic_changed": false,
+      "state": "sealed",
+      "valid": true
+    }
+  ],
+  "schema_version": "1",
+  "status": "preregistration_sealed",
+  "timeline_scenario_count": 2,
+  "timeline_scenarios": [
+    {
+      "chronology_valid": true,
+      "event_count": 4,
+      "scenario": "valid_preregistration_timeline"
+    },
+    {
+      "chronology_valid": false,
+      "error_code": "chronology_violation",
+      "event_count": 4,
+      "scenario": "evidence_before_seal"
+    }
+  ]
+}

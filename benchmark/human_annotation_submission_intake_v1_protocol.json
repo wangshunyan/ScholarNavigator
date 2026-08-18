@@ -1,0 +1,116 @@
+{
+  "bindings": {
+    "adjudication": {
+      "path": "benchmark/human_precision_adjudication_v1_protocol.json",
+      "sha256": "6d6d29f98f4115ab960afff29e6e00b55c7ef7aba5376524354badb04dd81145"
+    },
+    "assignment": {
+      "path": "benchmark/human_annotation_assignment_activation_v1_protocol.json",
+      "sha256": "b00d909e394ef312d974fce84c1ab9ddea6efa8d4f92ee5fb6934b70f7cf4372"
+    },
+    "clearance": {
+      "path": "benchmark/formal_validation_clearance_v1_protocol.json",
+      "sha256": "b37118f7741e8132eb3ab1436f7d73aff336d6351d601c8e86cc8f1c691903b5"
+    },
+    "delivery": {
+      "path": "benchmark/human_annotation_delivery_v1_protocol.json",
+      "sha256": "e691bf1990abcc39a3dc28ab9790aae24f91caf99a20609812bc9f616826f647"
+    },
+    "preregistration_seal": {
+      "path": "benchmark/formal_validation_preregistration_v1_protocol.json",
+      "sha256": "b2ab16003cc843657896cda863deaab39bfb80f2b098e8eaf24e718304e8920a"
+    },
+    "qualification": {
+      "path": "benchmark/human_annotator_qualification_intake_v1_protocol.json",
+      "sha256": "dbaa904fa64d325b388c3143b77b399e85a49bb78c1bbeb53399e5a88b04d43c"
+    },
+    "quarantine": {
+      "path": "benchmark/formal_evidence_quarantine_v1_protocol.json",
+      "sha256": "63b9cc16123b63a6b30732878bfed76c03d744d1b0e862c7c9ddd2dca30dc7a4"
+    },
+    "separation_of_duties": {
+      "path": "benchmark/formal_validation_separation_of_duties_v1_protocol.json",
+      "sha256": "8f7b7978a680e3349fe323de5f98b8e51f1f1258d6206f4399b11006fefb3a26"
+    }
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "real_label_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "intake": {
+    "accepted_export_contract": "human_annotation_delivery_v1",
+    "adjudication_visible_fields": [
+      "disagreement_alias",
+      "query",
+      "title",
+      "abstract",
+      "year",
+      "annotation_a",
+      "annotation_b",
+      "rubric"
+    ],
+    "all_acknowledgements_required": true,
+    "complete_item_count_per_annotator": 471,
+    "labels_before_dual_validation": "forbidden",
+    "operator_mapping": "operator_only",
+    "queue_population": "all_and_only_disagreements",
+    "semantic_drift": "invalidate_without_label_migration",
+    "statistics_before_adjudication": "forbidden"
+  },
+  "protocol": "human_annotation_submission_intake_v1",
+  "protocol_sha256": "d211a40c3e59a21e5cfdf6d73aa9938e2137c963da7832d3420ea4c8613e16d7",
+  "schema_version": "1",
+  "source_commit": "dcbede0928d6c15d0c9a68333e53837537fe1249",
+  "state_machine": {
+    "states": [
+      "awaiting_submissions",
+      "one_submission_validated",
+      "two_submissions_validated",
+      "adjudication_queue_ready",
+      "revoked",
+      "invalid"
+    ],
+    "transitions": {
+      "adjudication_queue_ready": [
+        "invalid",
+        "revoked"
+      ],
+      "awaiting_submissions": [
+        "invalid",
+        "one_submission_validated",
+        "revoked"
+      ],
+      "one_submission_validated": [
+        "invalid",
+        "revoked",
+        "two_submissions_validated"
+      ],
+      "two_submissions_validated": [
+        "adjudication_queue_ready",
+        "invalid",
+        "revoked"
+      ]
+    }
+  },
+  "synthetic_scenarios": [
+    "valid_dual_submission",
+    "only_a_submission",
+    "partial_coverage",
+    "duplicate_alias",
+    "unknown_alias",
+    "annotator_package_swap",
+    "post_lock_tamper",
+    "illegal_label",
+    "coordinator_submission",
+    "old_commit",
+    "revoked_assignment",
+    "disagreement_omission",
+    "forged_adjudication_queue",
+    "valid_reissue"
+  ]
+}

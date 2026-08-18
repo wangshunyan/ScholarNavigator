@@ -1,0 +1,60 @@
+{
+  "audit": "beir_scifact_local_bm25_query_budget_v1",
+  "scope": "offline_candidate_upper_bound_not_production_strategy",
+  "dataset": {
+    "case_count": 50,
+    "evaluable_query_count": 41,
+    "evaluable_gold_relation_count": 42
+  },
+  "depth_curves": {
+    "current_adapter_budget": {
+      "20": {"matched_gold": 32, "macro_recall": 0.7560975609756098, "micro_recall": 0.7619047619047619},
+      "50": {"matched_gold": 32, "macro_recall": 0.7560975609756098, "micro_recall": 0.7619047619047619},
+      "100": {"matched_gold": 32, "macro_recall": 0.7560975609756098, "micro_recall": 0.7619047619047619},
+      "200": {"matched_gold": 32, "macro_recall": 0.7560975609756098, "micro_recall": 0.7619047619047619}
+    },
+    "original_query_top_200": {
+      "20": {"matched_gold": 32, "macro_recall": 0.7560975609756098, "micro_recall": 0.7619047619047619},
+      "50": {"matched_gold": 32, "macro_recall": 0.7560975609756098, "micro_recall": 0.7619047619047619},
+      "100": {"matched_gold": 32, "macro_recall": 0.7560975609756098, "micro_recall": 0.7619047619047619},
+      "200": {"matched_gold": 35, "macro_recall": 0.8292682926829268, "micro_recall": 0.8333333333333334}
+    },
+    "all_subqueries_merge_top_200": {
+      "20": {"matched_gold": 32, "macro_recall": 0.7560975609756098, "micro_recall": 0.7619047619047619},
+      "50": {"matched_gold": 32, "macro_recall": 0.7560975609756098, "micro_recall": 0.7619047619047619},
+      "100": {"matched_gold": 32, "macro_recall": 0.7560975609756098, "micro_recall": 0.7619047619047619},
+      "200": {"matched_gold": 35, "macro_recall": 0.8292682926829268, "micro_recall": 0.8333333333333334}
+    }
+  },
+  "terminal_classification": {
+    "current_connector_candidate": 32,
+    "per_query_adapter_quota": 3,
+    "query_mismatch_top_200": 7
+  },
+  "gap_32_to_35": {
+    "additional_gold": 3,
+    "cause": "per_query_adapter_quota",
+    "original_query_first_ranks": [120, 150, 194],
+    "cross_query_deduplication_loss": 0,
+    "local_source_pool_truncation_loss": 0,
+    "global_candidate_budget_loss": 0,
+    "identity_matching_loss": 0
+  },
+  "budget_impact": {
+    "current_adapter_budget": {"raw": 2020, "deduplicated": 1192, "duplicates": 828, "truncated": 0},
+    "original_query_top_200": {"raw": 10000, "deduplicated": 10000, "duplicates": 0, "truncated": 0},
+    "all_subqueries_merge_top_200": {"raw": 20000, "deduplicated": 12253, "duplicates": 7747, "truncated": 2253}
+  },
+  "determinism": {
+    "run_count": 2,
+    "byte_identical": true,
+    "aggregate_sha256": "5209ef2b237d07c6315fb768b49471a618f8b7d7501088332fdfafac6ebcfaed",
+    "case_audit_sha256": "10a9c35ef3b37b17140753f2d457382881c52015ef6beaf661137ae6e64a014e",
+    "gold_chains_sha256": "47a6c547042cc35410cb035b5c218827ae71dd435296d39be6be1f96818438b2",
+    "snapshot_tree_sha256_before_after": "2a3b9efdfcec361bf0bdc99d2b30d06fddffb596f9885e70e46b350fdda08d13",
+    "network_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "conclusion": "原始查询优先加深到200可恢复3条gold，值得作为默认关闭的独立方案评测；全部子查询加深未提供额外gold，且候选膨胀明显。该审计上界不代表可部署成绩。"
+}

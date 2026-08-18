@@ -1,0 +1,76 @@
+{
+  "duplicate_request_count": 0,
+  "equivalence": {
+    "aggregate": true,
+    "audit": true,
+    "resource_requests": true,
+    "top20_delivery": true
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "final_request_count": 1000,
+  "fixture_only": true,
+  "formal_validation_complete": false,
+  "parent_chain_length": 2,
+  "partial_backup_query_cursor": 500,
+  "protocol": "formal_run_disaster_recovery_v1",
+  "query_count": 1000,
+  "replacement_shard": 15,
+  "restored_query_cursor": 500,
+  "scenario_count": 11,
+  "scenarios": [
+    {
+      "blocked": true,
+      "scenario": "audit_chain_truncation"
+    },
+    {
+      "blocked": true,
+      "scenario": "backup_interruption"
+    },
+    {
+      "blocked": true,
+      "scenario": "concurrent_restorer"
+    },
+    {
+      "blocked": true,
+      "scenario": "duplicate_charge_after_resume"
+    },
+    {
+      "blocked": true,
+      "scenario": "hash_tamper"
+    },
+    {
+      "blocked": true,
+      "scenario": "missing_member"
+    },
+    {
+      "blocked": true,
+      "scenario": "mixed_generation"
+    },
+    {
+      "blocked": true,
+      "scenario": "non_empty_target"
+    },
+    {
+      "blocked": true,
+      "scenario": "old_backup_rollback"
+    },
+    {
+      "blocked": true,
+      "scenario": "parent_chain_break_or_cycle"
+    },
+    {
+      "blocked": true,
+      "scenario": "raw_response_missing"
+    }
+  ],
+  "schema_version": "1",
+  "shard_count": 20,
+  "status": "recovery_controls_ready"
+}

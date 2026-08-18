@@ -1,0 +1,27 @@
+{
+  "chain_count": 3,
+  "development_freeze_state": "external_action_required",
+  "engineering_gap_count": 0,
+  "execution": {
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "formal_validation_complete": false,
+  "missing_external_input_classes": [
+    "qualified_real_backup_members",
+    "qualified_real_annotators_and_locked_labels",
+    "verified_official_scorer_package_schema_and_namespace"
+  ],
+  "pack_sha256": "8192062ce55f7094e4c1648f30966addc2e4bb0762283abae12270f055dfa3cd",
+  "protocol": "formal_external_blocker_action_pack_v1",
+  "schema_version": "1",
+  "status": "external_inputs_still_missing"
+}

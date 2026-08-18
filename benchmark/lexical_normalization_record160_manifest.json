@@ -1,0 +1,110 @@
+{
+  "analysis": "lexical_normalization_v1_record160_v1",
+  "bootstrap": {
+    "confidence_level": 0.95,
+    "iterations": 20000,
+    "method": "paired_query_resampling_percentile",
+    "seed": 20260721
+  },
+  "comparison": {
+    "baseline": "current_rules",
+    "experiment": "lexical_normalization_v1",
+    "tie_tolerance": 1e-12
+  },
+  "frozen_invariants": {
+    "candidate_identity_and_order": true,
+    "candidate_pool": true,
+    "gold_access": "offline_evaluator_only",
+    "judgement_input": true,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "ranking": true,
+    "snapshot_write_count": 0,
+    "source_terminals": true,
+    "thresholds": true,
+    "top_k": 20
+  },
+  "frozen_record": {
+    "config_sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+    "record_case_count": 162,
+    "results_sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+    "run_dir": "outputs/benchmark_runs/autoscholar_current_rules_full1000_3cd47c1_record_r1",
+    "snapshot_dir": "outputs/benchmark_snapshots/autoscholar_current_rules_full1000_3cd47c1",
+    "snapshot_file_count": 1934,
+    "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5",
+    "sources": [
+      "openalex",
+      "arxiv",
+      "semantic_scholar",
+      "pubmed"
+    ]
+  },
+  "gold_identity_baseline": {
+    "path": "benchmark/autoscholar_gold_identity_baseline/gold_identity.jsonl",
+    "sha256": "429cf7145664b20893df8567d9eed463b8000ce859e4e2c3cc5290042bbefcfe"
+  },
+  "implementation_base_commit": "813cf3a887d6f15592ee1d50fd86e3c6f05318d3",
+  "inclusion": {
+    "expected_main_case_count": 160,
+    "expected_no_success_case_count": 2,
+    "main": "at_least_one_configured_source_has_a_success_snapshot",
+    "no_success": "separate_not_scored",
+    "pairing_mismatch": "stop_that_case_and_report"
+  },
+  "metric_version": "deduplicated_gold_identity_v2",
+  "metrics": [
+    "candidate_recall",
+    "recall_at_20",
+    "f1_at_20"
+  ],
+  "permutation_test": {
+    "alternative": "two_sided",
+    "exact_nonzero_pair_limit": 20,
+    "iterations": 100000,
+    "method": "paired_sign_flip",
+    "seed": 20260721,
+    "statistic": "absolute_mean_paired_difference"
+  },
+  "policy": {
+    "default": "off",
+    "experimental_value": "lexical_normalization_v1",
+    "manifest": "benchmark/lexical_normalization_v1_manifest.json",
+    "manifest_sha256": "2ebc8289dc59661501d8fd4381c941b15697a4fb4d008122110d34c615d8bdbc"
+  },
+  "power_planning": {
+    "alpha": 0.05,
+    "future_validation_query_count": 1000,
+    "method": "normal_approximation_paired_mean_using_observed_difference_sd",
+    "minimum_detectable_absolute_lift": 0.01,
+    "target_power": 0.8,
+    "two_sided": true
+  },
+  "prior_65_reference": {
+    "path": "benchmark/lexical_normalization_significance_result.json",
+    "sha256": "3b73cf6f817020f4b165b274357d709fbe27c728b634310b8036f5c4ebd67bb9"
+  },
+  "prior_dev_val_overlap_case_ids": [
+    "AutoScholarQuery_test_0",
+    "AutoScholarQuery_test_1",
+    "AutoScholarQuery_test_2",
+    "AutoScholarQuery_test_3",
+    "AutoScholarQuery_test_4",
+    "AutoScholarQuery_test_5",
+    "AutoScholarQuery_test_6",
+    "AutoScholarQuery_test_7",
+    "AutoScholarQuery_test_8",
+    "AutoScholarQuery_test_9",
+    "AutoScholarQuery_test_10",
+    "AutoScholarQuery_test_11",
+    "AutoScholarQuery_test_12",
+    "AutoScholarQuery_test_13",
+    "AutoScholarQuery_test_14"
+  ],
+  "schema_version": "1",
+  "warnings": [
+    "Internal Benchmark metrics only; not an official competition score.",
+    "The 160-case prefix is order-biased, source-incomplete, and not an independent random validation sample.",
+    "Qrels-unmatched admitted candidates are not reliable negative labels.",
+    "Human Precision review remains required before any default-on recommendation."
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "analysis": "external_scorer_handoff_v1",
+  "canonical_handoff": {
+    "encoding": "canonical JSON UTF-8, sorted keys, LF terminator, finite numbers only",
+    "query_fields": [
+      "query_identity",
+      "query_order",
+      "results"
+    ],
+    "result_fields": [
+      "authority_digest",
+      "rank",
+      "result_identity"
+    ],
+    "scope": "internal_chain_rehearsal_not_official_submission",
+    "version": "canonical_scorer_handoff_v1"
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "frozen_readiness_inputs": {
+    "full1000_resume": {
+      "path": "benchmark/autoscholar_full1000_resume/summary.json",
+      "sha256": "940d09c5d4f51f834da80dd73819987e14639ac561956576b00370130025f045"
+    },
+    "record160_cases": {
+      "path": "benchmark/top20_delivery_fidelity_v1_result/case_diagnostics.jsonl",
+      "sha256": "2844185c7ce66a5d9f7c030d1689b383ad468ed86e087d587b9aca7a5271d927"
+    },
+    "record160_delivery_manifest": {
+      "path": "benchmark/top20_delivery_fidelity_v1_result/manifest.json",
+      "sha256": "a68dcecb5c948217fbb0f11ee17d08572b988888f18038d2453956a594678cd8"
+    },
+    "record160_results": {
+      "path": "benchmark/top20_delivery_fidelity_v1_result/result_diagnostics.jsonl",
+      "sha256": "37b6118e6c389c733a8e1efb7722920d8c9529947c962d5771fbac5a8a249e68"
+    }
+  },
+  "official_package": {
+    "entrypoint": "not_provided",
+    "input_schema": "not_provided",
+    "metric_namespace": "not_provided",
+    "output_schema": "not_provided",
+    "package_sha256": "not_provided",
+    "runtime": "not_provided",
+    "scorer_name": "unknown",
+    "scorer_version": "unknown"
+  },
+  "package_contract": {
+    "allowed_entrypoint": [
+      "python",
+      "scorer.py"
+    ],
+    "entrypoint_file": "scorer.py",
+    "manifest_version": "scorer_package_manifest_v1",
+    "required_fields": [
+      "allowed_io",
+      "determinism",
+      "entrypoint",
+      "entrypoint_sha256",
+      "input_schema_summary",
+      "input_schema_sha256",
+      "metric_namespace",
+      "output_schema_summary",
+      "output_schema_sha256",
+      "package_type",
+      "resource_limits",
+      "runtime",
+      "scorer_name",
+      "scorer_version"
+    ],
+    "synthetic_metric_namespace": "synthetic_handoff",
+    "synthetic_package_type": "strict_conformance_fixture_not_official_scorer"
+  },
+  "resource_limits": {
+    "maximum_input_bytes": 1048576,
+    "maximum_output_bytes": 1048576,
+    "maximum_queries": 1000,
+    "maximum_results_per_query": 20,
+    "timeout_seconds": 2.0
+  },
+  "sandbox": {
+    "allowed_inputs": [
+      "verified scorer entrypoint bytes",
+      "verified canonical handoff bytes"
+    ],
+    "allowed_outputs": [
+      "one scorer output file in the isolated temporary directory"
+    ],
+    "environment": "minimal allowlist with isolated HOME and TMPDIR",
+    "forbidden": [
+      "network and DNS",
+      ".env and HOME configuration reads",
+      "unregistered subprocesses",
+      "input mutation",
+      "writes outside isolated output",
+      "sensitive stderr echo"
+    ]
+  },
+  "schema_version": "1",
+  "synthetic_matrix": [
+    "valid",
+    "input_tamper",
+    "network_attempt",
+    "dotenv_read",
+    "outside_write",
+    "subprocess_attempt",
+    "sensitive_stderr",
+    "missing_query",
+    "duplicate_query",
+    "illegal_schema",
+    "nondeterministic_output",
+    "timeout",
+    "crash",
+    "partial_write",
+    "extra_metric"
+  ],
+  "validation_invariants": [
+    "package manifest and entrypoint hashes match before execution",
+    "canonical input is immutable before and after scorer execution",
+    "scorer output has exact schema, finite values, declared metric namespace and complete query coverage",
+    "network, sensitive configuration reads and unregistered subprocesses are blocked",
+    "two successful executions produce byte-identical output",
+    "malformed or partial output is rejected without repair",
+    "Record160 remains an internal rehearsal and cannot satisfy Full1000 or official scorer blockers"
+  ]
+}

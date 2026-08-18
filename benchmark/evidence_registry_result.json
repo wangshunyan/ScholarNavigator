@@ -1,0 +1,42 @@
+{
+  "schema_version": "1",
+  "registry": "experiment_evidence_registry_v1",
+  "base_commit": "a098cadf6390a34866da5036182d1f23bfdd6053",
+  "protocol_sha256": "bcd9ee2a7c808c719f6999fac62d2d41187e2ed46be813fb3743d81d3a7067ef",
+  "inventory": {
+    "strategy_count": 24,
+    "default_enabled_strategy_ids": [
+      "current_rules"
+    ],
+    "evidence_status_counts": {
+      "evidence_unavailable": 20,
+      "tracked_machine_evidence": 4
+    },
+    "decision_counts": {
+      "blocked": 1,
+      "inconclusive": 4,
+      "negative": 11,
+      "promising_default_off": 2,
+      "unvalidated": 5,
+      "validated_default": 1
+    }
+  },
+  "tracked_evidence_file_count": 45,
+  "baseline": {
+    "registry_sha256": "d487b780e0a6fa1c5a274eb67004443a196926ef90b2933069d52000f4f3168e",
+    "matrix_sha256": "af363a5c4240bdfd413c1b9a10d08579675bb5336dd61250d5cd4ef366023343",
+    "summary_sha256": "8357d0dcf1afc2ee07a13ffaeb67b2b9caba6533c753377cadb51034362d23f6"
+  },
+  "gate": {
+    "violation_count": 0,
+    "passed": true,
+    "network_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0,
+    "benchmark_run_count": 0
+  },
+  "score_scope": "internal_benchmark_evidence_not_official_score",
+  "global_blockers": [
+    "official_scorer_unavailable"
+  ]
+}

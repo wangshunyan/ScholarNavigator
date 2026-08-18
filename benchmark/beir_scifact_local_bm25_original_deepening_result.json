@@ -1,0 +1,101 @@
+{
+  "benchmark": "beir_scifact_local_bm25_original_deepening_v1",
+  "scope": "benchmark_offline_experiment_not_production_connector",
+  "dataset": {
+    "case_count": 50,
+    "evaluable_query_count": 41,
+    "evaluable_gold_relation_count": 42
+  },
+  "paired_integrity": {
+    "external_retrieval_list_parity_cases": 50,
+    "derived_local_list_parity_cases": 50,
+    "network_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "baseline": {
+    "candidate_recall": 0.7560975609756098,
+    "candidate_gold_relations": 32,
+    "candidate_unique_gold": 30,
+    "recall_at_20": 0.4634146341463415,
+    "f1_at_20": 0.04624643649033893,
+    "returned_gold_relations": 20,
+    "returned_unique_gold": 19
+  },
+  "local_bm25_original_deepening": {
+    "candidate_recall": 0.7804878048780488,
+    "candidate_gold_relations": 33,
+    "candidate_unique_gold": 31,
+    "recall_at_20": 0.4634146341463415,
+    "f1_at_20": 0.04624643649033893,
+    "returned_gold_relations": 20,
+    "returned_unique_gold": 19
+  },
+  "delta": {
+    "candidate_recall": 0.024390243902439046,
+    "candidate_gold_relations": 1,
+    "recall_at_20": 0.0,
+    "f1_at_20": 0.0,
+    "returned_gold_relations": 0
+  },
+  "paired_query_outcomes": {
+    "candidate_recall": {"improved": 1, "tied": 40, "degraded": 0},
+    "recall_at_20": {"improved": 0, "tied": 41, "degraded": 0},
+    "f1_at_20": {"improved": 0, "tied": 41, "degraded": 0}
+  },
+  "deep_gap_gold": [
+    {
+      "original_list_rank": 120,
+      "local_source_pool_position": 120,
+      "pre_global_position": 146,
+      "global_candidate_position": 146,
+      "judgement_category": "irrelevant",
+      "judgement_score": 0.0,
+      "final_rank": 198,
+      "returned": false,
+      "terminal": "deep_candidate_relevance_filtered"
+    },
+    {
+      "original_list_rank": 150,
+      "local_source_pool_position": 150,
+      "pre_global_position": 190,
+      "global_candidate_position": null,
+      "judgement_category": null,
+      "final_rank": null,
+      "returned": false,
+      "terminal": "deep_candidate_global_budget_truncated"
+    },
+    {
+      "original_list_rank": 194,
+      "local_source_pool_position": 194,
+      "pre_global_position": 234,
+      "global_candidate_position": null,
+      "judgement_category": null,
+      "final_rank": null,
+      "returned": false,
+      "terminal": "deep_candidate_global_budget_truncated"
+    }
+  ],
+  "candidate_flow": {
+    "deep_tail_candidates": 9000,
+    "local_source_retained": 9000,
+    "pre_global_retained": 9000,
+    "global_retained": 7079,
+    "new_vs_baseline_global_pool": 6891,
+    "returned_tail_candidates": 123
+  },
+  "determinism": {
+    "run_count": 2,
+    "byte_identical": true,
+    "aggregate_sha256": "3acad6ac113c44ef4e5c4f548f2381b2a59c2a2b4848f718d7c004efd6007325",
+    "case_comparison_sha256": "65254a165a2fd063a2abc6a28a75b3f081c6abd69ef5f32f3c33a0d456c79864",
+    "deep_candidates_sha256": "1a91edae9e69b1efdfc653a848587aae3b5fba093c8a356e04d29ca0ef1f1d16",
+    "gold_conversion_sha256": "6de3837284315e209094127b0c3296dc32254028880463cbc6343403a1739ca1",
+    "snapshot_tree_sha256_before_after": "2a3b9efdfcec361bf0bdc99d2b30d06fddffb596f9885e70e46b350fdda08d13"
+  },
+  "decision": {
+    "continue_recommendation": false,
+    "default_enabled": false,
+    "reason": "Candidate Recall仅增加1条gold，最终Recall@20与F1@20均未提升；另2条深位gold被全局预算裁剪，1条被现有相关性过滤。"
+  }
+}

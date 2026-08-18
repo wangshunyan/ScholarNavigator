@@ -1,0 +1,38 @@
+{
+  "dependency_edge_count": 1,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "protocol": "offline_wheelhouse_intake_v1",
+  "real_wheelhouse_qualified": false,
+  "schema_version": "1",
+  "status": "synthetic_wheelhouse_qualified",
+  "synthetic_only": true,
+  "venv_results": [
+    {
+      "cli_exit_code": 0,
+      "install_exit_code": 0,
+      "passed": true,
+      "profile": 0,
+      "residue_exit_code": 0,
+      "smoke_exit_code": 0,
+      "uninstall_exit_code": 0
+    },
+    {
+      "cli_exit_code": 0,
+      "install_exit_code": 0,
+      "passed": true,
+      "profile": 1,
+      "residue_exit_code": 0,
+      "smoke_exit_code": 0,
+      "uninstall_exit_code": 0
+    }
+  ],
+  "wheel_count": 2
+}

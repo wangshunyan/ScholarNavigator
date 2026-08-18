@@ -1,0 +1,32 @@
+{
+  "bundle_sha256": "431e2ade9b92a6757659a90e1fe2d71279b0d089ce204555dd1f6e10fa382729",
+  "contract": "formal_network_request_manifest_bundle_v1",
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "files": {
+    "intents.jsonl": {
+      "sha256": "981d26367e41c56b287bb9293dc39674e90291042ae4440e0aa17da59107e47c",
+      "size": 19912790
+    },
+    "launch_addendum.json": {
+      "sha256": "71c87ba48bbe21747871fd8a4098b77bba5bdb6ff73d3543ed97deac5512c5eb",
+      "size": 1334
+    },
+    "manifest.json": {
+      "sha256": "4a281e69e864490b7cb1bf20bc9f8fcb940ce4443e4305751244eaa1bb6bf50f",
+      "size": 2751
+    },
+    "snapshot_audit.json": {
+      "sha256": "c546c0ec575f10dcca38cfd4befb0df47e9968ca55c370a8aed91a2952ac9ce6",
+      "size": 1718
+    }
+  },
+  "formal_validation_complete": false,
+  "schema_version": "1",
+  "status": "request_manifest_ready_network_blocked"
+}

@@ -1,0 +1,262 @@
+{
+  "audit": "autoscholar_query_independence_v1",
+  "component_count": 715,
+  "component_size_distribution": {
+    "1": 612,
+    "2": 58,
+    "27": 1,
+    "3": 31,
+    "4": 7,
+    "5": 2,
+    "7": 1,
+    "89": 1,
+    "9": 2
+  },
+  "cross_stratum": {
+    "contaminated_component_count": 46,
+    "contaminated_query_count": 237,
+    "cross_exclusive_stratum_edge_count": 135,
+    "same_query_membership_overlap_count": 15,
+    "same_query_membership_overlap_counts": {
+      "auto_dev+autoscholar_record160": 10,
+      "auto_val+autoscholar_record160": 5
+    }
+  },
+  "edge_count": 506,
+  "edge_type_counts": {
+    "lexical_near_duplicate": 0,
+    "normalized_exact_query": 0,
+    "shared_gold_identity_cluster": 506
+  },
+  "execution": {
+    "llm_request_count": 0,
+    "metric_scope": "frozen internal diagnostics only; not an official score",
+    "network_request_count": 0,
+    "retrieval_invoked": false,
+    "snapshot_write_count": 0
+  },
+  "frozen_hit_concentration": {
+    "existing65": {
+      "by_component_size": {
+        "non_singleton": {
+          "baseline_final_hit_query_count": 0,
+          "baseline_final_hit_rate": 0.0,
+          "candidate_hit_query_count": 0,
+          "candidate_hit_rate": 0.0,
+          "case_count": 6,
+          "experiment_final_hit_query_count": 0,
+          "experiment_final_hit_rate": 0.0
+        },
+        "singleton": {
+          "baseline_final_hit_query_count": 3,
+          "baseline_final_hit_rate": 0.3333333333333333,
+          "candidate_hit_query_count": 3,
+          "candidate_hit_rate": 0.3333333333333333,
+          "case_count": 9,
+          "experiment_final_hit_query_count": 3,
+          "experiment_final_hit_rate": 0.3333333333333333
+        }
+      },
+      "by_independence": {
+        "cross_stratum_contaminated": {
+          "baseline_final_hit_query_count": 3,
+          "baseline_final_hit_rate": 0.2,
+          "candidate_hit_query_count": 3,
+          "candidate_hit_rate": 0.2,
+          "case_count": 15,
+          "experiment_final_hit_query_count": 3,
+          "experiment_final_hit_rate": 0.2
+        },
+        "independent": {
+          "baseline_final_hit_query_count": 0,
+          "baseline_final_hit_rate": null,
+          "candidate_hit_query_count": 0,
+          "candidate_hit_rate": null,
+          "case_count": 0,
+          "experiment_final_hit_query_count": 0,
+          "experiment_final_hit_rate": null
+        }
+      }
+    },
+    "record160": {
+      "by_component_size": {
+        "non_singleton": {
+          "baseline_final_hit_query_count": 4,
+          "baseline_final_hit_rate": 0.06349206349206349,
+          "candidate_hit_query_count": 6,
+          "candidate_hit_rate": 0.09523809523809523,
+          "case_count": 63,
+          "experiment_final_hit_query_count": 4,
+          "experiment_final_hit_rate": 0.06349206349206349
+        },
+        "singleton": {
+          "baseline_final_hit_query_count": 8,
+          "baseline_final_hit_rate": 0.08247422680412371,
+          "candidate_hit_query_count": 11,
+          "candidate_hit_rate": 0.1134020618556701,
+          "case_count": 97,
+          "experiment_final_hit_query_count": 9,
+          "experiment_final_hit_rate": 0.09278350515463918
+        }
+      },
+      "by_independence": {
+        "cross_stratum_contaminated": {
+          "baseline_final_hit_query_count": 7,
+          "baseline_final_hit_rate": 0.09722222222222222,
+          "candidate_hit_query_count": 9,
+          "candidate_hit_rate": 0.125,
+          "case_count": 72,
+          "experiment_final_hit_query_count": 7,
+          "experiment_final_hit_rate": 0.09722222222222222
+        },
+        "independent": {
+          "baseline_final_hit_query_count": 5,
+          "baseline_final_hit_rate": 0.056818181818181816,
+          "candidate_hit_query_count": 8,
+          "candidate_hit_rate": 0.09090909090909091,
+          "case_count": 88,
+          "experiment_final_hit_query_count": 6,
+          "experiment_final_hit_rate": 0.06818181818181818
+        }
+      }
+    }
+  },
+  "frozen_metric_diagnostics": {
+    "existing65": {
+      "decontaminated": {
+        "baseline": {
+          "f1_at_20": 0.04624643649033893,
+          "final_hit_query_count": 19,
+          "recall_at_20": 0.4634146341463415
+        },
+        "candidate_hit_query_count": 31,
+        "candidate_recall": 0.7560975609756098,
+        "case_count": 50,
+        "dataset_case_counts": {
+          "scifact": 50
+        },
+        "evaluable_case_count": 41,
+        "experiment": {
+          "f1_at_20": 0.048569316861999785,
+          "final_hit_query_count": 20,
+          "recall_at_20": 0.4878048780487805
+        }
+      },
+      "full": {
+        "baseline": {
+          "f1_at_20": 0.038748453927025354,
+          "final_hit_query_count": 22,
+          "recall_at_20": 0.3794642857142857
+        },
+        "candidate_hit_query_count": 34,
+        "candidate_recall": 0.5982142857142857,
+        "case_count": 65,
+        "dataset_case_counts": {
+          "auto_dev": 10,
+          "auto_val": 5,
+          "scifact": 50
+        },
+        "evaluable_case_count": 56,
+        "experiment": {
+          "f1_at_20": 0.04193722943722944,
+          "final_hit_query_count": 23,
+          "recall_at_20": 0.4017857142857143
+        }
+      }
+    },
+    "record160": {
+      "decontaminated": {
+        "baseline": {
+          "f1_at_20": 0.004935861240209067,
+          "final_hit_query_count": 5,
+          "recall_at_20": 0.030681818181818185
+        },
+        "candidate_hit_query_count": 8,
+        "candidate_recall": 0.06477272727272727,
+        "case_count": 88,
+        "dataset_case_counts": {
+          "autoscholar_record160": 88
+        },
+        "evaluable_case_count": 88,
+        "experiment": {
+          "f1_at_20": 0.006018112322460149,
+          "final_hit_query_count": 6,
+          "recall_at_20": 0.042045454545454546
+        }
+      },
+      "full": {
+        "baseline": {
+          "f1_at_20": 0.006563999406390711,
+          "final_hit_query_count": 12,
+          "recall_at_20": 0.03979166666666666
+        },
+        "candidate_hit_query_count": 17,
+        "candidate_recall": 0.06885416666666667,
+        "case_count": 160,
+        "dataset_case_counts": {
+          "autoscholar_record160": 160
+        },
+        "evaluable_case_count": 160,
+        "experiment": {
+          "f1_at_20": 0.00768007083496214,
+          "final_hit_query_count": 13,
+          "recall_at_20": 0.04760416666666666
+        }
+      }
+    }
+  },
+  "interpretation": {
+    "data_removed": false,
+    "diagnostic_decontaminated_view_replaces_full": false,
+    "formal_split_redrawn": false,
+    "official_score": false
+  },
+  "largest_component_query_count": 89,
+  "non_singleton_component_count": 103,
+  "protocol_version": "autoscholar-query-independence-protocol-v1",
+  "query_count": 1000,
+  "query_duplicates": {
+    "component_count": 0,
+    "lexical_near_duplicate_pair_count": 0,
+    "normalized_exact_query_pair_count": 0,
+    "query_count": 0
+  },
+  "record160_closure": {
+    "artifact_case_count": 162,
+    "excluded_no_success_count": 2,
+    "included_main_analysis_count": 160
+  },
+  "schema_version": "1",
+  "shared_gold": {
+    "cross_exclusive_stratum_edge_count": 135,
+    "cross_exclusive_stratum_identity_cluster_count": 83,
+    "identity_cluster_count": 268,
+    "query_pair_edge_count": 506
+  },
+  "strata": {
+    "auto_dev": {
+      "contaminated_query_count": 10,
+      "independent_query_count": 0,
+      "non_singleton_component_query_count": 4,
+      "query_count": 10
+    },
+    "auto_val": {
+      "contaminated_query_count": 5,
+      "independent_query_count": 0,
+      "non_singleton_component_query_count": 2,
+      "query_count": 5
+    },
+    "record160_only": {
+      "contaminated_query_count": 57,
+      "independent_query_count": 90,
+      "non_singleton_component_query_count": 57,
+      "query_count": 147
+    },
+    "remainder": {
+      "contaminated_query_count": 165,
+      "independent_query_count": 673,
+      "non_singleton_component_query_count": 325,
+      "query_count": 838
+    }
+  }
+}

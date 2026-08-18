@@ -1,0 +1,1260 @@
+{
+  "analysis": "constraint_decision_audit_v1",
+  "closure": {
+    "component_count": 134,
+    "constraint_order_invariant_case_count": 160,
+    "decision_record_candidate_count": 4599,
+    "decision_record_constraint_count": 36792,
+    "excluded_no_successful_source_count": 2,
+    "included_main_case_count": 160,
+    "observed_snapshot_key_count": 1093,
+    "reconstruction_exact_case_count": 160,
+    "record_case_count": 162
+  },
+  "constraints": {
+    "datasets": {
+      "active_candidate_count": 323,
+      "candidate_failure_cluster_summary": {
+        "component_count": 134,
+        "confidence_interval_95": [
+          0.15671642,
+          1.7761194
+        ],
+        "mean": 0.86567164,
+        "median": 0.0,
+        "query_count": 160
+      },
+      "explicit_candidate_count": 0,
+      "failed_and_filtered_candidate_count": 91,
+      "failed_but_retained_candidate_count": 25,
+      "shadow_leave_out": {
+        "active_query_count": 9,
+        "lost_survivor_identity_count": 35,
+        "restored_survivor_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            0.0,
+            0.02238806
+          ],
+          "mean": 0.00746269,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "restored_survivor_identity_count": 1,
+        "top20_fill_delta_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            -0.26119403,
+            0.0
+          ],
+          "mean": -0.08955224,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "top20_fill_delta_total": -12,
+        "top20_identity_added_count": 10,
+        "top20_identity_removed_count": 22
+      },
+      "status_counts": {
+        "failed": 116,
+        "not_applicable": 4276,
+        "passed": 207,
+        "unknown": 0
+      },
+      "unique_failure_candidate_count": 88,
+      "unknown_with_false_production_predicate_count": 0
+    },
+    "domains": {
+      "active_candidate_count": 0,
+      "candidate_failure_cluster_summary": {
+        "component_count": 134,
+        "confidence_interval_95": [
+          0.0,
+          0.0
+        ],
+        "mean": 0.0,
+        "median": 0.0,
+        "query_count": 160
+      },
+      "explicit_candidate_count": 0,
+      "failed_and_filtered_candidate_count": 0,
+      "failed_but_retained_candidate_count": 0,
+      "shadow_leave_out": {
+        "active_query_count": 160,
+        "lost_survivor_identity_count": 0,
+        "restored_survivor_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            0.0,
+            0.0
+          ],
+          "mean": 0.0,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "restored_survivor_identity_count": 0,
+        "top20_fill_delta_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            0.0,
+            0.0
+          ],
+          "mean": 0.0,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "top20_fill_delta_total": 0,
+        "top20_identity_added_count": 0,
+        "top20_identity_removed_count": 0
+      },
+      "status_counts": {
+        "failed": 0,
+        "not_applicable": 4599,
+        "passed": 0,
+        "unknown": 0
+      },
+      "unique_failure_candidate_count": 0,
+      "unknown_with_false_production_predicate_count": 0
+    },
+    "exclude_terms": {
+      "active_candidate_count": 0,
+      "candidate_failure_cluster_summary": {
+        "component_count": 134,
+        "confidence_interval_95": [
+          0.0,
+          0.0
+        ],
+        "mean": 0.0,
+        "median": 0.0,
+        "query_count": 160
+      },
+      "explicit_candidate_count": 0,
+      "failed_and_filtered_candidate_count": 0,
+      "failed_but_retained_candidate_count": 0,
+      "shadow_leave_out": {
+        "active_query_count": 0,
+        "lost_survivor_identity_count": 0,
+        "restored_survivor_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            0.0,
+            0.0
+          ],
+          "mean": 0.0,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "restored_survivor_identity_count": 0,
+        "top20_fill_delta_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            0.0,
+            0.0
+          ],
+          "mean": 0.0,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "top20_fill_delta_total": 0,
+        "top20_identity_added_count": 0,
+        "top20_identity_removed_count": 0
+      },
+      "status_counts": {
+        "failed": 0,
+        "not_applicable": 4599,
+        "passed": 0,
+        "unknown": 0
+      },
+      "unique_failure_candidate_count": 0,
+      "unknown_with_false_production_predicate_count": 0
+    },
+    "methods": {
+      "active_candidate_count": 1450,
+      "candidate_failure_cluster_summary": {
+        "component_count": 134,
+        "confidence_interval_95": [
+          3.56813699,
+          9.05145922
+        ],
+        "mean": 6.09621535,
+        "median": 0.0,
+        "query_count": 160
+      },
+      "explicit_candidate_count": 0,
+      "failed_and_filtered_candidate_count": 637,
+      "failed_but_retained_candidate_count": 379,
+      "shadow_leave_out": {
+        "active_query_count": 45,
+        "lost_survivor_identity_count": 63,
+        "restored_survivor_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            0.01119403,
+            0.12313433
+          ],
+          "mean": 0.05899076,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "restored_survivor_identity_count": 10,
+        "top20_fill_delta_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            -0.22521988,
+            -0.02753643
+          ],
+          "mean": -0.11398365,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "top20_fill_delta_total": -29,
+        "top20_identity_added_count": 37,
+        "top20_identity_removed_count": 66
+      },
+      "status_counts": {
+        "failed": 1016,
+        "not_applicable": 3149,
+        "passed": 434,
+        "unknown": 0
+      },
+      "unique_failure_candidate_count": 826,
+      "unknown_with_false_production_predicate_count": 0
+    },
+    "must_include_terms": {
+      "active_candidate_count": 4599,
+      "candidate_failure_cluster_summary": {
+        "component_count": 134,
+        "confidence_interval_95": [
+          2.06526963,
+          4.35528829
+        ],
+        "mean": 3.14809879,
+        "median": 0.0,
+        "query_count": 160
+      },
+      "explicit_candidate_count": 0,
+      "failed_and_filtered_candidate_count": 516,
+      "failed_but_retained_candidate_count": 0,
+      "shadow_leave_out": {
+        "active_query_count": 160,
+        "lost_survivor_identity_count": 1341,
+        "restored_survivor_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            0.0,
+            0.0
+          ],
+          "mean": 0.0,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "restored_survivor_identity_count": 0,
+        "top20_fill_delta_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            -6.56468994,
+            -4.43283582
+          ],
+          "mean": -5.46872779,
+          "median": -3.0,
+          "query_count": 160
+        },
+        "top20_fill_delta_total": -930,
+        "top20_identity_added_count": 41,
+        "top20_identity_removed_count": 971
+      },
+      "status_counts": {
+        "failed": 516,
+        "not_applicable": 0,
+        "passed": 4083,
+        "unknown": 0
+      },
+      "unique_failure_candidate_count": 340,
+      "unknown_with_false_production_predicate_count": 0
+    },
+    "paper_types": {
+      "active_candidate_count": 0,
+      "candidate_failure_cluster_summary": {
+        "component_count": 134,
+        "confidence_interval_95": [
+          0.0,
+          0.0
+        ],
+        "mean": 0.0,
+        "median": 0.0,
+        "query_count": 160
+      },
+      "explicit_candidate_count": 0,
+      "failed_and_filtered_candidate_count": 0,
+      "failed_but_retained_candidate_count": 0,
+      "shadow_leave_out": {
+        "active_query_count": 0,
+        "lost_survivor_identity_count": 0,
+        "restored_survivor_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            0.0,
+            0.0
+          ],
+          "mean": 0.0,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "restored_survivor_identity_count": 0,
+        "top20_fill_delta_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            0.0,
+            0.0
+          ],
+          "mean": 0.0,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "top20_fill_delta_total": 0,
+        "top20_identity_added_count": 0,
+        "top20_identity_removed_count": 0
+      },
+      "status_counts": {
+        "failed": 0,
+        "not_applicable": 4599,
+        "passed": 0,
+        "unknown": 0
+      },
+      "unique_failure_candidate_count": 0,
+      "unknown_with_false_production_predicate_count": 0
+    },
+    "time_range": {
+      "active_candidate_count": 34,
+      "candidate_failure_cluster_summary": {
+        "component_count": 134,
+        "confidence_interval_95": [
+          0.0,
+          0.07142857
+        ],
+        "mean": 0.02452026,
+        "median": 0.0,
+        "query_count": 160
+      },
+      "explicit_candidate_count": 0,
+      "failed_and_filtered_candidate_count": 6,
+      "failed_but_retained_candidate_count": 1,
+      "shadow_leave_out": {
+        "active_query_count": 2,
+        "lost_survivor_identity_count": 0,
+        "restored_survivor_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            0.0,
+            0.02345416
+          ],
+          "mean": 0.00799574,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "restored_survivor_identity_count": 2,
+        "top20_fill_delta_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            0.0,
+            0.02238806
+          ],
+          "mean": 0.00746269,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "top20_fill_delta_total": 1,
+        "top20_identity_added_count": 2,
+        "top20_identity_removed_count": 1
+      },
+      "status_counts": {
+        "failed": 7,
+        "not_applicable": 4565,
+        "passed": 27,
+        "unknown": 0
+      },
+      "unique_failure_candidate_count": 4,
+      "unknown_with_false_production_predicate_count": 0
+    },
+    "venues": {
+      "active_candidate_count": 0,
+      "candidate_failure_cluster_summary": {
+        "component_count": 134,
+        "confidence_interval_95": [
+          0.0,
+          0.0
+        ],
+        "mean": 0.0,
+        "median": 0.0,
+        "query_count": 160
+      },
+      "explicit_candidate_count": 0,
+      "failed_and_filtered_candidate_count": 0,
+      "failed_but_retained_candidate_count": 0,
+      "shadow_leave_out": {
+        "active_query_count": 0,
+        "lost_survivor_identity_count": 0,
+        "restored_survivor_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            0.0,
+            0.0
+          ],
+          "mean": 0.0,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "restored_survivor_identity_count": 0,
+        "top20_fill_delta_cluster_summary": {
+          "component_count": 134,
+          "confidence_interval_95": [
+            0.0,
+            0.0
+          ],
+          "mean": 0.0,
+          "median": 0.0,
+          "query_count": 160
+        },
+        "top20_fill_delta_total": 0,
+        "top20_identity_added_count": 0,
+        "top20_identity_removed_count": 0
+      },
+      "status_counts": {
+        "failed": 0,
+        "not_applicable": 4599,
+        "passed": 0,
+        "unknown": 0
+      },
+      "unique_failure_candidate_count": 0,
+      "unknown_with_false_production_predicate_count": 0
+    }
+  },
+  "execution": {
+    "full1000_inference_performed": false,
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "failure_combination_counts": {
+    "datasets": 88,
+    "methods": 826,
+    "methods+datasets": 20,
+    "methods+time_range": 2,
+    "must_include_terms": 340,
+    "must_include_terms+datasets": 8,
+    "must_include_terms+methods": 167,
+    "must_include_terms+methods+time_range": 1,
+    "none": 3143,
+    "time_range": 4
+  },
+  "implementation_base_commit": "5ae4741291cf21e26ab3212ef78feecea0b49558",
+  "implementation_sha256": "9e46d03fb86674780e57d628b3771344f4e9a6e7fb935691ea2299c843ed4935",
+  "inputs": {
+    "component_assignments_sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5",
+    "config_sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+    "record_results_sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+    "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5"
+  },
+  "interpretation": {
+    "precision_recall_or_official_score": false,
+    "relevance_claim_permitted": false,
+    "scope": "constraint_selectivity_and_interaction_only",
+    "shadow_is_deployable_recommendation": false,
+    "warnings": [
+      "This audit explains current_rules constraint selectivity and interactions only; it does not establish relevance, Precision, Recall, or an official score.",
+      "A failed or unknown constraint dimension is not by itself proof that the paper should be excluded or included.",
+      "Single-constraint leave-out is a read-only shadow analysis and must not be interpreted as a recommendation to relax production rules."
+    ]
+  },
+  "missing_field_strata": {
+    "datasets": {
+      "abstract": {
+        "empty": 277,
+        "null": 0,
+        "present": 4322
+      },
+      "title": {
+        "empty": 0,
+        "null": 0,
+        "present": 4599
+      }
+    },
+    "domains": {},
+    "exclude_terms": {
+      "abstract": {
+        "empty": 277,
+        "null": 0,
+        "present": 4322
+      },
+      "title": {
+        "empty": 0,
+        "null": 0,
+        "present": 4599
+      }
+    },
+    "methods": {
+      "abstract": {
+        "empty": 277,
+        "null": 0,
+        "present": 4322
+      },
+      "title": {
+        "empty": 0,
+        "null": 0,
+        "present": 4599
+      }
+    },
+    "must_include_terms": {
+      "abstract": {
+        "empty": 277,
+        "null": 0,
+        "present": 4322
+      },
+      "title": {
+        "empty": 0,
+        "null": 0,
+        "present": 4599
+      }
+    },
+    "paper_types": {
+      "abstract": {
+        "empty": 277,
+        "null": 0,
+        "present": 4322
+      },
+      "title": {
+        "empty": 0,
+        "null": 0,
+        "present": 4599
+      }
+    },
+    "time_range": {
+      "year": {
+        "empty": 0,
+        "null": 11,
+        "present": 4588
+      }
+    },
+    "venues": {
+      "venue": {
+        "empty": 0,
+        "null": 204,
+        "present": 4395
+      }
+    }
+  },
+  "production_constraint_catalog": {
+    "field_order": [
+      "exclude_terms",
+      "must_include_terms",
+      "methods",
+      "datasets",
+      "domains",
+      "paper_types",
+      "venues",
+      "time_range"
+    ],
+    "fields": {
+      "datasets": {
+        "combination": "any_expected_term_matches",
+        "enforcement": "scoring_and_explicit_soft_guard",
+        "evidence_fields": [
+          "title",
+          "abstract"
+        ],
+        "missing_value": "unknown_when_all_evidence_text_is_empty"
+      },
+      "domains": {
+        "combination": "not_applicable",
+        "enforcement": "planning_only_not_consumed_by_candidate_predicate",
+        "evidence_fields": [],
+        "missing_value": "not_applicable"
+      },
+      "exclude_terms": {
+        "combination": "no_expected_term_matches",
+        "enforcement": "hard_guard",
+        "evidence_fields": [
+          "title",
+          "abstract"
+        ],
+        "missing_value": "unknown_when_all_evidence_text_is_empty"
+      },
+      "methods": {
+        "combination": "any_expected_term_matches",
+        "enforcement": "scoring_only",
+        "evidence_fields": [
+          "title",
+          "abstract"
+        ],
+        "missing_value": "unknown_when_all_evidence_text_is_empty"
+      },
+      "must_include_terms": {
+        "combination": "all_when_explicit_otherwise_scoring_any",
+        "enforcement": "scoring_and_explicit_guard",
+        "evidence_fields": [
+          "title",
+          "abstract"
+        ],
+        "missing_value": "unknown_when_all_evidence_text_is_empty"
+      },
+      "paper_types": {
+        "combination": "any_production_alias_matches",
+        "enforcement": "scoring_and_soft_guard",
+        "evidence_fields": [
+          "title",
+          "abstract"
+        ],
+        "missing_value": "unknown_when_all_evidence_text_is_empty"
+      },
+      "time_range": {
+        "combination": "all_present_inclusive_bounds_match",
+        "enforcement": "scoring_and_out_of_range_guard",
+        "evidence_fields": [
+          "year"
+        ],
+        "missing_value": "unknown_when_year_is_null"
+      },
+      "venues": {
+        "combination": "any_normalized_venue_matches",
+        "enforcement": "scoring_only",
+        "evidence_fields": [
+          "venue"
+        ],
+        "missing_value": "unknown_when_venue_is_null_or_empty"
+      }
+    },
+    "predicate_version": "constraint-predicates-current-rules-v1"
+  },
+  "production_selection": {
+    "constraint_survivor_identity_count": 1884,
+    "filtered_identity_count": 2715,
+    "filtered_with_failed_dimension_count": 1065,
+    "filtered_without_failed_dimension_count": 1650,
+    "top20_selected_identity_attribution_count": 1396
+  },
+  "protocol_sha256": "284456f8a26d941421d51a89f97b72314b536be3ce9d0c10433e0a383667b0dc",
+  "query_structure_strata": {
+    "has_boolean_operator": {
+      "false": {
+        "candidate_count": 3690,
+        "constraint_failure_counts": {
+          "datasets": 116,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 840,
+          "must_include_terms": 454,
+          "paper_types": 0,
+          "time_range": 3,
+          "venues": 0
+        },
+        "constraint_unknown_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "filtered_candidate_count": 2215,
+        "query_count": 118
+      },
+      "true": {
+        "candidate_count": 909,
+        "constraint_failure_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 176,
+          "must_include_terms": 62,
+          "paper_types": 0,
+          "time_range": 4,
+          "venues": 0
+        },
+        "constraint_unknown_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "filtered_candidate_count": 500,
+        "query_count": 42
+      }
+    },
+    "has_quote": {
+      "false": {
+        "candidate_count": 4599,
+        "constraint_failure_counts": {
+          "datasets": 116,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 1016,
+          "must_include_terms": 516,
+          "paper_types": 0,
+          "time_range": 7,
+          "venues": 0
+        },
+        "constraint_unknown_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "filtered_candidate_count": 2715,
+        "query_count": 160
+      },
+      "true": {
+        "candidate_count": 0,
+        "constraint_failure_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "constraint_unknown_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "filtered_candidate_count": 0,
+        "query_count": 0
+      }
+    },
+    "has_year": {
+      "false": {
+        "candidate_count": 4599,
+        "constraint_failure_counts": {
+          "datasets": 116,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 1016,
+          "must_include_terms": 516,
+          "paper_types": 0,
+          "time_range": 7,
+          "venues": 0
+        },
+        "constraint_unknown_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "filtered_candidate_count": 2715,
+        "query_count": 160
+      },
+      "true": {
+        "candidate_count": 0,
+        "constraint_failure_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "constraint_unknown_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "filtered_candidate_count": 0,
+        "query_count": 0
+      }
+    },
+    "length_bucket": {
+      "0_80": {
+        "candidate_count": 1780,
+        "constraint_failure_counts": {
+          "datasets": 84,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 401,
+          "must_include_terms": 213,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "constraint_unknown_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "filtered_candidate_count": 1223,
+        "query_count": 43
+      },
+      "161_320": {
+        "candidate_count": 123,
+        "constraint_failure_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 3,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "constraint_unknown_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "filtered_candidate_count": 58,
+        "query_count": 8
+      },
+      "321_plus": {
+        "candidate_count": 0,
+        "constraint_failure_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "constraint_unknown_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "filtered_candidate_count": 0,
+        "query_count": 0
+      },
+      "81_160": {
+        "candidate_count": 2696,
+        "constraint_failure_counts": {
+          "datasets": 32,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 615,
+          "must_include_terms": 300,
+          "paper_types": 0,
+          "time_range": 7,
+          "venues": 0
+        },
+        "constraint_unknown_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "filtered_candidate_count": 1434,
+        "query_count": 109
+      }
+    },
+    "unicode_class": {
+      "ascii_only": {
+        "candidate_count": 4599,
+        "constraint_failure_counts": {
+          "datasets": 116,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 1016,
+          "must_include_terms": 516,
+          "paper_types": 0,
+          "time_range": 7,
+          "venues": 0
+        },
+        "constraint_unknown_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "filtered_candidate_count": 2715,
+        "query_count": 160
+      },
+      "non_ascii_letter": {
+        "candidate_count": 0,
+        "constraint_failure_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "constraint_unknown_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "filtered_candidate_count": 0,
+        "query_count": 0
+      },
+      "non_ascii_nonletter": {
+        "candidate_count": 0,
+        "constraint_failure_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "constraint_unknown_counts": {
+          "datasets": 0,
+          "domains": 0,
+          "exclude_terms": 0,
+          "methods": 0,
+          "must_include_terms": 0,
+          "paper_types": 0,
+          "time_range": 0,
+          "venues": 0
+        },
+        "filtered_candidate_count": 0,
+        "query_count": 0
+      }
+    }
+  },
+  "schema_version": "1",
+  "semantic_audit": {
+    "constraint_order_dependency_count": 0,
+    "domains_with_values_not_consumed_by_candidate_predicate_count": 4599,
+    "field_reference_violation_count": 0,
+    "final_state_contradiction_count": 0,
+    "reason_omission_count": 0
+  },
+  "source_strata": {
+    "arxiv": {
+      "candidate_identity_count": 2561,
+      "category_reason_counts": {
+        "constraint_guard_applied": 2,
+        "score_threshold:highly_relevant": 5,
+        "score_threshold:irrelevant": 992,
+        "score_threshold:partially_relevant": 843,
+        "score_threshold:weakly_relevant": 719
+      },
+      "constraint_status_counts": {
+        "datasets": {
+          "failed": 60,
+          "not_applicable": 2386,
+          "passed": 115
+        },
+        "domains": {
+          "not_applicable": 2561
+        },
+        "exclude_terms": {
+          "not_applicable": 2561
+        },
+        "methods": {
+          "failed": 442,
+          "not_applicable": 1902,
+          "passed": 217
+        },
+        "must_include_terms": {
+          "failed": 303,
+          "passed": 2258
+        },
+        "paper_types": {
+          "not_applicable": 2561
+        },
+        "time_range": {
+          "failed": 2,
+          "not_applicable": 2537,
+          "passed": 22
+        },
+        "venues": {
+          "not_applicable": 2561
+        }
+      },
+      "constraint_survivor_count": 848,
+      "failure_combination_counts": {
+        "datasets": 53,
+        "methods": 373,
+        "must_include_terms": 227,
+        "must_include_terms+datasets": 7,
+        "must_include_terms+methods": 69,
+        "none": 1830,
+        "time_range": 2
+      },
+      "filtered_candidate_count": 1713,
+      "filtered_with_failed_dimension_count": 587,
+      "filtered_without_failed_dimension_count": 1126,
+      "judgement_category_counts": {
+        "highly_relevant": 5,
+        "irrelevant": 993,
+        "partially_relevant": 843,
+        "weakly_relevant": 720
+      },
+      "judgement_score_distribution": {
+        "count": 2561,
+        "maximum": 0.755,
+        "mean": 0.32720648,
+        "median": 0.315,
+        "minimum": 0.0,
+        "q1": 0.15,
+        "q3": 0.525
+      },
+      "top20_selected_count": 623
+    },
+    "openalex": {
+      "candidate_identity_count": 20,
+      "category_reason_counts": {
+        "score_threshold:irrelevant": 19,
+        "score_threshold:weakly_relevant": 1
+      },
+      "constraint_status_counts": {
+        "datasets": {
+          "not_applicable": 20
+        },
+        "domains": {
+          "not_applicable": 20
+        },
+        "exclude_terms": {
+          "not_applicable": 20
+        },
+        "methods": {
+          "not_applicable": 20
+        },
+        "must_include_terms": {
+          "failed": 8,
+          "passed": 12
+        },
+        "paper_types": {
+          "not_applicable": 20
+        },
+        "time_range": {
+          "not_applicable": 20
+        },
+        "venues": {
+          "not_applicable": 20
+        }
+      },
+      "constraint_survivor_count": 0,
+      "failure_combination_counts": {
+        "must_include_terms": 8,
+        "none": 12
+      },
+      "filtered_candidate_count": 20,
+      "filtered_with_failed_dimension_count": 8,
+      "filtered_without_failed_dimension_count": 12,
+      "judgement_category_counts": {
+        "irrelevant": 19,
+        "weakly_relevant": 1
+      },
+      "judgement_score_distribution": {
+        "count": 20,
+        "maximum": 0.28,
+        "mean": 0.06225,
+        "median": 0.045,
+        "minimum": 0.0,
+        "q1": 0.0,
+        "q3": 0.07625
+      },
+      "top20_selected_count": 0
+    },
+    "pubmed": {
+      "candidate_identity_count": 863,
+      "category_reason_counts": {
+        "constraint_guard_applied": 2,
+        "score_threshold:highly_relevant": 1,
+        "score_threshold:irrelevant": 274,
+        "score_threshold:partially_relevant": 286,
+        "score_threshold:weakly_relevant": 300
+      },
+      "constraint_status_counts": {
+        "datasets": {
+          "failed": 20,
+          "not_applicable": 799,
+          "passed": 44
+        },
+        "domains": {
+          "not_applicable": 863
+        },
+        "exclude_terms": {
+          "not_applicable": 863
+        },
+        "methods": {
+          "failed": 182,
+          "not_applicable": 662,
+          "passed": 19
+        },
+        "must_include_terms": {
+          "failed": 29,
+          "passed": 834
+        },
+        "paper_types": {
+          "not_applicable": 863
+        },
+        "time_range": {
+          "failed": 2,
+          "not_applicable": 857,
+          "passed": 4
+        },
+        "venues": {
+          "not_applicable": 863
+        }
+      },
+      "constraint_survivor_count": 287,
+      "failure_combination_counts": {
+        "datasets": 20,
+        "methods": 176,
+        "must_include_terms": 23,
+        "must_include_terms+methods": 6,
+        "none": 636,
+        "time_range": 2
+      },
+      "filtered_candidate_count": 576,
+      "filtered_with_failed_dimension_count": 194,
+      "filtered_without_failed_dimension_count": 382,
+      "judgement_category_counts": {
+        "highly_relevant": 1,
+        "irrelevant": 274,
+        "partially_relevant": 286,
+        "weakly_relevant": 302
+      },
+      "judgement_score_distribution": {
+        "count": 863,
+        "maximum": 0.7205,
+        "mean": 0.35296292,
+        "median": 0.34,
+        "minimum": 0.0,
+        "q1": 0.21,
+        "q3": 0.5
+      },
+      "top20_selected_count": 234
+    },
+    "semantic_scholar": {
+      "candidate_identity_count": 1178,
+      "category_reason_counts": {
+        "constraint_guard_applied": 3,
+        "score_threshold:highly_relevant": 7,
+        "score_threshold:irrelevant": 241,
+        "score_threshold:partially_relevant": 761,
+        "score_threshold:weakly_relevant": 166
+      },
+      "constraint_status_counts": {
+        "datasets": {
+          "failed": 36,
+          "not_applicable": 1093,
+          "passed": 49
+        },
+        "domains": {
+          "not_applicable": 1178
+        },
+        "exclude_terms": {
+          "not_applicable": 1178
+        },
+        "methods": {
+          "failed": 396,
+          "not_applicable": 581,
+          "passed": 201
+        },
+        "must_include_terms": {
+          "failed": 176,
+          "passed": 1002
+        },
+        "paper_types": {
+          "not_applicable": 1178
+        },
+        "time_range": {
+          "failed": 3,
+          "not_applicable": 1174,
+          "passed": 1
+        },
+        "venues": {
+          "not_applicable": 1178
+        }
+      },
+      "constraint_survivor_count": 769,
+      "failure_combination_counts": {
+        "datasets": 15,
+        "methods": 281,
+        "methods+datasets": 20,
+        "methods+time_range": 2,
+        "must_include_terms": 82,
+        "must_include_terms+datasets": 1,
+        "must_include_terms+methods": 92,
+        "must_include_terms+methods+time_range": 1,
+        "none": 684
+      },
+      "filtered_candidate_count": 409,
+      "filtered_with_failed_dimension_count": 277,
+      "filtered_without_failed_dimension_count": 132,
+      "judgement_category_counts": {
+        "highly_relevant": 7,
+        "irrelevant": 242,
+        "partially_relevant": 762,
+        "weakly_relevant": 167
+      },
+      "judgement_score_distribution": {
+        "count": 1178,
+        "maximum": 0.765,
+        "mean": 0.45240985,
+        "median": 0.549,
+        "minimum": 0.0,
+        "q1": 0.35,
+        "q3": 0.63
+      },
+      "top20_selected_count": 556
+    }
+  },
+  "status": "completed"
+}

@@ -1,0 +1,145 @@
+{
+  "bindings": {
+    "backup_target_attestation": {
+      "path": "benchmark/formal_backup_target_attestation_v1_protocol.json",
+      "sha256": "2cf63cbfed4e602f8e2ace4f766be80e7298f3819570bcb4f64c1bfa745b87a3"
+    },
+    "crash_consistency": {
+      "path": "benchmark/crash_consistency_v1_protocol.json",
+      "sha256": "24b1fbc1314275e3bfa56fc431df18a67102dbd90ccf482f5c12fd358356e920"
+    },
+    "disaster_recovery": {
+      "path": "benchmark/formal_run_disaster_recovery_v1_protocol.json",
+      "sha256": "e6b646df73fee75421e33894a73f60cb6f4e00f509a09a103766f68310a20467"
+    },
+    "execution_plan": {
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    "host_attestation": {
+      "path": "benchmark/formal_execution_host_attestation_v1_protocol.json",
+      "sha256": "095bbe731aa461dfa1999080cb916757ecce8f737c19e823aa1173b8663a7681"
+    },
+    "launch_control": {
+      "path": "benchmark/full1000_launch_control_v1_protocol.json",
+      "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+    },
+    "multivolume_storage": {
+      "path": "benchmark/formal_multivolume_storage_v1_protocol.json",
+      "sha256": "ae6ecc5691ce9cde6a0780c4c4276067e1cefb3154ffe3ff3cefac1c54e87e5c"
+    },
+    "portable_execution_site": {
+      "path": "benchmark/portable_execution_site_attestation_v1_protocol.json",
+      "sha256": "10d49ae0e80ddd00edfa84ba676985f5104cad1b428a7cb2ba613f95858d7ead"
+    },
+    "provider_ingest": {
+      "path": "benchmark/provider_ingest_provenance_v1_protocol.json",
+      "sha256": "29a4a687f8bec2d9c3f12f264b24e41df2519442182728dc424b101e578e6a77"
+    },
+    "resource_accounting": {
+      "path": "benchmark/resource_accounting_integrity_v1_protocol.json",
+      "sha256": "b465d2e8f555418bb4a6ac492a0879d307830bdd158ef18ff39de481a6c08f97"
+    },
+    "shard_streaming_retention": {
+      "path": "benchmark/formal_shard_streaming_retention_v1_protocol.json",
+      "sha256": "5673ac2c73873c4c0f96cee14db93d37360f9f304d8a7c2a7181aa89f10a2099"
+    },
+    "storage_governance": {
+      "path": "benchmark/formal_run_storage_governance_v1_protocol.json",
+      "sha256": "bb78967820aba3c223c0638adbda9b0779cc7cecffcb718fa22a06f352c9d5c1"
+    }
+  },
+  "capacity": {
+    "components": {
+      "active_shard_window": {
+        "bytes": 140123308032,
+        "coefficient": 4,
+        "files": 13376,
+        "source": "formal_shard_streaming_retention_v1",
+        "unit_bytes": 35030827008
+      },
+      "aggregate": {
+        "bytes": 2147483648,
+        "coefficient": 1,
+        "files": 100,
+        "source": "formal_run_storage_governance_v1",
+        "unit_bytes": 2147483648
+      },
+      "compaction_staging": {
+        "bytes": 35030827008,
+        "coefficient": 1,
+        "files": 3344,
+        "source": "single_shard_atomic_compaction_staging_v1",
+        "unit_bytes": 35030827008
+      },
+      "final_shard_archives": {
+        "bytes": 700616540160,
+        "coefficient": 20,
+        "files": 66880,
+        "source": "formal_multivolume_storage_v1",
+        "unit_bytes": 35030827008
+      },
+      "parent_chain_index": {
+        "bytes": 34078720,
+        "coefficient": 66560,
+        "files": 1061,
+        "source": "1040_generations_x_64_files_x_512_byte_entry",
+        "unit_bytes": 512
+      },
+      "recovery_workspace": {
+        "bytes": 140123308032,
+        "coefficient": 4,
+        "files": 13376,
+        "source": "active_shard_window_4_restore_workspace",
+        "unit_bytes": 35030827008
+      },
+      "safety_reserve": {
+        "bytes": 10737418240,
+        "coefficient": 1,
+        "files": 10000,
+        "source": "formal_run_storage_governance_v1",
+        "unit_bytes": 10737418240
+      }
+    },
+    "compression_credit_bytes": 0,
+    "future_cleanup_credit_bytes": 0,
+    "future_deduplication_credit_bytes": 0,
+    "new_backup_required_bytes": 1028812963840,
+    "new_backup_required_inodes": 108137,
+    "old_backup_required_bytes": 2119029489664,
+    "old_backup_required_inodes": 210940,
+    "reduction_basis_points": 5144,
+    "reduction_bytes": 1090216525824,
+    "sparse_file_credit_bytes": 0,
+    "unknown_capacity_inputs": []
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "policy": {
+    "ability_default_enabled": false,
+    "compaction_staging_shards": 1,
+    "content_address_algorithm": "sha256",
+    "exact_blob_reuse_is_integrity_not_capacity_credit": true,
+    "final_archive_copies_per_sealed_shard": 1,
+    "history_root_rewrite_allowed": false,
+    "recovery_workspace_shards": 4,
+    "unique_blob_deletion_allowed": false
+  },
+  "population": {
+    "active_shard_window": 4,
+    "http_attempt_upper": 19280,
+    "query_count": 1000,
+    "selected_generation_upper": 1040,
+    "shard_count": 20
+  },
+  "protocol": "formal_backup_compaction_v1",
+  "protocol_sha256": "4202229308c385e7d32d3d7b027586687f2b86c37d7811d55129ca593d90e597",
+  "schema_version": "1",
+  "source_commit": "af1e2d28ec41870a8f69e9a217bfeb8baec5becd"
+}

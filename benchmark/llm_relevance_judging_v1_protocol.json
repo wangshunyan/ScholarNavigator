@@ -1,0 +1,111 @@
+{
+  "blinding": {
+    "allowed_item_fields": [
+      "item_id",
+      "query",
+      "title",
+      "abstract",
+      "year"
+    ],
+    "forbidden_fields": [
+      "strategy",
+      "policy",
+      "arm",
+      "direction",
+      "rank",
+      "score",
+      "gold",
+      "qrels",
+      "judgement",
+      "case_id",
+      "query_id",
+      "source",
+      "sources",
+      "dataset",
+      "paper_id",
+      "identifiers",
+      "stratum",
+      "transition"
+    ],
+    "item_identity": "sha256_of_package_binding_and_opaque_package_item_id_v1",
+    "unblind_condition": "both_rounds_complete_all_disagreements_adjudicated_and_labels_lock_valid"
+  },
+  "contract": "llm_relevance_judging_v1",
+  "inputs": {
+    "cluster_assignments": {
+      "path": "benchmark/autoscholar_query_independence_baseline/query_assignments.jsonl",
+      "sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5"
+    },
+    "current_package": {
+      "expected_item_count": 439,
+      "manifest_path": "benchmark/lexical_normalization_record160_precision_annotation/manifest.json",
+      "manifest_sha256": "3447a7350003957ced2ffbd0f9aaeeec9ad41da9553afb28833f55b4e6916ae6",
+      "mapping_path": "benchmark/lexical_normalization_record160_precision_annotation/private/mapping.json",
+      "mapping_sha256": "a8b0fb8d889655151c726678707879793ecf7065c1473a9a1fac8911530e8299",
+      "public_path": "benchmark/lexical_normalization_record160_precision_annotation/public/blind_samples.jsonl",
+      "public_sha256": "5b9cb83266d51a7e4bbde71f4bbe3645d60ff5872796ad968a56de50dd54771f",
+      "rubric_path": "benchmark/lexical_normalization_record160_precision_annotation/public/annotation_schema.json",
+      "rubric_sha256": "b6ce3491d5024b6b245f922221f7e8ec7f7546baa6ef57bf7ca38d3eebb9d0b5"
+    },
+    "prior_package": {
+      "expected_referenced_item_count": 32,
+      "manifest_path": "benchmark/lexical_normalization_precision_annotation/manifest.json",
+      "manifest_sha256": "088b7697e4b592452f74ff41b887b9940e9d2eba1c4993d9922fac1dadd1a11e",
+      "public_path": "benchmark/lexical_normalization_precision_annotation/public/blind_samples.jsonl",
+      "public_sha256": "ab9d5db2a7dcd661b24569e30a59b1b8746b0d0ed4e7270c39503528a9f92b59"
+    },
+    "record160_cases": {
+      "expected_query_count": 160,
+      "path": "outputs/benchmark_runs/lexical_normalization_record160_813cf3a_r5/case_comparison.jsonl",
+      "sha256": "cc2372e329055fa82750e6bb0eb2bf0f33322c54a389952d032746d6d0a6a5d2"
+    }
+  },
+  "judge": {
+    "adjudicator_prompt": {
+      "name": "llm_relevance_adjudicator_v1",
+      "system_path": "benchmark/llm_relevance_judging_v1_prompts/adjudicator_system.md",
+      "system_sha256": "f27e466706f06b0247798d5c02f3a772525869452ccef21ea132f0c46e347a0d",
+      "user_path": "benchmark/llm_relevance_judging_v1_prompts/adjudicator_user.md",
+      "user_sha256": "1d723c3a91da6220eb31a3cd1490e0c525aa69674b1996b7b67436ae7c885601",
+      "version": "1.0.0"
+    },
+    "batch_size": 8,
+    "evidence_max_characters": 240,
+    "independent_rounds": [
+      "independent_1",
+      "independent_2"
+    ],
+    "max_concurrency": 4,
+    "judge_prompt": {
+      "name": "llm_relevance_judge_v1",
+      "system_path": "benchmark/llm_relevance_judging_v1_prompts/judge_system.md",
+      "system_sha256": "b1cde540e509d12d0272e37c7f7454c7d68f8c303f43ab225ef6c8d1972b95e5",
+      "user_path": "benchmark/llm_relevance_judging_v1_prompts/judge_user.md",
+      "user_sha256": "05c4541ccc9da34779ac1f83e8470cef7a0a3355cb628281d73cf8647ba9b4c1",
+      "version": "1.0.0"
+    },
+    "max_logical_attempts_per_batch": 2,
+    "temperature": 0
+  },
+  "rubric": {
+    "labels": [
+      "relevant",
+      "partially_relevant",
+      "not_relevant",
+      "insufficient_information"
+    ],
+    "positive_labels": [
+      "relevant",
+      "partially_relevant"
+    ]
+  },
+  "schema_version": "1",
+  "score_scope": "internal_llm_proxy_not_human_or_official",
+  "statistics": {
+    "bootstrap_iterations": 20000,
+    "cluster_assignment": "reuse_frozen_component_id_without_recomputing_clusters",
+    "cluster_bootstrap_seed": 20260722,
+    "query_bootstrap_seed": 20260722,
+    "top_k": 20
+  }
+}

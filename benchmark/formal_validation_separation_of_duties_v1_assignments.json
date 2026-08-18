@@ -1,0 +1,11 @@
+{
+  "aliases": {},
+  "assignments": {},
+  "formal_validation_complete": false,
+  "protocol": "formal_validation_separation_of_duties_v1",
+  "real_identity_mapping": "not_available",
+  "schema_version": "1",
+  "source_commit": "0f3b987543b0aec7db9ced25e1047220dd441862",
+  "status": "not_ready_missing_real_role_assignments",
+  "test_only": false
+}

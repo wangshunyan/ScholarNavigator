@@ -1,0 +1,11 @@
+{
+  "blocker_count": 3,
+  "claim_count": 29,
+  "evidence_reference_count": 86,
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "protocol": "standalone_auditor_bundle_v1",
+  "schema_version": "1",
+  "shareable_source_count": 8,
+  "status": "verified_with_declared_blockers"
+}

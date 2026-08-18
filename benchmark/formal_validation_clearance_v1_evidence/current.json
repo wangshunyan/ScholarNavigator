@@ -1,0 +1,75 @@
+{
+  "artifact_bindings_sha256": "969d9b48ae5cefbb1d6684fda0028241f112345531ed78918f4e0028c5da98e7",
+  "blockers": {
+    "full1000": {
+      "failed": [
+        "aggregate_verified",
+        "complete_1000",
+        "generation_chain_verified",
+        "not_legacy_partial_or_synthetic",
+        "resource_ledger_verified",
+        "run_manifest_verified",
+        "unique_identity_1000"
+      ],
+      "passed": [
+        "plan_bound"
+      ],
+      "state": "partially_satisfied"
+    },
+    "human_precision": {
+      "failed": [
+        "adjudication_validated",
+        "complete_a",
+        "complete_b",
+        "independent_anonymous",
+        "real_human_only"
+      ],
+      "passed": [
+        "no_unresolved_disagreement",
+        "package_bound"
+      ],
+      "state": "partially_satisfied"
+    },
+    "official_scorer": {
+      "failed": [
+        "complete_input",
+        "metric_namespace_provided",
+        "not_synthetic",
+        "official_identity",
+        "package_hash",
+        "package_verified",
+        "sandbox_and_output_verified",
+        "schemas_provided"
+      ],
+      "passed": [],
+      "state": "blocked"
+    }
+  },
+  "evidence_artifact_count": 6,
+  "evidence_sha256": "208e774f81cce191c4382a34209c9b473fb51aca605f173eefd76ed5427baae9",
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_validation_complete": false,
+  "global_prerequisites": {
+    "failed": [],
+    "passed": [
+      "current_rules_default",
+      "default_tiebreak_unchanged",
+      "dependency_closure",
+      "fresh",
+      "source_commit_compatible"
+    ]
+  },
+  "protocol": "formal_validation_clearance_v1",
+  "schema_version": "1",
+  "source_commit": "e1e2545cab9d6f2ecf0e95be157d4c1e71376ec8",
+  "state_summary_sha256": "1f2860859c79f556a5bf4fb850ed096b68d591189bba2b1fafef1c68e6aad08f",
+  "status": "partially_satisfied",
+  "synthetic_test_only": false
+}

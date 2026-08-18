@@ -1,0 +1,46 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "invariants": {
+    "ledger_binding": "passed",
+    "pagination_chain": "passed",
+    "parser_replay": "passed",
+    "raw_archive_integrity": "passed",
+    "record_count_conservation": "passed"
+  },
+  "protocol": "provider_ingest_provenance_v1",
+  "scenario_count": 17,
+  "scenarios": [
+    "adapter_exception",
+    "arxiv_success",
+    "duplicate_records",
+    "empty_response",
+    "illegal_encoding",
+    "malformed_json",
+    "openalex_success",
+    "partial_page",
+    "provider_503",
+    "pubmed_fetch_success",
+    "pubmed_search_success",
+    "rate_limited",
+    "semantic_gzip",
+    "semantic_success",
+    "timeout",
+    "truncated_xml",
+    "unknown_schema"
+  ],
+  "schema_version": "1",
+  "sources": [
+    "arxiv",
+    "openalex",
+    "pubmed",
+    "semantic_scholar"
+  ],
+  "status": "passed"
+}

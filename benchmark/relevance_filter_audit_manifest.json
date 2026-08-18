@@ -1,0 +1,38 @@
+{
+  "audit": "relevance_filter_false_negative_calibration_v1",
+  "implementation_base_commit": "22a39e9362bc5ab93d08914ebc24ef23177ece96",
+  "datasets": [
+    {
+      "label": "scifact",
+      "dataset": "beir_scifact",
+      "run_dir": "outputs/benchmark_runs/local_bm25_28db182_scifact_five_source_final_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/local_bm25_28db182_scifact_five_source",
+      "crosswalk_path": "benchmark/beir_scifact_s2_crosswalk.json",
+      "required_candidate_source": "local_bm25",
+      "expected_candidate_gold_count": 32,
+      "expected_filtered_gold_count": 12
+    },
+    {
+      "label": "auto_dev",
+      "dataset": "auto_scholar_query",
+      "run_dir": "outputs/benchmark_runs/llm_rewrite_8731726_auto_dev_baseline_fresh_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_auto_dev_baseline_retrieval",
+      "expected_candidate_gold_count": 3,
+      "expected_filtered_gold_count": 1
+    },
+    {
+      "label": "auto_val",
+      "dataset": "auto_scholar_query",
+      "run_dir": "outputs/benchmark_runs/llm_rewrite_8731726_auto_val_baseline_fresh_replay_r1",
+      "snapshot_dir": "outputs/benchmark_snapshots/llm_constrained_rewrite_8731726_auto_val_baseline_retrieval",
+      "expected_candidate_gold_count": 1,
+      "expected_filtered_gold_count": 0
+    }
+  ],
+  "counterfactuals": {
+    "mode": "remove_exactly_one_frozen_rule",
+    "combinations": false,
+    "threshold_search": false,
+    "deployable_score": false
+  }
+}

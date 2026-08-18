@@ -1,0 +1,109 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_validation_complete": false,
+  "missing_artifacts": [
+    {
+      "name": "annotated-doc",
+      "version": "0.0.4"
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.6.0"
+    },
+    {
+      "name": "anyio",
+      "version": "4.13.0"
+    },
+    {
+      "name": "certifi",
+      "version": "2025.8.3"
+    },
+    {
+      "name": "click",
+      "version": "8.2.1"
+    },
+    {
+      "name": "fastapi",
+      "version": "0.138.0"
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0"
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.9"
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1"
+    },
+    {
+      "name": "idna",
+      "version": "3.7"
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.0"
+    },
+    {
+      "name": "numpy",
+      "version": "2.4.6"
+    },
+    {
+      "name": "packaging",
+      "version": "25.0"
+    },
+    {
+      "name": "pluggy",
+      "version": "1.5.0"
+    },
+    {
+      "name": "pydantic",
+      "version": "2.11.7"
+    },
+    {
+      "name": "pydantic-core",
+      "version": "2.33.2"
+    },
+    {
+      "name": "pygments",
+      "version": "2.19.1"
+    },
+    {
+      "name": "pytest",
+      "version": "9.1.1"
+    },
+    {
+      "name": "rank-bm25",
+      "version": "0.2.2"
+    },
+    {
+      "name": "starlette",
+      "version": "1.2.0"
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.15.0"
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.2"
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.48.0"
+    }
+  ],
+  "protocol": "python_dependency_lock_v1",
+  "schema_version": "1",
+  "status": "not_ready_missing_verified_version_or_artifact",
+  "venv_results": []
+}

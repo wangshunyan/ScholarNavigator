@@ -1,0 +1,45 @@
+{
+  "algorithm": "ssh-ed25519",
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 3,
+  "formal_blockers": [
+    "full1000_incomplete",
+    "human_precision_missing",
+    "official_scorer_schema_missing"
+  ],
+  "formal_validation_complete": false,
+  "identity_authentication": "not_provided_until_real_trust_anchor_is_operator_provisioned",
+  "protocol": "release_authenticity_signing_v1",
+  "schema_version": "1",
+  "signable_artifacts": [
+    "clearance_receipt",
+    "evidence_transparency_checkpoint",
+    "release_candidate",
+    "standalone_auditor_bundle"
+  ],
+  "signing_controls_ready": true,
+  "status": "not_ready_missing_real_trust_anchor_or_signer",
+  "transparency_checkpoint": {
+    "log_length": 1,
+    "merkle_root": "2d2fee76aa56f48a7e4a204bdbb16995701f7f930abfa216e962af04bfb06473",
+    "status": "candidate_checkpoint_no_public_release"
+  },
+  "trust_root": {
+    "active_real_key_count": 0,
+    "key_count": 0,
+    "status": "not_ready_missing_real_trust_anchor",
+    "transition_count": 0,
+    "trust_root_sha256": "6f02c4bf1753bd139f380e2ee9313538997f7af2866d41770f66a0bb7081fa10"
+  },
+  "unsigned_integration_state": {
+    "release_candidate_status": "build_or_supply_chain_violation",
+    "revocation_event_count": 0,
+    "standalone_status": "verified_with_declared_blockers"
+  }
+}

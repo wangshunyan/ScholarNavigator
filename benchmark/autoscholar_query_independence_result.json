@@ -1,0 +1,104 @@
+{
+  "audit": "autoscholar_query_independence_v1",
+  "components": {
+    "component_count": 715,
+    "largest_component_query_count": 89,
+    "non_singleton_component_count": 103,
+    "query_count_in_non_singleton_components": 388,
+    "singleton_component_count": 612
+  },
+  "cross_stratum": {
+    "contaminated_component_count": 46,
+    "contaminated_query_count": 237,
+    "cross_exclusive_stratum_edge_count": 135,
+    "independent_query_count": 763,
+    "same_query_membership_overlap_count": 15,
+    "same_query_membership_overlap_counts": {
+      "auto_dev+autoscholar_record160": 10,
+      "auto_val+autoscholar_record160": 5
+    }
+  },
+  "frozen_metric_diagnostics": {
+    "existing65": {
+      "decontaminated": {
+        "baseline": {
+          "f1_at_20": 0.04624643649033893,
+          "recall_at_20": 0.4634146341463415
+        },
+        "candidate_recall": 0.7560975609756098,
+        "case_count": 50,
+        "experiment": {
+          "f1_at_20": 0.048569316861999785,
+          "recall_at_20": 0.4878048780487805
+        },
+        "scope_note": "SciFact 50 only; all 15 Auto dev/val cases overlap Record160 membership"
+      },
+      "full": {
+        "baseline": {
+          "f1_at_20": 0.038748453927025354,
+          "recall_at_20": 0.3794642857142857
+        },
+        "candidate_recall": 0.5982142857142857,
+        "case_count": 65,
+        "experiment": {
+          "f1_at_20": 0.04193722943722944,
+          "recall_at_20": 0.4017857142857143
+        }
+      }
+    },
+    "record160": {
+      "decontaminated": {
+        "baseline": {
+          "f1_at_20": 0.004935861240209067,
+          "recall_at_20": 0.030681818181818185
+        },
+        "candidate_recall": 0.06477272727272727,
+        "case_count": 88,
+        "experiment": {
+          "f1_at_20": 0.006018112322460149,
+          "recall_at_20": 0.042045454545454546
+        }
+      },
+      "full": {
+        "baseline": {
+          "f1_at_20": 0.006563999406390711,
+          "recall_at_20": 0.03979166666666666
+        },
+        "candidate_recall": 0.06885416666666667,
+        "case_count": 160,
+        "experiment": {
+          "f1_at_20": 0.00768007083496214,
+          "recall_at_20": 0.04760416666666666
+        }
+      }
+    }
+  },
+  "interpretation": {
+    "auto_dev_val_independent_of_record160": false,
+    "automatic_data_removal": false,
+    "full1000_independent_query_count": 763,
+    "internal_metrics_only": true,
+    "recommended_significance_scope": "retain full results and add the preregistered decontaminated view; do not pool reused queries as independent observations and use connected components as resampling units",
+    "split_redrawn": false
+  },
+  "query_duplicates": {
+    "lexical_near_duplicate_pair_count": 0,
+    "normalized_exact_query_pair_count": 0,
+    "query_count": 0,
+    "query_duplicate_component_count": 0
+  },
+  "reproducibility": {
+    "components_sha256": "1da102c7928503e88d531fbf967ad2573378b2ea17ecaad4397c8d61669f1549",
+    "edges_sha256": "30cadc7cdd5fe360bc43057cbb6c9da6cc94d1c84d3fe788f1bdd08b03abc882",
+    "metric_diagnostics_sha256": "2212044c71227cc66601960b307ec89764fd21ac20a260a5accf05a0ebd729d5",
+    "query_assignments_sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5",
+    "runs_byte_identical": true,
+    "summary_sha256": "cd2952dd95e9d7993a45255face1de828de78b5fbf18264dafb6c9e32de717b3"
+  },
+  "schema_version": "1",
+  "shared_gold": {
+    "cross_exclusive_stratum_identity_cluster_count": 83,
+    "identity_cluster_count": 268,
+    "query_pair_edge_count": 506
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "annotation_status": "pending_human_labels",
+  "artifact_determinism": {
+    "adjudication_sha256": "4c94319b3cd71b39e9a7b71d2b43d5a6d4a21e7fd1eac4f3c9416eaa75a1dd4d",
+    "annotation_schema_sha256": "b6ce3491d5024b6b245f922221f7e8ec7f7546baa6ef57bf7ca38d3eebb9d0b5",
+    "annotator_1_sha256": "1cf87dd29576a82fd8b80b8945f505e7ff644119a4201d45b8db0b2da4c528bf",
+    "annotator_2_sha256": "ce3452b7362047e48523040884dca04f388ee7c53a0e7d516a7bc6d02ce98052",
+    "blind_samples_sha256": "5b9cb83266d51a7e4bbde71f4bbe3645d60ff5872796ad968a56de50dd54771f",
+    "mapping_sha256": "a8b0fb8d889655151c726678707879793ecf7065c1473a9a1fac8911530e8299",
+    "metrics_pending_sha256": "b59d76ff54467b4732fa6db78e148614aea429ba721d034c0ca4165020562b18",
+    "package_tree_sha256": "3d8df8680acdbe078eb175c31addeddb8feb106cf7a5273803424d75077fad94",
+    "repeated_generation_byte_identical": true,
+    "summary_sha256": "ec3df2e04aec318bf38c51b12a33ba7f20ac419b3161f3e1c0536997be9f3daa"
+  },
+  "coverage": {
+    "baseline_removed_relation_count": 132,
+    "experiment_admitted_relation_count": 339,
+    "public_new_sample_count": 439,
+    "top20_change_relation_count": 471,
+    "uncovered_relation_count": 0,
+    "unique_query_paper_count": 471,
+    "within_package_duplicate_relation_count": 0
+  },
+  "execution": {
+    "gold_or_qrels_used_for_generation": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_write_count": 0
+  },
+  "metrics": {
+    "admitted_false_admission_rate": null,
+    "baseline_precision_at_20": null,
+    "cohen_kappa": null,
+    "experiment_precision_at_20": null,
+    "paired_precision_at_20_difference": null,
+    "removed_relevance_rate": null
+  },
+  "package": "lexical_normalization_v1_record160_all_top20_changes_v1",
+  "prior_package_deduplication": {
+    "overlap_case_count": 9,
+    "overlap_direction_counts": {
+      "baseline_removed": 10,
+      "experiment_admitted": 22
+    },
+    "overlap_relation_count": 32,
+    "overlap_sample_count": 32,
+    "prior_dataset_counts": {
+      "auto_dev": 18,
+      "auto_val": 14
+    },
+    "prior_stratum_counts": {
+      "baseline_only": 10,
+      "normalization_added": 22
+    },
+    "reannotation_avoided": true
+  },
+  "public_blinding": {
+    "allowed_fields": [
+      "sample_id",
+      "query",
+      "title",
+      "abstract",
+      "year"
+    ],
+    "recursive_forbidden_field_match_count": 0,
+    "sample_ids_encode_hidden_fields": false
+  },
+  "scoring_semantics": {
+    "absolute_precision_at_20": "remains null because this package intentionally labels only Top-20 boundary changes, not shared results",
+    "human_labels_required": true,
+    "prior_overlap_labels_required": true,
+    "when_complete": [
+      "changed-item precision for each arm",
+      "exact paired Precision@20 difference contributed by boundary changes",
+      "admitted false-admission rate",
+      "removed relevance rate",
+      "Cohen's kappa",
+      "successful-source-count and prior-overlap strata"
+    ]
+  },
+  "schema_version": "1"
+}

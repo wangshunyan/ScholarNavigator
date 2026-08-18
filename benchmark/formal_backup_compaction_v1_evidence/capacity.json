@@ -1,0 +1,82 @@
+{
+  "capacity": {
+    "components": {
+      "active_shard_window": {
+        "bytes": 140123308032,
+        "coefficient": 4,
+        "files": 13376,
+        "source": "formal_shard_streaming_retention_v1",
+        "unit_bytes": 35030827008
+      },
+      "aggregate": {
+        "bytes": 2147483648,
+        "coefficient": 1,
+        "files": 100,
+        "source": "formal_run_storage_governance_v1",
+        "unit_bytes": 2147483648
+      },
+      "compaction_staging": {
+        "bytes": 35030827008,
+        "coefficient": 1,
+        "files": 3344,
+        "source": "single_shard_atomic_compaction_staging_v1",
+        "unit_bytes": 35030827008
+      },
+      "final_shard_archives": {
+        "bytes": 700616540160,
+        "coefficient": 20,
+        "files": 66880,
+        "source": "formal_multivolume_storage_v1",
+        "unit_bytes": 35030827008
+      },
+      "parent_chain_index": {
+        "bytes": 34078720,
+        "coefficient": 66560,
+        "files": 1061,
+        "source": "1040_generations_x_64_files_x_512_byte_entry",
+        "unit_bytes": 512
+      },
+      "recovery_workspace": {
+        "bytes": 140123308032,
+        "coefficient": 4,
+        "files": 13376,
+        "source": "active_shard_window_4_restore_workspace",
+        "unit_bytes": 35030827008
+      },
+      "safety_reserve": {
+        "bytes": 10737418240,
+        "coefficient": 1,
+        "files": 10000,
+        "source": "formal_run_storage_governance_v1",
+        "unit_bytes": 10737418240
+      }
+    },
+    "compression_credit_bytes": 0,
+    "future_cleanup_credit_bytes": 0,
+    "future_deduplication_credit_bytes": 0,
+    "new_backup_required_bytes": 1028812963840,
+    "new_backup_required_inodes": 108137,
+    "old_backup_required_bytes": 2119029489664,
+    "old_backup_required_inodes": 210940,
+    "reduction_basis_points": 5144,
+    "reduction_bytes": 1090216525824,
+    "sparse_file_credit_bytes": 0,
+    "unknown_capacity_inputs": []
+  },
+  "capacity_model_uses_compression": false,
+  "capacity_model_uses_future_cleanup": false,
+  "capacity_model_uses_future_deduplication": false,
+  "capacity_model_uses_sparse_files": false,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "protocol": "formal_backup_compaction_v1",
+  "schema_version": "1",
+  "status": "backup_compaction_ready"
+}

@@ -1,0 +1,20 @@
+{
+  "bindings": {
+    "backup_member_discovery": {"path": "benchmark/formal_backup_member_discovery_v1_protocol.json", "sha256": "3063e4db5ed7ab126886ad3d131eaf424ca732b9410c64c971e73acc7e0708a4"},
+    "backup_set_member_intake": {"path": "benchmark/formal_backup_set_member_intake_v1_protocol.json", "sha256": "7c3a68a8e59237fc00093928eb8c1368d8fc194de04397a341cc3d6c95a90d44"},
+    "backup_set_topology": {"path": "benchmark/formal_backup_set_topology_v1_protocol.json", "sha256": "c810a5bdd64dbcf2739aef02c92ef156c246cbf0224303bf5a8e05a504b610ae"},
+    "backup_target_attestation": {"path": "benchmark/formal_backup_target_attestation_v1_protocol.json", "sha256": "2cf63cbfed4e602f8e2ace4f766be80e7298f3819570bcb4f64c1bfa745b87a3"},
+    "backup_target_registration": {"path": "benchmark/formal_backup_target_registration_v1_protocol.json", "sha256": "06e0314c9d29d08de881d2c66d1bef6e88786298e46aa1ebbac5c76b693dc066"},
+    "execution_plan": {"path": "benchmark/full1000_execution_plan_v1.json", "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"},
+    "intake_runtime": {"path": "scripts/formal_backup_set_intake_runtime.py", "sha256": "f2243fb4711530fc7f905314ceb3875b8a86ebe8fd70f1f37a33b88406aa7d2f"},
+    "target_runtime": {"path": "scripts/formal_backup_target_runtime.py", "sha256": "bc3a1ec4ae6bfe5f417d91c7777aa88299898b4252fde76e707478b18be6a847"}
+  },
+  "execution": {"gold_or_qrels_loaded": false, "llm_request_count": 0, "network_request_count": 0, "quality_metric_count": 0, "snapshot_write_count": 0},
+  "formal_validation_complete": false,
+  "kit": {"fixed_zip_timestamp": [2024, 1, 1, 0, 0, 0], "project_dependency_count": 0, "python_invocation": "python -I -S", "supported_member_counts": [2, 3, 4]},
+  "policy": {"activation_side_effect": false, "automatic_path_scan": false, "candidate_status": "member_candidate_ready_for_intake", "challenge_one_time": true, "explicit_operator_path_only": true, "identity_authentication": false, "output_absolute_paths": false, "unknown_evidence_policy": "fail_closed"},
+  "protocol": "formal_backup_member_enrollment_v1",
+  "protocol_sha256": "1d5931ca3ff5273fc5361ad18fbb18bbe28478b6e9b87dbd43e62a7a72fdf231",
+  "schema_version": "1",
+  "source_commit": "699ef5a0669ff9ca606b7df0e2f3ffcce09e5a9a"
+}

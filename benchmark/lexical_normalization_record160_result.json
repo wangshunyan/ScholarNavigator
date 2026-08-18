@@ -1,0 +1,155 @@
+{
+  "analysis": "lexical_normalization_v1_record160_v1",
+  "artifact_determinism": {
+    "aggregate_sha256": "9ab00c3b4480f66bfaf1c12f3c33e3c1019d50910b5ea2945c7f612836e408b0",
+    "candidate_diagnostics_sha256": "5a61ab557f5a36eb1181f921d940fdd74d9ea42b6c708341a31cba5b70ea205a",
+    "case_comparison_sha256": "cc2372e329055fa82750e6bb0eb2bf0f33322c54a389952d032746d6d0a6a5d2",
+    "manifest_sha256": "a532daa568a1aace4327c94006baee4d12ff9f338f5c907ed89239b67a515254",
+    "replay_pair": [
+      "outputs/benchmark_runs/lexical_normalization_record160_813cf3a_r5",
+      "outputs/benchmark_runs/lexical_normalization_record160_813cf3a_r6"
+    ]
+  },
+  "candidate_pool": {
+    "candidate_gold_relation_count": 19,
+    "candidate_recall": 0.06885416666666667,
+    "identity_and_order_pairing_mismatch_count": 0
+  },
+  "closure": {
+    "included_main_analysis": 160,
+    "no_successful_source": 2,
+    "record_case_count": 162,
+    "successful_source_count_strata": {
+      "1": 57,
+      "2": 72,
+      "3": 30,
+      "4": 1
+    }
+  },
+  "core_metrics": {
+    "baseline": {
+      "f1_at_20": 0.006563999406390711,
+      "recall_at_20": 0.03979166666666666,
+      "returned_gold_relation_count": 12
+    },
+    "delta": {
+      "candidate_recall": 0.0,
+      "f1_at_20": 0.0011160714285714285,
+      "recall_at_20": 0.0078125,
+      "returned_gold_relation_count": 2
+    },
+    "deduplicated_gold_relation_count": 392,
+    "experiment": {
+      "f1_at_20": 0.00768007083496214,
+      "recall_at_20": 0.04760416666666666,
+      "returned_gold_relation_count": 14
+    },
+    "query_outcomes": {
+      "improved": 2,
+      "regressed": 0,
+      "tied": 158
+    }
+  },
+  "execution": {
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5",
+    "snapshot_write_count": 0
+  },
+  "interpretation": {
+    "consistent_with_prior_65_direction": true,
+    "default_remains_off": true,
+    "human_precision_still_required": true,
+    "reason": "positive sparse point estimates are not statistically distinguishable from zero and 337 admitted candidates are qrels-unmatched, not reliable negatives",
+    "scope_limit": "order-biased, source-incomplete 160-case prefix; not the 1000-case baseline or an independent random validation set"
+  },
+  "metric_version": "deduplicated_gold_identity_v2",
+  "new_excluding_prior_auto_dev_val": {
+    "candidate_recall": {
+      "baseline": 0.05873563218390805,
+      "experiment": 0.05873563218390805
+    },
+    "f1_at_20": {
+      "baseline": 0.005354692284227517,
+      "bootstrap_ci_95": [
+        0.0,
+        0.0019704433497536944
+      ],
+      "experiment": 0.006011506734145414,
+      "mean_difference": 0.0006568144499178981,
+      "paired_permutation_p_two_sided": 1.0
+    },
+    "query_count": 145,
+    "query_outcomes": {
+      "improved": 1,
+      "regressed": 0,
+      "tied": 144
+    },
+    "recall_at_20": {
+      "baseline": 0.028390804597701148,
+      "bootstrap_ci_95": [
+        0.0,
+        0.020689655172413793
+      ],
+      "experiment": 0.035287356321839075,
+      "mean_difference": 0.006896551724137931,
+      "paired_permutation_p_two_sided": 1.0
+    }
+  },
+  "paired_statistics_all_160": {
+    "candidate_recall": {
+      "bootstrap_ci_95": [
+        0.0,
+        0.0
+      ],
+      "mean_difference": 0.0,
+      "paired_permutation_p_two_sided": 1.0
+    },
+    "f1_at_20": {
+      "bootstrap_ci_95": [
+        0.0,
+        0.0028273809523809523
+      ],
+      "mean_difference": 0.0011160714285714285,
+      "paired_permutation_p_two_sided": 0.5
+    },
+    "recall_at_20": {
+      "bootstrap_ci_95": [
+        0.0,
+        0.021875
+      ],
+      "mean_difference": 0.0078125,
+      "paired_permutation_p_two_sided": 0.5
+    }
+  },
+  "release_risk": {
+    "known_gold_false_kill_recovered_count": 2,
+    "qrels_unmatched_admitted_candidate_relation_count": 337,
+    "top_20_admitted_relation_count": 339,
+    "top_20_removed_relation_count": 132,
+    "warning": "qrels-unmatched candidates are not reliable negative labels"
+  },
+  "schema_version": "1",
+  "source_strata_effect": {
+    "1": {
+      "f1_at_20_delta": 0.0,
+      "query_count": 57,
+      "recall_at_20_delta": 0.0
+    },
+    "2": {
+      "f1_at_20_delta": 0.00248015873015873,
+      "query_count": 72,
+      "recall_at_20_delta": 0.017361111111111112
+    },
+    "3": {
+      "f1_at_20_delta": 0.0,
+      "query_count": 30,
+      "recall_at_20_delta": 0.0
+    },
+    "4": {
+      "f1_at_20_delta": 0.0,
+      "query_count": 1,
+      "recall_at_20_delta": 0.0
+    }
+  }
+}

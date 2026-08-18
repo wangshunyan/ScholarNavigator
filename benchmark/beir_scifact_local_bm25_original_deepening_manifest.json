@@ -1,0 +1,58 @@
+{
+  "benchmark": "beir_scifact_local_bm25_original_deepening_v1",
+  "implementation_base_commit": "b7b8694bc89013b51e6cb40ce4355ce57536cee8",
+  "scope": "benchmark_offline_experiment_not_production_connector",
+  "dataset": {
+    "name": "beir_scifact",
+    "split": "test",
+    "case_count": 50,
+    "evaluable_query_count": 41,
+    "evaluable_gold_relation_count": 42,
+    "sample_manifest": "benchmark/beir_scifact_sample_manifest.json",
+    "sample_manifest_sha256": "a1c010060078a806cae5f79ee24e565b0546206144f9ac4e9fdc15d432318f9b"
+  },
+  "inputs": {
+    "corpus": "outputs/benchmark_inputs/beir_scifact/extracted/scifact/corpus.jsonl",
+    "corpus_sha256": "dec31c8182f3d744c7d2c09423756fd1d17cbef75808db13ba01cc0aab4d1ac6",
+    "crosswalk": "benchmark/beir_scifact_s2_crosswalk.json",
+    "crosswalk_sha256": "ec7406107d13ddfd81ea1eca6f065c85dda25276f4ddb33abd568c5dd9d94d1c",
+    "frozen_run": "outputs/benchmark_runs/local_bm25_28db182_scifact_five_source_final_replay_r1",
+    "snapshot_dir": "outputs/benchmark_snapshots/local_bm25_28db182_scifact_five_source",
+    "retrieval_directory_content_sha256": "21a3260b120c8aabe832381e6674d90c40f4aa3dc731356b09fb1d97a5fb7cd9"
+  },
+  "strategy": {
+    "name": "local_bm25_original_deepening",
+    "version": "1",
+    "default_enabled": false,
+    "source": "local_bm25",
+    "eligible_purpose": "original_query",
+    "eligible_adaptation_strategy": "safe_original",
+    "baseline_list_depth": 20,
+    "experimental_list_depth": 200,
+    "derived_query_list_depth": 20,
+    "local_source_candidate_limit": 200,
+    "global_candidate_limit": 200,
+    "top_k": 20
+  },
+  "frozen_pipeline": {
+    "sources": ["openalex", "arxiv", "semantic_scholar", "pubmed", "local_bm25"],
+    "query_planning_policy": "current_rules",
+    "query_adapter_policy": "adaptive",
+    "judgement_policy": "current_rules",
+    "ranking_policy": "current_rules",
+    "result_policy": "highly_and_partial",
+    "bm25": {"k1": 1.5, "b": 0.75, "epsilon": 0.25},
+    "tokenizer": "unicode-word-casefold-v1"
+  },
+  "invariants": {
+    "external_snapshot_keys_and_responses_equal": true,
+    "derived_local_lists_equal": true,
+    "gold_used_after_candidate_ranking": true,
+    "production_connector_modified": false,
+    "production_adapter_modified": false,
+    "production_default_modified": false,
+    "network_request_count": 0,
+    "llm_request_count": 0,
+    "snapshot_write_count": 0
+  }
+}

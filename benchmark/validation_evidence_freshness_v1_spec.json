@@ -1,0 +1,974 @@
+{
+  "baseline_head": "b983b23f1405a12d51cd78bd7acf53ad8dbfcee3",
+  "blocked_evidence_ids": [
+    "external_scorer_readiness",
+    "formal_evidence_quarantine_readiness",
+    "formal_preregistration_readiness",
+    "full1000_resume_summary",
+    "human_annotation_delivery_readiness",
+    "human_precision_pending",
+    "official_scorer_blocked",
+    "offline_wheelhouse_install_test",
+    "offline_wheelhouse_manifest",
+    "offline_wheelhouse_release_review",
+    "offline_wheelhouse_verification",
+    "python_dependency_lock_offline_install",
+    "python_dependency_lock_release_review"
+  ],
+  "claim_component_bindings": {
+    "architecture_default_policy_isolation": [
+      "default_policy",
+      "evidence_registry",
+      "tiebreak",
+      "top20_delivery"
+    ],
+    "architecture_evidence_revocation_controls_ready": [
+      "evidence_revocation"
+    ],
+    "architecture_external_scorer_handoff_ready": [
+      "external_scorer",
+      "full1000_resume",
+      "top20_delivery"
+    ],
+    "architecture_formal_evidence_quarantine_ready": [
+      "formal_evidence_quarantine",
+      "human_precision",
+      "official_scorer_absence"
+    ],
+    "architecture_formal_run_disaster_recovery_ready": [
+      "formal_run_disaster_recovery",
+      "full1000_execution",
+      "full1000_launch_control",
+      "provider_ingest_provenance"
+    ],
+    "architecture_formal_validation_clearance_gated": [
+      "formal_validation_clearance",
+      "full1000_execution",
+      "human_precision",
+      "official_scorer_absence"
+    ],
+    "architecture_formal_validation_preregistered": [
+      "formal_validation_preregistration"
+    ],
+    "architecture_full1000_execution_plan_ready": [
+      "full1000_execution"
+    ],
+    "architecture_full1000_launch_control_ready": [
+      "full1000_execution",
+      "full1000_launch_control",
+      "provider_ingest_provenance"
+    ],
+    "architecture_human_annotation_delivery_ready": [
+      "human_annotation",
+      "human_precision"
+    ],
+    "architecture_offline_integrity_gates": [
+      "constraint_decision",
+      "ranking_decision",
+      "source_fusion",
+      "source_reliability",
+      "tiebreak",
+      "top20_delivery"
+    ],
+    "architecture_offline_wheelhouse_intake": [
+      "offline_wheelhouse_intake",
+      "python_dependency_lock",
+      "release_candidate_reproducibility"
+    ],
+    "architecture_provider_ingest_provenance_ready": [
+      "full1000_execution",
+      "provider_ingest_provenance"
+    ],
+    "architecture_public_contract_compatibility": [
+      "public_contract_compatibility"
+    ],
+    "architecture_python_dependency_lock": [
+      "python_dependency_lock",
+      "release_candidate_reproducibility"
+    ],
+    "architecture_release_candidate_reproducibility": [
+      "frontend_reproducible_build",
+      "python_dependency_lock",
+      "release_candidate_reproducibility"
+    ],
+    "architecture_standalone_auditor_bundle_ready": [
+      "standalone_auditor_bundle"
+    ],
+    "contest_full1000_completion": [
+      "full1000_resume"
+    ],
+    "contest_human_precision": [
+      "human_precision"
+    ],
+    "contest_official_scorer_alignment": [
+      "official_scorer_absence"
+    ],
+    "evaluation_record160_extrapolation_boundary": [
+      "completion_bias"
+    ],
+    "evaluation_record160_population": [
+      "source_reliability",
+      "top20_delivery"
+    ],
+    "evaluation_source_diagnostics": [
+      "source_reliability"
+    ],
+    "evaluation_source_fusion_coverage": [
+      "source_fusion"
+    ],
+    "evaluation_top20_delivery": [
+      "top20_delivery"
+    ],
+    "readme_operational_entrypoint": [
+      "default_policy",
+      "evidence_registry"
+    ]
+  },
+  "components": [
+    {
+      "component_id": "completion_bias",
+      "files": [
+        "benchmark/autoscholar_query_independence_baseline/query_assignments.jsonl",
+        "benchmark/autoscholar_query_planning_input.jsonl",
+        "benchmark/completion_bias_audit_v1_protocol.json",
+        "benchmark/top20_delivery_fidelity_v1_result/case_diagnostics.jsonl",
+        "scripts/check_completion_bias.py",
+        "src/scholar_agent/evaluation/completion_bias_audit.py"
+      ],
+      "kind": "statistics_and_data_identity"
+    },
+    {
+      "component_id": "constraint_decision",
+      "files": [
+        "benchmark/constraint_decision_audit_v1_protocol.json",
+        "scripts/check_constraint_decisions.py",
+        "src/scholar_agent/evaluation/constraint_decision_audit.py"
+      ],
+      "kind": "audit_implementation"
+    },
+    {
+      "component_id": "constraint_runtime",
+      "files": [
+        "src/scholar_agent/agents/judgement.py",
+        "src/scholar_agent/agents/judgement_config.py",
+        "src/scholar_agent/core/search_schemas.py"
+      ],
+      "kind": "production_semantics"
+    },
+    {
+      "component_id": "default_policy",
+      "files": [
+        "src/scholar_agent/agents/judgement_config.py",
+        "src/scholar_agent/core/search_schemas.py",
+        "src/scholar_agent/evaluation/selection.py",
+        "src/scholar_agent/retrieval/query_adapter.py",
+        "src/scholar_agent/services/search_service.py"
+      ],
+      "kind": "production_configuration"
+    },
+    {
+      "component_id": "evidence_registry",
+      "files": [
+        "benchmark/evidence_registry_manifest.json",
+        "scripts/check_evidence_registry.py",
+        "src/scholar_agent/evaluation/evidence_registry.py"
+      ],
+      "kind": "registry_and_cli"
+    },
+    {
+      "component_id": "evidence_revocation",
+      "files": [
+        "benchmark/evidence_revocation_response_v1_evidence/simulation.json",
+        "benchmark/evidence_revocation_response_v1_ledger.json",
+        "benchmark/evidence_revocation_response_v1_protocol.json",
+        "docs/architecture.md",
+        "docs/evidence-revocation-response.md",
+        "scripts/check_evidence_revocation.py",
+        "scripts/check_formal_validation_clearance.py",
+        "scripts/check_release_candidate.py",
+        "scripts/check_standalone_auditor_bundle.py",
+        "scripts/check_validation_readiness.py",
+        "src/scholar_agent/evaluation/evidence_revocation.py"
+      ],
+      "kind": "append_only_revocation_propagation_and_release_fail_closed"
+    },
+    {
+      "component_id": "external_scorer",
+      "files": [
+        "benchmark/external_scorer_handoff_v1_protocol.json",
+        "scripts/check_external_scorer_handoff.py",
+        "scripts/external_scorer_worker.py",
+        "src/scholar_agent/evaluation/external_scorer_handoff.py"
+      ],
+      "kind": "protocol_cli_and_sandbox"
+    },
+    {
+      "component_id": "formal_evidence_quarantine",
+      "files": [
+        "benchmark/formal_evidence_quarantine_v1_protocol.json",
+        "docs/formal-evidence-quarantine.md",
+        "scripts/check_formal_evidence_quarantine.py",
+        "src/scholar_agent/evaluation/formal_evidence_quarantine.py"
+      ],
+      "kind": "formal_evidence_intake_isolation_and_posthoc_firewall"
+    },
+    {
+      "component_id": "formal_run_disaster_recovery",
+      "files": [
+        "benchmark/formal_run_disaster_recovery_v1_evidence/readiness.json",
+        "benchmark/formal_run_disaster_recovery_v1_evidence/simulation.json",
+        "benchmark/formal_run_disaster_recovery_v1_protocol.json",
+        "benchmark/full1000_execution_plan_v1.json",
+        "benchmark/full1000_launch_control_v1_protocol.json",
+        "benchmark/full1000_provider_ingest_capture_addendum_v1.json",
+        "docs/formal-run-disaster-recovery.md",
+        "scripts/check_formal_run_recovery.py",
+        "src/scholar_agent/evaluation/formal_run_disaster_recovery.py"
+      ],
+      "kind": "committed_generation_backup_restore_and_resume"
+    },
+    {
+      "component_id": "formal_validation_clearance",
+      "files": [
+        "benchmark/formal_validation_clearance_v1_protocol.json",
+        "docs/formal-validation-clearance.md",
+        "scripts/check_formal_validation_clearance.py",
+        "src/scholar_agent/evaluation/formal_validation_clearance.py"
+      ],
+      "kind": "formal_blocker_state_machine_and_receipt"
+    },
+    {
+      "component_id": "formal_validation_preregistration",
+      "files": [
+        "benchmark/formal_validation_preregistration_v1_evidence/readiness.json",
+        "benchmark/formal_validation_preregistration_v1_evidence/simulation.json",
+        "benchmark/formal_validation_preregistration_v1_protocol.json",
+        "benchmark/formal_validation_preregistration_v1_seal.json",
+        "docs/formal-validation-preregistration.md",
+        "scripts/check_formal_validation_preregistration.py",
+        "src/scholar_agent/evaluation/formal_validation_preregistration.py"
+      ],
+      "kind": "formal_analysis_plan_seal_and_posthoc_change_gate"
+    },
+    {
+      "component_id": "frontend_reproducible_build",
+      "files": [
+        "benchmark/frontend_reproducible_build_v1_protocol.json",
+        "benchmark/frontend_reproducible_build_v1_release_contract.json",
+        "benchmark/frontend_reproducible_build_v1_evidence/current.json",
+        "docs/frontend-reproducible-build.md",
+        "frontend/package-lock.json",
+        "frontend/package.json",
+        "scripts/check_frontend_reproducible_build.py",
+        "scripts/freeze_frontend_reproducible_build_contract.py",
+        "scripts/freeze_frontend_reproducible_build_evidence.py",
+        "src/scholar_agent/evaluation/frontend_reproducible_build.py",
+        "src/scholar_agent/evaluation/release_candidate_reproducibility.py"
+      ],
+      "kind": "frontend_release_build_and_runtime_fidelity"
+    },
+    {
+      "component_id": "full1000_execution",
+      "files": [
+        "benchmark/autoscholar_query_planning_baseline.jsonl",
+        "benchmark/autoscholar_query_planning_input.jsonl",
+        "benchmark/autoscholar_query_planning_manifest.json",
+        "benchmark/full1000_execution_plan_v1.json",
+        "benchmark/full1000_execution_readiness_v1_protocol.json",
+        "docs/full1000-execution-readiness.md",
+        "scripts/check_full1000_execution_readiness.py",
+        "src/scholar_agent/evaluation/full1000_execution_readiness.py",
+        "src/scholar_agent/evaluation/resource_accounting.py",
+        "src/scholar_agent/evaluation/sharded_execution.py"
+      ],
+      "kind": "immutable_execution_plan_and_fake_chain"
+    },
+    {
+      "component_id": "full1000_launch_control",
+      "files": [
+        "benchmark/full1000_execution_plan_v1.json",
+        "benchmark/full1000_execution_readiness_v1_protocol.json",
+        "benchmark/full1000_launch_control_v1_evidence/readiness.json",
+        "benchmark/full1000_launch_control_v1_evidence/simulation.json",
+        "benchmark/full1000_launch_control_v1_protocol.json",
+        "benchmark/full1000_provider_ingest_capture_addendum_v1.json",
+        "benchmark/provider_ingest_provenance_v1_protocol.json",
+        "docs/full1000-launch-control.md",
+        "scripts/check_full1000_launch_control.py",
+        "src/scholar_agent/evaluation/full1000_launch_control.py"
+      ],
+      "kind": "sealed_launch_authorization_and_operation_audit"
+    },
+    {
+      "component_id": "full1000_resume",
+      "files": [
+        "benchmark/autoscholar_full1000_resume/resume_manifest.json",
+        "scripts/audit_autoscholar_snapshot_resume.py",
+        "src/scholar_agent/evaluation/snapshot_resume.py"
+      ],
+      "kind": "data_identity_and_resume"
+    },
+    {
+      "component_id": "human_annotation",
+      "files": [
+        "benchmark/human_annotation_delivery_v1_protocol.json",
+        "benchmark/human_annotation_delivery_v1_release/annotator-A/app.js",
+        "benchmark/human_annotation_delivery_v1_release/annotator-B/app.js",
+        "scripts/check_human_annotation_delivery.py",
+        "src/scholar_agent/evaluation/human_annotation_delivery.py"
+      ],
+      "kind": "offline_annotation_delivery"
+    },
+    {
+      "component_id": "human_precision",
+      "files": [
+        "benchmark/human_precision_adjudication_v1_protocol.json",
+        "benchmark/lexical_normalization_precision_annotation/public/annotation_schema.json",
+        "benchmark/lexical_normalization_record160_precision_annotation/public/annotation_schema.json",
+        "src/scholar_agent/evaluation/full_swap_precision_annotation.py",
+        "src/scholar_agent/evaluation/human_precision_adjudication.py",
+        "src/scholar_agent/evaluation/precision_annotation.py"
+      ],
+      "kind": "rubric_and_statistics"
+    },
+    {
+      "component_id": "identity_runtime",
+      "files": [
+        "src/scholar_agent/core/dedup.py",
+        "src/scholar_agent/core/identity.py",
+        "src/scholar_agent/core/paper_schemas.py"
+      ],
+      "kind": "production_identity"
+    },
+    {
+      "component_id": "official_scorer_absence",
+      "files": [
+        "docs/contest/requirements.md"
+      ],
+      "kind": "formal_blocker_specification"
+    },
+    {
+      "component_id": "offline_wheelhouse_intake",
+      "files": [
+        "benchmark/offline_wheelhouse_intake_v1_protocol.json",
+        "benchmark/offline_wheelhouse_intake_v1_manifest.json",
+        "benchmark/offline_wheelhouse_intake_v1_release_contract.json",
+        "benchmark/offline_wheelhouse_intake_v1_release_closure.json",
+        "benchmark/offline_wheelhouse_intake_v1_evidence/install_test.json",
+        "benchmark/offline_wheelhouse_intake_v1_evidence/release_audit.json",
+        "benchmark/offline_wheelhouse_intake_v1_evidence/release_review.json",
+        "benchmark/offline_wheelhouse_intake_v1_evidence/synthetic_install.json",
+        "benchmark/offline_wheelhouse_intake_v1_evidence/verification.json",
+        "docs/offline-wheelhouse-intake.md",
+        "scripts/check_offline_wheelhouse.py",
+        "src/scholar_agent/evaluation/offline_wheelhouse_intake.py",
+        "src/scholar_agent/evaluation/release_candidate_reproducibility.py"
+      ],
+      "kind": "offline_artifact_supply_chain_and_install_qualification"
+    },
+    {
+      "component_id": "provider_ingest_provenance",
+      "files": [
+        "benchmark/full1000_provider_ingest_capture_addendum_v1.json",
+        "benchmark/provider_ingest_provenance_v1_evidence/fixture_matrix.json",
+        "benchmark/provider_ingest_provenance_v1_evidence/frozen_audit.json",
+        "benchmark/provider_ingest_provenance_v1_protocol.json",
+        "docs/provider-ingest-provenance.md",
+        "scripts/check_provider_ingest_provenance.py",
+        "src/scholar_agent/evaluation/crash_consistency.py",
+        "src/scholar_agent/evaluation/provider_ingest_provenance.py",
+        "src/scholar_agent/evaluation/reproduction_capsule.py",
+        "src/scholar_agent/evaluation/run_provenance.py"
+      ],
+      "kind": "parser_pre_raw_response_capture_replay_and_lineage"
+    },
+    {
+      "component_id": "public_contract_compatibility",
+      "files": [
+        "benchmark/public_contract_compatibility_v1_baseline.json",
+        "benchmark/public_contract_compatibility_v1_evidence/current.json",
+        "benchmark/public_contract_compatibility_v1_protocol.json",
+        "docs/architecture.md",
+        "docs/evaluation.md",
+        "docs/public-contract-compatibility.md",
+        "frontend/src/types/api.ts",
+        "scripts/check_public_contract_compatibility.py",
+        "src/scholar_agent/app/api/routes.py",
+        "src/scholar_agent/core/api_schemas.py",
+        "src/scholar_agent/evaluation/public_contract_compatibility.py",
+        "src/scholar_agent/evaluation/run_provenance.py"
+      ],
+      "kind": "public_api_cli_and_artifact_contract_governance"
+    },
+    {
+      "component_id": "python_dependency_lock",
+      "files": [
+        "benchmark/python_dependency_lock_v1_evidence/offline_install.json",
+        "benchmark/python_dependency_lock_v1_evidence/release_audit.json",
+        "benchmark/python_dependency_lock_v1_evidence/release_review.json",
+        "benchmark/python_dependency_lock_v1_evidence/verification.json",
+        "benchmark/python_dependency_lock_v1_manifest.json",
+        "benchmark/python_dependency_lock_v1_protocol.json",
+        "benchmark/python_dependency_lock_v1_release_closure.json",
+        "benchmark/python_dependency_lock_v1_release_contract.json",
+        "docs/python-dependency-lock.md",
+        "requirements-dev.lock",
+        "requirements-dev.txt",
+        "requirements-runtime.lock",
+        "requirements.txt",
+        "scripts/check_python_dependency_lock.py",
+        "src/scholar_agent/evaluation/python_dependency_lock.py",
+        "src/scholar_agent/evaluation/release_candidate_reproducibility.py"
+      ],
+      "kind": "python_dependency_lock_and_offline_install_qualification"
+    },
+    {
+      "component_id": "ranking_decision",
+      "files": [
+        "benchmark/ranking_decision_audit_v1_protocol.json",
+        "scripts/check_ranking_decisions.py",
+        "src/scholar_agent/evaluation/ranking_decision_audit.py"
+      ],
+      "kind": "audit_implementation"
+    },
+    {
+      "component_id": "ranking_runtime",
+      "files": [
+        "src/scholar_agent/agents/judgement.py",
+        "src/scholar_agent/agents/judgement_config.py",
+        "src/scholar_agent/agents/reranker.py",
+        "src/scholar_agent/evaluation/selection.py"
+      ],
+      "kind": "production_semantics"
+    },
+    {
+      "component_id": "readiness_publication",
+      "files": [
+        "docs/validation-readiness.md"
+      ],
+      "kind": "claim_boundary_documentation"
+    },
+    {
+      "component_id": "release_candidate_reproducibility",
+      "files": [
+        "benchmark/release_candidate_reproducibility_v1_contract.json",
+        "benchmark/release_candidate_reproducibility_v1_evidence/current.json",
+        "benchmark/release_candidate_reproducibility_v1_python_lock.json",
+        "benchmark/release_candidate_reproducibility_v1_spec.json",
+        "docs/release-candidate-reproducibility.md",
+        "frontend/package-lock.json",
+        "frontend/package.json",
+        "requirements.txt",
+        "scripts/check_release_candidate.py",
+        "scripts/freeze_release_candidate_contract.py",
+        "scripts/freeze_release_candidate_evidence.py",
+        "src/scholar_agent/evaluation/release_candidate_reproducibility.py"
+      ],
+      "kind": "release_build_and_dependency_closure"
+    },
+    {
+      "component_id": "source_fusion",
+      "files": [
+        "benchmark/source_fusion_ablation_v1_protocol.json",
+        "scripts/check_source_fusion_ablation.py",
+        "src/scholar_agent/evaluation/source_fusion_ablation.py"
+      ],
+      "kind": "audit_implementation"
+    },
+    {
+      "component_id": "source_reliability",
+      "files": [
+        "benchmark/source_reliability_diagnostics_v1_protocol.json",
+        "scripts/check_source_reliability.py",
+        "src/scholar_agent/evaluation/source_reliability_diagnostics.py"
+      ],
+      "kind": "audit_implementation"
+    },
+    {
+      "component_id": "source_runtime",
+      "files": [
+        "src/scholar_agent/connectors/arxiv.py",
+        "src/scholar_agent/connectors/openalex.py",
+        "src/scholar_agent/connectors/pubmed.py",
+        "src/scholar_agent/connectors/schemas.py",
+        "src/scholar_agent/connectors/semantic_scholar.py",
+        "src/scholar_agent/core/dedup.py",
+        "src/scholar_agent/core/identity.py",
+        "src/scholar_agent/core/paper_schemas.py",
+        "src/scholar_agent/services/search_service.py"
+      ],
+      "kind": "production_connectors_and_canonicalization"
+    },
+    {
+      "component_id": "standalone_auditor_bundle",
+      "files": [
+        "benchmark/standalone_auditor_bundle_v1_contract.json",
+        "benchmark/standalone_auditor_bundle_v1_evidence/readiness.json",
+        "docs/standalone-auditor-bundle.md",
+        "scripts/check_standalone_auditor_bundle.py"
+      ],
+      "kind": "standalone_external_audit_publication"
+    },
+    {
+      "component_id": "tiebreak",
+      "files": [
+        "benchmark/deterministic_tiebreak_qualification_v1_protocol.json",
+        "scripts/check_tiebreak_qualification.py",
+        "src/scholar_agent/evaluation/tiebreak_qualification.py"
+      ],
+      "kind": "audit_implementation"
+    },
+    {
+      "component_id": "top20_delivery",
+      "files": [
+        "benchmark/top20_delivery_contract_v1.json",
+        "frontend/src/components/scholar-navigator-app.tsx",
+        "frontend/src/lib/api.ts",
+        "frontend/src/lib/export.ts",
+        "frontend/src/lib/top20-delivery.ts",
+        "frontend/src/types/api.ts",
+        "scripts/check_top20_delivery_fidelity.py",
+        "src/scholar_agent/core/api_schemas.py",
+        "src/scholar_agent/evaluation/top20_delivery_fidelity.py",
+        "src/scholar_agent/services/api_mapper.py"
+      ],
+      "kind": "delivery_api_frontend_and_audit"
+    }
+  ],
+  "evidence_component_bindings": {
+    "completion_bias_aggregate": [
+      "completion_bias",
+      "identity_runtime"
+    ],
+    "completion_bias_manifest": [
+      "completion_bias",
+      "identity_runtime"
+    ],
+    "completion_bias_protocol": [
+      "completion_bias",
+      "identity_runtime"
+    ],
+    "constraint_decision_manifest": [
+      "constraint_decision",
+      "constraint_runtime",
+      "identity_runtime"
+    ],
+    "constraint_decision_protocol": [
+      "constraint_decision",
+      "constraint_runtime",
+      "identity_runtime"
+    ],
+    "evidence_registry_gate": [
+      "default_policy",
+      "evidence_registry"
+    ],
+    "evidence_revocation_ledger": [
+      "evidence_revocation"
+    ],
+    "evidence_revocation_protocol": [
+      "evidence_revocation"
+    ],
+    "evidence_revocation_simulation": [
+      "evidence_revocation"
+    ],
+    "external_scorer_protocol": [
+      "external_scorer",
+      "full1000_resume",
+      "top20_delivery"
+    ],
+    "external_scorer_readiness": [
+      "external_scorer",
+      "full1000_resume",
+      "top20_delivery"
+    ],
+    "external_scorer_synthetic_matrix": [
+      "external_scorer"
+    ],
+    "formal_evidence_quarantine_protocol": [
+      "formal_evidence_quarantine"
+    ],
+    "formal_evidence_quarantine_readiness": [
+      "formal_evidence_quarantine",
+      "human_precision",
+      "official_scorer_absence"
+    ],
+    "formal_preregistration_protocol": [
+      "formal_validation_preregistration"
+    ],
+    "formal_preregistration_readiness": [
+      "formal_validation_preregistration"
+    ],
+    "formal_preregistration_seal": [
+      "formal_validation_preregistration"
+    ],
+    "formal_preregistration_simulation": [
+      "formal_validation_preregistration"
+    ],
+    "formal_run_disaster_recovery_protocol": [
+      "formal_run_disaster_recovery",
+      "full1000_execution",
+      "full1000_launch_control",
+      "provider_ingest_provenance"
+    ],
+    "formal_run_disaster_recovery_readiness": [
+      "formal_run_disaster_recovery",
+      "full1000_execution",
+      "full1000_launch_control",
+      "provider_ingest_provenance"
+    ],
+    "formal_run_disaster_recovery_simulation": [
+      "formal_run_disaster_recovery",
+      "full1000_execution",
+      "full1000_launch_control",
+      "provider_ingest_provenance"
+    ],
+    "formal_validation_clearance_current": [
+      "formal_validation_clearance",
+      "full1000_execution",
+      "human_precision",
+      "official_scorer_absence"
+    ],
+    "formal_validation_clearance_protocol": [
+      "formal_validation_clearance"
+    ],
+    "frontend_reproducible_build_protocol": [
+      "frontend_reproducible_build"
+    ],
+    "frontend_reproducible_build_qualification": [
+      "frontend_reproducible_build"
+    ],
+    "frontend_reproducible_release_contract": [
+      "frontend_reproducible_build"
+    ],
+    "full1000_execution_dry_run": [
+      "full1000_execution"
+    ],
+    "full1000_execution_plan": [
+      "full1000_execution"
+    ],
+    "full1000_execution_preflight": [
+      "full1000_execution"
+    ],
+    "full1000_execution_protocol": [
+      "full1000_execution"
+    ],
+    "full1000_execution_verification": [
+      "full1000_execution"
+    ],
+    "full1000_launch_control_protocol": [
+      "full1000_execution",
+      "full1000_launch_control",
+      "provider_ingest_provenance"
+    ],
+    "full1000_launch_control_readiness": [
+      "full1000_execution",
+      "full1000_launch_control",
+      "provider_ingest_provenance"
+    ],
+    "full1000_launch_control_simulation": [
+      "full1000_execution",
+      "full1000_launch_control",
+      "provider_ingest_provenance"
+    ],
+    "full1000_resume_summary": [
+      "full1000_resume"
+    ],
+    "human_annotation_delivery_dry_run": [
+      "human_annotation",
+      "human_precision"
+    ],
+    "human_annotation_delivery_protocol": [
+      "human_annotation",
+      "human_precision"
+    ],
+    "human_annotation_delivery_readiness": [
+      "human_annotation",
+      "human_precision"
+    ],
+    "human_precision_pending": [
+      "human_precision",
+      "identity_runtime",
+      "ranking_runtime"
+    ],
+    "official_scorer_blocked": [
+      "official_scorer_absence"
+    ],
+    "offline_wheelhouse_install_test": [
+      "offline_wheelhouse_intake"
+    ],
+    "offline_wheelhouse_manifest": [
+      "offline_wheelhouse_intake"
+    ],
+    "offline_wheelhouse_protocol": [
+      "offline_wheelhouse_intake"
+    ],
+    "offline_wheelhouse_release_review": [
+      "offline_wheelhouse_intake",
+      "python_dependency_lock",
+      "release_candidate_reproducibility"
+    ],
+    "offline_wheelhouse_synthetic": [
+      "offline_wheelhouse_intake"
+    ],
+    "offline_wheelhouse_verification": [
+      "offline_wheelhouse_intake"
+    ],
+    "provider_ingest_capture_addendum": [
+      "full1000_execution",
+      "provider_ingest_provenance"
+    ],
+    "provider_ingest_fixture_matrix": [
+      "provider_ingest_provenance",
+      "source_runtime"
+    ],
+    "provider_ingest_frozen_audit": [
+      "provider_ingest_provenance"
+    ],
+    "provider_ingest_protocol": [
+      "provider_ingest_provenance"
+    ],
+    "public_contract_baseline": [
+      "public_contract_compatibility"
+    ],
+    "public_contract_current": [
+      "public_contract_compatibility"
+    ],
+    "public_contract_protocol": [
+      "public_contract_compatibility"
+    ],
+    "python_dependency_lock_manifest": [
+      "python_dependency_lock"
+    ],
+    "python_dependency_lock_offline_install": [
+      "python_dependency_lock"
+    ],
+    "python_dependency_lock_protocol": [
+      "python_dependency_lock"
+    ],
+    "python_dependency_lock_release_review": [
+      "frontend_reproducible_build",
+      "python_dependency_lock",
+      "release_candidate_reproducibility"
+    ],
+    "python_dependency_lock_verification": [
+      "python_dependency_lock"
+    ],
+    "ranking_decision_manifest": [
+      "identity_runtime",
+      "ranking_decision",
+      "ranking_runtime"
+    ],
+    "ranking_decision_protocol": [
+      "identity_runtime",
+      "ranking_decision",
+      "ranking_runtime"
+    ],
+    "release_candidate_contract": [
+      "release_candidate_reproducibility"
+    ],
+    "release_candidate_python_lock": [
+      "release_candidate_reproducibility"
+    ],
+    "release_candidate_reproducibility": [
+      "release_candidate_reproducibility"
+    ],
+    "source_fusion_aggregate": [
+      "identity_runtime",
+      "ranking_runtime",
+      "source_fusion",
+      "source_runtime"
+    ],
+    "source_fusion_manifest": [
+      "identity_runtime",
+      "ranking_runtime",
+      "source_fusion",
+      "source_runtime"
+    ],
+    "source_fusion_protocol": [
+      "identity_runtime",
+      "ranking_runtime",
+      "source_fusion",
+      "source_runtime"
+    ],
+    "source_reliability_aggregate": [
+      "identity_runtime",
+      "ranking_runtime",
+      "source_reliability",
+      "source_runtime"
+    ],
+    "source_reliability_manifest": [
+      "identity_runtime",
+      "ranking_runtime",
+      "source_reliability",
+      "source_runtime"
+    ],
+    "source_reliability_protocol": [
+      "identity_runtime",
+      "ranking_runtime",
+      "source_reliability",
+      "source_runtime"
+    ],
+    "standalone_auditor_bundle_contract": [
+      "standalone_auditor_bundle"
+    ],
+    "standalone_auditor_bundle_readiness": [
+      "standalone_auditor_bundle"
+    ],
+    "tiebreak_aggregate": [
+      "identity_runtime",
+      "ranking_runtime",
+      "tiebreak"
+    ],
+    "tiebreak_manifest": [
+      "identity_runtime",
+      "ranking_runtime",
+      "tiebreak"
+    ],
+    "tiebreak_protocol": [
+      "identity_runtime",
+      "ranking_runtime",
+      "tiebreak"
+    ],
+    "top20_delivery_aggregate": [
+      "identity_runtime",
+      "ranking_runtime",
+      "top20_delivery"
+    ],
+    "top20_delivery_contract": [
+      "identity_runtime",
+      "ranking_runtime",
+      "top20_delivery"
+    ],
+    "top20_delivery_manifest": [
+      "identity_runtime",
+      "ranking_runtime",
+      "top20_delivery"
+    ]
+  },
+  "exemptions": [
+    {
+      "justification": "Tests cannot change production or tracked evidence semantics without a registered runtime dependency change.",
+      "kind": "test_only",
+      "path_prefix": "tests/"
+    }
+  ],
+  "gate_component_bindings": {
+    "completion_bias": [
+      "completion_bias",
+      "identity_runtime"
+    ],
+    "constraint_decisions": [
+      "constraint_decision",
+      "constraint_runtime",
+      "identity_runtime"
+    ],
+    "evidence_registry": [
+      "default_policy",
+      "evidence_registry"
+    ],
+    "evidence_revocation": [
+      "evidence_revocation"
+    ],
+    "external_scorer_handoff": [
+      "external_scorer",
+      "full1000_resume",
+      "top20_delivery"
+    ],
+    "formal_evidence_quarantine": [
+      "formal_evidence_quarantine",
+      "human_precision",
+      "official_scorer_absence"
+    ],
+    "formal_run_disaster_recovery": [
+      "formal_run_disaster_recovery",
+      "full1000_execution",
+      "full1000_launch_control",
+      "provider_ingest_provenance"
+    ],
+    "formal_validation_clearance": [
+      "formal_validation_clearance",
+      "full1000_execution",
+      "human_precision",
+      "official_scorer_absence"
+    ],
+    "formal_validation_preregistration": [
+      "formal_validation_preregistration"
+    ],
+    "full1000_execution_readiness": [
+      "full1000_execution"
+    ],
+    "full1000_launch_control": [
+      "full1000_execution",
+      "full1000_launch_control",
+      "provider_ingest_provenance"
+    ],
+    "human_annotation_delivery": [
+      "human_annotation",
+      "human_precision"
+    ],
+    "offline_wheelhouse_intake": [
+      "offline_wheelhouse_intake"
+    ],
+    "provider_ingest_provenance": [
+      "full1000_execution",
+      "provider_ingest_provenance",
+      "source_runtime"
+    ],
+    "public_contract_compatibility": [
+      "public_contract_compatibility"
+    ],
+    "python_dependency_lock": [
+      "python_dependency_lock",
+      "release_candidate_reproducibility"
+    ],
+    "ranking_decisions": [
+      "identity_runtime",
+      "ranking_decision",
+      "ranking_runtime"
+    ],
+    "release_candidate_reproducibility": [
+      "frontend_reproducible_build"
+    ],
+    "source_fusion": [
+      "identity_runtime",
+      "ranking_runtime",
+      "source_fusion",
+      "source_runtime"
+    ],
+    "source_reliability": [
+      "identity_runtime",
+      "ranking_runtime",
+      "source_reliability",
+      "source_runtime"
+    ],
+    "standalone_auditor_bundle": [
+      "standalone_auditor_bundle"
+    ],
+    "tiebreak_qualification": [
+      "identity_runtime",
+      "ranking_runtime",
+      "tiebreak"
+    ],
+    "top20_delivery_fidelity": [
+      "identity_runtime",
+      "ranking_runtime",
+      "top20_delivery"
+    ]
+  },
+  "protocol": "validation_evidence_freshness_v1_spec",
+  "readiness_contract_path": "benchmark/validation_readiness_bundle_v1_contract.json",
+  "schema_version": "1",
+  "self_exclusions": {
+    "claims": [
+      "architecture_validation_evidence_freshness"
+    ],
+    "evidence": [
+      "validation_freshness_current",
+      "validation_freshness_protocol",
+      "validation_freshness_synthetic_impact"
+    ],
+    "gates": [
+      "validation_evidence_freshness"
+    ]
+  }
+}

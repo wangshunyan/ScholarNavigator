@@ -1,0 +1,67 @@
+{
+  "bindings": {
+    "execution_plan": {
+      "embedded_plan_sha256": "a75019fa8a4ed7ad66ffe316793ffd6330613316623b78e35f973260e63cb716",
+      "path": "benchmark/full1000_execution_plan_v1.json",
+      "sha256": "4d13c148fe6d49b37073a1c27a0e474043572c5b771ba5b6656e687e8547f613"
+    },
+    "host_attestation": {
+      "path": "benchmark/formal_execution_host_attestation_v1_protocol.json",
+      "sha256": "095bbe731aa461dfa1999080cb916757ecce8f737c19e823aa1173b8663a7681"
+    },
+    "launch_control": {
+      "path": "benchmark/full1000_launch_control_v1_protocol.json",
+      "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+    },
+    "multivolume_addendum": {
+      "path": "benchmark/full1000_multivolume_storage_addendum_v1.json",
+      "sha256": "5327c51e3d417072140db045f56d5661bb15f3c74d5b39258e7ebe354041db65"
+    },
+    "multivolume_storage": {
+      "path": "benchmark/formal_multivolume_storage_v1_protocol.json",
+      "sha256": "ae6ecc5691ce9cde6a0780c4c4276067e1cefb3154ffe3ff3cefac1c54e87e5c"
+    },
+    "storage_governance": {
+      "path": "benchmark/formal_run_storage_governance_v1_protocol.json",
+      "sha256": "bb78967820aba3c223c0638adbda9b0779cc7cecffcb718fa22a06f352c9d5c1"
+    }
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "kit": {
+    "archive_compression": "stored",
+    "fixed_zip_timestamp": [
+      2024,
+      1,
+      1,
+      0,
+      0,
+      0
+    ],
+    "network_request_count": 0,
+    "project_dependency_count": 0,
+    "python_invocation": "python -I -S"
+  },
+  "population": {
+    "queries_per_shard": 50,
+    "query_count": 1000,
+    "shard_count": 20
+  },
+  "protocol": "portable_execution_site_attestation_v1",
+  "protocol_sha256": "c956ee6d8bf71008a885a081438106e36cfce5af23e71f1779203b9982610426",
+  "schema_version": "1",
+  "site_contract": {
+    "backup_volume_count": 2,
+    "challenge_max_age_seconds": 86400,
+    "fault_domain_requirement": "primary_and_assigned_backup_must_differ",
+    "primary_volume_count": 2,
+    "quota_unknown_policy": "fail_closed"
+  },
+  "source_commit": "b492e660e97fc45a463972a06107eea3101575df"
+}

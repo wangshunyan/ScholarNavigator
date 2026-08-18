@@ -1,0 +1,54 @@
+{
+  "build_profile_count": 2,
+  "dependency_violations": [
+    "python_offline_install_not_qualified",
+    "python_offline_wheelhouse_not_qualified"
+  ],
+  "differing_artifact_paths": [],
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 2,
+  "formal_validation_complete": false,
+  "limitation": null,
+  "protocol": "release_candidate_reproducibility_v1",
+  "qualification": "not_qualified",
+  "reproducible_artifact_count": 4,
+  "reproducible_artifacts": [
+    {
+      "path": "frontend-static.tar.gz",
+      "sha256": "ead692118e4bf069ce39fa4f90b011fc5665b4d2b40232ed5070ae6c18eeb133",
+      "size": 1071307
+    },
+    {
+      "path": "sbom.json",
+      "sha256": "aae148f3a9fcfc01c63033f12eda0831a6b806f52fe0ad3a8406468d5287f86d",
+      "size": 219530
+    },
+    {
+      "path": "source.tar.gz",
+      "sha256": "9d2a35784d2c85cada642ede148d1b75008b292e696371fd6286e53b70387385",
+      "size": 6663735
+    },
+    {
+      "path": "spar_scholar_agent-0.1.0-py3-none-any.whl",
+      "sha256": "ae48d59d0d0b78358ea3f9f15cb6a76b43e0972fdfde3a6a3191a46009859c81",
+      "size": 769504
+    }
+  ],
+  "sbom_summary": {
+    "development_dependency_files_in_runtime_package": 0,
+    "node_package_count": 434,
+    "node_unknown_license_count": 0,
+    "python_package_count": 16,
+    "python_unknown_license_count": 3,
+    "python_unpinned_declaration_count": 0
+  },
+  "schema_version": "1",
+  "source_commit": "d6d37eb1f0d9a7cff1e41fce69d1b6b4d9175548",
+  "status": "build_or_supply_chain_violation"
+}

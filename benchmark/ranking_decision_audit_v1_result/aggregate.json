@@ -1,0 +1,2147 @@
+{
+  "analysis": "ranking_decision_audit_v1",
+  "arxiv_and_openalex_deep_dive": {
+    "arxiv": {
+      "candidate_identity_attribution_count": 2561,
+      "category_counts": {
+        "highly_relevant": 5,
+        "irrelevant": 993,
+        "partially_relevant": 843,
+        "weakly_relevant": 720
+      },
+      "category_gate_passed_count": 848,
+      "category_reason_counts": {
+        "constraint_guard_applied": 2,
+        "score_threshold:highly_relevant": 5,
+        "score_threshold:irrelevant": 992,
+        "score_threshold:partially_relevant": 843,
+        "score_threshold:weakly_relevant": 719
+      },
+      "failed_constraint_dimension_count": 807,
+      "failed_constraint_dimension_counts": {
+        "datasets": 60,
+        "methods": 442,
+        "must_include_terms": 303,
+        "time_range": 2
+      },
+      "final_returned_attribution_count": 623,
+      "judgement_component_distributions": {
+        "clamp_adjustment": {
+          "count": 2561,
+          "maximum": 0.06,
+          "mean": 0.0037212,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "constraint_coverage_adjustment": {
+          "count": 2561,
+          "maximum": 0.04,
+          "mean": -0.05634518,
+          "median": -0.06,
+          "minimum": -0.236162,
+          "q1": -0.06,
+          "q3": -0.06
+        },
+        "dataset_match": {
+          "count": 2561,
+          "maximum": 0.07,
+          "mean": 0.00278797,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "domain_match": {
+          "count": 2561,
+          "maximum": 0.12,
+          "mean": 0.01495705,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.025
+        },
+        "hard_constraint_adjustment": {
+          "count": 2561,
+          "maximum": 5e-05,
+          "mean": 3.2e-07,
+          "median": 0.0,
+          "minimum": -5e-05,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "method_match": {
+          "count": 2561,
+          "maximum": 0.08,
+          "mean": 0.00548223,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "missing_abstract_penalty": {
+          "count": 2561,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "missing_metadata_penalty": {
+          "count": 2561,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "must_have_match": {
+          "count": 2561,
+          "maximum": 0.24,
+          "mean": 0.13642327,
+          "median": 0.135,
+          "minimum": 0.0,
+          "q1": 0.09,
+          "q3": 0.225
+        },
+        "paper_type_match": {
+          "count": 2561,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "paper_type_mismatch_penalty": {
+          "count": 2561,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "temporal_match": {
+          "count": 2561,
+          "maximum": 0.08,
+          "mean": 0.00068723,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "temporal_mismatch_penalty": {
+          "count": 2561,
+          "maximum": -0.0,
+          "mean": -8.981e-05,
+          "median": -0.0,
+          "minimum": -0.15,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "topic_match": {
+          "count": 2561,
+          "maximum": 0.45,
+          "mean": 0.21958219,
+          "median": 0.18,
+          "minimum": 0.0,
+          "q1": 0.12,
+          "q3": 0.3
+        },
+        "venue_match": {
+          "count": 2561,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "venue_mismatch_penalty": {
+          "count": 2561,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        }
+      },
+      "judgement_score_distribution": {
+        "count": 2561,
+        "maximum": 0.755,
+        "mean": 0.32720648,
+        "median": 0.315,
+        "minimum": 0.0,
+        "q1": 0.15,
+        "q3": 0.525
+      },
+      "position_delta_distribution": {
+        "count": 2561,
+        "maximum": 74.0,
+        "mean": -6.07575166,
+        "median": -4.0,
+        "minimum": -117.0,
+        "q1": -19.0,
+        "q3": 8.0
+      },
+      "rerank_component_contribution_distributions": {
+        "authority": {
+          "count": 2561,
+          "maximum": 0.1050088,
+          "mean": 0.01508975,
+          "median": 0.0164164,
+          "minimum": 0.005544,
+          "q1": 0.010413,
+          "q3": 0.0184184
+        },
+        "metadata": {
+          "count": 2561,
+          "maximum": 0.047,
+          "mean": 0.0315205,
+          "median": 0.03608,
+          "minimum": 0.0198,
+          "q1": 0.020475,
+          "q3": 0.04048
+        },
+        "relevance": {
+          "count": 2561,
+          "maximum": 0.5436,
+          "mean": 0.19574434,
+          "median": 0.185976,
+          "minimum": 0.0,
+          "q1": 0.0486,
+          "q3": 0.34776
+        },
+        "timeliness": {
+          "count": 2561,
+          "maximum": 0.18216,
+          "mean": 0.04466658,
+          "median": 0.0412515,
+          "minimum": 0.0,
+          "q1": 0.0262485,
+          "q3": 0.0683306
+        }
+      },
+      "rerank_final_score_distribution": {
+        "count": 2561,
+        "maximum": 0.6826,
+        "mean": 0.28701941,
+        "median": 0.2872,
+        "minimum": 0.0253,
+        "q1": 0.1009,
+        "q3": 0.4629
+      },
+      "top20_reason_counts": {
+        "beyond_top20_cutline": 225,
+        "category_gate": 517,
+        "category_gate_and_beyond_top20": 1196,
+        "returned": 623
+      },
+      "within_top20_rank_window_count": 1140
+    },
+    "openalex": {
+      "candidate_identity_attribution_count": 20,
+      "category_counts": {
+        "irrelevant": 19,
+        "weakly_relevant": 1
+      },
+      "category_gate_passed_count": 0,
+      "category_reason_counts": {
+        "score_threshold:irrelevant": 19,
+        "score_threshold:weakly_relevant": 1
+      },
+      "failed_constraint_dimension_count": 8,
+      "failed_constraint_dimension_counts": {
+        "must_include_terms": 8
+      },
+      "final_returned_attribution_count": 0,
+      "judgement_component_distributions": {
+        "clamp_adjustment": {
+          "count": 20,
+          "maximum": 0.06,
+          "mean": 0.013,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.01625
+        },
+        "constraint_coverage_adjustment": {
+          "count": 20,
+          "maximum": -0.06,
+          "mean": -0.06,
+          "median": -0.06,
+          "minimum": -0.06,
+          "q1": -0.06,
+          "q3": -0.06
+        },
+        "dataset_match": {
+          "count": 20,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "domain_match": {
+          "count": 20,
+          "maximum": 0.05,
+          "mean": 0.01625,
+          "median": 0.025,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.025
+        },
+        "hard_constraint_adjustment": {
+          "count": 20,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "method_match": {
+          "count": 20,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "missing_abstract_penalty": {
+          "count": 20,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "missing_metadata_penalty": {
+          "count": 20,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "must_have_match": {
+          "count": 20,
+          "maximum": 0.135,
+          "mean": 0.036,
+          "median": 0.045,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.045
+        },
+        "paper_type_match": {
+          "count": 20,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "paper_type_mismatch_penalty": {
+          "count": 20,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "temporal_match": {
+          "count": 20,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "temporal_mismatch_penalty": {
+          "count": 20,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "topic_match": {
+          "count": 20,
+          "maximum": 0.18,
+          "mean": 0.057,
+          "median": 0.06,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.06
+        },
+        "venue_match": {
+          "count": 20,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "venue_mismatch_penalty": {
+          "count": 20,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        }
+      },
+      "judgement_score_distribution": {
+        "count": 20,
+        "maximum": 0.28,
+        "mean": 0.06225,
+        "median": 0.045,
+        "minimum": 0.0,
+        "q1": 0.0,
+        "q3": 0.07625
+      },
+      "position_delta_distribution": {
+        "count": 20,
+        "maximum": 10.0,
+        "mean": -12.75,
+        "median": -12.5,
+        "minimum": -49.0,
+        "q1": -20.25,
+        "q3": -3.75
+      },
+      "rerank_component_contribution_distributions": {
+        "authority": {
+          "count": 20,
+          "maximum": 0.0908232,
+          "mean": 0.04507084,
+          "median": 0.04599855,
+          "minimum": 0.026559,
+          "q1": 0.0426348,
+          "q3": 0.048438
+        },
+        "metadata": {
+          "count": 20,
+          "maximum": 0.03854,
+          "mean": 0.02074825,
+          "median": 0.020475,
+          "minimum": 0.01485,
+          "q1": 0.020475,
+          "q3": 0.020475
+        },
+        "relevance": {
+          "count": 20,
+          "maximum": 0.165312,
+          "mean": 0.0238986,
+          "median": 0.01458,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.024705
+        },
+        "timeliness": {
+          "count": 20,
+          "maximum": 0.03375,
+          "mean": 0.02611653,
+          "median": 0.02678955,
+          "minimum": 0.0037485,
+          "q1": 0.02531138,
+          "q3": 0.0300015
+        }
+      },
+      "rerank_final_score_distribution": {
+        "count": 20,
+        "maximum": 0.322,
+        "mean": 0.115835,
+        "median": 0.10345,
+        "minimum": 0.0699,
+        "q1": 0.095475,
+        "q3": 0.112475
+      },
+      "top20_reason_counts": {
+        "category_gate": 8,
+        "category_gate_and_beyond_top20": 12
+      },
+      "within_top20_rank_window_count": 8
+    }
+  },
+  "category_counts": {
+    "highly_relevant": 12,
+    "insufficient_evidence": 0,
+    "irrelevant": 1527,
+    "partially_relevant": 1872,
+    "weakly_relevant": 1188
+  },
+  "closure": {
+    "candidate_decision_count": 4599,
+    "component_count": 134,
+    "excluded_no_successful_source_count": 2,
+    "included_main_case_count": 160,
+    "observed_snapshot_key_count": 1093,
+    "reconstruction_exact_case_count": 160,
+    "record_case_count": 162
+  },
+  "component_contribution_distributions": {
+    "clamp_adjustment": {
+      "count": 4599,
+      "maximum": 0.21,
+      "mean": 0.00394434,
+      "median": 0.0,
+      "minimum": 0.0,
+      "q1": 0.0,
+      "q3": 0.0
+    },
+    "constraint_coverage_adjustment": {
+      "count": 4599,
+      "maximum": 0.04,
+      "mean": -0.05590629,
+      "median": -0.06,
+      "minimum": -0.236162,
+      "q1": -0.06,
+      "q3": -0.06
+    },
+    "dataset_match": {
+      "count": 4599,
+      "maximum": 0.07,
+      "mean": 0.0024277,
+      "median": 0.0,
+      "minimum": 0.0,
+      "q1": 0.0,
+      "q3": 0.0
+    },
+    "domain_match": {
+      "count": 4599,
+      "maximum": 0.12,
+      "mean": 0.01714394,
+      "median": 0.0,
+      "minimum": 0.0,
+      "q1": 0.0,
+      "q3": 0.025
+    },
+    "hard_constraint_adjustment": {
+      "count": 4599,
+      "maximum": 5e-05,
+      "mean": 2.6e-07,
+      "median": 0.0,
+      "minimum": -5e-05,
+      "q1": 0.0,
+      "q3": 0.0
+    },
+    "method_match": {
+      "count": 4599,
+      "maximum": 0.08,
+      "mean": 0.00590563,
+      "median": 0.0,
+      "minimum": 0.0,
+      "q1": 0.0,
+      "q3": 0.0
+    },
+    "missing_abstract_penalty": {
+      "count": 4599,
+      "maximum": 0.0,
+      "mean": 0.0,
+      "median": 0.0,
+      "minimum": 0.0,
+      "q1": 0.0,
+      "q3": 0.0
+    },
+    "missing_metadata_penalty": {
+      "count": 4599,
+      "maximum": -0.0,
+      "mean": 0.0,
+      "median": -0.0,
+      "minimum": -0.0,
+      "q1": -0.0,
+      "q3": -0.0
+    },
+    "must_have_match": {
+      "count": 4599,
+      "maximum": 0.24,
+      "mean": 0.14869537,
+      "median": 0.18,
+      "minimum": 0.0,
+      "q1": 0.09,
+      "q3": 0.24
+    },
+    "paper_type_match": {
+      "count": 4599,
+      "maximum": 0.0,
+      "mean": 0.0,
+      "median": 0.0,
+      "minimum": 0.0,
+      "q1": 0.0,
+      "q3": 0.0
+    },
+    "paper_type_mismatch_penalty": {
+      "count": 4599,
+      "maximum": -0.0,
+      "mean": 0.0,
+      "median": -0.0,
+      "minimum": -0.0,
+      "q1": -0.0,
+      "q3": -0.0
+    },
+    "temporal_match": {
+      "count": 4599,
+      "maximum": 0.08,
+      "mean": 0.00046967,
+      "median": 0.0,
+      "minimum": 0.0,
+      "q1": 0.0,
+      "q3": 0.0
+    },
+    "temporal_mismatch_penalty": {
+      "count": 4599,
+      "maximum": -0.0,
+      "mean": -0.00018265,
+      "median": -0.0,
+      "minimum": -0.15,
+      "q1": -0.0,
+      "q3": -0.0
+    },
+    "topic_match": {
+      "count": 4599,
+      "maximum": 0.45,
+      "mean": 0.23920417,
+      "median": 0.24,
+      "minimum": 0.0,
+      "q1": 0.12,
+      "q3": 0.36
+    },
+    "venue_match": {
+      "count": 4599,
+      "maximum": 0.0,
+      "mean": 0.0,
+      "median": 0.0,
+      "minimum": 0.0,
+      "q1": 0.0,
+      "q3": 0.0
+    },
+    "venue_mismatch_penalty": {
+      "count": 4599,
+      "maximum": -0.0,
+      "mean": 0.0,
+      "median": -0.0,
+      "minimum": -0.0,
+      "q1": -0.0,
+      "q3": -0.0
+    }
+  },
+  "execution": {
+    "full1000_inference_performed": false,
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "field_missing_state_counts": {
+    "abstract:empty": 325,
+    "abstract:missing": 0,
+    "abstract:null": 0,
+    "authors:empty": 18,
+    "authors:missing": 0,
+    "authors:null": 0,
+    "citation_count:empty": 0,
+    "citation_count:missing": 0,
+    "citation_count:null": 0,
+    "identifiers.arxiv_id:empty": 0,
+    "identifiers.arxiv_id:missing": 0,
+    "identifiers.arxiv_id:null": 2319,
+    "identifiers.doi:empty": 0,
+    "identifiers.doi:missing": 0,
+    "identifiers.doi:null": 3151,
+    "identifiers.openalex_id:empty": 0,
+    "identifiers.openalex_id:missing": 0,
+    "identifiers.openalex_id:null": 6651,
+    "identifiers.pubmed_id:empty": 0,
+    "identifiers.pubmed_id:missing": 0,
+    "identifiers.pubmed_id:null": 5224,
+    "identifiers.s2orc_corpus_id:empty": 0,
+    "identifiers.s2orc_corpus_id:missing": 0,
+    "identifiers.s2orc_corpus_id:null": 5232,
+    "identifiers.semantic_scholar_id:empty": 0,
+    "identifiers.semantic_scholar_id:missing": 0,
+    "identifiers.semantic_scholar_id:null": 5232,
+    "sources:empty": 0,
+    "sources:missing": 0,
+    "sources:null": 0,
+    "title:empty": 0,
+    "title:missing": 0,
+    "title:null": 0,
+    "urls.landing_page:empty": 0,
+    "urls.landing_page:missing": 0,
+    "urls.landing_page:null": 0,
+    "urls.pdf:empty": 0,
+    "urls.pdf:missing": 0,
+    "urls.pdf:null": 2735,
+    "venue:empty": 0,
+    "venue:missing": 0,
+    "venue:null": 245,
+    "year:empty": 0,
+    "year:missing": 0,
+    "year:null": 13
+  },
+  "implementation_base_commit": "1dedb9a787a520864fc56c91a4e998658c956139",
+  "implementation_sha256": "bf9d29253b17ac54497917e7a6b274d27f948939aa4636a94731d91bcdb50a63",
+  "inputs": {
+    "component_assignments_sha256": "3753be7ba0a803179917bed5d8de67a0e0a7dcff58680afc377f9dd0e6288ad5",
+    "config_sha256": "91e5fb5247368ea269d666783111578e134d659074293bd3a4ae31e092dce170",
+    "record_results_sha256": "97ca29e9a1a439277d3934b1f4f2c1428fdaafefa4d8429a3366f4c9bf19f76a",
+    "snapshot_tree_sha256": "1764f870c85771989fcc3d3a3dba1a261df85917da3632a4046b1ce8dea0d3d5"
+  },
+  "interpretation": {
+    "precision_recall_f1_or_official_score": false,
+    "relevance_claim_permitted": false,
+    "scope": "production_ranking_decision_explanation_only",
+    "warnings": [
+      "This audit explains existing score, category, rerank, and Top-20 decisions only; it does not establish relevance, Precision, Recall, F1, or an official score.",
+      "A high score, category, source count, or Top-20 position is not a human relevance judgement.",
+      "Boundary probes validate implementation semantics only and must not be used to tune thresholds, weights, or ranking rules."
+    ]
+  },
+  "low_category_without_failed_dimensions": {
+    "candidate_count": 1650,
+    "category_counts": {
+      "irrelevant": 767,
+      "weakly_relevant": 883
+    },
+    "component_distributions": {
+      "clamp_adjustment": {
+        "count": 1650,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "constraint_coverage_adjustment": {
+        "count": 1650,
+        "maximum": 0.0,
+        "mean": -0.04516364,
+        "median": -0.06,
+        "minimum": -0.06,
+        "q1": -0.06,
+        "q3": -0.06
+      },
+      "dataset_match": {
+        "count": 1650,
+        "maximum": 0.07,
+        "mean": 0.00356364,
+        "median": 0.0,
+        "minimum": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "domain_match": {
+        "count": 1650,
+        "maximum": 0.12,
+        "mean": 0.01429091,
+        "median": 0.0,
+        "minimum": 0.0,
+        "q1": 0.0,
+        "q3": 0.025
+      },
+      "hard_constraint_adjustment": {
+        "count": 1650,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "method_match": {
+        "count": 1650,
+        "maximum": 0.08,
+        "mean": 0.00327273,
+        "median": 0.0,
+        "minimum": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "missing_abstract_penalty": {
+        "count": 1650,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "missing_metadata_penalty": {
+        "count": 1650,
+        "maximum": -0.0,
+        "mean": 0.0,
+        "median": -0.0,
+        "minimum": -0.0,
+        "q1": -0.0,
+        "q3": -0.0
+      },
+      "must_have_match": {
+        "count": 1650,
+        "maximum": 0.18,
+        "mean": 0.11108182,
+        "median": 0.09,
+        "minimum": 0.045,
+        "q1": 0.09,
+        "q3": 0.135
+      },
+      "paper_type_match": {
+        "count": 1650,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "paper_type_mismatch_penalty": {
+        "count": 1650,
+        "maximum": -0.0,
+        "mean": 0.0,
+        "median": -0.0,
+        "minimum": -0.0,
+        "q1": -0.0,
+        "q3": -0.0
+      },
+      "temporal_match": {
+        "count": 1650,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "temporal_mismatch_penalty": {
+        "count": 1650,
+        "maximum": -0.0,
+        "mean": 0.0,
+        "median": -0.0,
+        "minimum": -0.0,
+        "q1": -0.0,
+        "q3": -0.0
+      },
+      "topic_match": {
+        "count": 1650,
+        "maximum": 0.3,
+        "mean": 0.1676,
+        "median": 0.18,
+        "minimum": 0.06,
+        "q1": 0.12,
+        "q3": 0.24
+      },
+      "venue_match": {
+        "count": 1650,
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "venue_mismatch_penalty": {
+        "count": 1650,
+        "maximum": -0.0,
+        "mean": 0.0,
+        "median": -0.0,
+        "minimum": -0.0,
+        "q1": -0.0,
+        "q3": -0.0
+      }
+    },
+    "score_distribution": {
+      "count": 1650,
+      "maximum": 0.445,
+      "mean": 0.25464545,
+      "median": 0.255,
+      "minimum": 0.045,
+      "q1": 0.15,
+      "q3": 0.36
+    }
+  },
+  "production_catalog": {
+    "judgement": {
+      "component_decimals": 6,
+      "component_order": [
+        "topic_match",
+        "must_have_match",
+        "method_match",
+        "dataset_match",
+        "paper_type_match",
+        "domain_match",
+        "venue_match",
+        "temporal_match",
+        "venue_mismatch_penalty",
+        "temporal_mismatch_penalty",
+        "paper_type_mismatch_penalty",
+        "missing_abstract_penalty",
+        "missing_metadata_penalty",
+        "constraint_coverage_adjustment",
+        "clamp_adjustment",
+        "hard_constraint_adjustment"
+      ],
+      "config_hash": "d7ee56b5fbf8bcd47f6eca8df343d4f4bb01de2c3bdc04d6a590796f364426b9",
+      "config_version": "current-rules-v1",
+      "finite_only": true,
+      "score_decimals": 4,
+      "special_category_reasons": [
+        "missing_title_and_abstract",
+        "minimum_evidence_count_not_met",
+        "excluded_term_hard_constraint",
+        "constraint_guard_applied"
+      ],
+      "threshold_comparison": "greater_than_or_equal",
+      "thresholds": {
+        "highly_relevant": 0.72,
+        "partially_relevant": 0.45,
+        "weakly_relevant": 0.25
+      },
+      "version": "current-rules-judgement-decision-v1"
+    },
+    "rerank": {
+      "category_multipliers": {
+        "highly_relevant": 1.0,
+        "insufficient_evidence": 0.25,
+        "irrelevant": 0.45,
+        "partially_relevant": 0.92,
+        "weakly_relevant": 0.82
+      },
+      "category_tiers": {
+        "highly_relevant": 0,
+        "insufficient_evidence": 4,
+        "irrelevant": 3,
+        "partially_relevant": 1,
+        "weakly_relevant": 2
+      },
+      "component_decimals": 4,
+      "final_score_decimals": 4,
+      "missing_values": {
+        "citation_count": "max(value, 0)",
+        "title": "Paper schema requires a string; casefold is exact",
+        "year": "zero"
+      },
+      "score_components": [
+        "relevance_score",
+        "authority_score",
+        "timeliness_score",
+        "metadata_score",
+        "category_multiplier",
+        "final_score",
+        "relevance_weight",
+        "authority_weight",
+        "timeliness_weight",
+        "metadata_weight"
+      ],
+      "sort_key": [
+        {
+          "direction": "ascending",
+          "field": "category_tier"
+        },
+        {
+          "direction": "descending",
+          "field": "final_score"
+        },
+        {
+          "direction": "descending",
+          "field": "relevance_score"
+        },
+        {
+          "direction": "descending",
+          "field": "nonnegative_citation_count"
+        },
+        {
+          "direction": "descending",
+          "field": "year_or_zero"
+        },
+        {
+          "direction": "ascending",
+          "field": "title_casefold"
+        },
+        {
+          "direction": "ascending",
+          "field": "original_index"
+        }
+      ],
+      "version": "current-rules-rerank-decision-v1"
+    },
+    "top20": {
+      "allowed_categories": [
+        "highly_relevant",
+        "partially_relevant"
+      ],
+      "operation_order": "rerank_all_then_take_first_20_then_apply_category_gate",
+      "top_k": 20
+    }
+  },
+  "protocol_sha256": "5a38bb255c8d56d172b323ffd8ab71275ed7d7273bece05654d932dbcb93052b",
+  "ranking": {
+    "cross_category_overtake_count": 35142,
+    "demoted_count": 2265,
+    "input_order_sensitive_tie_group_count": 1,
+    "maximum_tie_group_size": 2,
+    "position_delta": {
+      "count": 4599,
+      "maximum": 124.0,
+      "mean": 0.0,
+      "median": 0.0,
+      "minimum": -117.0,
+      "q1": -14.0,
+      "q3": 15.0
+    },
+    "promoted_count": 2224,
+    "tie_group_count": 1,
+    "tied_candidate_count": 2,
+    "unchanged_count": 110
+  },
+  "rerank_component_contribution_distributions": {
+    "authority": {
+      "count": 4599,
+      "maximum": 0.1050088,
+      "mean": 0.0207753,
+      "median": 0.0184184,
+      "minimum": 0.004329,
+      "q1": 0.010413,
+      "q3": 0.0212888
+    },
+    "metadata": {
+      "count": 4599,
+      "maximum": 0.047,
+      "mean": 0.03266656,
+      "median": 0.03731,
+      "minimum": 0.007425,
+      "q1": 0.020475,
+      "q3": 0.04186
+    },
+    "relevance": {
+      "count": 4599,
+      "maximum": 0.5508,
+      "mean": 0.22152077,
+      "median": 0.212544,
+      "minimum": 0.0,
+      "q1": 0.0567,
+      "q3": 0.3726
+    },
+    "timeliness": {
+      "count": 4599,
+      "maximum": 0.2024,
+      "mean": 0.04943473,
+      "median": 0.0478306,
+      "minimum": 0.0,
+      "q1": 0.0300015,
+      "q3": 0.0751694
+    }
+  },
+  "schema_version": "1",
+  "semantic_risks": {
+    "category_boundary_violation_count": 0,
+    "component_sum_violation_count": 0,
+    "duplicate_ranked_identity_count": 0,
+    "input_order_sensitive_tie_group_count": 1,
+    "missing_sort_key_count": 0,
+    "nan_or_infinity_count": 0,
+    "top20_truncation_violation_count": 0,
+    "unregistered_component_count": 0
+  },
+  "source_diagnostics": {
+    "arxiv": {
+      "candidate_identity_attribution_count": 2561,
+      "category_counts": {
+        "highly_relevant": 5,
+        "irrelevant": 993,
+        "partially_relevant": 843,
+        "weakly_relevant": 720
+      },
+      "category_gate_passed_count": 848,
+      "category_reason_counts": {
+        "constraint_guard_applied": 2,
+        "score_threshold:highly_relevant": 5,
+        "score_threshold:irrelevant": 992,
+        "score_threshold:partially_relevant": 843,
+        "score_threshold:weakly_relevant": 719
+      },
+      "failed_constraint_dimension_count": 807,
+      "failed_constraint_dimension_counts": {
+        "datasets": 60,
+        "methods": 442,
+        "must_include_terms": 303,
+        "time_range": 2
+      },
+      "final_returned_attribution_count": 623,
+      "judgement_component_distributions": {
+        "clamp_adjustment": {
+          "count": 2561,
+          "maximum": 0.06,
+          "mean": 0.0037212,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "constraint_coverage_adjustment": {
+          "count": 2561,
+          "maximum": 0.04,
+          "mean": -0.05634518,
+          "median": -0.06,
+          "minimum": -0.236162,
+          "q1": -0.06,
+          "q3": -0.06
+        },
+        "dataset_match": {
+          "count": 2561,
+          "maximum": 0.07,
+          "mean": 0.00278797,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "domain_match": {
+          "count": 2561,
+          "maximum": 0.12,
+          "mean": 0.01495705,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.025
+        },
+        "hard_constraint_adjustment": {
+          "count": 2561,
+          "maximum": 5e-05,
+          "mean": 3.2e-07,
+          "median": 0.0,
+          "minimum": -5e-05,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "method_match": {
+          "count": 2561,
+          "maximum": 0.08,
+          "mean": 0.00548223,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "missing_abstract_penalty": {
+          "count": 2561,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "missing_metadata_penalty": {
+          "count": 2561,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "must_have_match": {
+          "count": 2561,
+          "maximum": 0.24,
+          "mean": 0.13642327,
+          "median": 0.135,
+          "minimum": 0.0,
+          "q1": 0.09,
+          "q3": 0.225
+        },
+        "paper_type_match": {
+          "count": 2561,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "paper_type_mismatch_penalty": {
+          "count": 2561,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "temporal_match": {
+          "count": 2561,
+          "maximum": 0.08,
+          "mean": 0.00068723,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "temporal_mismatch_penalty": {
+          "count": 2561,
+          "maximum": -0.0,
+          "mean": -8.981e-05,
+          "median": -0.0,
+          "minimum": -0.15,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "topic_match": {
+          "count": 2561,
+          "maximum": 0.45,
+          "mean": 0.21958219,
+          "median": 0.18,
+          "minimum": 0.0,
+          "q1": 0.12,
+          "q3": 0.3
+        },
+        "venue_match": {
+          "count": 2561,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "venue_mismatch_penalty": {
+          "count": 2561,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        }
+      },
+      "judgement_score_distribution": {
+        "count": 2561,
+        "maximum": 0.755,
+        "mean": 0.32720648,
+        "median": 0.315,
+        "minimum": 0.0,
+        "q1": 0.15,
+        "q3": 0.525
+      },
+      "position_delta_distribution": {
+        "count": 2561,
+        "maximum": 74.0,
+        "mean": -6.07575166,
+        "median": -4.0,
+        "minimum": -117.0,
+        "q1": -19.0,
+        "q3": 8.0
+      },
+      "rerank_component_contribution_distributions": {
+        "authority": {
+          "count": 2561,
+          "maximum": 0.1050088,
+          "mean": 0.01508975,
+          "median": 0.0164164,
+          "minimum": 0.005544,
+          "q1": 0.010413,
+          "q3": 0.0184184
+        },
+        "metadata": {
+          "count": 2561,
+          "maximum": 0.047,
+          "mean": 0.0315205,
+          "median": 0.03608,
+          "minimum": 0.0198,
+          "q1": 0.020475,
+          "q3": 0.04048
+        },
+        "relevance": {
+          "count": 2561,
+          "maximum": 0.5436,
+          "mean": 0.19574434,
+          "median": 0.185976,
+          "minimum": 0.0,
+          "q1": 0.0486,
+          "q3": 0.34776
+        },
+        "timeliness": {
+          "count": 2561,
+          "maximum": 0.18216,
+          "mean": 0.04466658,
+          "median": 0.0412515,
+          "minimum": 0.0,
+          "q1": 0.0262485,
+          "q3": 0.0683306
+        }
+      },
+      "rerank_final_score_distribution": {
+        "count": 2561,
+        "maximum": 0.6826,
+        "mean": 0.28701941,
+        "median": 0.2872,
+        "minimum": 0.0253,
+        "q1": 0.1009,
+        "q3": 0.4629
+      },
+      "top20_reason_counts": {
+        "beyond_top20_cutline": 225,
+        "category_gate": 517,
+        "category_gate_and_beyond_top20": 1196,
+        "returned": 623
+      },
+      "within_top20_rank_window_count": 1140
+    },
+    "openalex": {
+      "candidate_identity_attribution_count": 20,
+      "category_counts": {
+        "irrelevant": 19,
+        "weakly_relevant": 1
+      },
+      "category_gate_passed_count": 0,
+      "category_reason_counts": {
+        "score_threshold:irrelevant": 19,
+        "score_threshold:weakly_relevant": 1
+      },
+      "failed_constraint_dimension_count": 8,
+      "failed_constraint_dimension_counts": {
+        "must_include_terms": 8
+      },
+      "final_returned_attribution_count": 0,
+      "judgement_component_distributions": {
+        "clamp_adjustment": {
+          "count": 20,
+          "maximum": 0.06,
+          "mean": 0.013,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.01625
+        },
+        "constraint_coverage_adjustment": {
+          "count": 20,
+          "maximum": -0.06,
+          "mean": -0.06,
+          "median": -0.06,
+          "minimum": -0.06,
+          "q1": -0.06,
+          "q3": -0.06
+        },
+        "dataset_match": {
+          "count": 20,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "domain_match": {
+          "count": 20,
+          "maximum": 0.05,
+          "mean": 0.01625,
+          "median": 0.025,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.025
+        },
+        "hard_constraint_adjustment": {
+          "count": 20,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "method_match": {
+          "count": 20,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "missing_abstract_penalty": {
+          "count": 20,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "missing_metadata_penalty": {
+          "count": 20,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "must_have_match": {
+          "count": 20,
+          "maximum": 0.135,
+          "mean": 0.036,
+          "median": 0.045,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.045
+        },
+        "paper_type_match": {
+          "count": 20,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "paper_type_mismatch_penalty": {
+          "count": 20,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "temporal_match": {
+          "count": 20,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "temporal_mismatch_penalty": {
+          "count": 20,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "topic_match": {
+          "count": 20,
+          "maximum": 0.18,
+          "mean": 0.057,
+          "median": 0.06,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.06
+        },
+        "venue_match": {
+          "count": 20,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "venue_mismatch_penalty": {
+          "count": 20,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        }
+      },
+      "judgement_score_distribution": {
+        "count": 20,
+        "maximum": 0.28,
+        "mean": 0.06225,
+        "median": 0.045,
+        "minimum": 0.0,
+        "q1": 0.0,
+        "q3": 0.07625
+      },
+      "position_delta_distribution": {
+        "count": 20,
+        "maximum": 10.0,
+        "mean": -12.75,
+        "median": -12.5,
+        "minimum": -49.0,
+        "q1": -20.25,
+        "q3": -3.75
+      },
+      "rerank_component_contribution_distributions": {
+        "authority": {
+          "count": 20,
+          "maximum": 0.0908232,
+          "mean": 0.04507084,
+          "median": 0.04599855,
+          "minimum": 0.026559,
+          "q1": 0.0426348,
+          "q3": 0.048438
+        },
+        "metadata": {
+          "count": 20,
+          "maximum": 0.03854,
+          "mean": 0.02074825,
+          "median": 0.020475,
+          "minimum": 0.01485,
+          "q1": 0.020475,
+          "q3": 0.020475
+        },
+        "relevance": {
+          "count": 20,
+          "maximum": 0.165312,
+          "mean": 0.0238986,
+          "median": 0.01458,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.024705
+        },
+        "timeliness": {
+          "count": 20,
+          "maximum": 0.03375,
+          "mean": 0.02611653,
+          "median": 0.02678955,
+          "minimum": 0.0037485,
+          "q1": 0.02531138,
+          "q3": 0.0300015
+        }
+      },
+      "rerank_final_score_distribution": {
+        "count": 20,
+        "maximum": 0.322,
+        "mean": 0.115835,
+        "median": 0.10345,
+        "minimum": 0.0699,
+        "q1": 0.095475,
+        "q3": 0.112475
+      },
+      "top20_reason_counts": {
+        "category_gate": 8,
+        "category_gate_and_beyond_top20": 12
+      },
+      "within_top20_rank_window_count": 8
+    },
+    "pubmed": {
+      "candidate_identity_attribution_count": 863,
+      "category_counts": {
+        "highly_relevant": 1,
+        "irrelevant": 274,
+        "partially_relevant": 286,
+        "weakly_relevant": 302
+      },
+      "category_gate_passed_count": 287,
+      "category_reason_counts": {
+        "constraint_guard_applied": 2,
+        "score_threshold:highly_relevant": 1,
+        "score_threshold:irrelevant": 274,
+        "score_threshold:partially_relevant": 286,
+        "score_threshold:weakly_relevant": 300
+      },
+      "failed_constraint_dimension_count": 233,
+      "failed_constraint_dimension_counts": {
+        "datasets": 20,
+        "methods": 182,
+        "must_include_terms": 29,
+        "time_range": 2
+      },
+      "final_returned_attribution_count": 234,
+      "judgement_component_distributions": {
+        "clamp_adjustment": {
+          "count": 863,
+          "maximum": 0.06,
+          "mean": 0.00075319,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "constraint_coverage_adjustment": {
+          "count": 863,
+          "maximum": 0.0,
+          "mean": -0.05072821,
+          "median": -0.06,
+          "minimum": -0.148106,
+          "q1": -0.06,
+          "q3": -0.06
+        },
+        "dataset_match": {
+          "count": 863,
+          "maximum": 0.07,
+          "mean": 0.0019467,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "domain_match": {
+          "count": 863,
+          "maximum": 0.12,
+          "mean": 0.02192932,
+          "median": 0.025,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.025
+        },
+        "hard_constraint_adjustment": {
+          "count": 863,
+          "maximum": 4.4e-05,
+          "mean": 5.1e-07,
+          "median": 0.0,
+          "minimum": -4.5e-05,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "method_match": {
+          "count": 863,
+          "maximum": 0.08,
+          "mean": 0.00106605,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "missing_abstract_penalty": {
+          "count": 863,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "missing_metadata_penalty": {
+          "count": 863,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "must_have_match": {
+          "count": 863,
+          "maximum": 0.24,
+          "mean": 0.14926999,
+          "median": 0.135,
+          "minimum": 0.0,
+          "q1": 0.09,
+          "q3": 0.225
+        },
+        "paper_type_match": {
+          "count": 863,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "paper_type_mismatch_penalty": {
+          "count": 863,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "temporal_match": {
+          "count": 863,
+          "maximum": 0.08,
+          "mean": 0.0003708,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "temporal_mismatch_penalty": {
+          "count": 863,
+          "maximum": -0.0,
+          "mean": -0.00034762,
+          "median": -0.0,
+          "minimum": -0.15,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "topic_match": {
+          "count": 863,
+          "maximum": 0.45,
+          "mean": 0.2287022,
+          "median": 0.24,
+          "minimum": 0.0,
+          "q1": 0.12,
+          "q3": 0.3
+        },
+        "venue_match": {
+          "count": 863,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "venue_mismatch_penalty": {
+          "count": 863,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        }
+      },
+      "judgement_score_distribution": {
+        "count": 863,
+        "maximum": 0.7205,
+        "mean": 0.35296292,
+        "median": 0.34,
+        "minimum": 0.0,
+        "q1": 0.21,
+        "q3": 0.5
+      },
+      "position_delta_distribution": {
+        "count": 863,
+        "maximum": 102.0,
+        "mean": 3.37543453,
+        "median": 3.0,
+        "minimum": -78.0,
+        "q1": -8.0,
+        "q3": 16.0
+      },
+      "rerank_component_contribution_distributions": {
+        "authority": {
+          "count": 863,
+          "maximum": 0.07009756,
+          "mean": 0.01770747,
+          "median": 0.0189748,
+          "minimum": 0.009009,
+          "q1": 0.010413,
+          "q3": 0.0212888
+        },
+        "metadata": {
+          "count": 863,
+          "maximum": 0.0455,
+          "mean": 0.03348338,
+          "median": 0.03731,
+          "minimum": 0.0198,
+          "q1": 0.020475,
+          "q3": 0.04186
+        },
+        "relevance": {
+          "count": 863,
+          "maximum": 0.51876,
+          "mean": 0.20954272,
+          "median": 0.200736,
+          "minimum": 0.0,
+          "q1": 0.06804,
+          "q3": 0.327888
+        },
+        "timeliness": {
+          "count": 863,
+          "maximum": 0.2024,
+          "mean": 0.05072526,
+          "median": 0.0536636,
+          "minimum": 0.0,
+          "q1": 0.03375,
+          "q3": 0.0751694
+        }
+      },
+      "rerank_final_score_distribution": {
+        "count": 863,
+        "maximum": 0.6678,
+        "mean": 0.3114591,
+        "median": 0.3109,
+        "minimum": 0.0309,
+        "q1": 0.1254,
+        "q3": 0.4686
+      },
+      "top20_reason_counts": {
+        "beyond_top20_cutline": 53,
+        "category_gate": 164,
+        "category_gate_and_beyond_top20": 412,
+        "returned": 234
+      },
+      "within_top20_rank_window_count": 398
+    },
+    "semantic_scholar": {
+      "candidate_identity_attribution_count": 1178,
+      "category_counts": {
+        "highly_relevant": 7,
+        "irrelevant": 242,
+        "partially_relevant": 762,
+        "weakly_relevant": 167
+      },
+      "category_gate_passed_count": 769,
+      "category_reason_counts": {
+        "constraint_guard_applied": 3,
+        "score_threshold:highly_relevant": 7,
+        "score_threshold:irrelevant": 241,
+        "score_threshold:partially_relevant": 761,
+        "score_threshold:weakly_relevant": 166
+      },
+      "failed_constraint_dimension_count": 611,
+      "failed_constraint_dimension_counts": {
+        "datasets": 36,
+        "methods": 396,
+        "must_include_terms": 176,
+        "time_range": 3
+      },
+      "final_returned_attribution_count": 556,
+      "judgement_component_distributions": {
+        "clamp_adjustment": {
+          "count": 1178,
+          "maximum": 0.21,
+          "mean": 0.0065365,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "constraint_coverage_adjustment": {
+          "count": 1178,
+          "maximum": 0.04,
+          "mean": -0.05842635,
+          "median": -0.06,
+          "minimum": -0.235,
+          "q1": -0.06,
+          "q3": -0.06
+        },
+        "dataset_match": {
+          "count": 1178,
+          "maximum": 0.07,
+          "mean": 0.00202037,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "domain_match": {
+          "count": 1178,
+          "maximum": 0.12,
+          "mean": 0.01839134,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.025
+        },
+        "hard_constraint_adjustment": {
+          "count": 1178,
+          "maximum": 5e-05,
+          "mean": 3e-08,
+          "median": 0.0,
+          "minimum": -5e-05,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "method_match": {
+          "count": 1178,
+          "maximum": 0.08,
+          "mean": 0.01052632,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "missing_abstract_penalty": {
+          "count": 1178,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": -0.0
+        },
+        "missing_metadata_penalty": {
+          "count": 1178,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "must_have_match": {
+          "count": 1178,
+          "maximum": 0.24,
+          "mean": 0.17824278,
+          "median": 0.225,
+          "minimum": 0.0,
+          "q1": 0.135,
+          "q3": 0.24
+        },
+        "paper_type_match": {
+          "count": 1178,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "paper_type_mismatch_penalty": {
+          "count": 1178,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "temporal_match": {
+          "count": 1178,
+          "maximum": 0.08,
+          "mean": 6.791e-05,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "temporal_mismatch_penalty": {
+          "count": 1178,
+          "maximum": -0.0,
+          "mean": -0.00026316,
+          "median": -0.0,
+          "minimum": -0.15,
+          "q1": -0.0,
+          "q3": -0.0
+        },
+        "topic_match": {
+          "count": 1178,
+          "maximum": 0.45,
+          "mean": 0.29531409,
+          "median": 0.36,
+          "minimum": 0.0,
+          "q1": 0.18,
+          "q3": 0.45
+        },
+        "venue_match": {
+          "count": 1178,
+          "maximum": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "q1": 0.0,
+          "q3": 0.0
+        },
+        "venue_mismatch_penalty": {
+          "count": 1178,
+          "maximum": -0.0,
+          "mean": 0.0,
+          "median": -0.0,
+          "minimum": -0.0,
+          "q1": -0.0,
+          "q3": -0.0
+        }
+      },
+      "judgement_score_distribution": {
+        "count": 1178,
+        "maximum": 0.765,
+        "mean": 0.45240985,
+        "median": 0.549,
+        "minimum": 0.0,
+        "q1": 0.35,
+        "q3": 0.63
+      },
+      "position_delta_distribution": {
+        "count": 1178,
+        "maximum": 124.0,
+        "mean": 11.20543294,
+        "median": 8.0,
+        "minimum": -110.0,
+        "q1": -4.0,
+        "q3": 25.75
+      },
+      "rerank_component_contribution_distributions": {
+        "authority": {
+          "count": 1178,
+          "maximum": 0.1050088,
+          "mean": 0.03561063,
+          "median": 0.03255564,
+          "minimum": 0.004329,
+          "q1": 0.0212888,
+          "q3": 0.05012735
+        },
+        "metadata": {
+          "count": 1178,
+          "maximum": 0.047,
+          "mean": 0.03494148,
+          "median": 0.04186,
+          "minimum": 0.007425,
+          "q1": 0.03116,
+          "q3": 0.04324
+        },
+        "relevance": {
+          "count": 1178,
+          "maximum": 0.5508,
+          "mean": 0.29275982,
+          "median": 0.3636576,
+          "minimum": 0.0,
+          "q1": 0.20664,
+          "q3": 0.417312
+        },
+        "timeliness": {
+          "count": 1178,
+          "maximum": 0.14168,
+          "mean": 0.05960949,
+          "median": 0.0751694,
+          "minimum": 0.0,
+          "q1": 0.041,
+          "q3": 0.0843364
+        }
+      },
+      "rerank_final_score_distribution": {
+        "count": 1178,
+        "maximum": 0.7646,
+        "mean": 0.42291986,
+        "median": 0.5174,
+        "minimum": 0.0151,
+        "q1": 0.328425,
+        "q3": 0.574975
+      },
+      "top20_reason_counts": {
+        "beyond_top20_cutline": 213,
+        "category_gate": 74,
+        "category_gate_and_beyond_top20": 335,
+        "returned": 556
+      },
+      "within_top20_rank_window_count": 630
+    }
+  },
+  "status": "completed",
+  "threshold_margin_distributions": {
+    "highly_relevant": {
+      "lower_margin": {
+        "count": 12,
+        "maximum": 0.045,
+        "mean": 0.019975,
+        "median": 0.015,
+        "minimum": 0.0005,
+        "q1": 0.01,
+        "q3": 0.035
+      },
+      "upper_margin": {
+        "count": 0,
+        "maximum": null,
+        "mean": null,
+        "median": null,
+        "minimum": null,
+        "q1": null,
+        "q3": null
+      }
+    },
+    "insufficient_evidence": {
+      "lower_margin": {
+        "count": 0,
+        "maximum": null,
+        "mean": null,
+        "median": null,
+        "minimum": null,
+        "q1": null,
+        "q3": null
+      },
+      "upper_margin": {
+        "count": 0,
+        "maximum": null,
+        "mean": null,
+        "median": null,
+        "minimum": null,
+        "q1": null,
+        "q3": null
+      }
+    },
+    "irrelevant": {
+      "lower_margin": {
+        "count": 0,
+        "maximum": null,
+        "mean": null,
+        "median": null,
+        "minimum": null,
+        "q1": null,
+        "q3": null
+      },
+      "upper_margin": {
+        "count": 1527,
+        "maximum": 0.25,
+        "mean": 0.1494368,
+        "median": 0.145,
+        "minimum": 0.005,
+        "q1": 0.075,
+        "q3": 0.25
+      }
+    },
+    "partially_relevant": {
+      "lower_margin": {
+        "count": 1872,
+        "maximum": 0.2688,
+        "mean": 0.13454781,
+        "median": 0.14,
+        "minimum": 0.0,
+        "q1": 0.09,
+        "q3": 0.186175
+      },
+      "upper_margin": {
+        "count": 1872,
+        "maximum": 0.27,
+        "mean": 0.13545219,
+        "median": 0.13,
+        "minimum": 0.0012,
+        "q1": 0.083825,
+        "q3": 0.18
+      }
+    },
+    "weakly_relevant": {
+      "lower_margin": {
+        "count": 1188,
+        "maximum": 0.195,
+        "mean": 0.09238636,
+        "median": 0.1,
+        "minimum": 0.0,
+        "q1": 0.03,
+        "q3": 0.135
+      },
+      "upper_margin": {
+        "count": 1188,
+        "maximum": 0.2,
+        "mean": 0.10761364,
+        "median": 0.1,
+        "minimum": 0.005,
+        "q1": 0.065,
+        "q3": 0.17
+      }
+    }
+  },
+  "top20": {
+    "rank_margin_distribution": {
+      "count": 4599,
+      "maximum": 19.0,
+      "mean": -7.35051098,
+      "median": -2.0,
+      "minimum": -112.0,
+      "q1": -19.0,
+      "q3": 9.0
+    },
+    "reason_counts": {
+      "beyond_top20_cutline": 488,
+      "category_gate": 761,
+      "category_gate_and_beyond_top20": 1954,
+      "returned": 1396
+    },
+    "returned_identity_count": 1396
+  }
+}

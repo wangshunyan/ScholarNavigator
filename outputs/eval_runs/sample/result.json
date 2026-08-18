@@ -1,0 +1,1266 @@
+{
+  "query_results": [
+    {
+      "query_id": "sample_llm_rerank",
+      "query": "latest LLM reranking methods for scientific literature retrieval",
+      "group_results": {
+        "baseline": {
+          "query_id": "sample_llm_rerank",
+          "group": "baseline",
+          "metrics": {
+            "recall_at_k": {
+              "5": 0.3333333333333333,
+              "10": 0.3333333333333333,
+              "20": 0.3333333333333333
+            },
+            "precision_at_k": {
+              "5": 0.2,
+              "10": 0.1,
+              "20": 0.05
+            },
+            "f1_at_k": {
+              "5": 0.25,
+              "10": 0.15384615384615383,
+              "20": 0.08695652173913045
+            },
+            "ndcg_at_k": {
+              "5": 0.541942129480027,
+              "10": 0.541942129480027,
+              "20": 0.541942129480027
+            },
+            "mrr": 1.0,
+            "raw_count": 2,
+            "deduplicated_count": 1,
+            "ranked_count": 1,
+            "duplicate_count": 1,
+            "duplicate_ratio": 0.5,
+            "per_source_returned_count": {
+              "fixture-openalex": 2,
+              "fixture": 0
+            },
+            "source_call_count": 0,
+            "source_error_count": 0,
+            "source_error_rate": 0.0,
+            "warning_count": 2,
+            "query_warning_rate": 1.0,
+            "failed_case_count": 0,
+            "failed_case_rate": 0.0
+          },
+          "ranked_paper_ids": [
+            "doi:10.123/baseline"
+          ],
+          "warnings": [
+            "fixture simulated source warning",
+            "fixture_missing_retrieval:LLM reranking methods scientific literature retrieval method"
+          ],
+          "source_stats": [
+            {
+              "source": "fixture-openalex",
+              "query": null,
+              "returned_count": 1,
+              "latency_seconds": 0.01,
+              "error_message": null,
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "fixture-openalex",
+              "query": null,
+              "returned_count": 1,
+              "latency_seconds": 0.01,
+              "error_message": "fixture simulated source warning",
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "fixture",
+              "query": null,
+              "returned_count": 0,
+              "latency_seconds": 0.0,
+              "error_message": "fixture_missing_retrieval:LLM reranking methods scientific literature retrieval method",
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            }
+          ],
+          "raw_count": 2,
+          "deduplicated_count": 1,
+          "latency_seconds": 0.007496250094845891,
+          "efficiency": {
+            "latency_seconds": 0.007496250094845891,
+            "api_call_count": 0,
+            "search_api_call_count": 0,
+            "reference_api_call_count": 0,
+            "retry_count": 0,
+            "error_count": 0,
+            "llm_call_count": 0,
+            "llm_total_tokens": 0,
+            "search_rounds": 1,
+            "raw_count": 2,
+            "deduplicated_count": 1,
+            "returned_result_count": 1,
+            "cache_hit_count": 0,
+            "rate_limit_wait_seconds": 0.0,
+            "source_call_count": 0,
+            "source_error_count": 0,
+            "warnings": []
+          },
+          "failed": false,
+          "error_message": null
+        },
+        "query_evolution_only": {
+          "query_id": "sample_llm_rerank",
+          "group": "query_evolution_only",
+          "metrics": {
+            "recall_at_k": {
+              "5": 0.6666666666666666,
+              "10": 0.6666666666666666,
+              "20": 0.6666666666666666
+            },
+            "precision_at_k": {
+              "5": 0.4,
+              "10": 0.2,
+              "20": 0.1
+            },
+            "f1_at_k": {
+              "5": 0.5,
+              "10": 0.30769230769230765,
+              "20": 0.1739130434782609
+            },
+            "ndcg_at_k": {
+              "5": 0.8838695436828513,
+              "10": 0.8838695436828513,
+              "20": 0.8838695436828513
+            },
+            "mrr": 1.0,
+            "raw_count": 3,
+            "deduplicated_count": 2,
+            "ranked_count": 2,
+            "duplicate_count": 1,
+            "duplicate_ratio": 0.3333333333333333,
+            "per_source_returned_count": {
+              "fixture-openalex": 3,
+              "fixture": 0
+            },
+            "source_call_count": 0,
+            "source_error_count": 0,
+            "source_error_rate": 0.0,
+            "warning_count": 4,
+            "query_warning_rate": 1.0,
+            "failed_case_count": 0,
+            "failed_case_rate": 0.0
+          },
+          "ranked_paper_ids": [
+            "doi:10.123/baseline",
+            "doi:10.123/evolved"
+          ],
+          "warnings": [
+            "fixture simulated source warning",
+            "fixture_missing_retrieval:LLM reranking methods scientific literature retrieval method",
+            "fixture_missing_retrieval:llm reranking retrieval LLM reranking methods literature",
+            "fixture_missing_retrieval:LLM reranking methods literature retrieval scientific LLM reranking"
+          ],
+          "source_stats": [
+            {
+              "source": "fixture-openalex",
+              "query": null,
+              "returned_count": 1,
+              "latency_seconds": 0.01,
+              "error_message": null,
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "fixture-openalex",
+              "query": null,
+              "returned_count": 1,
+              "latency_seconds": 0.01,
+              "error_message": "fixture simulated source warning",
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "fixture",
+              "query": null,
+              "returned_count": 0,
+              "latency_seconds": 0.0,
+              "error_message": "fixture_missing_retrieval:LLM reranking methods scientific literature retrieval method",
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "fixture-openalex",
+              "query": null,
+              "returned_count": 1,
+              "latency_seconds": 0.01,
+              "error_message": null,
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "fixture",
+              "query": null,
+              "returned_count": 0,
+              "latency_seconds": 0.0,
+              "error_message": "fixture_missing_retrieval:llm reranking retrieval LLM reranking methods literature",
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "fixture",
+              "query": null,
+              "returned_count": 0,
+              "latency_seconds": 0.0,
+              "error_message": "fixture_missing_retrieval:LLM reranking methods literature retrieval scientific LLM reranking",
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            }
+          ],
+          "raw_count": 3,
+          "deduplicated_count": 2,
+          "latency_seconds": 0.0023789170663803816,
+          "efficiency": {
+            "latency_seconds": 0.0023789170663803816,
+            "api_call_count": 0,
+            "search_api_call_count": 0,
+            "reference_api_call_count": 0,
+            "retry_count": 0,
+            "error_count": 0,
+            "llm_call_count": 0,
+            "llm_total_tokens": 0,
+            "search_rounds": 2,
+            "raw_count": 3,
+            "deduplicated_count": 2,
+            "returned_result_count": 2,
+            "cache_hit_count": 0,
+            "rate_limit_wait_seconds": 0.0,
+            "source_call_count": 0,
+            "source_error_count": 0,
+            "warnings": []
+          },
+          "failed": false,
+          "error_message": null
+        },
+        "refchain_only": {
+          "query_id": "sample_llm_rerank",
+          "group": "refchain_only",
+          "metrics": {
+            "recall_at_k": {
+              "5": 0.6666666666666666,
+              "10": 0.6666666666666666,
+              "20": 0.6666666666666666
+            },
+            "precision_at_k": {
+              "5": 0.4,
+              "10": 0.2,
+              "20": 0.1
+            },
+            "f1_at_k": {
+              "5": 0.5,
+              "10": 0.30769230769230765,
+              "20": 0.1739130434782609
+            },
+            "ndcg_at_k": {
+              "5": 0.688482449852666,
+              "10": 0.688482449852666,
+              "20": 0.688482449852666
+            },
+            "mrr": 1.0,
+            "raw_count": 3,
+            "deduplicated_count": 2,
+            "ranked_count": 2,
+            "duplicate_count": 1,
+            "duplicate_ratio": 0.3333333333333333,
+            "per_source_returned_count": {
+              "fixture-openalex": 2,
+              "fixture": 0,
+              "refchain": 1
+            },
+            "source_call_count": 0,
+            "source_error_count": 0,
+            "source_error_rate": 0.0,
+            "warning_count": 2,
+            "query_warning_rate": 1.0,
+            "failed_case_count": 0,
+            "failed_case_rate": 0.0
+          },
+          "ranked_paper_ids": [
+            "doi:10.123/baseline",
+            "doi:10.123/refchain"
+          ],
+          "warnings": [
+            "fixture simulated source warning",
+            "fixture_missing_retrieval:LLM reranking methods scientific literature retrieval method"
+          ],
+          "source_stats": [
+            {
+              "source": "fixture-openalex",
+              "query": null,
+              "returned_count": 1,
+              "latency_seconds": 0.01,
+              "error_message": null,
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "fixture-openalex",
+              "query": null,
+              "returned_count": 1,
+              "latency_seconds": 0.01,
+              "error_message": "fixture simulated source warning",
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "fixture",
+              "query": null,
+              "returned_count": 0,
+              "latency_seconds": 0.0,
+              "error_message": "fixture_missing_retrieval:LLM reranking methods scientific literature retrieval method",
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "refchain",
+              "query": "refchain",
+              "returned_count": 1,
+              "latency_seconds": 5.974993109703064e-05,
+              "error_message": null,
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            }
+          ],
+          "raw_count": 3,
+          "deduplicated_count": 2,
+          "latency_seconds": 0.0018360409885644913,
+          "efficiency": {
+            "latency_seconds": 0.0018360409885644913,
+            "api_call_count": 0,
+            "search_api_call_count": 0,
+            "reference_api_call_count": 0,
+            "retry_count": 0,
+            "error_count": 0,
+            "llm_call_count": 0,
+            "llm_total_tokens": 0,
+            "search_rounds": 1,
+            "raw_count": 3,
+            "deduplicated_count": 2,
+            "returned_result_count": 2,
+            "cache_hit_count": 0,
+            "rate_limit_wait_seconds": 0.0,
+            "source_call_count": 0,
+            "source_error_count": 0,
+            "warnings": []
+          },
+          "failed": false,
+          "error_message": null
+        },
+        "query_evolution_plus_refchain": {
+          "query_id": "sample_llm_rerank",
+          "group": "query_evolution_plus_refchain",
+          "metrics": {
+            "recall_at_k": {
+              "5": 1.0,
+              "10": 1.0,
+              "20": 1.0
+            },
+            "precision_at_k": {
+              "5": 0.6,
+              "10": 0.3,
+              "20": 0.15
+            },
+            "f1_at_k": {
+              "5": 0.7499999999999999,
+              "10": 0.4615384615384615,
+              "20": 0.2608695652173913
+            },
+            "ndcg_at_k": {
+              "5": 1.0,
+              "10": 1.0,
+              "20": 1.0
+            },
+            "mrr": 1.0,
+            "raw_count": 5,
+            "deduplicated_count": 3,
+            "ranked_count": 3,
+            "duplicate_count": 2,
+            "duplicate_ratio": 0.4,
+            "per_source_returned_count": {
+              "fixture-openalex": 3,
+              "fixture": 0,
+              "refchain": 2
+            },
+            "source_call_count": 0,
+            "source_error_count": 0,
+            "source_error_rate": 0.0,
+            "warning_count": 4,
+            "query_warning_rate": 1.0,
+            "failed_case_count": 0,
+            "failed_case_rate": 0.0
+          },
+          "ranked_paper_ids": [
+            "doi:10.123/baseline",
+            "doi:10.123/evolved",
+            "doi:10.123/refchain"
+          ],
+          "warnings": [
+            "fixture simulated source warning",
+            "fixture_missing_retrieval:LLM reranking methods scientific literature retrieval method",
+            "fixture_missing_retrieval:llm reranking retrieval LLM reranking methods literature",
+            "fixture_missing_retrieval:LLM reranking methods literature retrieval scientific LLM reranking"
+          ],
+          "source_stats": [
+            {
+              "source": "fixture-openalex",
+              "query": null,
+              "returned_count": 1,
+              "latency_seconds": 0.01,
+              "error_message": null,
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "fixture-openalex",
+              "query": null,
+              "returned_count": 1,
+              "latency_seconds": 0.01,
+              "error_message": "fixture simulated source warning",
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "fixture",
+              "query": null,
+              "returned_count": 0,
+              "latency_seconds": 0.0,
+              "error_message": "fixture_missing_retrieval:LLM reranking methods scientific literature retrieval method",
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "fixture-openalex",
+              "query": null,
+              "returned_count": 1,
+              "latency_seconds": 0.01,
+              "error_message": null,
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "fixture",
+              "query": null,
+              "returned_count": 0,
+              "latency_seconds": 0.0,
+              "error_message": "fixture_missing_retrieval:llm reranking retrieval LLM reranking methods literature",
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "fixture",
+              "query": null,
+              "returned_count": 0,
+              "latency_seconds": 0.0,
+              "error_message": "fixture_missing_retrieval:LLM reranking methods literature retrieval scientific LLM reranking",
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            },
+            {
+              "source": "refchain",
+              "query": "refchain",
+              "returned_count": 2,
+              "latency_seconds": 5.920790135860443e-05,
+              "error_message": null,
+              "cache_hit": false,
+              "diagnostics": {
+                "request_count": 0,
+                "retry_count": 0,
+                "error_count": 0,
+                "cache_hit_count": 0,
+                "rate_limit_wait_seconds": 0.0,
+                "latency_seconds": 0.0
+              }
+            }
+          ],
+          "raw_count": 5,
+          "deduplicated_count": 3,
+          "latency_seconds": 0.003304708981886506,
+          "efficiency": {
+            "latency_seconds": 0.003304708981886506,
+            "api_call_count": 0,
+            "search_api_call_count": 0,
+            "reference_api_call_count": 0,
+            "retry_count": 0,
+            "error_count": 0,
+            "llm_call_count": 0,
+            "llm_total_tokens": 0,
+            "search_rounds": 2,
+            "raw_count": 5,
+            "deduplicated_count": 3,
+            "returned_result_count": 3,
+            "cache_hit_count": 0,
+            "rate_limit_wait_seconds": 0.0,
+            "source_call_count": 0,
+            "source_error_count": 0,
+            "warnings": []
+          },
+          "failed": false,
+          "error_message": null
+        }
+      }
+    }
+  ],
+  "aggregate_metrics": {
+    "baseline": {
+      "recall_at_k": {
+        "5": 0.3333333333333333,
+        "10": 0.3333333333333333,
+        "20": 0.3333333333333333
+      },
+      "precision_at_k": {
+        "5": 0.2,
+        "10": 0.1,
+        "20": 0.05
+      },
+      "f1_at_k": {
+        "5": 0.25,
+        "10": 0.15384615384615383,
+        "20": 0.08695652173913045
+      },
+      "ndcg_at_k": {
+        "5": 0.541942129480027,
+        "10": 0.541942129480027,
+        "20": 0.541942129480027
+      },
+      "mrr": 1.0,
+      "raw_count": 2,
+      "deduplicated_count": 1,
+      "ranked_count": 1,
+      "duplicate_count": 1,
+      "duplicate_ratio": 0.5,
+      "per_source_returned_count": {
+        "fixture-openalex": 2,
+        "fixture": 0
+      },
+      "source_call_count": 0,
+      "source_error_count": 0,
+      "source_error_rate": 0.0,
+      "warning_count": 2,
+      "query_warning_rate": 1.0,
+      "failed_case_count": 0,
+      "failed_case_rate": 0.0
+    },
+    "query_evolution_only": {
+      "recall_at_k": {
+        "5": 0.6666666666666666,
+        "10": 0.6666666666666666,
+        "20": 0.6666666666666666
+      },
+      "precision_at_k": {
+        "5": 0.4,
+        "10": 0.2,
+        "20": 0.1
+      },
+      "f1_at_k": {
+        "5": 0.5,
+        "10": 0.30769230769230765,
+        "20": 0.1739130434782609
+      },
+      "ndcg_at_k": {
+        "5": 0.8838695436828513,
+        "10": 0.8838695436828513,
+        "20": 0.8838695436828513
+      },
+      "mrr": 1.0,
+      "raw_count": 3,
+      "deduplicated_count": 2,
+      "ranked_count": 2,
+      "duplicate_count": 1,
+      "duplicate_ratio": 0.3333333333333333,
+      "per_source_returned_count": {
+        "fixture-openalex": 3,
+        "fixture": 0
+      },
+      "source_call_count": 0,
+      "source_error_count": 0,
+      "source_error_rate": 0.0,
+      "warning_count": 4,
+      "query_warning_rate": 1.0,
+      "failed_case_count": 0,
+      "failed_case_rate": 0.0
+    },
+    "refchain_only": {
+      "recall_at_k": {
+        "5": 0.6666666666666666,
+        "10": 0.6666666666666666,
+        "20": 0.6666666666666666
+      },
+      "precision_at_k": {
+        "5": 0.4,
+        "10": 0.2,
+        "20": 0.1
+      },
+      "f1_at_k": {
+        "5": 0.5,
+        "10": 0.30769230769230765,
+        "20": 0.1739130434782609
+      },
+      "ndcg_at_k": {
+        "5": 0.688482449852666,
+        "10": 0.688482449852666,
+        "20": 0.688482449852666
+      },
+      "mrr": 1.0,
+      "raw_count": 3,
+      "deduplicated_count": 2,
+      "ranked_count": 2,
+      "duplicate_count": 1,
+      "duplicate_ratio": 0.3333333333333333,
+      "per_source_returned_count": {
+        "fixture-openalex": 2,
+        "fixture": 0,
+        "refchain": 1
+      },
+      "source_call_count": 0,
+      "source_error_count": 0,
+      "source_error_rate": 0.0,
+      "warning_count": 2,
+      "query_warning_rate": 1.0,
+      "failed_case_count": 0,
+      "failed_case_rate": 0.0
+    },
+    "query_evolution_plus_refchain": {
+      "recall_at_k": {
+        "5": 1.0,
+        "10": 1.0,
+        "20": 1.0
+      },
+      "precision_at_k": {
+        "5": 0.6,
+        "10": 0.3,
+        "20": 0.15
+      },
+      "f1_at_k": {
+        "5": 0.7499999999999999,
+        "10": 0.4615384615384615,
+        "20": 0.2608695652173913
+      },
+      "ndcg_at_k": {
+        "5": 1.0,
+        "10": 1.0,
+        "20": 1.0
+      },
+      "mrr": 1.0,
+      "raw_count": 5,
+      "deduplicated_count": 3,
+      "ranked_count": 3,
+      "duplicate_count": 2,
+      "duplicate_ratio": 0.4,
+      "per_source_returned_count": {
+        "fixture-openalex": 3,
+        "fixture": 0,
+        "refchain": 2
+      },
+      "source_call_count": 0,
+      "source_error_count": 0,
+      "source_error_rate": 0.0,
+      "warning_count": 4,
+      "query_warning_rate": 1.0,
+      "failed_case_count": 0,
+      "failed_case_rate": 0.0
+    }
+  },
+  "aggregate_reports": {
+    "baseline": {
+      "success_only_metrics": {
+        "recall_at_k": {
+          "5": 0.3333333333333333,
+          "10": 0.3333333333333333,
+          "20": 0.3333333333333333
+        },
+        "precision_at_k": {
+          "5": 0.2,
+          "10": 0.1,
+          "20": 0.05
+        },
+        "f1_at_k": {
+          "5": 0.25,
+          "10": 0.15384615384615383,
+          "20": 0.08695652173913045
+        },
+        "ndcg_at_k": {
+          "5": 0.541942129480027,
+          "10": 0.541942129480027,
+          "20": 0.541942129480027
+        },
+        "mrr": 1.0,
+        "raw_count": 2,
+        "deduplicated_count": 1,
+        "ranked_count": 1,
+        "duplicate_count": 1,
+        "duplicate_ratio": 0.5,
+        "per_source_returned_count": {
+          "fixture-openalex": 2,
+          "fixture": 0
+        },
+        "source_call_count": 0,
+        "source_error_count": 0,
+        "source_error_rate": 0.0,
+        "warning_count": 2,
+        "query_warning_rate": 1.0,
+        "failed_case_count": 0,
+        "failed_case_rate": 0.0
+      },
+      "end_to_end_metrics": {
+        "recall_at_k": {
+          "5": 0.3333333333333333,
+          "10": 0.3333333333333333,
+          "20": 0.3333333333333333
+        },
+        "precision_at_k": {
+          "5": 0.2,
+          "10": 0.1,
+          "20": 0.05
+        },
+        "f1_at_k": {
+          "5": 0.25,
+          "10": 0.15384615384615383,
+          "20": 0.08695652173913045
+        },
+        "ndcg_at_k": {
+          "5": 0.541942129480027,
+          "10": 0.541942129480027,
+          "20": 0.541942129480027
+        },
+        "mrr": 1.0,
+        "raw_count": 2,
+        "deduplicated_count": 1,
+        "ranked_count": 1,
+        "duplicate_count": 1,
+        "duplicate_ratio": 0.5,
+        "per_source_returned_count": {
+          "fixture-openalex": 2,
+          "fixture": 0
+        },
+        "source_call_count": 0,
+        "source_error_count": 0,
+        "source_error_rate": 0.0,
+        "warning_count": 2,
+        "query_warning_rate": 1.0,
+        "failed_case_count": 0,
+        "failed_case_rate": 0.0
+      },
+      "case_statistics": {
+        "total_case_count": 1,
+        "gold_case_count": 1,
+        "evaluated_success_count": 1,
+        "failed_case_count": 0,
+        "missing_result_count": 0,
+        "missing_gold_count": 0,
+        "success_rate": 1.0,
+        "failed_case_rate": 0.0,
+        "missing_result_rate": 0.0
+      },
+      "efficiency": {
+        "case_count": 1,
+        "average_latency_seconds": 0.007496250094845891,
+        "avg_api_call_count": 0.0,
+        "avg_search_api_call_count": 0.0,
+        "avg_reference_api_call_count": 0.0,
+        "avg_retry_count": 0.0,
+        "avg_error_count": 0.0,
+        "avg_cache_hit_count": 0.0,
+        "avg_rate_limit_wait_seconds": 0.0,
+        "avg_llm_call_count": 0.0,
+        "avg_llm_total_tokens": 0.0,
+        "total_llm_call_count": 0,
+        "total_llm_total_tokens": 0,
+        "average_search_rounds": 1.0,
+        "total_raw_count": 2,
+        "total_deduplicated_count": 1,
+        "total_returned_result_count": 1,
+        "total_cache_hit_count": 0,
+        "total_source_call_count": 0,
+        "total_source_error_count": 0,
+        "warnings": []
+      }
+    },
+    "query_evolution_only": {
+      "success_only_metrics": {
+        "recall_at_k": {
+          "5": 0.6666666666666666,
+          "10": 0.6666666666666666,
+          "20": 0.6666666666666666
+        },
+        "precision_at_k": {
+          "5": 0.4,
+          "10": 0.2,
+          "20": 0.1
+        },
+        "f1_at_k": {
+          "5": 0.5,
+          "10": 0.30769230769230765,
+          "20": 0.1739130434782609
+        },
+        "ndcg_at_k": {
+          "5": 0.8838695436828513,
+          "10": 0.8838695436828513,
+          "20": 0.8838695436828513
+        },
+        "mrr": 1.0,
+        "raw_count": 3,
+        "deduplicated_count": 2,
+        "ranked_count": 2,
+        "duplicate_count": 1,
+        "duplicate_ratio": 0.3333333333333333,
+        "per_source_returned_count": {
+          "fixture-openalex": 3,
+          "fixture": 0
+        },
+        "source_call_count": 0,
+        "source_error_count": 0,
+        "source_error_rate": 0.0,
+        "warning_count": 4,
+        "query_warning_rate": 1.0,
+        "failed_case_count": 0,
+        "failed_case_rate": 0.0
+      },
+      "end_to_end_metrics": {
+        "recall_at_k": {
+          "5": 0.6666666666666666,
+          "10": 0.6666666666666666,
+          "20": 0.6666666666666666
+        },
+        "precision_at_k": {
+          "5": 0.4,
+          "10": 0.2,
+          "20": 0.1
+        },
+        "f1_at_k": {
+          "5": 0.5,
+          "10": 0.30769230769230765,
+          "20": 0.1739130434782609
+        },
+        "ndcg_at_k": {
+          "5": 0.8838695436828513,
+          "10": 0.8838695436828513,
+          "20": 0.8838695436828513
+        },
+        "mrr": 1.0,
+        "raw_count": 3,
+        "deduplicated_count": 2,
+        "ranked_count": 2,
+        "duplicate_count": 1,
+        "duplicate_ratio": 0.3333333333333333,
+        "per_source_returned_count": {
+          "fixture-openalex": 3,
+          "fixture": 0
+        },
+        "source_call_count": 0,
+        "source_error_count": 0,
+        "source_error_rate": 0.0,
+        "warning_count": 4,
+        "query_warning_rate": 1.0,
+        "failed_case_count": 0,
+        "failed_case_rate": 0.0
+      },
+      "case_statistics": {
+        "total_case_count": 1,
+        "gold_case_count": 1,
+        "evaluated_success_count": 1,
+        "failed_case_count": 0,
+        "missing_result_count": 0,
+        "missing_gold_count": 0,
+        "success_rate": 1.0,
+        "failed_case_rate": 0.0,
+        "missing_result_rate": 0.0
+      },
+      "efficiency": {
+        "case_count": 1,
+        "average_latency_seconds": 0.0023789170663803816,
+        "avg_api_call_count": 0.0,
+        "avg_search_api_call_count": 0.0,
+        "avg_reference_api_call_count": 0.0,
+        "avg_retry_count": 0.0,
+        "avg_error_count": 0.0,
+        "avg_cache_hit_count": 0.0,
+        "avg_rate_limit_wait_seconds": 0.0,
+        "avg_llm_call_count": 0.0,
+        "avg_llm_total_tokens": 0.0,
+        "total_llm_call_count": 0,
+        "total_llm_total_tokens": 0,
+        "average_search_rounds": 2.0,
+        "total_raw_count": 3,
+        "total_deduplicated_count": 2,
+        "total_returned_result_count": 2,
+        "total_cache_hit_count": 0,
+        "total_source_call_count": 0,
+        "total_source_error_count": 0,
+        "warnings": []
+      }
+    },
+    "refchain_only": {
+      "success_only_metrics": {
+        "recall_at_k": {
+          "5": 0.6666666666666666,
+          "10": 0.6666666666666666,
+          "20": 0.6666666666666666
+        },
+        "precision_at_k": {
+          "5": 0.4,
+          "10": 0.2,
+          "20": 0.1
+        },
+        "f1_at_k": {
+          "5": 0.5,
+          "10": 0.30769230769230765,
+          "20": 0.1739130434782609
+        },
+        "ndcg_at_k": {
+          "5": 0.688482449852666,
+          "10": 0.688482449852666,
+          "20": 0.688482449852666
+        },
+        "mrr": 1.0,
+        "raw_count": 3,
+        "deduplicated_count": 2,
+        "ranked_count": 2,
+        "duplicate_count": 1,
+        "duplicate_ratio": 0.3333333333333333,
+        "per_source_returned_count": {
+          "fixture-openalex": 2,
+          "fixture": 0,
+          "refchain": 1
+        },
+        "source_call_count": 0,
+        "source_error_count": 0,
+        "source_error_rate": 0.0,
+        "warning_count": 2,
+        "query_warning_rate": 1.0,
+        "failed_case_count": 0,
+        "failed_case_rate": 0.0
+      },
+      "end_to_end_metrics": {
+        "recall_at_k": {
+          "5": 0.6666666666666666,
+          "10": 0.6666666666666666,
+          "20": 0.6666666666666666
+        },
+        "precision_at_k": {
+          "5": 0.4,
+          "10": 0.2,
+          "20": 0.1
+        },
+        "f1_at_k": {
+          "5": 0.5,
+          "10": 0.30769230769230765,
+          "20": 0.1739130434782609
+        },
+        "ndcg_at_k": {
+          "5": 0.688482449852666,
+          "10": 0.688482449852666,
+          "20": 0.688482449852666
+        },
+        "mrr": 1.0,
+        "raw_count": 3,
+        "deduplicated_count": 2,
+        "ranked_count": 2,
+        "duplicate_count": 1,
+        "duplicate_ratio": 0.3333333333333333,
+        "per_source_returned_count": {
+          "fixture-openalex": 2,
+          "fixture": 0,
+          "refchain": 1
+        },
+        "source_call_count": 0,
+        "source_error_count": 0,
+        "source_error_rate": 0.0,
+        "warning_count": 2,
+        "query_warning_rate": 1.0,
+        "failed_case_count": 0,
+        "failed_case_rate": 0.0
+      },
+      "case_statistics": {
+        "total_case_count": 1,
+        "gold_case_count": 1,
+        "evaluated_success_count": 1,
+        "failed_case_count": 0,
+        "missing_result_count": 0,
+        "missing_gold_count": 0,
+        "success_rate": 1.0,
+        "failed_case_rate": 0.0,
+        "missing_result_rate": 0.0
+      },
+      "efficiency": {
+        "case_count": 1,
+        "average_latency_seconds": 0.0018360409885644913,
+        "avg_api_call_count": 0.0,
+        "avg_search_api_call_count": 0.0,
+        "avg_reference_api_call_count": 0.0,
+        "avg_retry_count": 0.0,
+        "avg_error_count": 0.0,
+        "avg_cache_hit_count": 0.0,
+        "avg_rate_limit_wait_seconds": 0.0,
+        "avg_llm_call_count": 0.0,
+        "avg_llm_total_tokens": 0.0,
+        "total_llm_call_count": 0,
+        "total_llm_total_tokens": 0,
+        "average_search_rounds": 1.0,
+        "total_raw_count": 3,
+        "total_deduplicated_count": 2,
+        "total_returned_result_count": 2,
+        "total_cache_hit_count": 0,
+        "total_source_call_count": 0,
+        "total_source_error_count": 0,
+        "warnings": []
+      }
+    },
+    "query_evolution_plus_refchain": {
+      "success_only_metrics": {
+        "recall_at_k": {
+          "5": 1.0,
+          "10": 1.0,
+          "20": 1.0
+        },
+        "precision_at_k": {
+          "5": 0.6,
+          "10": 0.3,
+          "20": 0.15
+        },
+        "f1_at_k": {
+          "5": 0.7499999999999999,
+          "10": 0.4615384615384615,
+          "20": 0.2608695652173913
+        },
+        "ndcg_at_k": {
+          "5": 1.0,
+          "10": 1.0,
+          "20": 1.0
+        },
+        "mrr": 1.0,
+        "raw_count": 5,
+        "deduplicated_count": 3,
+        "ranked_count": 3,
+        "duplicate_count": 2,
+        "duplicate_ratio": 0.4,
+        "per_source_returned_count": {
+          "fixture-openalex": 3,
+          "fixture": 0,
+          "refchain": 2
+        },
+        "source_call_count": 0,
+        "source_error_count": 0,
+        "source_error_rate": 0.0,
+        "warning_count": 4,
+        "query_warning_rate": 1.0,
+        "failed_case_count": 0,
+        "failed_case_rate": 0.0
+      },
+      "end_to_end_metrics": {
+        "recall_at_k": {
+          "5": 1.0,
+          "10": 1.0,
+          "20": 1.0
+        },
+        "precision_at_k": {
+          "5": 0.6,
+          "10": 0.3,
+          "20": 0.15
+        },
+        "f1_at_k": {
+          "5": 0.7499999999999999,
+          "10": 0.4615384615384615,
+          "20": 0.2608695652173913
+        },
+        "ndcg_at_k": {
+          "5": 1.0,
+          "10": 1.0,
+          "20": 1.0
+        },
+        "mrr": 1.0,
+        "raw_count": 5,
+        "deduplicated_count": 3,
+        "ranked_count": 3,
+        "duplicate_count": 2,
+        "duplicate_ratio": 0.4,
+        "per_source_returned_count": {
+          "fixture-openalex": 3,
+          "fixture": 0,
+          "refchain": 2
+        },
+        "source_call_count": 0,
+        "source_error_count": 0,
+        "source_error_rate": 0.0,
+        "warning_count": 4,
+        "query_warning_rate": 1.0,
+        "failed_case_count": 0,
+        "failed_case_rate": 0.0
+      },
+      "case_statistics": {
+        "total_case_count": 1,
+        "gold_case_count": 1,
+        "evaluated_success_count": 1,
+        "failed_case_count": 0,
+        "missing_result_count": 0,
+        "missing_gold_count": 0,
+        "success_rate": 1.0,
+        "failed_case_rate": 0.0,
+        "missing_result_rate": 0.0
+      },
+      "efficiency": {
+        "case_count": 1,
+        "average_latency_seconds": 0.003304708981886506,
+        "avg_api_call_count": 0.0,
+        "avg_search_api_call_count": 0.0,
+        "avg_reference_api_call_count": 0.0,
+        "avg_retry_count": 0.0,
+        "avg_error_count": 0.0,
+        "avg_cache_hit_count": 0.0,
+        "avg_rate_limit_wait_seconds": 0.0,
+        "avg_llm_call_count": 0.0,
+        "avg_llm_total_tokens": 0.0,
+        "total_llm_call_count": 0,
+        "total_llm_total_tokens": 0,
+        "average_search_rounds": 2.0,
+        "total_raw_count": 5,
+        "total_deduplicated_count": 3,
+        "total_returned_result_count": 3,
+        "total_cache_hit_count": 0,
+        "total_source_call_count": 0,
+        "total_source_error_count": 0,
+        "warnings": []
+      }
+    }
+  }
+}

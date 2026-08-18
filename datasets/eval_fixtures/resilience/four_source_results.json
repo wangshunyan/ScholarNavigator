@@ -1,0 +1,97 @@
+{
+  "schema_version": "1",
+  "sources": {
+    "arxiv": [
+      {
+        "abstract": "A deterministic study of robust multi-source academic retrieval.",
+        "authors": ["Alex Chen", "Riley Morgan"],
+        "identifiers": {
+          "arxiv_id": "2601.00001",
+          "doi": "10.5555/resilience.common"
+        },
+        "sources": ["arxiv"],
+        "title": "Deterministic Resilience in Multi-Source Academic Retrieval",
+        "year": 2026
+      },
+      {
+        "abstract": "Failure isolation for deterministic scholarly search pipelines.",
+        "authors": ["Taylor Singh"],
+        "identifiers": {
+          "arxiv_id": "2601.00002"
+        },
+        "sources": ["arxiv"],
+        "title": "Failure Isolation for Scholarly Search Pipelines",
+        "year": 2025
+      }
+    ],
+    "openalex": [
+      {
+        "abstract": "A deterministic study of robust multi-source academic retrieval.",
+        "authors": ["Alex Chen", "Riley Morgan"],
+        "identifiers": {
+          "doi": "10.5555/resilience.common",
+          "openalex_id": "W900000001"
+        },
+        "sources": ["openalex"],
+        "title": "Deterministic Resilience in Multi-Source Academic Retrieval",
+        "year": 2026
+      },
+      {
+        "abstract": "Budget-bounded aggregation across independent literature sources.",
+        "authors": ["Morgan Diaz"],
+        "identifiers": {
+          "openalex_id": "W900000002"
+        },
+        "sources": ["openalex"],
+        "title": "Budget-Bounded Multi-Source Literature Aggregation",
+        "year": 2025
+      }
+    ],
+    "semantic_scholar": [
+      {
+        "abstract": "A deterministic study of robust multi-source academic retrieval.",
+        "authors": ["Alex Chen", "Riley Morgan"],
+        "identifiers": {
+          "doi": "10.5555/resilience.common",
+          "semantic_scholar_id": "S2-RESILIENCE-COMMON"
+        },
+        "sources": ["semantic_scholar"],
+        "title": "Deterministic Resilience in Multi-Source Academic Retrieval",
+        "year": 2026
+      },
+      {
+        "abstract": "Structured provenance for partial scholarly retrieval results.",
+        "authors": ["Jamie Park"],
+        "identifiers": {
+          "semantic_scholar_id": "S2-RESILIENCE-UNIQUE"
+        },
+        "sources": ["semantic_scholar"],
+        "title": "Provenance for Partial Scholarly Retrieval",
+        "year": 2024
+      }
+    ],
+    "pubmed": [
+      {
+        "abstract": "A deterministic study of robust multi-source academic retrieval.",
+        "authors": ["Alex Chen", "Riley Morgan"],
+        "identifiers": {
+          "doi": "10.5555/resilience.common",
+          "pubmed_id": "99000001"
+        },
+        "sources": ["pubmed"],
+        "title": "Deterministic Resilience in Multi-Source Academic Retrieval",
+        "year": 2026
+      },
+      {
+        "abstract": "Reliable failure attribution in biomedical literature discovery.",
+        "authors": ["Sam Rivera"],
+        "identifiers": {
+          "pubmed_id": "99000002"
+        },
+        "sources": ["pubmed"],
+        "title": "Failure Attribution in Biomedical Literature Discovery",
+        "year": 2025
+      }
+    ]
+  }
+}

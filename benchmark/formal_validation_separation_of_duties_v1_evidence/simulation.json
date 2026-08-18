@@ -1,0 +1,61 @@
+{
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "protocol": "formal_validation_separation_of_duties_v1",
+  "scenario_count": 11,
+  "scenarios": [
+    {
+      "scenario": "legal_full_ceremony",
+      "status": "passed"
+    },
+    {
+      "scenario": "same_person_double_annotation",
+      "status": "rejected"
+    },
+    {
+      "scenario": "annotator_is_adjudicator",
+      "status": "rejected"
+    },
+    {
+      "scenario": "executor_self_authorizes",
+      "status": "rejected"
+    },
+    {
+      "scenario": "self_generated_self_clearance",
+      "status": "rejected"
+    },
+    {
+      "scenario": "signer_self_approves_revocation",
+      "status": "rejected"
+    },
+    {
+      "scenario": "alias_rebinding",
+      "status": "rejected"
+    },
+    {
+      "scenario": "authorization_tampering",
+      "status": "rejected"
+    },
+    {
+      "scenario": "duplicate_approval",
+      "status": "rejected"
+    },
+    {
+      "scenario": "cross_commit_reuse",
+      "status": "rejected"
+    },
+    {
+      "scenario": "legal_personnel_rotation",
+      "status": "passed"
+    }
+  ],
+  "schema_version": "1",
+  "status": "separation_controls_ready"
+}

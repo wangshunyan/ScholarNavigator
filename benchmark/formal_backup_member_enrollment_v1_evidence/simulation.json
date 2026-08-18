@@ -1,0 +1,28 @@
+{
+  "activation_side_effect_count": 0,
+  "execution": {"llm_request_count": 0, "network_request_count": 0, "snapshot_write_count": 0},
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "passed_count": 14,
+  "protocol": "formal_backup_member_enrollment_v1",
+  "request_identity_change_count": 0,
+  "scenario_count": 14,
+  "scenarios": [
+    {"passed": true, "scenario": "legal_enrollment"},
+    {"passed": true, "scenario": "quota_unknown"},
+    {"passed": true, "scenario": "capacity_insufficient"},
+    {"passed": true, "scenario": "inode_insufficient"},
+    {"passed": true, "scenario": "failure_domain_insufficient"},
+    {"passed": true, "scenario": "attestation_identity_tamper"},
+    {"passed": true, "scenario": "slot_mismatch"},
+    {"passed": true, "scenario": "target_drift"},
+    {"passed": true, "scenario": "revoked"},
+    {"passed": true, "scenario": "permission_failure"},
+    {"passed": true, "scenario": "challenge_replay"},
+    {"passed": true, "scenario": "quota_pool_overlap"},
+    {"passed": true, "scenario": "path_missing"},
+    {"passed": true, "scenario": "same_device_alias"}
+  ],
+  "schema_version": "1",
+  "status": "member_package_ready"
+}

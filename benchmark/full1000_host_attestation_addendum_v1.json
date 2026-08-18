@@ -1,0 +1,26 @@
+{
+  "addendum": "full1000_host_attestation_addendum_v1",
+  "addendum_sha256": "5547ca01ed8c8e0ac038dbd00e5ca801e87e6089459bedd0b60c971109b4b657",
+  "attestation_sha256": "not_available",
+  "formal_validation_complete": false,
+  "host_protocol_sha256": "2328b088f19f0e45eeec7c0d75c6cd983c32cb3d8783ba77613d83e0543a920e",
+  "launch_authorization_requirements": {
+    "attestation_fresh_for_exact_head": true,
+    "attestation_status": "host_qualified",
+    "authoritative_output_root_identity_match": true,
+    "backup_target_identity_match": true,
+    "host_scope_identity_match": true,
+    "legacy_authorization_reusable": false,
+    "primary_target_identity_match": true
+  },
+  "launch_control": {
+    "path": "benchmark/full1000_launch_control_v1_protocol.json",
+    "sha256": "c752ea1461251193b23ac585fc54f682f5e50ade4285ff923c6c88209218aab1"
+  },
+  "schema_version": "1",
+  "source_commit": "e47c5393cdd9f67d38ab8e38749664ca0a3310a1",
+  "storage_governance": {
+    "path": "benchmark/formal_run_storage_governance_v1_protocol.json",
+    "sha256": "bb78967820aba3c223c0638adbda9b0779cc7cecffcb718fa22a06f352c9d5c1"
+  }
+}

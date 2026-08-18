@@ -1,0 +1,105 @@
+{
+  "annotators": [
+    {
+      "items_sha256": "ab8d2bd43941485e534bba93bf22f60f0efd5e0f870a0d57f9b5c52e49bf6b53",
+      "package_id": "record160-471-A",
+      "package_sha256": "a776b0323023736b43cbb456d4205280936e4245bac2874ab545d2364d0e27fe",
+      "side": "A"
+    },
+    {
+      "items_sha256": "a6b2167f49b878d84332be8e80fecdefccb3fd682cecbb25cd2fd4f89e0fb905",
+      "package_id": "record160-471-B",
+      "package_sha256": "43ab65b38284fba77f6a8b7265a479ce4ea3ac0e048bfe8f65ae63aa165b62ac",
+      "side": "B"
+    }
+  ],
+  "asset_count": 15,
+  "assets": [
+    {
+      "path": "annotator-A/app.js",
+      "sha256": "3cae94364999cba3a5c46e7d15a49259a9af46673f2f8922c395b9ebfe7c7fc0",
+      "size": 2942
+    },
+    {
+      "path": "annotator-A/index.html",
+      "sha256": "c8d20c947d14b928caadf816915c9247eef7425092d13e2f82b990c441b734fd",
+      "size": 682
+    },
+    {
+      "path": "annotator-A/items-data.js",
+      "sha256": "c406fc1063e5733defd0a5403e7740e52a2f6cb24de2791cde3a6888337a5630",
+      "size": 894690
+    },
+    {
+      "path": "annotator-A/items.json",
+      "sha256": "1daf38d4008f323dd6cce69d311efc6fdbbd9eb91f63d5687d50f6bdc99d1a97",
+      "size": 911628
+    },
+    {
+      "path": "annotator-A/package-data.js",
+      "sha256": "ab985afe705232bd7d7db81c8082beea238f6ccd3815be76950caf15181ae3c2",
+      "size": 512
+    },
+    {
+      "path": "annotator-A/package.json",
+      "sha256": "75537d887e6ee9da40b975ed20e45f0ceba2dc2bc368d647e175c9cb62bf72bf",
+      "size": 555
+    },
+    {
+      "path": "annotator-A/rubric.json",
+      "sha256": "b6ce3491d5024b6b245f922221f7e8ec7f7546baa6ef57bf7ca38d3eebb9d0b5",
+      "size": 931
+    },
+    {
+      "path": "annotator-B/app.js",
+      "sha256": "3cae94364999cba3a5c46e7d15a49259a9af46673f2f8922c395b9ebfe7c7fc0",
+      "size": 2942
+    },
+    {
+      "path": "annotator-B/index.html",
+      "sha256": "c8d20c947d14b928caadf816915c9247eef7425092d13e2f82b990c441b734fd",
+      "size": 682
+    },
+    {
+      "path": "annotator-B/items-data.js",
+      "sha256": "011983febfd9b6126fbe446bcacc3824c2e0f109f6812ece54a962cd6e1580f4",
+      "size": 894690
+    },
+    {
+      "path": "annotator-B/items.json",
+      "sha256": "2e1d34dd06cc2bc8d7b802ee113ed852125ccec9885d9b075efcffd264046ddd",
+      "size": 911628
+    },
+    {
+      "path": "annotator-B/package-data.js",
+      "sha256": "e5e858b6d4282e866de3ce35b7edfb71c7149daa5518452cdee6ea8b1956e79f",
+      "size": 512
+    },
+    {
+      "path": "annotator-B/package.json",
+      "sha256": "a197ac687ec66e3d5cae9311dbea8d1ae664481e1db6b1e940ce033dd0cf7592",
+      "size": 555
+    },
+    {
+      "path": "annotator-B/rubric.json",
+      "sha256": "b6ce3491d5024b6b245f922221f7e8ec7f7546baa6ef57bf7ca38d3eebb9d0b5",
+      "size": 931
+    },
+    {
+      "path": "operator/mapping.json",
+      "sha256": "f89d65651bc096eeb4584fd7f9fcb851fb0e24e38510a614cff1e1423b0159b5",
+      "size": 219281
+    }
+  ],
+  "bundle_sha256": "37395b24914cb302859ee72fecfad237c6abf3382e68d0145cdd01e91d2df059",
+  "contract": "human_annotation_delivery_v1",
+  "execution": {
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "official_scorer_call_count": 0,
+    "snapshot_write_count": 0
+  },
+  "item_count_per_annotator": 471,
+  "schema_version": "1",
+  "statistics": null
+}

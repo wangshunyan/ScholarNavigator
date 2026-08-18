@@ -1,0 +1,27 @@
+{
+  "analysis": "ranking_decision_audit_v1",
+  "files": {
+    "aggregate": {
+      "path": "aggregate.json",
+      "sha256": "2ad47ebb3b9e9e047829660a577b89a90b32eb4daab29cdc087d4170013078e5",
+      "size": 53626
+    },
+    "candidate_decisions": {
+      "path": "candidate_decisions.jsonl",
+      "sha256": "64cf3b140de981f1ac413f256de619091ca6c096e2399c788fc0a316644b820f",
+      "size": 27789542
+    },
+    "case_diagnostics": {
+      "path": "case_diagnostics.jsonl",
+      "sha256": "14cb2fa7eef7092a6015b8238da1555b6daf6376d892576dca5f7c7434405767",
+      "size": 142398
+    },
+    "protocol": {
+      "path": "protocol.json",
+      "sha256": "bafcbc2019a61b2a753fdccb5912f762f4b1bf30ee8199a6c7ad6059563b57ff",
+      "size": 7682
+    }
+  },
+  "schema_version": "1",
+  "status": "completed"
+}

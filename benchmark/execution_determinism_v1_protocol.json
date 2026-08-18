@@ -1,0 +1,142 @@
+{
+  "canonicalization": {
+    "excluded_fields": [
+      {
+        "path": "runtime.run_id",
+        "reason": "per-invocation diagnostic identifier"
+      },
+      {
+        "path": "runtime.process_id",
+        "reason": "machine process identifier"
+      },
+      {
+        "path": "runtime.invocation_index",
+        "reason": "execution-mode invocation counter"
+      },
+      {
+        "path": "runtime.elapsed_seconds",
+        "reason": "wall-clock duration"
+      },
+      {
+        "path": "result.latency_seconds",
+        "reason": "wall-clock duration"
+      },
+      {
+        "path": "result.stage_latencies.*",
+        "reason": "wall-clock stage duration"
+      },
+      {
+        "path": "result.budget_status.elapsed_seconds",
+        "reason": "wall-clock budget duration"
+      },
+      {
+        "path": "result.retrieval_outputs.*.latency_seconds",
+        "reason": "wall-clock retrieval duration"
+      },
+      {
+        "path": "result.retrieval_outputs.*.source_stats.*.latency_seconds",
+        "reason": "wall-clock source duration"
+      },
+      {
+        "path": "result.retrieval_outputs.*.source_stats.*.diagnostics.latency_seconds",
+        "reason": "wall-clock connector duration"
+      },
+      {
+        "path": "result.retrieval_outputs.*.source_stats.*.diagnostics.rate_limit_wait_seconds",
+        "reason": "wall-clock rate-limit wait"
+      },
+      {
+        "path": "result.source_stats.*.latency_seconds",
+        "reason": "wall-clock source duration"
+      },
+      {
+        "path": "result.source_stats.*.diagnostics.latency_seconds",
+        "reason": "wall-clock connector duration"
+      },
+      {
+        "path": "result.source_stats.*.diagnostics.rate_limit_wait_seconds",
+        "reason": "wall-clock rate-limit wait"
+      },
+      {
+        "path": "result.search_diagnostics.latency_seconds",
+        "reason": "wall-clock connector duration"
+      },
+      {
+        "path": "result.search_diagnostics.rate_limit_wait_seconds",
+        "reason": "wall-clock rate-limit wait"
+      },
+      {
+        "path": "result.reference_diagnostics.latency_seconds",
+        "reason": "wall-clock connector duration"
+      },
+      {
+        "path": "result.reference_diagnostics.rate_limit_wait_seconds",
+        "reason": "wall-clock rate-limit wait"
+      },
+      {
+        "path": "events.*.payload.latency_seconds",
+        "reason": "wall-clock semantic-event duration"
+      },
+      {
+        "path": "events.*.payload.timestamp",
+        "reason": "semantic-event wall-clock timestamp"
+      },
+      {
+        "path": "events.*.payload.budget_status.elapsed_seconds",
+        "reason": "wall-clock event budget duration"
+      }
+    ],
+    "policy": "explicit_field_paths_only_unknown_fields_preserved"
+  },
+  "contract": "execution_determinism_v1",
+  "execution": {
+    "checkpoint_split_count": 1,
+    "controlled_concurrent_workers": 3,
+    "search_service_arguments": {
+      "collect_diagnostics": true,
+      "current_year": 2026,
+      "budget": {
+        "max_candidate_papers": 200,
+        "max_latency_seconds": 90.0,
+        "max_llm_calls": 20,
+        "max_search_rounds": 2,
+        "max_total_tokens": 50000
+      },
+      "enable_llm_judgement": false,
+      "enable_llm_query_understanding": false,
+      "enable_query_evolution": false,
+      "enable_refchain": false,
+      "enable_semantic_seed_expansion": false,
+      "enable_synthesis": false,
+      "query_adapter_policy": "adaptive",
+      "query_evolution_policy": "off",
+      "query_planning_policy": "current_rules",
+      "ranking_policy": "current_rules",
+      "run_profile": "balanced",
+      "sources_override": [
+        "arxiv",
+        "openalex"
+      ],
+      "top_k": 5
+    },
+    "service_max_workers": 1
+  },
+  "fixture": {
+    "kind": "local_retrieval_output_replay_fixture",
+    "query_selection": {
+      "count": 3,
+      "gold_blind": true,
+      "order_sha256": "d52fd2090f8e334e1b1d9f0a680132f77d0b2ba30db5f4147b772a75066e8af0",
+      "policy": "first_n_unique_retrieval_queries_in_file_order"
+    },
+    "retrieval_outputs_path": "datasets/eval_fixtures/sample/retrieval_outputs.json",
+    "sha256": "113fe81cb5b6a4e3d912668122825a7d34dfd40ab30d8694139c13ddc3b89f62",
+    "size_bytes": 5979
+  },
+  "frozen_baseline_eligibility": {
+    "legacy_audit_path": "benchmark/run_provenance_legacy_audit.json",
+    "sha256": "46197f1665cd827bf386b985b00ae0d8079bcffb1c56e48556953bd926cf084d"
+  },
+  "schema_version": "1",
+  "score_scope": "determinism_only_not_quality_or_official_score"
+}

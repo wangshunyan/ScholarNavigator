@@ -1,0 +1,22 @@
+{
+  "analysis": "source_fusion_ablation_v1",
+  "files": {
+    "aggregate": {
+      "path": "aggregate.json",
+      "sha256": "716b170c1e453083ac916ee121eff883c639642414b658fddcce372e6450d29f",
+      "size": 41936
+    },
+    "case_diagnostics": {
+      "path": "case_diagnostics.jsonl",
+      "sha256": "f2ac0c75330248d1a18deebdf7dd2228f9b3ba5ae4ae8cb7a149054cefdb2660",
+      "size": 1049155
+    },
+    "protocol": {
+      "path": "protocol.json",
+      "sha256": "dbf1a340ed4b66aefb62db496ce9992f39476d7b04024df97192d509d7922111",
+      "size": 4917
+    }
+  },
+  "schema_version": "1",
+  "status": "completed"
+}

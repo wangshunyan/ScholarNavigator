@@ -1,0 +1,59 @@
+{
+  "allowed_environment": [
+    "HOME",
+    "LANG",
+    "LC_ALL",
+    "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY",
+    "NEXT_TELEMETRY_DISABLED",
+    "PATH",
+    "SOURCE_DATE_EPOCH",
+    "TMPDIR",
+    "TZ"
+  ],
+  "build_command": "next build --webpack",
+  "canonical_staging": {
+    "cleanup_required": true,
+    "namespace": "spar-frontend-reproducible-build-v1",
+    "source_identity": "release source_manifest_sha256 prefix",
+    "strategy": "posix_tmp_fixed_source_digest_v1"
+  },
+  "determinism": {
+    "archive_comparison": "all members and bytes, without normalization",
+    "build_id": "sha256-bound source commit prefix",
+    "cache": "empty for every build",
+    "chunk_ids": "webpack deterministic within canonical staging context",
+    "source_maps": "disabled by existing production configuration",
+    "timestamps": "SOURCE_DATE_EPOCH from release contract"
+  },
+  "execution_profiles": [
+    {
+      "cwd": "independent source parent A before canonical staging",
+      "home": "isolated A",
+      "name": "profile-a",
+      "tmpdir": "isolated A"
+    },
+    {
+      "cwd": "independent source parent B before canonical staging",
+      "home": "isolated B",
+      "name": "profile-b",
+      "tmpdir": "isolated B"
+    }
+  ],
+  "expected_output_roles": [
+    "BUILD_ID",
+    "route manifests",
+    "server-rendered HTML and RSC hydration payload",
+    "webpack static chunks",
+    "Next file traces",
+    "public assets"
+  ],
+  "formal_validation_complete": false,
+  "gold_or_qrels_loaded": false,
+  "llm_request_count": 0,
+  "network_request_count": 0,
+  "protocol": "frontend_reproducible_build_v1",
+  "quality_metric_count": 0,
+  "release_source_commit": "b0667d658ed8b8df5bc7f2ffde7625ba0aed0d19",
+  "schema_version": "1",
+  "snapshot_write_count": 0
+}
