@@ -46,7 +46,10 @@ class BuildReport:
     input_rows: int
     metadata_valid_id_rows: int
     metadata_missing_id_rows: int
+    metadata_missing_title_rows: int
     metadata_missing_abstract_rows: int
+    metadata_missing_categories_rows: int
+    metadata_missing_authors_rows: int
     duplicate_metadata_rows: int
     conflicting_metadata_ids: int
     pasa_rows: int
@@ -55,6 +58,9 @@ class BuildReport:
     pasa_without_metadata: int
     output_rows: int
     output_abstract_rows: int
+    output_category_rows: int
+    output_author_rows: int
+    field_completeness: dict[str, float]
     coverage: float
     output_sha256: str
     category_counts: dict[str, int]
@@ -70,7 +76,15 @@ def build_semantic_corpus(
     _reject_evaluator_path(metadata_path)
     _reject_evaluator_path(pasa_paper_index)
     pasa = _read_pasa_index(pasa_paper_index)
-    metadata_rows, input_rows, missing_id_rows, missing_abstract_rows = (
+    (
+        metadata_rows,
+        input_rows,
+        missing_id_rows,
+        missing_title_rows,
+        missing_abstract_rows,
+        missing_categories_rows,
+        missing_authors_rows,
+    ) = (
         _read_metadata(metadata_path)
     )
 
@@ -130,7 +144,10 @@ def build_semantic_corpus(
         input_rows=input_rows,
         metadata_valid_id_rows=len(metadata_rows),
         metadata_missing_id_rows=missing_id_rows,
+        metadata_missing_title_rows=missing_title_rows,
         metadata_missing_abstract_rows=missing_abstract_rows,
+        metadata_missing_categories_rows=missing_categories_rows,
+        metadata_missing_authors_rows=missing_authors_rows,
         duplicate_metadata_rows=duplicate_metadata_rows,
         conflicting_metadata_ids=len(conflicting_ids),
         pasa_rows=len(pasa),
@@ -139,6 +156,26 @@ def build_semantic_corpus(
         pasa_without_metadata=len(set(pasa) - set(metadata_by_id)),
         output_rows=len(rows),
         output_abstract_rows=sum(bool(row["abstract"]) for row in rows.values()),
+        output_category_rows=sum(bool(row.get("categories")) for row in rows.values()),
+        output_author_rows=sum(bool(row.get("authors")) for row in rows.values()),
+        field_completeness={
+            "title": 1.0 if rows else 0.0,
+            "abstract": (
+                sum(bool(row["abstract"]) for row in rows.values()) / len(rows)
+                if rows
+                else 0.0
+            ),
+            "categories": (
+                sum(bool(row.get("categories")) for row in rows.values()) / len(rows)
+                if rows
+                else 0.0
+            ),
+            "authors": (
+                sum(bool(row.get("authors")) for row in rows.values()) / len(rows)
+                if rows
+                else 0.0
+            ),
+        },
         coverage=len(rows) / len(pasa) if pasa else 0.0,
         output_sha256=_sha256_bytes(output_text.encode("utf-8")),
         category_counts=dict(category_counts.most_common()),
@@ -190,9 +227,14 @@ def _read_pasa_index(path: Path) -> dict[str, str]:
 
 def _read_metadata(
     path: Path,
-) -> tuple[list[dict[str, Any]], int, int, int]:
+) -> tuple[list[dict[str, Any]], int, int, int, int, int, int]:
     rows: list[dict[str, Any]] = []
-    input_rows = missing_id_rows = missing_abstract_rows = 0
+    input_rows = 0
+    missing_id_rows = 0
+    missing_title_rows = 0
+    missing_abstract_rows = 0
+    missing_categories_rows = 0
+    missing_authors_rows = 0
     for payload in _iter_source_records(path):
         input_rows += 1
         arxiv_id = normalize_arxiv_id(_first_field(payload, _ID_FIELDS))
@@ -200,23 +242,38 @@ def _read_metadata(
             missing_id_rows += 1
             continue
         abstract = _clean_text(_first_field(payload, _ABSTRACT_FIELDS))
+        title = _clean_text(_first_field(payload, _TITLE_FIELDS))
+        categories = _parse_list(_first_field(payload, _CATEGORY_FIELDS))
+        authors = _parse_list(_first_field(payload, _AUTHOR_FIELDS))
+        missing_title_rows += not bool(title)
         if not abstract:
             missing_abstract_rows += 1
+        missing_categories_rows += not bool(categories)
+        missing_authors_rows += not bool(authors)
+        if not abstract:
             continue
         rows.append(
             {
                 "arxiv_id": arxiv_id,
-                "title": _clean_text(_first_field(payload, _TITLE_FIELDS)),
+                "title": title,
                 "abstract": abstract,
-                "categories": _parse_list(_first_field(payload, _CATEGORY_FIELDS)),
-                "authors": _parse_list(_first_field(payload, _AUTHOR_FIELDS)),
+                "categories": categories,
+                "authors": authors,
             }
         )
     if not rows:
         raise ValueError(
             "metadata source contains no rows with a valid arXiv ID and abstract"
         )
-    return rows, input_rows, missing_id_rows, missing_abstract_rows
+    return (
+        rows,
+        input_rows,
+        missing_id_rows,
+        missing_title_rows,
+        missing_abstract_rows,
+        missing_categories_rows,
+        missing_authors_rows,
+    )
 
 
 def _iter_source_records(path: Path) -> Iterator[Mapping[str, Any]]:
@@ -326,7 +383,10 @@ def _clean_text(value: Any) -> str:
 
 def _reject_evaluator_path(path: Path) -> None:
     normalized = "/".join(path.resolve().parts).casefold()
-    if any(token in normalized for token in ("autoscholarquery", "test_gold", "qrels")):
+    if any(
+        token in normalized
+        for token in ("autoscholarquery", "gold", "qrels")
+    ):
         raise ValueError("evaluator gold/qrels paths are not valid corpus inputs")
 
 

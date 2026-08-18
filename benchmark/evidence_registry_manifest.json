@@ -29,18 +29,18 @@
   },
   "baseline": {
     "registry_path": "benchmark/evidence_registry_baseline/registry.json",
-    "registry_sha256": "165fcfb57be339b27c8aa690bef4df21967c1f301fb3940162e3fd9f952ebd5e",
+    "registry_sha256": "18b9b41e6314d9237f438824f6804bdef4c77f6f43b3f3eb4130778b91193f37",
     "matrix_path": "benchmark/evidence_registry_baseline/matrix.json",
-    "matrix_sha256": "3a6b4743287436764b2a9f5b3c874a4546799118767223f929121436c890eac6",
+    "matrix_sha256": "fd362735bf6b070f47ef60134f400c5a83c872862220e70b03e85e5d671692b4",
     "summary_path": "benchmark/evidence_registry_baseline/summary.md",
-    "summary_sha256": "8357d0dcf1afc2ee07a13ffaeb67b2b9caba6533c753377cadb51034362d23f6"
+    "summary_sha256": "c612afb9cee9f7ffb5bdfcc263b85654d4f72ac365e196fcd76ea9ae2eae2980"
   },
   "strategies": [
     {
       "strategy_id": "calibrated_rules_v1",
       "family": "judgement",
-      "implementation_commit": "6525f09b4a26a0a931843a08ac886e049ebbf9f3",
-      "evaluation_commit": "6525f09b4a26a0a931843a08ac886e049ebbf9f3",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "AutoScholarQuery dev 0/10",
@@ -65,15 +65,16 @@
       "conclusion": "独立 holdout 将唯一召回 gold 判为弱相关，最终指标归零；历史文档要求继续默认关闭。",
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "holdout_regression"
+        "holdout_regression",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "concept_projection",
       "family": "query_planning",
-      "implementation_commit": "b0c9636ec6b7cda87f655024c189e903c4da9d68",
-      "evaluation_commit": "b0c9636ec6b7cda87f655024c189e903c4da9d68",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "SciFact fixed 50",
@@ -100,15 +101,16 @@
       "conclusion": "SciFact 与 validation 持平，但 development 的 Recall@20/F1@20 退化，未形成跨数据集净增。",
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "development_regression"
+        "development_regression",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "controlled_relaxation",
       "family": "query_planning",
-      "implementation_commit": "3a0327a779f56376ce64dd1c309266ea1cd45399",
-      "evaluation_commit": "3a0327a779f56376ce64dd1c309266ea1cd45399",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "AutoScholarQuery dev 50/20",
@@ -132,15 +134,16 @@
       "conclusion": "验证集新增独占候选但新增 gold 为 0，未通过预注册门槛。",
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "no_incremental_gold"
+        "no_incremental_gold",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "current_plus_disjunctive",
       "family": "query_planning",
-      "implementation_commit": "8588da390bcebe8ccedb41f4085ecb9a67676dea",
-      "evaluation_commit": "8588da390bcebe8ccedb41f4085ecb9a67676dea",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "AutoScholarQuery dev 210/20",
@@ -164,15 +167,16 @@
       "conclusion": "完整保留基线的组合查询仍未增加 gold，并增加请求与候选噪声。",
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "no_incremental_gold"
+        "no_incremental_gold",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "current_rules",
       "family": "default_composite",
-      "implementation_commit": "eb42ac0883bb0a02770d85df612c3fe3cb6cb286",
-      "evaluation_commit": "865decc7095e41f05cb359f7463b7a3b81791a56",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": true,
       "datasets": [
         "SciFact fixed 50",
@@ -226,15 +230,16 @@
       "conclusion": "65 条冻结 Replay 回归基准通过；它是内部默认策略参考，不是 AutoScholarQuery 1000 条正式基线或官方成绩。",
       "blockers": [
         "official_scorer_unavailable",
-        "full_1000_retrieval_baseline_incomplete"
+        "full_1000_retrieval_baseline_incomplete",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "disjunctive_facets",
       "family": "query_planning",
-      "implementation_commit": "96a5d280a1be69cfb4a8d93de9754d20def0f8b1",
-      "evaluation_commit": "11868ab9934dd6bf674b0a1c03bdc9a7b49492bf",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "AutoScholarQuery dev 130/20",
@@ -259,15 +264,16 @@
       "conclusion": "早期小样本通过，但预注册 40 条 holdout 的 Recall@20/F1@20 退化，最终保持实验状态。",
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "holdout_regression"
+        "holdout_regression",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "facet_balanced",
       "family": "query_planning",
-      "implementation_commit": "1536e428ffca78cad36b6a1e2beeefebf1b121d1",
-      "evaluation_commit": "1536e428ffca78cad36b6a1e2beeefebf1b121d1",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "AutoScholarQuery dev 0/10",
@@ -291,15 +297,16 @@
       "conclusion": "开发和验证均未新增 gold，验证请求成本上升，未通过验收。",
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "no_incremental_gold"
+        "no_incremental_gold",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "facet_union",
       "family": "query_planning",
-      "implementation_commit": "cc6f78e2fe8c799b5d298bdf4a9222ede67f530f",
-      "evaluation_commit": "cc6f78e2fe8c799b5d298bdf4a9222ede67f530f",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "AutoScholarQuery dev 250/20",
@@ -324,15 +331,16 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "no_incremental_gold",
-        "efficiency_regression"
+        "efficiency_regression",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "lexical_normalization_v1",
       "family": "judgement_evidence_matching",
-      "implementation_commit": "2c2aee359ce39ccfbf038003bec4ce7e609a2801",
-      "evaluation_commit": "a098cadf6390a34866da5036182d1f23bfdd6053",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "SciFact fixed 50",
@@ -389,15 +397,16 @@
       "blockers": [
         "human_precision_pending",
         "cluster_inference_not_significant",
-        "official_scorer_unavailable"
+        "official_scorer_unavailable",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "llm_constrained_rewrite",
       "family": "query_planning_llm",
-      "implementation_commit": "87317265f98e840058a3b2e78159031c80ad4fed",
-      "evaluation_commit": "87317265f98e840058a3b2e78159031c80ad4fed",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "SciFact fixed 50",
@@ -424,14 +433,15 @@
       "conclusion": "历史评测存在来源终态与 fallback 可归因限制，未证明跨三个集合稳定净增。",
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "fallback_or_source_terminal_incomparability"
+        "fallback_or_source_terminal_incomparability",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "llm_judgement",
       "family": "judgement_llm",
-      "implementation_commit": "d78a1197392e1ae3cc2229541d20a8301f33d9ee",
+      "implementation_commit": null,
       "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [],
@@ -453,14 +463,15 @@
       "conclusion": "仅有实现与降级语义说明，没有跟踪的正式配对 Benchmark、成本收益或稳定性证据。",
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "llm_query_understanding",
       "family": "query_understanding_llm",
-      "implementation_commit": "a76e2acbcde884b35833374321737fb9af3fc4a0",
+      "implementation_commit": null,
       "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [],
@@ -482,15 +493,16 @@
       "conclusion": "仅有严格 JSON 与规则 fallback 的实现说明，没有跟踪的正式配对效果证据。",
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "llm_semantic",
       "family": "query_planning_llm",
-      "implementation_commit": "7d0bbf643b291d87c7a6122ecf351054d28f46d3",
-      "evaluation_commit": "7d0bbf643b291d87c7a6122ecf351054d28f46d3",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "AutoScholarQuery dev 0/10",
@@ -515,15 +527,16 @@
       "conclusion": "SciFact 缺少完整策略产物，且历史阶段曾受 provider/调用完整性阻断，不能形成跨集合结论。",
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "dataset_evidence_incomplete"
+        "dataset_evidence_incomplete",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "local_bm25",
       "family": "retrieval_source",
-      "implementation_commit": "d369ff9ca69ee11f193d450fb05d5934d91b83e6",
-      "evaluation_commit": "d369ff9ca69ee11f193d450fb05d5934d91b83e6",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "SciFact fixed 50 closed corpus"
@@ -566,15 +579,16 @@
       "conclusion": "在 SciFact 官方封闭语料上显著增加内部召回，但不是开放网络成绩，且语料配置专属，保持默认关闭。",
       "blockers": [
         "closed_corpus_only",
-        "official_scorer_unavailable"
+        "official_scorer_unavailable",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "local_bm25_original_deepening",
       "family": "benchmark_only_retrieval",
-      "implementation_commit": "10082ff34f6604cc5250378a590d6f72335f464f",
-      "evaluation_commit": "10082ff34f6604cc5250378a590d6f72335f464f",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "SciFact fixed 50 closed corpus"
@@ -616,15 +630,16 @@
       "conclusion": "只新增 1 条候选 gold，最终 Recall@20/F1@20 均未提升；不建议继续。",
       "blockers": [
         "no_final_metric_gain",
-        "closed_corpus_only"
+        "closed_corpus_only",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "prf_v1",
       "family": "query_planning_feedback",
-      "implementation_commit": "72cd64e55fee525585942b502fe0ccd84a60de15",
-      "evaluation_commit": "72cd64e55fee525585942b502fe0ccd84a60de15",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "SciFact fixed 50",
@@ -651,14 +666,15 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "no_strict_subset_gain",
-        "source_terminal_drift"
+        "source_terminal_drift",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "query_adapter_hybrid",
       "family": "query_adapter",
-      "implementation_commit": "966eb66ac56e37dd46315bf966b863287e1dc4b9",
+      "implementation_commit": null,
       "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [],
@@ -680,14 +696,15 @@
       "conclusion": "可选 adapter 已实现，但没有独立、跟踪的配对 Benchmark 证据。",
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "query_adapter_safe_original",
       "family": "query_adapter",
-      "implementation_commit": "966eb66ac56e37dd46315bf966b863287e1dc4b9",
+      "implementation_commit": null,
       "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [],
@@ -709,15 +726,16 @@
       "conclusion": "可选 adapter 已实现，但没有独立、跟踪的配对 Benchmark 证据。",
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "query_evolution_coverage_gap",
       "family": "query_evolution",
-      "implementation_commit": "6a8632669cf0737d0d4aa89aa4370172112cefe5",
-      "evaluation_commit": "6a8632669cf0737d0d4aa89aa4370172112cefe5",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "AutoScholarQuery dev 0/10"
@@ -741,15 +759,16 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "insufficient_sample",
-        "source_failure"
+        "source_failure",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "query_evolution_seed_expansion",
       "family": "query_evolution",
-      "implementation_commit": "6a8632669cf0737d0d4aa89aa4370172112cefe5",
-      "evaluation_commit": "6a8632669cf0737d0d4aa89aa4370172112cefe5",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "AutoScholarQuery dev 0/10"
@@ -773,15 +792,16 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "insufficient_sample",
-        "source_failure"
+        "source_failure",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "refchain",
       "family": "citation_expansion",
-      "implementation_commit": "f6bafafb8c27a4e3936aa1d4ea42f0bf21e7314c",
-      "evaluation_commit": "f6bafafb8c27a4e3936aa1d4ea42f0bf21e7314c",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "AutoScholarQuery dev 0/10"
@@ -806,14 +826,15 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "reference_source_failure",
-        "insufficient_sample"
+        "insufficient_sample",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "result_policy_highly_only",
       "family": "result_filtering",
-      "implementation_commit": "928a2f571d9fe24089453fff78e281c0dd4f2382",
+      "implementation_commit": null,
       "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [],
@@ -835,15 +856,16 @@
       "conclusion": "严格过滤选项已实现，但没有独立、跟踪的配对 Benchmark 证据。",
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "rrf_fusion",
       "family": "ranking",
-      "implementation_commit": "200783699b50d8922d8320487a3edf4c78b5f197",
-      "evaluation_commit": "200783699b50d8922d8320487a3edf4c78b5f197",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "SciFact fixed 50",
@@ -869,15 +891,16 @@
       "conclusion": "冻结候选排序消融在 SciFact 与 development 退化、validation 持平，未形成稳定价值。",
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "cross_dataset_regression"
+        "cross_dataset_regression",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     },
     {
       "strategy_id": "semantic_seed_expansion",
       "family": "recommendation_expansion",
-      "implementation_commit": "28db182c2bf62dd2914ff13c5a3f48c4361c5eaa",
-      "evaluation_commit": "28db182c2bf62dd2914ff13c5a3f48c4361c5eaa",
+      "implementation_commit": null,
+      "evaluation_commit": null,
       "default_enabled": false,
       "datasets": [
         "SciFact fixed 50",
@@ -904,7 +927,8 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "no_incremental_gold",
-        "cross_dataset_regression"
+        "cross_dataset_regression",
+        "historical_commit_unavailable"
       ],
       "score_scope": "internal_not_official"
     }

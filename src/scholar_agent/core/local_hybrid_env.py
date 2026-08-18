@@ -30,6 +30,12 @@ LOCAL_HYBRID_SEARCH_MODE_ENV = "SCHOLAR_AGENT_LOCAL_HYBRID_SEMANTIC_SEARCH_MODE"
 LOCAL_HYBRID_HNSW_M_ENV = "SCHOLAR_AGENT_LOCAL_HYBRID_HNSW_M"
 LOCAL_HYBRID_HNSW_EF_CONSTRUCTION_ENV = "SCHOLAR_AGENT_LOCAL_HYBRID_HNSW_EF_CONSTRUCTION"
 LOCAL_HYBRID_HNSW_EF_SEARCH_ENV = "SCHOLAR_AGENT_LOCAL_HYBRID_HNSW_EF_SEARCH"
+LOCAL_HYBRID_RERANKER_MODEL_ENV = "SCHOLAR_AGENT_LOCAL_HYBRID_RERANKER_MODEL"
+LOCAL_HYBRID_RERANKER_CANDIDATE_LIMIT_ENV = (
+    "SCHOLAR_AGENT_LOCAL_HYBRID_RERANKER_CANDIDATE_LIMIT"
+)
+LOCAL_HYBRID_RERANKER_BATCH_SIZE_ENV = "SCHOLAR_AGENT_LOCAL_HYBRID_RERANKER_BATCH_SIZE"
+LOCAL_HYBRID_RERANKER_DEVICE_ENV = "SCHOLAR_AGENT_LOCAL_HYBRID_RERANKER_DEVICE"
 
 _DEFAULT_INDEX_DIR = Path("outputs") / "benchmark_cache" / "local_hybrid"
 _REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -62,6 +68,16 @@ def local_hybrid_config_from_env(
             root,
         ),
         model_path=_resolve_env_path(raw_model, root),
+        reranker_model_path=(
+            _resolve_env_path(raw_reranker_model, root)
+            if (raw_reranker_model := _optional_env(LOCAL_HYBRID_RERANKER_MODEL_ENV))
+            else None
+        ),
+        reranker_candidate_limit=_int_env(
+            LOCAL_HYBRID_RERANKER_CANDIDATE_LIMIT_ENV, 120
+        ),
+        reranker_batch_size=_int_env(LOCAL_HYBRID_RERANKER_BATCH_SIZE_ENV, 8),
+        reranker_device=_env_or_default(LOCAL_HYBRID_RERANKER_DEVICE_ENV, "auto"),
         bm25_candidate_limit=_int_env(
             LOCAL_HYBRID_BM25_CANDIDATE_LIMIT_ENV,
             60,
@@ -123,6 +139,12 @@ def _config_signature(config: LocalHybridConfig) -> tuple[object, ...]:
         config.hnsw_m,
         config.hnsw_ef_construction,
         config.hnsw_ef_search,
+        str(Path(config.reranker_model_path).expanduser())
+        if config.reranker_model_path is not None
+        else None,
+        config.reranker_candidate_limit,
+        config.reranker_batch_size,
+        config.reranker_device,
     )
 
 

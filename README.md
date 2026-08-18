@@ -68,14 +68,37 @@ npm run dev
 候选优化配置可运行：
 
 ```powershell
-.\scripts\run_contest_benchmark.ps1 -Mode full -Configuration hybrid_deep_rrf -RunId contest_full_hybrid_deep_rrf_v1
+ .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration hybrid_deep_rrf -RunId contest_full_hybrid_deep_rrf_v1
 ```
+
+上述 `hybrid_deep_rrf` 命令只保留作旧链路示例，不是当前 P0/Faiss 正式运行入口；新主线必须先完成 200 条资格门禁。
 
 Linux 服务器使用同等脚本：
 
 ```bash
 ./scripts/run_contest_benchmark.sh --mode full --configuration hybrid_deep_rrf --run-id contest_full_hybrid_deep_rrf_v1
 ```
+
+## 赛题三固定资格与正式消融
+
+P0 语料或 Faiss 索引变化后，不恢复旧 `local/hybrid` 结果。先在同一批前 200 条查询上运行：
+
+```powershell
+.\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration rules -RunId contest_qual200_bm25_v1
+.\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration dense -RunId contest_qual200_dense_v1
+.\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration reranker -RunId contest_qual200_reranker_v1
+```
+
+候选只有在配对 bootstrap 和资源账本门禁通过后才能运行完整 1000 条：
+
+```powershell
+.\.venv\Scripts\python.exe scripts\check_contest_qualification.py `
+  --baseline outputs\benchmark_runs\contest_qual200_bm25_v1 `
+  --candidate outputs\benchmark_runs\contest_qual200_dense_v1 `
+  --output outputs\benchmark_runs\contest_qual200_dense_v1\qualification_gate.json
+```
+
+完整组固定为 `contest_full_rules_v1`、`contest_full_dense_v1`、`contest_full_dense_reranker_v1` 和 `contest_full_dense_reranker_llm_v1`。Qwen3 Reranker 只从本地模型目录加载；缺失或失败时回退并记录，不能写作神经重排成绩。内部 F1/Recall 不等同于赛事官方 scorer。
 
 参赛补齐步骤、优化优先级和提交材料清单见 [docs/contest/next-steps.md](docs/contest/next-steps.md)；演示查询可参考 [docs/contest/demo-queries.md](docs/contest/demo-queries.md)。
 

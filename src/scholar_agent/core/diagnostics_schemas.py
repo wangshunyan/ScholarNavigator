@@ -17,6 +17,10 @@ class ConnectorDiagnostics(BaseModel):
     rate_limit_wait_seconds: float = Field(default=0.0, ge=0.0)
     retry_after_seconds: float | None = Field(default=None, ge=0.0, exclude=True)
     latency_seconds: float = Field(default=0.0, ge=0.0)
+    local_model_latency_seconds: float = Field(default=0.0, ge=0.0)
+    local_model_batch_count: int = Field(default=0, ge=0)
+    local_model_fallback_count: int = Field(default=0, ge=0)
+    local_model_fingerprint: str | None = None
 
 
 def merge_connector_diagnostics(
@@ -42,4 +46,19 @@ def merge_connector_diagnostics(
             default=None,
         ),
         latency_seconds=sum(item.latency_seconds for item in items),
+        local_model_latency_seconds=sum(
+            item.local_model_latency_seconds for item in items
+        ),
+        local_model_batch_count=sum(item.local_model_batch_count for item in items),
+        local_model_fallback_count=sum(
+            item.local_model_fallback_count for item in items
+        ),
+        local_model_fingerprint=next(
+            (
+                item.local_model_fingerprint
+                for item in reversed(items)
+                if item.local_model_fingerprint is not None
+            ),
+            None,
+        ),
     )

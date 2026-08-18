@@ -1,5 +1,6 @@
 # Optional local semantic retrieval stack.
 sentence-transformers==5.7.0
+transformers==5.15.0
 modelscope==1.39.1
 faiss-cpu==1.13.2
 psutil==7.0.0

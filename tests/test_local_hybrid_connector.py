@@ -12,7 +12,10 @@ from scholar_agent.connectors.local_bm25 import LocalBM25FieldConfig
 from scholar_agent.connectors.local_hybrid import LocalHybridConfig
 from scholar_agent.connectors.local_hybrid import build_local_hybrid_index
 from scholar_agent.connectors.local_hybrid import _fuse_ranked_lists
+from scholar_agent.connectors.schemas import ConnectorSearchResult
 from scholar_agent.core.paper_schemas import Paper, PaperIdentifiers
+from scholar_agent.core.diagnostics_schemas import ConnectorDiagnostics
+from scholar_agent.agents.neural_reranker import NeuralRerankResult
 
 
 def _paper(
@@ -158,3 +161,77 @@ def test_old_index_schema_is_rejected(tmp_path: Path) -> None:
     )
     with pytest.raises(ValueError, match="schema_mismatch"):
         local_hybrid_module._load_index_metadata(config)
+
+
+def test_reranker_configuration_requires_a_local_model_directory(tmp_path: Path) -> None:
+    semantic = tmp_path / "semantic.jsonl"
+    bm25 = tmp_path / "bm25.jsonl"
+    encoder = tmp_path / "encoder"
+    semantic.write_text('{"arxiv_id":"2501.00001","title":"Paper","abstract":"A"}\n')
+    bm25.write_text('{"_id":"2501.00001","title":"Paper","abstract":""}\n')
+    encoder.mkdir()
+    config = LocalHybridConfig(
+        bm25_config=LocalBM25Config(corpus_path=bm25, cache_dir=tmp_path / "cache"),
+        semantic_corpus_path=semantic,
+        semantic_index_dir=tmp_path / "index",
+        model_path=encoder,
+        reranker_model_path=tmp_path / "missing-reranker",
+    )
+
+    with pytest.raises(ValueError, match="reranker_model_not_found"):
+        local_hybrid_module._normalize_config(config)
+
+
+def test_connector_reports_reranker_diagnostics_and_uses_candidate_pool(
+    tmp_path: Path, monkeypatch
+) -> None:
+    encoder = tmp_path / "encoder"
+    encoder.mkdir()
+    reranker_model = tmp_path / "reranker"
+    reranker_model.mkdir()
+    config = LocalHybridConfig(
+        bm25_config=LocalBM25Config(corpus_path=tmp_path / "bm25.jsonl", cache_dir=tmp_path / "cache"),
+        semantic_corpus_path=tmp_path / "semantic.jsonl",
+        semantic_index_dir=tmp_path / "index",
+        model_path=encoder,
+        reranker_model_path=reranker_model,
+        reranker_candidate_limit=3,
+    )
+    papers = [_paper(str(index), f"Paper {index}") for index in range(4)]
+    observed: list[int] = []
+
+    class FakeReranker:
+        def rerank(self, _query, candidates, *, limit):
+            observed.append(len(candidates))
+            return NeuralRerankResult(
+                papers=list(reversed(candidates))[:limit],
+                latency_seconds=0.25,
+                model_fingerprint="reranker-fingerprint",
+                batch_count=2,
+            )
+
+    monkeypatch.setattr(local_hybrid_module, "_ACTIVE_CONFIG", config)
+    monkeypatch.setattr(local_hybrid_module, "_ACTIVE_RERANKER", FakeReranker())
+    monkeypatch.setattr(
+        local_hybrid_module,
+        "_active_config_and_index",
+        lambda: (config, object()),
+    )
+    monkeypatch.setattr(
+        local_hybrid_module,
+        "search_local_bm25_detailed",
+        lambda *_args, **_kwargs: ConnectorSearchResult(papers=papers),
+    )
+    monkeypatch.setattr(
+        local_hybrid_module,
+        "_search_semantic",
+        lambda *_args, **_kwargs: ConnectorSearchResult(papers=papers),
+    )
+
+    result = local_hybrid_module.search_local_hybrid_detailed("query", limit=2)
+
+    assert result.error_message is None
+    assert observed == [3]
+    assert result.diagnostics.local_model_latency_seconds == 0.25
+    assert result.diagnostics.local_model_batch_count == 2
+    assert result.diagnostics.local_model_fingerprint == "reranker-fingerprint"

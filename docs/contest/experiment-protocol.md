@@ -13,12 +13,15 @@
 
 ## 执行
 
-在 VSCode 中运行下列任务，或执行相应命令：
+P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid` 结果仅为 legacy 工程基线：
 
 ```powershell
-.\scripts\run_contest_benchmark.ps1 -Mode full -Configuration local
-.\scripts\run_contest_benchmark.ps1 -Mode full -Configuration hybrid
+.\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration rules -RunId contest_qual200_bm25_v1
+.\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration dense -RunId contest_qual200_dense_v1
+.\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration reranker -RunId contest_qual200_reranker_v1
 ```
+
+运行 `scripts/check_contest_qualification.py` 后，只有门禁通过的候选可进入完整四组：`contest_full_rules_v1`、`contest_full_dense_v1`、`contest_full_dense_reranker_v1`、`contest_full_dense_reranker_llm_v1`。每个运行需保存配置、commit、输入哈希、PID、命令、日志、资源账本和 committed generation。
 
 `hybrid` 是零外部 API 的本地混合检索，首次运行前必须已用带 arXiv ID 的 Cornell/arXiv 元数据精确生成摘要语料和 Faiss 索引。中断后必须复用原 `run-id`，且配置、数据哈希和索引参数必须完全一致：
 

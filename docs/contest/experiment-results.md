@@ -32,7 +32,7 @@
 
 旧的 `hybrid_deep_rrf` 只保留为历史诊断配置。P0 和 Faiss 变更后必须先进行固定 200 条资格比较，不能直接恢复旧的完整 1000 条运行。
 
-## 已完成的完整运行
+## 历史完整运行（legacy）
 
 | 配置 | 运行目录 | F1@20 | Recall@20 | Precision@20 | MRR | 平均 API | 平均延迟 | 成功率 | 资源账本 |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
@@ -48,6 +48,8 @@
 | local BM25 | 0.131 | 0.062 | 0.467 | 7.723 | retrieval_recall_bottleneck, judgement_false_negative_bottleneck |
 | local hybrid | 0.145 | 0.085 | 0.347 | 6.430 | retrieval_recall_bottleneck, judgement_false_negative_bottleneck |
 
+以上两组结果只用于说明旧链路和资源账本曾经可运行；它们使用旧标题匹配语料和全矩阵向量实现，不是 P0/Faiss 正式成绩。
+
 ## 当前结论
 
 1. 旧 `local_hybrid` 结果仅代表 legacy 标题匹配语料和全矩阵向量实现，不能作为 P0/Faiss 新方案的正式成绩。
@@ -58,23 +60,29 @@
 
 ## 后续正式实验口径
 
-当前可引用主实验命令：
+P0/Faiss 主线当前没有可引用的正式成绩。完成服务器体检、精确 ID 语料和 Faiss 资源审计后，先运行固定资格实验：
 
 ```powershell
-.\scripts\run_contest_benchmark.ps1 -Mode full -Configuration local -RunId contest_full_local_baseline_v3
-.\scripts\run_contest_benchmark.ps1 -Mode full -Configuration hybrid -RunId contest_full_local_hybrid_v2
+ .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration rules -RunId contest_qual200_bm25_v1
+ .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration dense -RunId contest_qual200_dense_v1
+ .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration reranker -RunId contest_qual200_reranker_v1
 ```
 
-下一轮候选完整运行命令：
+只有门禁通过后，才运行对应完整组：
 
 ```powershell
-.\scripts\run_contest_benchmark.ps1 -Mode full -Configuration hybrid_deep_rrf -RunId contest_full_hybrid_deep_rrf_v1
+ .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration rules -RunId contest_full_rules_v1
+ .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration dense -RunId contest_full_dense_v1
+ .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration reranker -RunId contest_full_dense_reranker_v1
+ .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration dense_reranker_llm -RunId contest_full_dense_reranker_llm_v1
 ```
 
 Linux/服务器同等命令：
 
 ```bash
-./scripts/run_contest_benchmark.sh --mode full --configuration hybrid_deep_rrf --run-id contest_full_hybrid_deep_rrf_v1
+./scripts/run_contest_benchmark.sh --mode qualification --configuration rules --run-id contest_qual200_bm25_v1
+./scripts/run_contest_benchmark.sh --mode qualification --configuration dense --run-id contest_qual200_dense_v1
+./scripts/run_contest_benchmark.sh --mode qualification --configuration reranker --run-id contest_qual200_reranker_v1
 ```
 
 资源账本检查：

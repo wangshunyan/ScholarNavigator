@@ -912,6 +912,14 @@ def _build_config(
             "embedding_dimension": metadata.embedding_dimension,
             "model_path": str(hybrid.model_path.expanduser().resolve()),
             "model_fingerprint": metadata.model_fingerprint,
+            "reranker_model_path": (
+                str(hybrid.reranker_model_path.expanduser().resolve())
+                if hybrid.reranker_model_path is not None
+                else None
+            ),
+            "reranker_candidate_limit": hybrid.reranker_candidate_limit,
+            "reranker_batch_size": hybrid.reranker_batch_size,
+            "reranker_device": hybrid.reranker_device,
             "index_dir": metadata.index_dir,
             "index_fingerprint": metadata.index_fingerprint,
             "index_cache_hit": metadata.cache_hit,
@@ -1644,6 +1652,16 @@ def _parser() -> argparse.ArgumentParser:
         default="outputs/benchmark_cache/local_hybrid",
     )
     parser.add_argument("--local-hybrid-model", default=None)
+    parser.add_argument("--local-hybrid-reranker-model", default=None)
+    parser.add_argument(
+        "--local-hybrid-reranker-candidate-limit", type=int, default=120
+    )
+    parser.add_argument("--local-hybrid-reranker-batch-size", type=int, default=8)
+    parser.add_argument(
+        "--local-hybrid-reranker-device",
+        choices=["auto", "cpu", "cuda"],
+        default="auto",
+    )
     parser.add_argument(
         "--local-hybrid-bm25-candidate-limit",
         type=int,
@@ -1973,6 +1991,14 @@ def main(argv: list[str] | None = None) -> int:
                     semantic_corpus_path=Path(args.local_hybrid_semantic_corpus),
                     semantic_index_dir=Path(args.local_hybrid_index_dir),
                     model_path=Path(args.local_hybrid_model),
+                    reranker_model_path=(
+                        Path(args.local_hybrid_reranker_model)
+                        if args.local_hybrid_reranker_model
+                        else None
+                    ),
+                    reranker_candidate_limit=args.local_hybrid_reranker_candidate_limit,
+                    reranker_batch_size=args.local_hybrid_reranker_batch_size,
+                    reranker_device=args.local_hybrid_reranker_device,
                     bm25_candidate_limit=args.local_hybrid_bm25_candidate_limit,
                     semantic_candidate_limit=(
                         args.local_hybrid_semantic_candidate_limit

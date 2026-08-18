@@ -85,6 +85,8 @@ def test_build_joins_exact_id_and_keeps_pasa_title(tmp_path: Path) -> None:
     assert report.unmatched_metadata_ids == 1
     assert report.pasa_without_metadata == 1
     assert report.coverage == 0.5
+    assert report.field_completeness["title"] == 1.0
+    assert report.field_completeness["abstract"] == 1.0
 
 
 def test_identical_duplicate_metadata_is_deduplicated(tmp_path: Path) -> None:
@@ -129,3 +131,8 @@ def test_evaluator_gold_paths_are_rejected(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="gold/qrels"):
         build_semantic_corpus(metadata, pasa, tmp_path / "output.jsonl")
+
+    qrels = tmp_path / "qrels.jsonl"
+    qrels.write_text(metadata.read_text(encoding="utf-8"), encoding="utf-8")
+    with pytest.raises(ValueError, match="gold/qrels"):
+        build_semantic_corpus(qrels, pasa, tmp_path / "qrels-output.jsonl")

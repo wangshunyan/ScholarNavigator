@@ -7,6 +7,7 @@ RUN_ID=""
 OFFSET="0"
 LIMIT="0"
 RESUME="0"
+RERANKER_MODEL="datasets/semantic/models/Qwen3-Reranker-0.6B"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -34,6 +35,10 @@ while [[ $# -gt 0 ]]; do
       RESUME="1"
       shift
       ;;
+    --reranker-model)
+      RERANKER_MODEL="$2"
+      shift 2
+      ;;
     *)
       echo "unknown argument: $1" >&2
       exit 2
@@ -42,7 +47,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 case "$MODE" in
-  smoke|full) ;;
+  smoke|qualification|full) ;;
   *)
     echo "mode must be smoke or full" >&2
     exit 2
@@ -50,7 +55,7 @@ case "$MODE" in
 esac
 
 case "$CONFIGURATION" in
-  local|hybrid|hybrid_deep_rrf|network_hybrid) ;;
+  local|hybrid|hybrid_deep_rrf|network_hybrid|rules|dense|reranker|dense_reranker_llm) ;;
   *)
     echo "configuration must be local, hybrid, hybrid_deep_rrf, or network_hybrid" >&2
     exit 2
@@ -68,6 +73,8 @@ fi
 if [[ "$LIMIT" -le 0 ]]; then
   if [[ "$MODE" == "full" ]]; then
     LIMIT="1000"
+  elif [[ "$MODE" == "qualification" ]]; then
+    LIMIT="200"
   else
     LIMIT="5"
   fi
@@ -81,12 +88,12 @@ RUN_PROFILE="evaluation"
 if [[ "$MODE" != "full" ]]; then
   RUN_PROFILE="fast"
 fi
-if [[ "$CONFIGURATION" == "hybrid_deep_rrf" ]]; then
+if [[ "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
   RUN_PROFILE="high_recall"
 fi
 
 SOURCES="local_bm25"
-if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" ]]; then
+if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
   SOURCES="local_hybrid"
 elif [[ "$CONFIGURATION" == "network_hybrid" ]]; then
   SOURCES="local_bm25,arxiv"
@@ -109,7 +116,7 @@ ARGS=(
   "--diagnostics"
   "--resource-ledger"
   "--query-adapter-policy" "adaptive"
-  "--query-planning-policy" "current_rules"
+  "--query-planning-policy" "$([[ "$CONFIGURATION" == "dense_reranker_llm" ]] && echo llm_semantic || echo current_rules)"
   "--judgement-policy" "current_rules"
   "--ranking-policy" "$RANKING_POLICY"
   "--max-workers" "1"
@@ -120,11 +127,11 @@ ARGS=(
   "--local-bm25-doi-field" "doi"
 )
 
-if [[ "$CONFIGURATION" == "hybrid_deep_rrf" ]]; then
+if [[ "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
   ARGS+=("--max-candidate-papers" "300")
 fi
 
-if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" ]]; then
+if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
   BM25_LIMIT="60"
   SEMANTIC_LIMIT="60"
   if [[ "$CONFIGURATION" == "hybrid_deep_rrf" ]]; then
@@ -145,6 +152,19 @@ if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" ]]; 
     "--local-hybrid-rrf-k"
     "60"
   )
+fi
+
+if [[ "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
+  ARGS+=(
+    "--local-hybrid-reranker-model" "$RERANKER_MODEL"
+    "--local-hybrid-reranker-candidate-limit" "120"
+    "--local-hybrid-reranker-batch-size" "8"
+    "--local-hybrid-reranker-device" "auto"
+  )
+fi
+
+if [[ "$CONFIGURATION" == "dense_reranker_llm" ]]; then
+  ARGS+=("--max-llm-calls" "200" "--max-search-rounds" "3")
 fi
 
 if [[ "$RESUME" == "1" ]]; then

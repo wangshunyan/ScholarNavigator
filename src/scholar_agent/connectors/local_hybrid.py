@@ -14,6 +14,11 @@ from typing import Any
 
 import numpy as np
 
+from scholar_agent.agents.neural_reranker import (
+    NeuralReranker,
+    NeuralRerankerConfig,
+    NeuralRerankResult,
+)
 from scholar_agent.connectors.local_bm25 import (
     LocalBM25Config,
     configure_local_bm25,
@@ -54,6 +59,7 @@ _ACTIVE_METADATA: "LocalHybridIndexMetadata | None" = None
 _ACTIVE_INDEX: "_SemanticIndex | None" = None
 _ACTIVE_MODEL: Any | None = None
 _ACTIVE_MODEL_PATH: Path | None = None
+_ACTIVE_RERANKER: NeuralReranker | None = None
 
 
 @dataclass(frozen=True)
@@ -78,6 +84,10 @@ class LocalHybridConfig:
     hnsw_ef_search: int = _DEFAULT_EF_SEARCH
     recall_sample_size: int = _DEFAULT_RECALL_SAMPLE_SIZE
     recall_k: int = _DEFAULT_RECALL_K
+    reranker_model_path: Path | None = None
+    reranker_candidate_limit: int = 120
+    reranker_batch_size: int = 8
+    reranker_device: str = "auto"
 
 
 @dataclass(frozen=True)
@@ -125,7 +135,7 @@ def configure_local_hybrid(
     """Configure the hybrid connector and validate its persisted vector index."""
 
     global _ACTIVE_CONFIG, _ACTIVE_METADATA, _ACTIVE_INDEX, _ACTIVE_MODEL
-    global _ACTIVE_MODEL_PATH
+    global _ACTIVE_MODEL_PATH, _ACTIVE_RERANKER
     with _CONFIG_LOCK:
         _ACTIVE_CONFIG = None
         _ACTIVE_METADATA = None
@@ -133,6 +143,7 @@ def configure_local_hybrid(
         with _MODEL_LOCK:
             _ACTIVE_MODEL = None
             _ACTIVE_MODEL_PATH = None
+            _ACTIVE_RERANKER = None
         if config is None:
             configure_local_bm25(None)
             return None
@@ -172,6 +183,15 @@ def configure_local_hybrid(
             normalized.bm25_config,
             build_index=build_bm25_index,
         )
+        if normalized.reranker_model_path is not None:
+            _ACTIVE_RERANKER = NeuralReranker(
+                NeuralRerankerConfig(
+                    model_path=normalized.reranker_model_path,
+                    candidate_limit=normalized.reranker_candidate_limit,
+                    batch_size=normalized.reranker_batch_size,
+                    device=normalized.reranker_device,
+                )
+            )
         _ACTIVE_CONFIG = normalized
         _ACTIVE_METADATA = metadata
         _ACTIVE_INDEX = _SemanticIndex(
@@ -405,22 +425,39 @@ def search_local_hybrid_detailed(
             config=config,
             index=index,
         )
+        fusion_limit = max(
+            int(limit),
+            config.reranker_candidate_limit
+            if config.reranker_model_path is not None
+            else int(limit),
+        )
         fused = _fuse_ranked_lists(
             bm25_result.papers,
             semantic_result.papers,
-            limit=int(limit),
+            limit=fusion_limit,
             rrf_k=config.rrf_k,
         )
+        rerank_outcome = _rerank_if_configured(
+            normalized_query,
+            fused,
+            limit=int(limit),
+        )
+        fused = rerank_outcome.papers
         warnings = [
             "local_hybrid_rrf_fusion",
             f"local_hybrid_bm25_candidates:{len(bm25_result.papers)}",
             f"local_hybrid_semantic_candidates:{len(semantic_result.papers)}",
         ]
+        warnings.extend(rerank_outcome.warnings)
         warnings.extend(bm25_result.warnings)
         warnings.extend(semantic_result.warnings)
         latency = time.perf_counter() - started
         diagnostics = merge_connector_diagnostics(
-            [bm25_result.diagnostics, semantic_result.diagnostics]
+            [
+                bm25_result.diagnostics,
+                semantic_result.diagnostics,
+                rerank_outcome.diagnostics,
+            ]
         ).model_copy(update={"latency_seconds": latency})
         return ConnectorSearchResult(
             papers=fused,
@@ -447,6 +484,50 @@ def _active_config_and_index() -> tuple[LocalHybridConfig, _SemanticIndex]:
         if _ACTIVE_CONFIG is None or _ACTIVE_INDEX is None:
             raise ValueError("local_hybrid_not_configured")
         return _ACTIVE_CONFIG, _ACTIVE_INDEX
+
+
+@dataclass(frozen=True)
+class _RerankOutcome:
+    papers: list[Paper]
+    warnings: list[str]
+    diagnostics: ConnectorDiagnostics
+
+
+def _rerank_if_configured(
+    query: str,
+    papers: list[Paper],
+    *,
+    limit: int,
+) -> _RerankOutcome:
+    with _CONFIG_LOCK:
+        reranker = _ACTIVE_RERANKER
+        config = _ACTIVE_CONFIG
+    if reranker is None or config is None or config.reranker_model_path is None:
+        return _RerankOutcome(
+            papers=papers,
+            warnings=[],
+            diagnostics=ConnectorDiagnostics(),
+        )
+    result: NeuralRerankResult = reranker.rerank(query, papers, limit=limit)
+    warnings = [
+        "local_hybrid_neural_reranker",
+        f"local_hybrid_reranker_model:{result.model_fingerprint[:16]}",
+        f"local_hybrid_reranker_latency_ms:{result.latency_seconds * 1000:.3f}",
+    ]
+    if result.fallback_used:
+        warnings.append("local_hybrid_reranker_fallback_current_order")
+        if result.error:
+            warnings.append(f"local_hybrid_reranker_error:{result.error}")
+    return _RerankOutcome(
+        papers=result.papers,
+        warnings=warnings,
+        diagnostics=ConnectorDiagnostics(
+            local_model_latency_seconds=result.latency_seconds,
+            local_model_batch_count=result.batch_count,
+            local_model_fallback_count=1 if result.fallback_used else 0,
+            local_model_fingerprint=result.model_fingerprint,
+        ),
+    )
 
 
 def _search_semantic(
@@ -589,6 +670,17 @@ def _normalize_config(config: LocalHybridConfig) -> LocalHybridConfig:
         raise ValueError("local_hybrid_hnsw_parameter_invalid")
     if config.recall_sample_size < 0 or config.recall_k <= 0:
         raise ValueError("local_hybrid_recall_parameter_invalid")
+    reranker_model = (
+        Path(config.reranker_model_path).expanduser().resolve()
+        if config.reranker_model_path is not None
+        else None
+    )
+    if reranker_model is not None and not reranker_model.is_dir():
+        raise ValueError("local_hybrid_reranker_model_not_found")
+    if config.reranker_candidate_limit <= 0 or config.reranker_batch_size <= 0:
+        raise ValueError("local_hybrid_reranker_limits_invalid")
+    if config.reranker_device not in {"auto", "cpu", "cuda"}:
+        raise ValueError("local_hybrid_reranker_device_invalid")
     bm25 = config.bm25_config
     return LocalHybridConfig(
         bm25_config=bm25,
@@ -604,6 +696,10 @@ def _normalize_config(config: LocalHybridConfig) -> LocalHybridConfig:
         hnsw_ef_search=config.hnsw_ef_search,
         recall_sample_size=config.recall_sample_size,
         recall_k=config.recall_k,
+        reranker_model_path=reranker_model,
+        reranker_candidate_limit=config.reranker_candidate_limit,
+        reranker_batch_size=config.reranker_batch_size,
+        reranker_device=config.reranker_device,
     )
 
 

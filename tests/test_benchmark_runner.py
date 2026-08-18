@@ -859,3 +859,29 @@ def _options(
 
 def _read_jsonl(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text().splitlines() if line]
+
+
+def test_cli_exposes_neural_reranker_configuration() -> None:
+    args = run_benchmark._parser().parse_args(
+        [
+            "--dataset",
+            "auto_scholar_query",
+            "--run-id",
+            "contest_qual200_reranker_v1",
+            "--sources",
+            "local_hybrid",
+            "--local-hybrid-reranker-model",
+            "models/qwen3",
+            "--local-hybrid-reranker-candidate-limit",
+            "120",
+            "--local-hybrid-reranker-batch-size",
+            "8",
+            "--local-hybrid-reranker-device",
+            "cuda",
+        ]
+    )
+
+    assert args.local_hybrid_reranker_model == "models/qwen3"
+    assert args.local_hybrid_reranker_candidate_limit == 120
+    assert args.local_hybrid_reranker_batch_size == 8
+    assert args.local_hybrid_reranker_device == "cuda"

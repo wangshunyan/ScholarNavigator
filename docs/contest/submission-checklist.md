@@ -17,18 +17,18 @@
 - 已完成真实 5 条来源消融：`arXiv`、`local_bm25 + arXiv`、`local_bm25 + arXiv + OpenAlex`，并保留配置、指标、逐条结果、失败分析和资源账本。
 - 已提供 `scripts/run_contest_benchmark.ps1` 及 VSCode 任务，可启动可恢复的 local baseline 和 local_hybrid candidate。
 - 已提供 `scripts/run_contest_benchmark.sh`，用于 Linux 服务器在独立项目目录内运行相同 Benchmark。
-- 已完成当前代码版本的完整 1000 条对照：`contest_full_local_baseline_v3` 与 `contest_full_local_hybrid_v2`，两组资源账本均通过。
-- 已完成 100 条候选参数实验：`hybrid_deep_rrf` 在样本上高于 default hybrid，下一步需要完整 1000 条验证。
+- 已保存当前代码版本的完整 1000 条历史对照：`contest_full_local_baseline_v3` 与 `contest_full_local_hybrid_v2`，两组资源账本均通过；由于使用旧标题匹配语料和旧全矩阵实现，只能作 legacy 工程基线，不是 P0/Faiss 正式成绩。
+- 已保存 100 条历史候选参数实验：`hybrid_deep_rrf` 只用于诊断，P0/Faiss 变更后不得直接恢复。
 - 已准备 20 条演示查询，覆盖时间、方法、数据集、排除条件、中英文混合和结构化导出。
 
 ## 提交前必须完成
 
-1. 已完成效率 baseline：`contest_full_local_baseline_v3`，`local_bm25` 在 1000 条上完成且资源账本通过。
-2. 已完成并校验 `contest_full_local_hybrid_v2` 的完整 1000 条主候选；说明书只能引用该目录及同代码 baseline `contest_full_local_baseline_v3`。
-3. 需要完整运行 `hybrid_deep_rrf` 候选，命令为 `.\scripts\run_contest_benchmark.ps1 -Mode full -Configuration hybrid_deep_rrf -RunId contest_full_hybrid_deep_rrf_v1`。只有完整 1000 条结果优于 `contest_full_local_hybrid_v2` 时，才能把它作为最终主结果。
-4. 只使用完整运行目录中真实生成的 `config.json`、`metrics.json`、`summary.md`、`results.jsonl`、`stage_metrics.json`、`error_analysis.json` 和 `resource_ledger.json` 写实验结果。
+1. P0 精确语料和 Faiss 资源报告完成并冻结；旧 `contest_full_local_*` 仅作为 legacy 对照。
+2. P0/Faiss 变更后必须先完成 `contest_qual200_bm25_v1`、`contest_qual200_dense_v1`、`contest_qual200_reranker_v1` 并通过配对 bootstrap 和资源账本门禁；不得直接恢复旧 `hybrid_deep_rrf`。
+3. 只有门禁通过的候选可运行 `contest_full_rules_v1`、`contest_full_dense_v1`、`contest_full_dense_reranker_v1`、`contest_full_dense_reranker_llm_v1`。
+4. 只使用完整成功运行目录中真实生成的 `config.json`、`metrics.json`、`summary.md`、`results.jsonl`、`stage_metrics.json`、`error_analysis.json` 和 `resource_ledger.json` 写实验结果。
 5. 配置可用 LLM 后，完成受控消融，或者在说明书中明确“当前提交采用规则主线，LLM 接口默认关闭且未作为成绩依据”。不得把未运行的 LLM 功能写成实测创新结果。
-6. 将 `local_bm25` 与 `local_hybrid` 的完整对比、阶段诊断中的初始候选 Recall、Judgement FN 和平均延迟写入说明书。
+6. 将新主线的 `local_bm25` 与 `local_hybrid` 对比、阶段诊断中的初始候选 Recall、Judgement FN 和平均延迟写入说明书。
 7. 填写团队、学校、指导教师、成员分工、软件著作权/开源许可证等竞赛表单字段，并完成匿名要求检查。
 8. 录制 3 到 5 条交互式演示，确认视频没有 API Key、本地绝对路径或无关个人信息。
 
@@ -36,13 +36,14 @@
 
 - 项目说明书：使用 `docs/contest/submission-report-template.md`，填写问题、场景、系统架构、算法流程、数据集、评测协议、消融实验、真实结果、成本和局限性。
 - 项目源码：完整 README、`.env.example`、依赖锁定、Windows 启动命令、Benchmark 命令和产物目录说明。
+- `legacy/spar_original/` 当前没有随附可核验的许可证文件，提交包必须排除；审查记录见 [third-party-review.md](third-party-review.md)。
 - 演示视频：从复杂查询输入到结构化论文结果、引用关系图、成本/延迟面板和异常降级。
 - 答辩材料：突出复杂约束解析、检索迭代、本地+外部混合检索、可复现实验和 F1/效率权衡。
 - 匿名检查：提交文档、视频、代码截图和压缩包不要暴露学校、导师、成员身份或本地敏感路径。
 
 ## 当前风险
 
-- `local_hybrid` 已经形成可引用的完整工程结果，但 F1@20 仍只有 0.0147，离“可以有竞争力的最终方案”还有差距。
+- 旧 `local_hybrid` 的 F1@20 为 0.0147，但它使用 legacy 标题匹配语料，不能作为新主线成绩；P0/Faiss 结果尚未产生。
 - `hybrid_deep_rrf` 目前只有 100 条候选实验，不能作为最终成绩；必须跑完 1000 条并通过资源账本后才能引用为主结果。
 - LLM 当前默认 disabled；若要把 LLM 规划作为创新点，必须配置模型并记录版本、Token、延迟和回退。
 - PaSa `id2paper.json` 是论文 ID 与标题库；正式语义摘要必须来自带 arXiv ID 的 Cornell/arXiv 元数据精确关联，不能使用标题匹配或 AutoScholarQuery gold。

@@ -26,7 +26,8 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "holdout_regression"
+        "holdout_regression",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -49,7 +50,8 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "development_regression"
+        "development_regression",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -72,7 +74,8 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "no_incremental_gold"
+        "no_incremental_gold",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -94,7 +97,8 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "no_incremental_gold"
+        "no_incremental_gold",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -116,7 +120,8 @@
     {
       "blockers": [
         "official_scorer_unavailable",
-        "full_1000_retrieval_baseline_incomplete"
+        "full_1000_retrieval_baseline_incomplete",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "case_count": 65,
@@ -162,7 +167,8 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "holdout_regression"
+        "holdout_regression",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -185,7 +191,8 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "no_incremental_gold"
+        "no_incremental_gold",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -208,7 +215,8 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "no_incremental_gold",
-        "efficiency_regression"
+        "efficiency_regression",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -231,7 +239,8 @@
       "blockers": [
         "human_precision_pending",
         "cluster_inference_not_significant",
-        "official_scorer_unavailable"
+        "official_scorer_unavailable",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "existing65_evaluable_queries": 56,
@@ -274,7 +283,8 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "fallback_or_source_terminal_incomparability"
+        "fallback_or_source_terminal_incomparability",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -297,7 +307,8 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "not_formally_evaluated"
@@ -316,7 +327,8 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "not_formally_evaluated"
@@ -335,7 +347,8 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "dataset_evidence_incomplete"
+        "dataset_evidence_incomplete",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_outputs_not_tracked"
@@ -357,7 +370,8 @@
     {
       "blockers": [
         "closed_corpus_only",
-        "official_scorer_unavailable"
+        "official_scorer_unavailable",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "case_count": 50,
@@ -393,7 +407,8 @@
     {
       "blockers": [
         "no_final_metric_gain",
-        "closed_corpus_only"
+        "closed_corpus_only",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "case_count": 50,
@@ -428,7 +443,8 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "no_strict_subset_gain",
-        "source_terminal_drift"
+        "source_terminal_drift",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -451,7 +467,8 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "no_standalone_tracked_evaluation"
@@ -470,7 +487,8 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "no_standalone_tracked_evaluation"
@@ -490,7 +508,8 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "insufficient_sample",
-        "source_failure"
+        "source_failure",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "small_sample_with_frozen_source_failures"
@@ -512,7 +531,8 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "insufficient_sample",
-        "source_failure"
+        "source_failure",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "small_sample_with_frozen_source_failures"
@@ -534,7 +554,8 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "reference_source_failure",
-        "insufficient_sample"
+        "insufficient_sample",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "source_failure_dominated"
@@ -555,7 +576,8 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "no_standalone_tracked_evaluation"
@@ -574,7 +596,8 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "cross_dataset_regression"
+        "cross_dataset_regression",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -598,7 +621,8 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "no_incremental_gold",
-        "cross_dataset_regression"
+        "cross_dataset_regression",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"

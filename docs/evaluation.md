@@ -1125,3 +1125,9 @@ dispute alias；一致项、策略、排名、来源、gold/qrels 与全局身�
 解锁复用 `human_precision_adjudication_v1` 的 change-only、cluster-aware 定义，
 标记为 `human_internal_non_official`，且不支持从 change-only 包计算绝对
 Precision@20。本轮合成矩阵不生成真实标签、κ、Precision 或正式成绩。
+
+### 赛题三 200 条资格门禁
+
+P0 精确 ID 语料和 Faiss 索引变化后，固定 AutoScholarQuery test 前 200 条及其顺序，比较 `contest_qual200_bm25_v1`、`contest_qual200_dense_v1` 和 `contest_qual200_reranker_v1`。候选必须在 F1@20 或 Recall@20 上严格提升，且配对 query-level bootstrap 95% 区间下界大于 0，baseline/candidate 资源账本均通过，才有资格运行完整 1000 条。
+
+正式四组为规则基线、语义召回、语义召回+Qwen3 Reranker、语义召回+Qwen3 Reranker+`llm_semantic`。LLM 组每条查询最多一次调用、最多两条补充查询、temperature=0、严格 JSON Schema、始终保留原始查询，并记录模型、Prompt 版本、Token、调用次数、延迟、失败和 `current_rules` 回退。Provider 不可用时只报告未完成，不伪造指标。

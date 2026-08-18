@@ -73,7 +73,7 @@
     ],
     "official_score": false
   },
-  "protocol_sha256": "36779471d69f55f8f97afc9cbee36d25b04c5e45576be907983d6f570c360312",
+  "protocol_sha256": "643770e0a3abd76f219ec6ff08fca96334a93d10f4ea8984c3d298d0c8de0565",
   "registry": "experiment_evidence_registry_v1",
   "scan": {
     "excludes": [
@@ -385,7 +385,7 @@
       },
       {
         "path": "docs/evaluation.md",
-        "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+        "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
       },
       {
         "path": "docs/report/technical_report.md",
@@ -400,7 +400,8 @@
       "artifact_hashes": {},
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "holdout_regression"
+        "holdout_regression",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -418,16 +419,16 @@
       "decision": "negative",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "6525f09b4a26a0a931843a08ac886e049ebbf9f3",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "judgement",
-      "implementation_commit": "6525f09b4a26a0a931843a08ac886e049ebbf9f3",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "calibrated_rules_v1"
@@ -436,7 +437,8 @@
       "artifact_hashes": {},
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "development_regression"
+        "development_regression",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -455,7 +457,7 @@
       "decision": "negative",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "b0c9636ec6b7cda87f655024c189e903c4da9d68",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "benchmark/cross_strategy_union_audit_manifest.json",
@@ -463,12 +465,12 @@
         },
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "query_planning",
-      "implementation_commit": "b0c9636ec6b7cda87f655024c189e903c4da9d68",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "concept_projection"
@@ -477,7 +479,8 @@
       "artifact_hashes": {},
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "no_incremental_gold"
+        "no_incremental_gold",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -494,16 +497,16 @@
       "decision": "negative",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "3a0327a779f56376ce64dd1c309266ea1cd45399",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "query_planning",
-      "implementation_commit": "3a0327a779f56376ce64dd1c309266ea1cd45399",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "controlled_relaxation"
@@ -512,7 +515,8 @@
       "artifact_hashes": {},
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "no_incremental_gold"
+        "no_incremental_gold",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -529,16 +533,16 @@
       "decision": "negative",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "8588da390bcebe8ccedb41f4085ecb9a67676dea",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "query_planning",
-      "implementation_commit": "8588da390bcebe8ccedb41f4085ecb9a67676dea",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "current_plus_disjunctive"
@@ -551,7 +555,8 @@
       },
       "blockers": [
         "official_scorer_unavailable",
-        "full_1000_retrieval_baseline_incomplete"
+        "full_1000_retrieval_baseline_incomplete",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "case_count": 65,
@@ -592,7 +597,7 @@
         "gate_network_requests": 0,
         "gate_snapshot_writes": 0
       },
-      "evaluation_commit": "865decc7095e41f05cb359f7463b7a3b81791a56",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "benchmark/current_rules_regression_baseline.json",
@@ -609,7 +614,7 @@
       ],
       "evidence_status": "tracked_machine_evidence",
       "family": "default_composite",
-      "implementation_commit": "eb42ac0883bb0a02770d85df612c3fe3cb6cb286",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "current_rules"
@@ -618,7 +623,8 @@
       "artifact_hashes": {},
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "holdout_regression"
+        "holdout_regression",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -636,16 +642,16 @@
       "decision": "negative",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "11868ab9934dd6bf674b0a1c03bdc9a7b49492bf",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "query_planning",
-      "implementation_commit": "96a5d280a1be69cfb4a8d93de9754d20def0f8b1",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "disjunctive_facets"
@@ -654,7 +660,8 @@
       "artifact_hashes": {},
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "no_incremental_gold"
+        "no_incremental_gold",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -671,16 +678,16 @@
       "decision": "negative",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "1536e428ffca78cad36b6a1e2beeefebf1b121d1",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "query_planning",
-      "implementation_commit": "1536e428ffca78cad36b6a1e2beeefebf1b121d1",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "facet_balanced"
@@ -690,7 +697,8 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "no_incremental_gold",
-        "efficiency_regression"
+        "efficiency_regression",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -707,16 +715,16 @@
       "decision": "negative",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "cc6f78e2fe8c799b5d298bdf4a9222ede67f530f",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "query_planning",
-      "implementation_commit": "cc6f78e2fe8c799b5d298bdf4a9222ede67f530f",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "facet_union"
@@ -730,7 +738,8 @@
       "blockers": [
         "human_precision_pending",
         "cluster_inference_not_significant",
-        "official_scorer_unavailable"
+        "official_scorer_unavailable",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "existing65_evaluable_queries": 56,
@@ -769,7 +778,7 @@
         "candidate_pool_delta": 0,
         "human_precision_complete": false
       },
-      "evaluation_commit": "a098cadf6390a34866da5036182d1f23bfdd6053",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "benchmark/lexical_normalization_cluster_significance_manifest.json",
@@ -802,7 +811,7 @@
       ],
       "evidence_status": "tracked_machine_evidence",
       "family": "judgement_evidence_matching",
-      "implementation_commit": "2c2aee359ce39ccfbf038003bec4ce7e609a2801",
+      "implementation_commit": null,
       "metric_version": "deduplicated_gold_identity_v2",
       "score_scope": "internal_not_official",
       "strategy_id": "lexical_normalization_v1"
@@ -811,7 +820,8 @@
       "artifact_hashes": {},
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "fallback_or_source_terminal_incomparability"
+        "fallback_or_source_terminal_incomparability",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -830,7 +840,7 @@
       "decision": "inconclusive",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "87317265f98e840058a3b2e78159031c80ad4fed",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "benchmark/cross_strategy_union_audit_manifest.json",
@@ -838,12 +848,12 @@
         },
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "query_planning_llm",
-      "implementation_commit": "87317265f98e840058a3b2e78159031c80ad4fed",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "llm_constrained_rewrite"
@@ -852,7 +862,8 @@
       "artifact_hashes": {},
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "not_formally_evaluated"
@@ -875,7 +886,7 @@
       ],
       "evidence_status": "evidence_unavailable",
       "family": "judgement_llm",
-      "implementation_commit": "d78a1197392e1ae3cc2229541d20a8301f33d9ee",
+      "implementation_commit": null,
       "metric_version": "not_applicable",
       "score_scope": "internal_not_official",
       "strategy_id": "llm_judgement"
@@ -884,7 +895,8 @@
       "artifact_hashes": {},
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "not_formally_evaluated"
@@ -907,7 +919,7 @@
       ],
       "evidence_status": "evidence_unavailable",
       "family": "query_understanding_llm",
-      "implementation_commit": "a76e2acbcde884b35833374321737fb9af3fc4a0",
+      "implementation_commit": null,
       "metric_version": "not_applicable",
       "score_scope": "internal_not_official",
       "strategy_id": "llm_query_understanding"
@@ -916,7 +928,8 @@
       "artifact_hashes": {},
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "dataset_evidence_incomplete"
+        "dataset_evidence_incomplete",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_outputs_not_tracked"
@@ -933,7 +946,7 @@
       "decision": "inconclusive",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "7d0bbf643b291d87c7a6122ecf351054d28f46d3",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "benchmark/cross_strategy_union_audit_manifest.json",
@@ -941,12 +954,12 @@
         },
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "query_planning_llm",
-      "implementation_commit": "7d0bbf643b291d87c7a6122ecf351054d28f46d3",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "llm_semantic"
@@ -958,7 +971,8 @@
       },
       "blockers": [
         "closed_corpus_only",
-        "official_scorer_unavailable"
+        "official_scorer_unavailable",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "case_count": 50,
@@ -990,7 +1004,7 @@
         "local_query_latency_seconds": 2.4883147396613,
         "raw_candidates": 2020
       },
-      "evaluation_commit": "d369ff9ca69ee11f193d450fb05d5934d91b83e6",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "benchmark/beir_scifact_local_bm25_conversion_audit.json",
@@ -1003,7 +1017,7 @@
       ],
       "evidence_status": "tracked_machine_evidence",
       "family": "retrieval_source",
-      "implementation_commit": "d369ff9ca69ee11f193d450fb05d5934d91b83e6",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "local_bm25"
@@ -1016,7 +1030,8 @@
       },
       "blockers": [
         "no_final_metric_gain",
-        "closed_corpus_only"
+        "closed_corpus_only",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "case_count": 50,
@@ -1046,7 +1061,7 @@
         "global_retained": 7079,
         "returned_tail_candidates": 123
       },
-      "evaluation_commit": "10082ff34f6604cc5250378a590d6f72335f464f",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "benchmark/beir_scifact_local_bm25_original_deepening_manifest.json",
@@ -1059,7 +1074,7 @@
       ],
       "evidence_status": "tracked_machine_evidence",
       "family": "benchmark_only_retrieval",
-      "implementation_commit": "10082ff34f6604cc5250378a590d6f72335f464f",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "local_bm25_original_deepening"
@@ -1069,7 +1084,8 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "no_strict_subset_gain",
-        "source_terminal_drift"
+        "source_terminal_drift",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -1088,16 +1104,16 @@
       "decision": "negative",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "72cd64e55fee525585942b502fe0ccd84a60de15",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "query_planning_feedback",
-      "implementation_commit": "72cd64e55fee525585942b502fe0ccd84a60de15",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "prf_v1"
@@ -1106,7 +1122,8 @@
       "artifact_hashes": {},
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "no_standalone_tracked_evaluation"
@@ -1124,12 +1141,12 @@
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "query_adapter",
-      "implementation_commit": "966eb66ac56e37dd46315bf966b863287e1dc4b9",
+      "implementation_commit": null,
       "metric_version": "not_applicable",
       "score_scope": "internal_not_official",
       "strategy_id": "query_adapter_hybrid"
@@ -1138,7 +1155,8 @@
       "artifact_hashes": {},
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "no_standalone_tracked_evaluation"
@@ -1156,12 +1174,12 @@
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "query_adapter",
-      "implementation_commit": "966eb66ac56e37dd46315bf966b863287e1dc4b9",
+      "implementation_commit": null,
       "metric_version": "not_applicable",
       "score_scope": "internal_not_official",
       "strategy_id": "query_adapter_safe_original"
@@ -1171,7 +1189,8 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "insufficient_sample",
-        "source_failure"
+        "source_failure",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "small_sample_with_frozen_source_failures"
@@ -1187,16 +1206,16 @@
       "decision": "inconclusive",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "6a8632669cf0737d0d4aa89aa4370172112cefe5",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "query_evolution",
-      "implementation_commit": "6a8632669cf0737d0d4aa89aa4370172112cefe5",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "query_evolution_coverage_gap"
@@ -1206,7 +1225,8 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "insufficient_sample",
-        "source_failure"
+        "source_failure",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "small_sample_with_frozen_source_failures"
@@ -1222,16 +1242,16 @@
       "decision": "inconclusive",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "6a8632669cf0737d0d4aa89aa4370172112cefe5",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "query_evolution",
-      "implementation_commit": "6a8632669cf0737d0d4aa89aa4370172112cefe5",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "query_evolution_seed_expansion"
@@ -1241,7 +1261,8 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "reference_source_failure",
-        "insufficient_sample"
+        "insufficient_sample",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "source_failure_dominated"
@@ -1258,16 +1279,16 @@
       "decision": "blocked",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "f6bafafb8c27a4e3936aa1d4ea42f0bf21e7314c",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "citation_expansion",
-      "implementation_commit": "f6bafafb8c27a4e3936aa1d4ea42f0bf21e7314c",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "refchain"
@@ -1276,7 +1297,8 @@
       "artifact_hashes": {},
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "formal_evaluation_missing"
+        "formal_evaluation_missing",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "no_standalone_tracked_evaluation"
@@ -1294,12 +1316,12 @@
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "result_filtering",
-      "implementation_commit": "928a2f571d9fe24089453fff78e281c0dd4f2382",
+      "implementation_commit": null,
       "metric_version": "not_applicable",
       "score_scope": "internal_not_official",
       "strategy_id": "result_policy_highly_only"
@@ -1308,7 +1330,8 @@
       "artifact_hashes": {},
       "blockers": [
         "tracked_primary_artifact_unavailable",
-        "cross_dataset_regression"
+        "cross_dataset_regression",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -1327,16 +1350,16 @@
       "decision": "negative",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "200783699b50d8922d8320487a3edf4c78b5f197",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "ranking",
-      "implementation_commit": "200783699b50d8922d8320487a3edf4c78b5f197",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "rrf_fusion"
@@ -1346,7 +1369,8 @@
       "blockers": [
         "tracked_primary_artifact_unavailable",
         "no_incremental_gold",
-        "cross_dataset_regression"
+        "cross_dataset_regression",
+        "historical_commit_unavailable"
       ],
       "call_completeness": {
         "status": "historical_document_only"
@@ -1365,16 +1389,16 @@
       "decision": "negative",
       "default_enabled": false,
       "efficiency_cost": null,
-      "evaluation_commit": "28db182c2bf62dd2914ff13c5a3f48c4361c5eaa",
+      "evaluation_commit": null,
       "evidence_sources": [
         {
           "path": "docs/evaluation.md",
-          "sha256": "6a58eb10e89c8774f1e4b361cab1b2fe2fb8d9906963d0511a17f2902ae5990e"
+          "sha256": "9e976a4df723d65c7a807990081e34c374837723a067d92e52f8edf06eaf4b57"
         }
       ],
       "evidence_status": "evidence_unavailable",
       "family": "recommendation_expansion",
-      "implementation_commit": "28db182c2bf62dd2914ff13c5a3f48c4361c5eaa",
+      "implementation_commit": null,
       "metric_version": "legacy_gold_records_v1",
       "score_scope": "internal_not_official",
       "strategy_id": "semantic_seed_expansion"
