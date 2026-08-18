@@ -34,6 +34,7 @@ _TITLE_FIELDS = ("title", "titles", "paper_title", "name")
 _ABSTRACT_FIELDS = ("abstract", "summary", "summaries", "paper_abstract")
 _CATEGORY_FIELDS = ("categories", "category", "terms", "subjects")
 _AUTHOR_FIELDS = ("authors", "author", "authors_parsed")
+_UPDATE_DATE_FIELDS = ("update_date", "updated", "last_updated")
 
 
 @dataclass
@@ -99,12 +100,8 @@ def build_semantic_corpus(
         elif previous == row:
             duplicate_metadata_rows += 1
         else:
+            metadata_by_id[arxiv_id] = _resolve_metadata_conflict(previous, row)
             conflicting_ids.add(arxiv_id)
-    if conflicting_ids:
-        raise ValueError(
-            "metadata contains conflicting duplicate arXiv IDs: "
-            + ", ".join(sorted(conflicting_ids)[:5])
-        )
 
     matched_ids = sorted(set(pasa) & set(metadata_by_id))
     rows: dict[str, dict[str, Any]] = {}
@@ -259,6 +256,9 @@ def _read_metadata(
                 "abstract": abstract,
                 "categories": categories,
                 "authors": authors,
+                "update_date": _clean_text(
+                    _first_field(payload, _UPDATE_DATE_FIELDS)
+                ),
             }
         )
     if not rows:
@@ -273,6 +273,19 @@ def _read_metadata(
         missing_abstract_rows,
         missing_categories_rows,
         missing_authors_rows,
+    )
+
+
+def _resolve_metadata_conflict(
+    previous: dict[str, Any], candidate: dict[str, Any]
+) -> dict[str, Any]:
+    previous_date = previous.get("update_date", "")
+    candidate_date = candidate.get("update_date", "")
+    if previous_date and candidate_date and previous_date != candidate_date:
+        return candidate if candidate_date > previous_date else previous
+    raise ValueError(
+        "metadata contains conflicting duplicate arXiv IDs without distinct update dates: "
+        + str(previous.get("arxiv_id", ""))
     )
 
 

@@ -25,6 +25,8 @@ P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid`
 
 `hybrid` 是零外部 API 的本地混合检索，首次运行前必须已用带 arXiv ID 的 Cornell/arXiv 元数据精确生成摘要语料和 Faiss 索引。中断后必须复用原 `run-id`，且配置、数据哈希和索引参数必须完全一致：
 
+P0 构建器流式读取官方逐行 JSON 快照，只按规范化 arXiv ID 关联，不读取标题做匹配。官方快照同一 ID 的历史修订按 `update_date` 选择最新记录并写入冲突计数；缺少可区分更新时间的冲突记录会拒绝构建。
+
 ```powershell
 .\scripts\run_contest_benchmark.ps1 `
   -Mode full `

@@ -123,6 +123,33 @@ def test_conflicting_duplicate_metadata_fails(tmp_path: Path) -> None:
         build_semantic_corpus(metadata, pasa, tmp_path / "output.jsonl")
 
 
+def test_conflicting_official_records_choose_latest_update_date(tmp_path: Path) -> None:
+    pasa = tmp_path / "pasa.json"
+    pasa.write_text(json.dumps({"2501.00001": "Paper"}), encoding="utf-8")
+    metadata = tmp_path / "metadata.jsonl"
+    _write_jsonl(
+        metadata,
+        [
+            {
+                "id": "2501.00001",
+                "abstract": "Older abstract",
+                "update_date": "2020-01-01",
+            },
+            {
+                "id": "2501.00001",
+                "abstract": "Latest abstract",
+                "update_date": "2026-06-03",
+            },
+        ],
+    )
+
+    report = build_semantic_corpus(metadata, pasa, tmp_path / "output.jsonl")
+
+    row = json.loads((tmp_path / "output.jsonl").read_text(encoding="utf-8"))
+    assert row["abstract"] == "Latest abstract"
+    assert report.conflicting_metadata_ids == 1
+
+
 def test_official_json_snapshot_name_is_streamed_as_jsonl(tmp_path: Path) -> None:
     pasa = tmp_path / "pasa.json"
     pasa.write_text(json.dumps({"2501.00001": "Paper"}), encoding="utf-8")

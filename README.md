@@ -64,6 +64,7 @@ npm run dev
 ```
 
 该方案用 PaSa 标题库做 BM25 召回，用按 arXiv ID 精确关联的 title+abstract 语料做 BGE 向量召回，再用 RRF 融合。标题不参与语料关联；原始下载文件和索引属于本地资产，不应提交到源码仓库。
+官方 `arxiv-metadata-oai-snapshot.json` 是逐行 JSON，构建器按流式方式读取。官方快照中同一 ID 的历史修订记录按 `update_date` 选择最新记录，并在报告中计数；没有可区分更新时间的冲突记录会直接失败。
 
 候选优化配置可运行：
 
