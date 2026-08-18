@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import subprocess
 from pathlib import Path
 
 from scholar_agent.agents.neural_reranker import (
@@ -34,6 +35,26 @@ def test_missing_local_model_falls_back_without_changing_candidates(tmp_path: Pa
 
     assert result.fallback_used is True
     assert result.error == "OSError"
+    assert [paper.title for paper in result.papers] == [
+        "First paper",
+        "Second paper",
+    ]
+
+
+def test_subprocess_inference_failure_falls_back_without_raising(
+    tmp_path: Path,
+) -> None:
+    reranker = NeuralReranker(
+        NeuralRerankerConfig(model_path=tmp_path / "model")
+    )
+    reranker._load = lambda: (_ for _ in ()).throw(  # type: ignore[method-assign]
+        subprocess.CalledProcessError(1, "compiler")
+    )
+
+    result = reranker.rerank("retrieval", _papers(), limit=2)
+
+    assert result.fallback_used is True
+    assert result.error == "CalledProcessError"
     assert [paper.title for paper in result.papers] == [
         "First paper",
         "Second paper",

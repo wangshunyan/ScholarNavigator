@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -103,7 +104,14 @@ class NeuralReranker:
                 model_fingerprint=self._fingerprint,
                 batch_count=batch_count,
             )
-        except (OSError, RuntimeError, TypeError, ValueError, ImportError) as exc:
+        except (
+            OSError,
+            RuntimeError,
+            TypeError,
+            ValueError,
+            ImportError,
+            subprocess.SubprocessError,
+        ) as exc:
             return NeuralRerankResult(
                 papers=selected[:limit],
                 latency_seconds=time.perf_counter() - started,
@@ -129,6 +137,20 @@ class NeuralReranker:
         )
         if self._tokenizer.pad_token_id is None:
             self._tokenizer.pad_token = self._tokenizer.eos_token
+        config_path = Path(self.config.model_path) / "config.json"
+        model_config = json.loads(config_path.read_text(encoding="utf-8"))
+        architectures = model_config.get("architectures") or []
+        prefer_causal_lm = any("CausalLM" in str(value) for value in architectures)
+        if prefer_causal_lm:
+            from transformers import AutoModelForCausalLM
+
+            self._model = AutoModelForCausalLM.from_pretrained(
+                str(self.config.model_path), local_files_only=True
+            )
+            self._model_kind = "causal_lm"
+            self._model.to(self._device)
+            self._model.eval()
+            return
         try:
             self._model = AutoModelForSequenceClassification.from_pretrained(
                 str(self.config.model_path), local_files_only=True
