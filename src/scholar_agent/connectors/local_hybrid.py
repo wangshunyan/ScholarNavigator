@@ -833,11 +833,19 @@ def _read_semantic_rows(path: Path) -> list[dict[str, Any]]:
 def _load_model_from_path(path: Path) -> Any:
     try:
         from sentence_transformers import SentenceTransformer
+        import torch
     except ImportError as exc:
         raise ImportError("sentence_transformers_required_for_local_hybrid") from exc
+    requested_device = os.environ.get(
+        "SCHOLARNAVIGATOR_LOCAL_HYBRID_DEVICE", "auto"
+    ).strip().casefold()
+    if requested_device == "auto":
+        requested_device = "cuda" if torch.cuda.is_available() else "cpu"
+    if requested_device not in {"cpu", "cuda"}:
+        raise ValueError("local_hybrid_model_device_invalid")
     return SentenceTransformer(
         str(path),
-        device="cpu",
+        device=requested_device,
         local_files_only=True,
     )
 
