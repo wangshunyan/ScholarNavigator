@@ -3,12 +3,16 @@
 from __future__ import annotations
 
 import json
+import logging
 import time
 from dataclasses import dataclass
 from typing import Any, Protocol
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ConfigDict, Field
+
+
+LOGGER = logging.getLogger("scholar_agent.local_provider")
 
 
 class LocalProviderError(RuntimeError):
@@ -88,7 +92,16 @@ def create_app(service: LocalChatService, *, model_id: str) -> FastAPI:
             )
             content = canonical_json_object(completion.content)
         except LocalProviderError as exc:
+            # Error codes are fixed identifiers, so logs remain useful without
+            # retaining untrusted prompts, completions, or request metadata.
+            LOGGER.warning("local_provider_error:%s", exc)
             raise HTTPException(status_code=502, detail=str(exc)) from exc
+        except Exception as exc:  # pragma: no cover - defensive service boundary
+            LOGGER.exception("local_provider_error:unexpected_%s", type(exc).__name__)
+            raise HTTPException(
+                status_code=502,
+                detail="local_provider_internal_error",
+            ) from exc
 
         prompt_tokens = max(0, int(completion.prompt_tokens))
         completion_tokens = max(0, int(completion.completion_tokens))
@@ -170,36 +183,47 @@ class TransformersLocalChatService:
             raise LocalProviderError("torch_not_available") from exc
 
         try:
-            prompt = self._tokenizer.apply_chat_template(
-                messages,
-                tokenize=False,
-                add_generation_prompt=True,
-                enable_thinking=False,
+            try:
+                prompt = self._tokenizer.apply_chat_template(
+                    messages,
+                    tokenize=False,
+                    add_generation_prompt=True,
+                    enable_thinking=False,
+                )
+            except TypeError:
+                prompt = self._tokenizer.apply_chat_template(
+                    messages,
+                    tokenize=False,
+                    add_generation_prompt=True,
+                )
+        except Exception as exc:
+            raise LocalProviderError("chat_template_failed") from exc
+        try:
+            encoded = self._tokenizer(
+                prompt,
+                return_tensors="pt",
+                truncation=True,
+                max_length=self._max_input_tokens,
             )
-        except TypeError:
-            prompt = self._tokenizer.apply_chat_template(
-                messages,
-                tokenize=False,
-                add_generation_prompt=True,
-            )
-        encoded = self._tokenizer(
-            prompt,
-            return_tensors="pt",
-            truncation=True,
-            max_length=self._max_input_tokens,
-        )
-        encoded = {key: value.to(self._device) for key, value in encoded.items()}
-        prompt_tokens = int(encoded["input_ids"].shape[-1])
-        with torch.inference_mode():
-            generated = self._model.generate(
-                **encoded,
-                do_sample=False,
-                max_new_tokens=max_tokens,
-                pad_token_id=self._tokenizer.pad_token_id,
-                eos_token_id=self._tokenizer.eos_token_id,
-            )
-        completion_ids = generated[0, prompt_tokens:]
-        content = self._tokenizer.decode(completion_ids, skip_special_tokens=True).strip()
+            encoded = {key: value.to(self._device) for key, value in encoded.items()}
+            prompt_tokens = int(encoded["input_ids"].shape[-1])
+        except Exception as exc:
+            raise LocalProviderError("tokenization_failed") from exc
+        try:
+            with torch.inference_mode():
+                generated = self._model.generate(
+                    **encoded,
+                    do_sample=False,
+                    max_new_tokens=max_tokens,
+                    pad_token_id=self._tokenizer.pad_token_id,
+                    eos_token_id=self._tokenizer.eos_token_id,
+                )
+            completion_ids = generated[0, prompt_tokens:]
+            content = self._tokenizer.decode(
+                completion_ids, skip_special_tokens=True
+            ).strip()
+        except Exception as exc:
+            raise LocalProviderError("model_generation_failed") from exc
         canonical = canonical_json_object(content)
         return LocalCompletion(
             content=canonical,

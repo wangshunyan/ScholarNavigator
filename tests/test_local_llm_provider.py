@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import logging
 
 from fastapi.testclient import TestClient
 
@@ -26,6 +27,12 @@ class FakeService:
             }
         )
         return LocalCompletion(content=self.content, prompt_tokens=11, completion_tokens=7)
+
+
+class FailingService:
+    def complete(self, messages, *, max_tokens: int, temperature: float):  # noqa: ANN001
+        del messages, max_tokens, temperature
+        raise LocalProviderError("model_generation_failed")
 
 
 def test_canonical_json_object_rejects_non_object_output() -> None:
@@ -83,3 +90,23 @@ def test_endpoint_rejects_nonzero_temperature_and_invalid_model_json() -> None:
 
     assert client.post("/v1/chat/completions", json={**base, "temperature": 1}).status_code == 400
     assert client.post("/v1/chat/completions", json={**base, "temperature": 0}).status_code == 502
+
+
+def test_endpoint_logs_only_stable_error_code(caplog) -> None:  # noqa: ANN001
+    client = TestClient(create_app(FailingService(), model_id="Qwen/Qwen3-4B"))
+    request_content = "private benchmark query must never reach provider logs"
+
+    with caplog.at_level(logging.WARNING, logger="scholar_agent.local_provider"):
+        response = client.post(
+            "/v1/chat/completions",
+            json={
+                "model": "Qwen/Qwen3-4B",
+                "messages": [{"role": "user", "content": request_content}],
+                "temperature": 0,
+            },
+        )
+
+    assert response.status_code == 502
+    assert response.json()["detail"] == "model_generation_failed"
+    assert "local_provider_error:model_generation_failed" in caplog.text
+    assert request_content not in caplog.text
