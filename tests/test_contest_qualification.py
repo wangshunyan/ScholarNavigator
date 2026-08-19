@@ -84,7 +84,7 @@ def test_reranker_audit_rejects_fallback_and_accepts_real_inference(tmp_path: Pa
                     "local_model_candidate_count": 120,
                     "local_model_prompt_version": "qwen3-reranker-v1",
                     "local_model_device": "cuda:0",
-                    "local_model_max_length": 8192,
+                    "local_model_max_length": 2048,
                     "local_model_fingerprint": "model-fingerprint",
                     "local_model_latency_seconds": 0.5,
                     "local_model_batch_size": 8,
@@ -114,3 +114,4 @@ def test_reranker_audit_rejects_fallback_and_accepts_real_inference(tmp_path: Pa
 
 def test_gpu_isolated_reranker_retry_is_an_explicit_candidate() -> None:
     assert "contest_qual200_reranker_v2_gpu1" in qualification.EXPECTED_CANDIDATES
+    assert "contest_qual200_reranker_v3_gpu1" in qualification.EXPECTED_CANDIDATES

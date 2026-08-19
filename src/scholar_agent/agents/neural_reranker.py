@@ -16,7 +16,9 @@ RERANKER_PROMPT_VERSION = "qwen3-reranker-v1"
 RERANKER_INSTRUCTION = (
     "Given a web search query, retrieve relevant passages that answer the query"
 )
-RERANKER_MAX_LENGTH = 8192
+# Qwen3 accepts a longer context, but 2,048 tokens keeps a full batch of eight
+# academic title/abstract pairs within the qualification GPU resource envelope.
+RERANKER_MAX_LENGTH = 2048
 _RERANKER_PREFIX = (
     '<|im_start|>system\n'
     'Judge whether the Document meets the requirements based on the Query and '
@@ -316,18 +318,24 @@ def _causal_relevance_scores(
 
     if getattr(logits, "ndim", 0) != 3:
         raise ValueError("neural_reranker_logits_shape_invalid")
-    sequence_length = int(input_ids.shape[1])
+    input_sequence_length = int(input_ids.shape[1])
+    logits_sequence_length = int(logits.shape[1])
     batch_size = int(input_ids.shape[0])
+    if logits_sequence_length <= 0 or input_sequence_length - logits_sequence_length not in (0, 1):
+        raise ValueError("neural_reranker_logits_sequence_misaligned")
     if attention_mask is None:
-        positions = [sequence_length - 1] * batch_size
+        positions = [logits_sequence_length - 1] * batch_size
     elif getattr(tokenizer, "padding_side", "right") == "left":
-        positions = [sequence_length - 1] * batch_size
+        # Causal-LM APIs score the token following the final prompt token. Some
+        # Qwen attention paths return one fewer logit than input tokens, so the
+        # last actual logit, rather than the input width, is authoritative.
+        positions = [logits_sequence_length - 1] * batch_size
     else:
         positions = [
-            int(position) - 1
+            min(int(position) - 1, logits_sequence_length - 1)
             for position in attention_mask.sum(dim=1).to("cpu").tolist()
         ]
-    if any(position < 0 or position >= sequence_length for position in positions):
+    if any(position < 0 or position >= logits_sequence_length for position in positions):
         raise ValueError("neural_reranker_token_position_out_of_bounds")
     positive = _single_token_id(tokenizer, ("yes", "Yes", "是"))
     negative = _single_token_id(tokenizer, ("no", "No", "否"))

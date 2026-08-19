@@ -99,6 +99,24 @@ def test_causal_scores_use_last_token_for_left_padding() -> None:
     assert scores.tolist() == [8.0, 6.0]
 
 
+def test_causal_scores_use_last_available_logit_when_qwen_omits_one_position() -> None:
+    torch = __import__("torch")
+
+    class Tokenizer:
+        padding_side = "left"
+
+        def encode(self, value: str, *, add_special_tokens: bool) -> list[int]:
+            return [1] if value.lower() == "yes" else [0] if value.lower() == "no" else [2]
+
+    input_ids = torch.zeros((1, 5), dtype=torch.long)
+    attention_mask = torch.ones((1, 5), dtype=torch.long)
+    logits = torch.zeros((1, 4, 2), dtype=torch.float32)
+    logits[0, 3, 1] = 4
+    logits[0, 3, 0] = -2
+
+    assert _causal_relevance_scores(logits, input_ids, attention_mask, Tokenizer()).tolist() == [6.0]
+
+
 def test_qwen_prompt_is_deterministic_and_preserves_query_and_document() -> None:
     prompt = _format_reranker_prompt(
         "find retrieval papers",

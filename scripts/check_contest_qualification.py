@@ -27,6 +27,7 @@ EXPECTED_CANDIDATES = {
     "contest_qual200_reranker_v1",
     "contest_qual200_reranker_v2",
     "contest_qual200_reranker_v2_gpu1",
+    "contest_qual200_reranker_v3_gpu1",
 }
 RERANKER_PROMPT_VERSION = "qwen3-reranker-v1"
 BOOTSTRAP_SEED = 20260818

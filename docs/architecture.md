@@ -147,7 +147,7 @@ connector、预算、LLM、取消和终态事件，按稳定 operation identity 
 completion generation 提交，并可登记到 `run_manifest_v1`、复现胶囊和所选 shard attempt。
 
 本地 Qwen3-Reranker 适配器使用模型随附的官方 causal-LM 判定模板，固定
-`qwen3-reranker-v1` prompt、左 padding 和 8192 最大长度。最终 yes/no logits 在 CPU 上安全提取，避免
+`qwen3-reranker-v1` prompt、左 padding 和 2048 最大长度。最终 yes/no logits 以模型实际返回序列的末位在 CPU 上安全提取，避免
 CUDA 异步索引异常掩盖真实回退。每次重排都记录模型指纹、设备、batch 数、候选数、最大长度、推理成功数和
 fallback 计数；同时写入固定 batch size、候选上限和 CUDA allocator 观测的单次峰值显存。qualification gate 汇总每条实际调用的延迟为 P50/P95、以候选数/总重排时间计算吞吐，并将任何 fallback、非 GPU 推理、缺失显存或固定运行参数视为 reranker 资格失败。
 `resource_accounting_integrity_v1` 再验证 run/query/operation 汇总及预算守恒，拒绝未提交、
