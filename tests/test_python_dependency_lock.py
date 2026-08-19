@@ -5,6 +5,7 @@ import zipfile
 from pathlib import Path
 
 import pytest
+from scripts import check_python_dependency_lock as lock_cli
 
 from scholar_agent.evaluation.python_dependency_lock import (
     EXIT_NOT_READY,
@@ -142,3 +143,34 @@ def test_reproducible_bytes_do_not_hide_dependency_qualification_failure() -> No
         }
     )
     assert report["qualification"] == "not_qualified"
+
+
+def test_linux_lock_generation_can_skip_the_primary_release_contract(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    protocol = _protocol()
+    protocol["lock_outputs"] = {
+        "runtime": "runtime-linux.lock",
+        "development": "development-linux.lock",
+    }
+    manifest = {"offline_install_qualified": False}
+    monkeypatch.setattr(lock_cli, "build_manifest", lambda *_: manifest)
+    monkeypatch.setattr(lock_cli, "write_json", lambda *_: None)
+    monkeypatch.setattr(lock_cli, "lock_text", lambda *_: b"locked\n")
+    monkeypatch.setattr(lock_cli, "verify_manifest", lambda *_: {"status": "ok"})
+    monkeypatch.setattr(
+        lock_cli,
+        "freeze_release_contract",
+        lambda *_: pytest.fail("primary release contract must not be rewritten"),
+    )
+    report = lock_cli._generate(
+        protocol,
+        tmp_path / "manifest.json",
+        write_release_contract=False,
+    )
+    assert report == {"status": "ok"}
+    assert (ROOT / "runtime-linux.lock").read_bytes() == b"locked\n"
+    assert (ROOT / "development-linux.lock").read_bytes() == b"locked\n"
+    (ROOT / "runtime-linux.lock").unlink()
+    (ROOT / "development-linux.lock").unlink()

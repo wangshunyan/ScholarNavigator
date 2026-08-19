@@ -50,6 +50,12 @@ def _parser() -> argparse.ArgumentParser:
     for name in ("generate", "verify", "offline-install", "audit-release"):
         command = commands.add_parser(name)
         command.add_argument("--report")
+        if name == "generate":
+            command.add_argument(
+                "--skip-release-contract",
+                action="store_true",
+                help="only write the protocol's manifest and lock files",
+            )
     return parser
 
 
@@ -69,14 +75,20 @@ def _error(status: str, code: int, reason: str) -> dict[str, object]:
     }
 
 
-def _generate(protocol: dict[str, object], manifest_path: Path) -> dict[str, object]:
+def _generate(
+    protocol: dict[str, object],
+    manifest_path: Path,
+    *,
+    write_release_contract: bool,
+) -> dict[str, object]:
     manifest = build_manifest(ROOT, protocol)
     write_json(manifest_path, manifest)
     for group, relative in protocol["lock_outputs"].items():
         (ROOT / relative).write_bytes(lock_text(manifest, group))
-    contract, closure = freeze_release_contract(ROOT, protocol, manifest)
-    write_json(DEFAULT_RELEASE_CONTRACT, contract)
-    write_json(ROOT / contract["python_lock"]["path"], closure)
+    if write_release_contract:
+        contract, closure = freeze_release_contract(ROOT, protocol, manifest)
+        write_json(DEFAULT_RELEASE_CONTRACT, contract)
+        write_json(ROOT / contract["python_lock"]["path"], closure)
     return verify_manifest(ROOT, protocol, manifest)
 
 
@@ -139,7 +151,11 @@ def main(argv: list[str] | None = None) -> int:
         protocol = _load(Path(args.protocol))
         manifest_path = Path(args.manifest)
         if args.command == "generate":
-            report = _generate(protocol, manifest_path)
+            report = _generate(
+                protocol,
+                manifest_path,
+                write_release_contract=not args.skip_release_contract,
+            )
         else:
             manifest = _load(manifest_path)
             if args.command == "verify":
