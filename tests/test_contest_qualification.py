@@ -111,6 +111,8 @@ def test_reranker_audit_rejects_fallback_and_accepts_real_inference(tmp_path: Pa
     assert failed["status"] == "failed"
     assert "reranker_fallback_detected" in failed["reasons"]
 
+    assert qualification._audit_reranker_run(path, expected_rows=1000)["status"] == "failed"
+
 
 def test_gpu_isolated_reranker_retry_is_an_explicit_candidate() -> None:
     assert "contest_qual200_reranker_v2_gpu1" in qualification.EXPECTED_CANDIDATES

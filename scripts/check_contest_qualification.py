@@ -147,7 +147,7 @@ def _load_run(path: Path, expected_run_id: str) -> dict[str, Any]:
     return result
 
 
-def _audit_reranker_run(path: Path) -> dict[str, Any]:
+def _audit_reranker_run(path: Path, *, expected_rows: int = 200) -> dict[str, Any]:
     """Require evidence that the neural reranker actually inferred."""
 
     results_path = path / "results.jsonl"
@@ -204,7 +204,7 @@ def _audit_reranker_run(path: Path) -> dict[str, Any]:
                 row_count += 1
                 visit(json.loads(line))
     reasons: list[str] = []
-    if row_count != 200:
+    if row_count != expected_rows:
         reasons.append("reranker_result_row_count_invalid")
     if fallback_count != 0:
         reasons.append("reranker_fallback_detected")
