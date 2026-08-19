@@ -38,6 +38,7 @@ class ChatCompletionRequest(BaseModel):
     temperature: float = 0
     max_tokens: int = Field(default=1024, ge=1, le=1024)
     stream: bool = False
+    response_format: dict[str, Any] | None = None
 
 
 @dataclass(frozen=True)
@@ -58,6 +59,7 @@ class LocalChatService(Protocol):
         *,
         max_tokens: int,
         temperature: float,
+        force_json_object: bool = False,
     ) -> LocalCompletion: ...
 
 
@@ -89,6 +91,7 @@ def create_app(service: LocalChatService, *, model_id: str) -> FastAPI:
                 [message.model_dump() for message in request.messages],
                 max_tokens=request.max_tokens,
                 temperature=request.temperature,
+                force_json_object=_requests_json_object(request.response_format),
             )
             content = canonical_json_object(completion.content)
         except LocalProviderError as exc:
@@ -124,6 +127,14 @@ def create_app(service: LocalChatService, *, model_id: str) -> FastAPI:
         }
 
     return app
+
+
+def _requests_json_object(response_format: dict[str, Any] | None) -> bool:
+    """Honor the OpenAI JSON-object contract without altering prompt content."""
+
+    return bool(
+        isinstance(response_format, dict) and response_format.get("type") == "json_object"
+    )
 
 
 class TransformersLocalChatService:
@@ -174,6 +185,7 @@ class TransformersLocalChatService:
         *,
         max_tokens: int,
         temperature: float,
+        force_json_object: bool = False,
     ) -> LocalCompletion:
         if temperature != 0:
             raise LocalProviderError("temperature_must_be_zero")
@@ -207,6 +219,24 @@ class TransformersLocalChatService:
             )
             encoded = {key: value.to(self._device) for key, value in encoded.items()}
             prompt_tokens = int(encoded["input_ids"].shape[-1])
+            json_prefix_tokens = 0
+            if force_json_object:
+                prefix_ids = self._tokenizer(
+                    "{",
+                    add_special_tokens=False,
+                    return_tensors="pt",
+                )["input_ids"].to(self._device)
+                json_prefix_tokens = int(prefix_ids.shape[-1])
+                encoded["input_ids"] = torch.cat(
+                    (encoded["input_ids"], prefix_ids), dim=-1
+                )
+                encoded["attention_mask"] = torch.cat(
+                    (
+                        encoded["attention_mask"],
+                        torch.ones_like(prefix_ids, device=self._device),
+                    ),
+                    dim=-1,
+                )
         except Exception as exc:
             raise LocalProviderError("tokenization_failed") from exc
         try:
@@ -218,15 +248,15 @@ class TransformersLocalChatService:
                     pad_token_id=self._tokenizer.pad_token_id,
                     eos_token_id=self._tokenizer.eos_token_id,
                 )
-            completion_ids = generated[0, prompt_tokens:]
+            completion_ids = generated[0, prompt_tokens + json_prefix_tokens :]
             content = self._tokenizer.decode(
                 completion_ids, skip_special_tokens=True
             ).strip()
         except Exception as exc:
             raise LocalProviderError("model_generation_failed") from exc
-        canonical = canonical_json_object(content)
+        canonical = canonical_json_object(("{" if force_json_object else "") + content)
         return LocalCompletion(
             content=canonical,
             prompt_tokens=prompt_tokens,
-            completion_tokens=int(completion_ids.shape[-1]),
+            completion_tokens=json_prefix_tokens + int(completion_ids.shape[-1]),
         )

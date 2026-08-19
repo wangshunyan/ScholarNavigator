@@ -18,20 +18,35 @@ class FakeService:
         self.content = content
         self.calls: list[dict[str, object]] = []
 
-    def complete(self, messages, *, max_tokens: int, temperature: float):  # noqa: ANN001
+    def complete(
+        self,
+        messages,
+        *,
+        max_tokens: int,
+        temperature: float,
+        force_json_object: bool = False,
+    ):  # noqa: ANN001
         self.calls.append(
             {
                 "messages": messages,
                 "max_tokens": max_tokens,
                 "temperature": temperature,
+                "force_json_object": force_json_object,
             }
         )
         return LocalCompletion(content=self.content, prompt_tokens=11, completion_tokens=7)
 
 
 class FailingService:
-    def complete(self, messages, *, max_tokens: int, temperature: float):  # noqa: ANN001
-        del messages, max_tokens, temperature
+    def complete(
+        self,
+        messages,
+        *,
+        max_tokens: int,
+        temperature: float,
+        force_json_object: bool = False,
+    ):  # noqa: ANN001
+        del messages, max_tokens, temperature, force_json_object
         raise LocalProviderError("model_generation_failed")
 
 
@@ -77,6 +92,7 @@ def test_openai_compatible_endpoint_records_usage_and_ignores_optional_fields() 
             "messages": [{"role": "user", "content": "Return a JSON plan."}],
             "max_tokens": 64,
             "temperature": 0,
+            "force_json_object": True,
         }
     ]
 
@@ -90,6 +106,26 @@ def test_endpoint_rejects_nonzero_temperature_and_invalid_model_json() -> None:
 
     assert client.post("/v1/chat/completions", json={**base, "temperature": 1}).status_code == 400
     assert client.post("/v1/chat/completions", json={**base, "temperature": 0}).status_code == 502
+
+
+def test_endpoint_only_enables_json_prefix_for_json_object_response_format() -> None:
+    service = FakeService()
+    client = TestClient(create_app(service, model_id="Qwen/Qwen3-4B"))
+    base = {
+        "model": "Qwen/Qwen3-4B",
+        "messages": [{"role": "user", "content": "Return JSON."}],
+        "temperature": 0,
+    }
+
+    assert client.post("/v1/chat/completions", json=base).status_code == 200
+    assert (
+        client.post(
+            "/v1/chat/completions",
+            json={**base, "response_format": {"type": "json_object"}},
+        ).status_code
+        == 200
+    )
+    assert [call["force_json_object"] for call in service.calls] == [False, True]
 
 
 def test_endpoint_logs_only_stable_error_code(caplog) -> None:  # noqa: ANN001
