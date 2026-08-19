@@ -554,6 +554,10 @@ def test_config_records_llm_prompt_budget_and_code_metadata(tmp_path: Path) -> N
     assert len(config["runtime_code_hash"]) == 64
     assert "commit" in config["code"]
     assert "dirty" in config["code"]
+    assert isinstance(config["execution"]["process_id"], int)
+    assert config["execution"]["process_id"] > 0
+    assert isinstance(config["execution"]["launch_command"], list)
+    assert config["execution"]["log_path"] is None
 
 
 def test_outputs_redact_api_keys(tmp_path: Path, monkeypatch) -> None:

@@ -120,7 +120,11 @@ if ($Resume) {
 Push-Location $projectRoot
 try {
     $env:OPENBLAS_NUM_THREADS = "1"
-    & $python @arguments
+    $logRelative = "outputs/run_logs/$RunId.log"
+    $logPath = Join-Path $projectRoot $logRelative
+    New-Item -ItemType Directory -Force -Path (Split-Path -Parent $logPath) | Out-Null
+    $env:SCHOLARNAVIGATOR_RUN_LOG_PATH = $logRelative
+    & $python @arguments 2>&1 | Tee-Object -FilePath $logPath -Append
     exit $LASTEXITCODE
 }
 finally {

@@ -1011,6 +1011,7 @@ def _build_config(
         "prompts": _prompt_metadata(),
         "runtime_code_hash": _runtime_code_hash(),
         "code": _git_metadata(),
+        "execution": _execution_metadata(),
     }
     if options.comparison_plan_path is not None and options.comparison_role is not None:
         semantic_config["comparison"] = comparison_binding(
@@ -1030,7 +1031,7 @@ def _build_config(
     signature_payload = {
         key: value
         for key, value in semantic_config.items()
-        if key not in {"code", "local_bm25"}
+        if key not in {"code", "execution", "local_bm25"}
     }
     if local_bm25 is not None:
         # Cache paths and load observations vary across restarts and machines.
@@ -1125,6 +1126,19 @@ def _git_metadata() -> dict[str, Any]:
         "commit": commit or None,
         "dirty": bool(status),
         "working_tree_diff_hash": hashlib.sha256(diff).hexdigest(),
+    }
+
+
+def _execution_metadata() -> dict[str, Any]:
+    """Record launch facts without allowing credentials into run artifacts."""
+
+    log_path = os.getenv("SCHOLARNAVIGATOR_RUN_LOG_PATH", "").strip()
+    if log_path and not Path(log_path).as_posix().startswith("outputs/run_logs/"):
+        log_path = ""
+    return {
+        "process_id": os.getpid(),
+        "launch_command": [_sanitize_message(value) for value in sys.argv],
+        "log_path": log_path or None,
     }
 
 

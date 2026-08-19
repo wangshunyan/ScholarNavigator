@@ -63,5 +63,7 @@ def test_contest_runners_enforce_the_per_query_llm_contract() -> None:
     shell = (root / "scripts" / "run_contest_benchmark.sh").read_text(encoding="utf-8")
     powershell = (root / "scripts" / "run_contest_benchmark.ps1").read_text(encoding="utf-8")
     assert 'ARGS+=("--max-llm-calls" "1" "--max-search-rounds" "3")' in shell
+    assert "SCHOLARNAVIGATOR_RUN_LOG_PATH" in shell
     assert '"--max-llm-calls", "1",' in powershell
     assert '"--max-search-rounds", "3"' in powershell
+    assert "SCHOLARNAVIGATOR_RUN_LOG_PATH" in powershell

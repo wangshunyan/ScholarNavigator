@@ -176,4 +176,12 @@ fi
 
 cd "$PROJECT_ROOT"
 export OPENBLAS_NUM_THREADS=1
-"$PYTHON" "${ARGS[@]}"
+LOG_RELATIVE="outputs/run_logs/${RUN_ID}.log"
+LOG_PATH="$PROJECT_ROOT/$LOG_RELATIVE"
+mkdir -p "$(dirname "$LOG_PATH")"
+export SCHOLARNAVIGATOR_RUN_LOG_PATH="$LOG_RELATIVE"
+set +e
+"$PYTHON" "${ARGS[@]}" 2>&1 | tee -a "$LOG_PATH"
+STATUS=${PIPESTATUS[0]}
+set -e
+exit "$STATUS"
