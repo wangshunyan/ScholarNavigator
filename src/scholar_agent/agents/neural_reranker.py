@@ -326,9 +326,10 @@ def _causal_relevance_scores(
     batch_size = int(input_ids.shape[0])
     if logits_sequence_length <= 0 or input_sequence_length - logits_sequence_length not in (0, 1):
         raise ValueError("neural_reranker_logits_sequence_misaligned")
+    effective_padding_side = padding_side or getattr(tokenizer, "padding_side", "right")
     if attention_mask is None:
         positions = [logits_sequence_length - 1] * batch_size
-    elif (padding_side or getattr(tokenizer, "padding_side", "right")) == "left":
+    elif effective_padding_side == "left":
         # Causal-LM APIs score the token following the final prompt token. Some
         # Qwen attention paths return one fewer logit than input tokens, so the
         # last actual logit, rather than the input width, is authoritative.
@@ -351,16 +352,19 @@ def _causal_relevance_scores(
     # CPU gather avoids CUDA's asynchronous advanced-index kernel and remains
     # well-defined when Qwen returns a view with nonstandard strides.
     logits_cpu = logits.detach().to("cpu").contiguous()
-    torch = __import__("torch")
-    final_logits = torch.stack(
-        [
-            logits_cpu[row].index_select(
-                0, logits_cpu.new_tensor([position]).long()
-            ).squeeze(0)
-            for row, position in enumerate(positions)
-        ],
-        dim=0,
-    )
+    if effective_padding_side == "left":
+        final_logits = logits_cpu[:, -1, :]
+    else:
+        torch = __import__("torch")
+        final_logits = torch.stack(
+            [
+                logits_cpu[row].index_select(
+                    0, logits_cpu.new_tensor([position]).long()
+                ).squeeze(0)
+                for row, position in enumerate(positions)
+            ],
+            dim=0,
+        )
     positive_logits = final_logits[:, positive]
     negative_logits = final_logits[:, negative]
     return positive_logits - negative_logits

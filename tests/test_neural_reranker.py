@@ -179,6 +179,26 @@ def test_causal_scores_gather_each_row_from_a_contiguous_cpu_tensor() -> None:
     ).tolist() == [6.0, 4.0]
 
 
+def test_left_padding_uses_final_logit_without_per_row_indexing() -> None:
+    torch = __import__("torch")
+
+    class Tokenizer:
+        padding_side = "right"
+
+        def encode(self, value: str, *, add_special_tokens: bool) -> list[int]:
+            return [1] if value == "yes" else [0]
+
+    input_ids = torch.zeros((2, 4), dtype=torch.long)
+    mask = torch.tensor([[0, 0, 1, 1], [0, 1, 1, 1]])
+    logits = torch.zeros((2, 4, 2), dtype=torch.float32)
+    logits[:, -1, 1] = torch.tensor([3.0, 4.0])
+    logits[:, -1, 0] = torch.tensor([-2.0, -1.0])
+
+    assert _causal_relevance_scores(
+        logits, input_ids, mask, Tokenizer(), padding_side="left"
+    ).tolist() == [5.0, 5.0]
+
+
 def test_rerank_result_exposes_fixed_runtime_limits_and_vram_defaults(tmp_path: Path) -> None:
     result = NeuralReranker(
         NeuralRerankerConfig(model_path=tmp_path / "missing-model")
