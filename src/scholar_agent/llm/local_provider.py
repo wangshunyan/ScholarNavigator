@@ -6,6 +6,7 @@ import json
 import logging
 import time
 from dataclasses import dataclass
+from importlib import import_module
 from typing import Any, Protocol
 
 from fastapi import FastAPI, HTTPException
@@ -158,6 +159,7 @@ def _schema_prefix_allowed_tokens_fn(tokenizer: Any, schema: dict[str, Any]) -> 
     """Build the local-only constrained decoder without exposing request text."""
 
     try:
+        _prepare_lmformat_transformers_compatibility()
         from lmformatenforcer import JsonSchemaParser
         from lmformatenforcer.integrations.transformers import (
             build_transformers_prefix_allowed_tokens_fn,
@@ -171,6 +173,22 @@ def _schema_prefix_allowed_tokens_fn(tokenizer: Any, schema: dict[str, Any]) -> 
         )
     except Exception as exc:
         raise LocalProviderError("json_schema_constrainer_setup_failed") from exc
+
+
+def _prepare_lmformat_transformers_compatibility() -> None:
+    """Bridge the tokenizer base-class move in Transformers 5 for lm-format-enforcer."""
+
+    try:
+        tokenizer_module = import_module("transformers.tokenization_utils")
+        base_module = import_module("transformers.tokenization_utils_base")
+    except ImportError:
+        return
+    if not hasattr(tokenizer_module, "PreTrainedTokenizerBase"):
+        setattr(
+            tokenizer_module,
+            "PreTrainedTokenizerBase",
+            getattr(base_module, "PreTrainedTokenizerBase"),
+        )
 
 
 class TransformersLocalChatService:
@@ -246,6 +264,14 @@ class TransformersLocalChatService:
                 )
         except Exception as exc:
             raise LocalProviderError("chat_template_failed") from exc
+        planning_schema = (
+            _query_planning_json_schema(messages) if force_json_object else None
+        )
+        prefix_allowed_tokens_fn = (
+            _schema_prefix_allowed_tokens_fn(self._tokenizer, planning_schema)
+            if planning_schema is not None
+            else None
+        )
         try:
             encoded = self._tokenizer(
                 prompt,
@@ -256,14 +282,6 @@ class TransformersLocalChatService:
             encoded = {key: value.to(self._device) for key, value in encoded.items()}
             prompt_tokens = int(encoded["input_ids"].shape[-1])
             json_prefix_tokens = 0
-            planning_schema = (
-                _query_planning_json_schema(messages) if force_json_object else None
-            )
-            prefix_allowed_tokens_fn = (
-                _schema_prefix_allowed_tokens_fn(self._tokenizer, planning_schema)
-                if planning_schema is not None
-                else None
-            )
             if force_json_object and planning_schema is None:
                 prefix_ids = self._tokenizer(
                     "{",

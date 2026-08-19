@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+from types import SimpleNamespace
 
 from fastapi.testclient import TestClient
 
@@ -9,6 +10,7 @@ from scholar_agent.llm.local_provider import (
     LocalCompletion,
     LocalProviderError,
     _query_planning_json_schema,
+    _prepare_lmformat_transformers_compatibility,
     canonical_json_object,
     create_app,
 )
@@ -148,6 +150,26 @@ def test_query_planning_schema_is_only_bound_to_its_explicit_system_contract() -
     assert {"intent_summary", "supplemental_queries"}.issubset(
         planner["properties"]
     )
+
+
+def test_transformers_five_compatibility_restores_tokenizer_base_alias(
+    monkeypatch,
+) -> None:  # noqa: ANN001
+    tokenizer_module = SimpleNamespace()
+    expected = object()
+    base_module = SimpleNamespace(PreTrainedTokenizerBase=expected)
+
+    def fake_import(name: str):
+        return {
+            "transformers.tokenization_utils": tokenizer_module,
+            "transformers.tokenization_utils_base": base_module,
+        }[name]
+
+    monkeypatch.setattr("scholar_agent.llm.local_provider.import_module", fake_import)
+
+    _prepare_lmformat_transformers_compatibility()
+
+    assert tokenizer_module.PreTrainedTokenizerBase is expected
 
 
 def test_endpoint_logs_only_stable_error_code(caplog) -> None:  # noqa: ANN001
