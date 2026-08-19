@@ -43,7 +43,7 @@ flowchart LR
 
 ## 数据集与评测
 
-主评测使用 PaSa/AutoScholarQuery。仓库中的公开文件包含 1000 条查询和 2403 个 arXiv gold 标识。PaSa 官方 `id2paper.json` 已转换为 569,432 篇本地标题语料；公开 arXiv 摘要数据经严格标题匹配得到 31,136 篇本地语义子集。检索语料不包含评测 gold 的额外字段，也不使用 `AutoScholarQuery_test.jsonl` 构建索引。
+主评测使用 PaSa/AutoScholarQuery。仓库中的公开文件包含 1000 条查询和 2403 个 arXiv gold 标识。PaSa 官方 `id2paper.json` 已转换为 569,432 篇本地标题语料；正式语义语料由 Cornell/arXiv 官方元数据按规范化 arXiv ID 精确关联得到同规模 title+abstract 语料。关联不使用标题匹配，也不使用 `AutoScholarQuery_test.jsonl`、gold 或 qrels 构建索引。旧 31,136 条标题匹配摘要子集仅保留为 legacy 证据，不进入正式成绩。
 
 指标：F1@20、Precision@20、Recall@20、MRR、nDCG、成功率、API 调用数、Token、延迟和失败率。
 
@@ -75,7 +75,7 @@ flowchart LR
 - 从查询理解、检索调用到结构化结果的端到端可观测性，便于复现实验与成本分析。
 - 结果级证据链、引用图与导出，支持科研人员复核推荐理由。
 
-当前限制：完整 local hybrid 的 F1@20 为 0.0147，仍不足以作为有竞争力的最终强方案；语义摘要子集只有 31,136 篇，覆盖不到完整 PaSa 标题库；`local_bm25 + arXiv` 在完整运行中遭遇连续限流和网络超时，只作为可靠性诊断；LLM 接口已实现但默认关闭，未经实测不得作为性能结论。
+当前限制：旧 `local_hybrid` 的 F1@20 为 0.0147，但它采用标题匹配语料，只能作为 legacy 对照；P0/Faiss Dense 主线的完整结果必须从相应运行目录填写。神经 reranker 与 LLM 只有在完整 1000 条运行、资源账本和审计全部通过后才能填写为实测结论；Provider 不可用或运行不完整时必须明确标为未完成。
 
 ## 演示与复现
 
