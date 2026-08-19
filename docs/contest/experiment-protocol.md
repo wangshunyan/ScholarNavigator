@@ -44,7 +44,8 @@ python scripts/audit_contest_llm_run.py \
 
 当外部 provider 未配置时，可在服务器项目目录内使用 `scripts/serve_local_llm_provider.py` 启动绑定
 `127.0.0.1` 的 Transformers/Qwen3-4B 本地 OpenAI-compatible provider。模型必须下载至
-`datasets/semantic/models/`，服务固定 GPU1、`temperature=0`，并只接受能被解析为 JSON object 的输出；
+`datasets/semantic/models/`，LLM Provider 与 Reranker 必须使用不同 GPU、`temperature=0`；
+`llm_query_planning` 使用 JSON Schema 受约束解码，缺少该依赖或无法生成合规对象时 fail closed；
 运行进程使用临时环境变量连接 loopback endpoint，不修改或读取 `.env`。本地模型服务只解决运行时可用性，
 不改变当前 Prompt、数据、候选池、RunId 门禁或 LLM 完整审计要求。
 

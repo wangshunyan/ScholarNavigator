@@ -4,3 +4,4 @@ transformers==5.15.0
 modelscope==1.39.1
 faiss-cpu==1.13.2
 psutil==7.0.0
+lm-format-enforcer==0.11.3

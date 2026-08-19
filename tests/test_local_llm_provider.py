@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 from scholar_agent.llm.local_provider import (
     LocalCompletion,
     LocalProviderError,
+    _query_planning_json_schema,
     canonical_json_object,
     create_app,
 )
@@ -126,6 +127,27 @@ def test_endpoint_only_enables_json_prefix_for_json_object_response_format() -> 
         == 200
     )
     assert [call["force_json_object"] for call in service.calls] == [False, True]
+
+
+def test_query_planning_schema_is_only_bound_to_its_explicit_system_contract() -> None:
+    generic = _query_planning_json_schema(
+        [{"role": "system", "content": "Return a JSON object."}]
+    )
+    planner = _query_planning_json_schema(
+        [
+            {
+                "role": "system",
+                "content": "JSON Schema: intent_summary supplemental_queries",
+            }
+        ]
+    )
+
+    assert generic is None
+    assert planner is not None
+    assert planner["type"] == "object"
+    assert {"intent_summary", "supplemental_queries"}.issubset(
+        planner["properties"]
+    )
 
 
 def test_endpoint_logs_only_stable_error_code(caplog) -> None:  # noqa: ANN001

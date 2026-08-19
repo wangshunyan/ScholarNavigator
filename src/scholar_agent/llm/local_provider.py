@@ -137,6 +137,42 @@ def _requests_json_object(response_format: dict[str, Any] | None) -> bool:
     )
 
 
+def _query_planning_json_schema(messages: list[dict[str, str]]) -> dict[str, Any] | None:
+    """Return the active planner schema only for its explicit system contract."""
+
+    for message in messages:
+        if message.get("role") != "system":
+            continue
+        content = message.get("content") or ""
+        if all(
+            marker in content
+            for marker in ("intent_summary", "supplemental_queries", "JSON Schema")
+        ):
+            from scholar_agent.core.search_schemas import LLMQueryPlanningOutput
+
+            return LLMQueryPlanningOutput.model_json_schema()
+    return None
+
+
+def _schema_prefix_allowed_tokens_fn(tokenizer: Any, schema: dict[str, Any]) -> Any:
+    """Build the local-only constrained decoder without exposing request text."""
+
+    try:
+        from lmformatenforcer import JsonSchemaParser
+        from lmformatenforcer.integrations.transformers import (
+            build_transformers_prefix_allowed_tokens_fn,
+        )
+    except ImportError as exc:  # pragma: no cover - server dependency boundary
+        raise LocalProviderError("json_schema_constrainer_dependencies_missing") from exc
+    try:
+        return build_transformers_prefix_allowed_tokens_fn(
+            tokenizer,
+            JsonSchemaParser(schema),
+        )
+    except Exception as exc:
+        raise LocalProviderError("json_schema_constrainer_setup_failed") from exc
+
+
 class TransformersLocalChatService:
     """Lazy GPU inference adapter for an instruction-tuned causal language model."""
 
@@ -220,7 +256,15 @@ class TransformersLocalChatService:
             encoded = {key: value.to(self._device) for key, value in encoded.items()}
             prompt_tokens = int(encoded["input_ids"].shape[-1])
             json_prefix_tokens = 0
-            if force_json_object:
+            planning_schema = (
+                _query_planning_json_schema(messages) if force_json_object else None
+            )
+            prefix_allowed_tokens_fn = (
+                _schema_prefix_allowed_tokens_fn(self._tokenizer, planning_schema)
+                if planning_schema is not None
+                else None
+            )
+            if force_json_object and planning_schema is None:
                 prefix_ids = self._tokenizer(
                     "{",
                     add_special_tokens=False,
@@ -247,6 +291,11 @@ class TransformersLocalChatService:
                     max_new_tokens=max_tokens,
                     pad_token_id=self._tokenizer.pad_token_id,
                     eos_token_id=self._tokenizer.eos_token_id,
+                    **(
+                        {"prefix_allowed_tokens_fn": prefix_allowed_tokens_fn}
+                        if prefix_allowed_tokens_fn is not None
+                        else {}
+                    ),
                 )
             completion_ids = generated[0, prompt_tokens + json_prefix_tokens :]
             content = self._tokenizer.decode(
@@ -254,7 +303,9 @@ class TransformersLocalChatService:
             ).strip()
         except Exception as exc:
             raise LocalProviderError("model_generation_failed") from exc
-        canonical = canonical_json_object(("{" if force_json_object else "") + content)
+        canonical = canonical_json_object(
+            ("{" if force_json_object and planning_schema is None else "") + content
+        )
         return LocalCompletion(
             content=canonical,
             prompt_tokens=prompt_tokens,
