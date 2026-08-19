@@ -26,6 +26,9 @@ class ConnectorDiagnostics(BaseModel):
     local_model_max_length: int | None = Field(default=None, ge=1)
     local_model_candidate_count: int = Field(default=0, ge=0)
     local_model_inference_success_count: int = Field(default=0, ge=0)
+    local_model_batch_size: int | None = Field(default=None, ge=1)
+    local_model_candidate_limit: int | None = Field(default=None, ge=1)
+    local_model_peak_vram_bytes: int = Field(default=0, ge=0)
 
 
 def merge_connector_diagnostics(
@@ -95,5 +98,24 @@ def merge_connector_diagnostics(
         ),
         local_model_inference_success_count=sum(
             item.local_model_inference_success_count for item in items
+        ),
+        local_model_batch_size=next(
+            (
+                item.local_model_batch_size
+                for item in reversed(items)
+                if item.local_model_batch_size is not None
+            ),
+            None,
+        ),
+        local_model_candidate_limit=next(
+            (
+                item.local_model_candidate_limit
+                for item in reversed(items)
+                if item.local_model_candidate_limit is not None
+            ),
+            None,
+        ),
+        local_model_peak_vram_bytes=max(
+            (item.local_model_peak_vram_bytes for item in items), default=0
         ),
     )

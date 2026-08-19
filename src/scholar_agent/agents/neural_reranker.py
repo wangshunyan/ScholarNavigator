@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import subprocess
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -52,6 +51,9 @@ class NeuralRerankResult:
     max_length: int = RERANKER_MAX_LENGTH
     candidate_count: int = 0
     inference_success: bool = False
+    batch_size: int = 0
+    candidate_limit: int = 0
+    peak_vram_bytes: int = 0
 
 
 class NeuralReranker:
@@ -100,6 +102,8 @@ class NeuralReranker:
             assert self._tokenizer is not None
             assert self._model is not None
             assert self._torch is not None
+            if self._device is not None and getattr(self._device, "type", "") == "cuda":
+                self._torch.cuda.reset_peak_memory_stats(self._device)
             scores: list[float] = []
             batch_count = 0
             for start in range(0, len(selected), self.config.batch_size):
@@ -139,15 +143,11 @@ class NeuralReranker:
                 max_length=self.config.max_length,
                 candidate_count=len(selected),
                 inference_success=True,
+                batch_size=self.config.batch_size,
+                candidate_limit=self.config.candidate_limit,
+                peak_vram_bytes=self._peak_vram_bytes(),
             )
-        except (
-            OSError,
-            RuntimeError,
-            TypeError,
-            ValueError,
-            ImportError,
-            subprocess.SubprocessError,
-        ) as exc:
+        except Exception as exc:
             return NeuralRerankResult(
                 papers=selected[:limit],
                 latency_seconds=time.perf_counter() - started,
@@ -160,7 +160,20 @@ class NeuralReranker:
                 device=self._device_name,
                 max_length=self.config.max_length,
                 candidate_count=len(selected),
+                batch_size=self.config.batch_size,
+                candidate_limit=self.config.candidate_limit,
+                peak_vram_bytes=self._peak_vram_bytes(),
             )
+
+    def _peak_vram_bytes(self) -> int:
+        if self._torch is None or self._device is None:
+            return 0
+        if getattr(self._device, "type", "") != "cuda":
+            return 0
+        try:
+            return int(self._torch.cuda.max_memory_allocated(self._device))
+        except Exception:
+            return 0
 
     def _encode_pairs(self, query: str, documents: list[str]) -> Any:
         assert self._tokenizer is not None

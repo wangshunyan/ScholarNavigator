@@ -536,6 +536,9 @@ def _rerank_if_configured(
             local_model_inference_success_count=(
                 1 if result.inference_success else 0
             ),
+            local_model_batch_size=result.batch_size or None,
+            local_model_candidate_limit=result.candidate_limit or None,
+            local_model_peak_vram_bytes=result.peak_vram_bytes,
         ),
     )
 

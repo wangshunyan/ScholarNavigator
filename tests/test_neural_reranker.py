@@ -130,3 +130,13 @@ def test_causal_scores_move_logits_to_cpu_before_indexing() -> None:
     logits[0, 1, 0] = -1
 
     assert _causal_relevance_scores(logits, input_ids, mask, Tokenizer()).tolist() == [3.0]
+
+
+def test_rerank_result_exposes_fixed_runtime_limits_and_vram_defaults(tmp_path: Path) -> None:
+    result = NeuralReranker(
+        NeuralRerankerConfig(model_path=tmp_path / "missing-model")
+    ).rerank("query", _papers(), limit=2)
+
+    assert result.batch_size == 8
+    assert result.candidate_limit == 120
+    assert result.peak_vram_bytes == 0

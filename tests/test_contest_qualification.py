@@ -86,6 +86,10 @@ def test_reranker_audit_rejects_fallback_and_accepts_real_inference(tmp_path: Pa
                     "local_model_device": "cuda:0",
                     "local_model_max_length": 8192,
                     "local_model_fingerprint": "model-fingerprint",
+                    "local_model_latency_seconds": 0.5,
+                    "local_model_batch_size": 8,
+                    "local_model_candidate_limit": 120,
+                    "local_model_peak_vram_bytes": 123456,
                 },
             }
         )

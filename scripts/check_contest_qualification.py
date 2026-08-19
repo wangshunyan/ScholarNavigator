@@ -155,11 +155,15 @@ def _audit_reranker_run(path: Path) -> dict[str, Any]:
     prompt_versions: set[str] = set()
     devices: set[str] = set()
     max_lengths: set[int] = set()
+    batch_sizes: set[int] = set()
+    candidate_limits: set[int] = set()
     fingerprints: set[str] = set()
+    latency_seconds: list[float] = []
+    peak_vram_bytes = 0
     row_count = 0
 
     def visit(value: Any) -> None:
-        nonlocal fallback_count, batch_count, success_count, candidate_count
+        nonlocal fallback_count, batch_count, success_count, candidate_count, peak_vram_bytes
         if isinstance(value, dict):
             for key, item in value.items():
                 if key == "local_model_fallback_count":
@@ -170,6 +174,14 @@ def _audit_reranker_run(path: Path) -> dict[str, Any]:
                     success_count += int(item or 0)
                 elif key == "local_model_candidate_count":
                     candidate_count += int(item or 0)
+                elif key == "local_model_latency_seconds" and item:
+                    latency_seconds.append(float(item))
+                elif key == "local_model_peak_vram_bytes":
+                    peak_vram_bytes = max(peak_vram_bytes, int(item or 0))
+                elif key == "local_model_batch_size" and item:
+                    batch_sizes.add(int(item))
+                elif key == "local_model_candidate_limit" and item:
+                    candidate_limits.add(int(item))
                 elif key == "local_model_prompt_version" and item:
                     prompt_versions.add(str(item))
                 elif key == "local_model_device" and item:
@@ -201,6 +213,18 @@ def _audit_reranker_run(path: Path) -> dict[str, Any]:
         reasons.append("reranker_prompt_version_invalid")
     if not devices or not fingerprints or not max_lengths:
         reasons.append("reranker_runtime_metadata_missing")
+    if not all(device.startswith("cuda") for device in devices):
+        reasons.append("reranker_gpu_inference_missing")
+    if batch_sizes != {8} or candidate_limits != {120}:
+        reasons.append("reranker_fixed_runtime_limits_missing")
+    if not latency_seconds:
+        reasons.append("reranker_latency_samples_missing")
+    if peak_vram_bytes <= 0:
+        reasons.append("reranker_peak_vram_missing")
+    latency_seconds.sort()
+    p50 = latency_seconds[(len(latency_seconds) - 1) * 50 // 100] if latency_seconds else 0.0
+    p95 = latency_seconds[(len(latency_seconds) - 1) * 95 // 100] if latency_seconds else 0.0
+    throughput = candidate_count / sum(latency_seconds) if sum(latency_seconds) > 0 else 0.0
     return {
         "status": "passed" if not reasons else "failed",
         "reasons": reasons,
@@ -213,6 +237,13 @@ def _audit_reranker_run(path: Path) -> dict[str, Any]:
         "devices": sorted(devices),
         "max_lengths": sorted(max_lengths),
         "fingerprint_count": len(fingerprints),
+        "batch_sizes": sorted(batch_sizes),
+        "candidate_limits": sorted(candidate_limits),
+        "latency_sample_count": len(latency_seconds),
+        "latency_p50_seconds": p50,
+        "latency_p95_seconds": p95,
+        "throughput_candidates_per_second": throughput,
+        "peak_vram_bytes": peak_vram_bytes,
     }
 
 
