@@ -211,11 +211,19 @@ def _causal_relevance_scores(
 ) -> Any:
     """Score the final-token yes/no decision used by Qwen rerankers."""
 
+    sequence_length = int(input_ids.shape[1])
+    batch_size = int(input_ids.shape[0])
     if attention_mask is None:
-        positions = [int(input_ids.shape[1]) - 1] * int(input_ids.shape[0])
+        positions = [sequence_length - 1] * batch_size
+    elif getattr(tokenizer, "padding_side", "right") == "left":
+        positions = [sequence_length - 1] * batch_size
     else:
-        positions = attention_mask.sum(dim=1).to("cpu").tolist()
-        positions = [int(position) - 1 for position in positions]
+        positions = [
+            int(position) - 1
+            for position in attention_mask.sum(dim=1).to("cpu").tolist()
+        ]
+    if any(position < 0 or position >= sequence_length for position in positions):
+        raise ValueError("neural_reranker_token_position_out_of_bounds")
     positive = _single_token_id(tokenizer, ("yes", "Yes", "是"))
     negative = _single_token_id(tokenizer, ("no", "No", "否"))
     if positive is None or negative is None:

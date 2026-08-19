@@ -6,6 +6,7 @@ from pathlib import Path
 from scholar_agent.agents.neural_reranker import (
     NeuralReranker,
     NeuralRerankerConfig,
+    _causal_relevance_scores,
     model_fingerprint,
 )
 from scholar_agent.core.paper_schemas import Paper, PaperIdentifiers
@@ -72,3 +73,25 @@ def test_model_fingerprint_is_stable_and_content_sensitive(tmp_path: Path) -> No
 
     assert first == second
     assert first != model_fingerprint(model)
+
+
+def test_causal_scores_use_last_token_for_left_padding() -> None:
+    torch = __import__("torch")
+
+    class Tokenizer:
+        padding_side = "left"
+
+        def encode(self, value: str, *, add_special_tokens: bool) -> list[int]:
+            return [1] if value.lower() == "yes" else [0] if value.lower() == "no" else [2, 3]
+
+    input_ids = torch.zeros((2, 4), dtype=torch.long)
+    attention_mask = torch.tensor([[0, 0, 1, 1], [0, 1, 1, 1]])
+    logits = torch.zeros((2, 4, 4), dtype=torch.float32)
+    logits[0, 3, 1] = 4
+    logits[0, 3, 0] = -4
+    logits[1, 3, 1] = 3
+    logits[1, 3, 0] = -3
+
+    scores = _causal_relevance_scores(logits, input_ids, attention_mask, Tokenizer())
+
+    assert scores.tolist() == [8.0, 6.0]
