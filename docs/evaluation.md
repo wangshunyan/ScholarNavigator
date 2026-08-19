@@ -138,6 +138,12 @@ SciFact BM25 上界审计位于 `scripts/audit_scifact_bm25.py` 和 `scholar_age
 
 `local_bm25` 将相同词法语义作为默认关闭的正式 connector 接入统一 SearchService，但不会读取上述审计的 qrels、crosswalk 或结果。Benchmark 必须显式传入 JSONL 语料路径、`document_id/title/abstract` 字段及 document-ID 身份类型；SciFact 固定把官方 `_id` 原样映射为 S2ORC Corpus ID、摘要字段映射为 `text`。PaSa 语义语料只能由带 arXiv ID 的 Cornell/arXiv 元数据按精确 ID 构建，不能使用标题匹配，也不能使用 AutoScholarQuery gold。索引缓存与 Snapshot connector version 同时绑定语料 SHA-256、字段配置及 `k1=1.5、b=0.75、epsilon=0.25`，查询只来自 `current_rules` 的正常 subquery/adapter 路径。该来源与四个产品默认来源共享 200 篇全局候选预算、统一身份去重、Judgement、排序、过滤和 Top-20，不因本地语料增加预算。
 
+### ScholarNavigator 竞赛主线 P0/Faiss 运行
+
+服务器主线已完成 P0 精确关联和 Faiss 资源审计。官方 arXiv 元数据 3,134,984 行与 PaSa 569,432 篇论文按规范化 arXiv ID 精确关联，title 不参与匹配，AutoScholarQuery gold/qrels 不进入索引；生成语料 SHA-256 为 `008ce46f15cc634f61bbadd4b960c6617c8d785c03dd2a307ed8d03fe9448d73`。BGE-small 384 维向量使用持久化 Faiss HNSW/IP，`M=32`、`efConstruction=80`、`efSearch=64`，Recall@10 为 0.984，构建约 1764.6 秒、峰值 RSS 约 4.82 GB；ANN 与 exact-flat 延迟分别约 0.0239 秒和 0.6153 秒。
+
+Dense 完整运行 `contest_full_dense_v1` 已完成 1000 条，内部 F1@20 为 0.022，Recall@20 为 0.135，初始候选 Recall 为 0.235，平均延迟约 0.968 秒。神经 reranker 使用 Qwen3-Reranker-0.6B；`contest_qual200_reranker_v4_gpu1` 已通过 200 条资格门禁，随后启动 `contest_full_dense_reranker_v4`。在完整 reranker 运行生成并核验 `RUN_COMPLETED`、零失败、零 fallback 和资源账本前，不得引用其指标或启动 LLM 组。LLM 组固定每条查询最多一次调用、最多两条补充查询、temperature=0、严格 JSON Schema、保留原始查询；其内部指标仍不等同于赛事官方 scorer。
+
 `scripts/audit_local_bm25_budget.py` 只读使用上述官方语料、SciFact 固定 50 条 manifest、冻结 `current_rules` 计划和既有 local-BM25 Snapshot，离线重建每个已执行 safe-original 子查询的完整 Top-200 排名。审计协议在读取 gold 指标前冻结于 `benchmark/beir_scifact_local_bm25_budget_audit_manifest.json`：现有 adapter 为每列表 Top-20 后按计划顺序统一身份去重；原始查询上界只取原始 query 的 Top-200；全部子查询上界把各列表 Top-200 按冻结顺序合并、去重后截断 200。三者都使用相同 tokenizer、BM25 参数和稳定 Corpus ID 并列裁决，gold 只在候选池完成后精确匹配；命令不导入 SearchService、不调用 connector/LLM、不写 Snapshot。
 
 42 条可评估 gold 关系全部具有逐列表首次排名、adapter 配额、去重位置及冻结阶段位置。现有每列表 Top-20 在 20/50/100/200 前缀均命中 32 条（macro Candidate Recall 0.7561）；原始查询和全部子查询合并在 20/50/100 均命中 32 条，在 200 命中 35 条（macro 0.8293）。新增 3 条在原始查询列表分别位于 120、150、194，均归因于每列表 adapter 配额；跨查询身份去重、local 来源池截断、全局 200 候选预算和身份匹配各造成 0 条该差距。其余 7 条在所有可观察 Top-200 中仍未命中，属于查询词面失配的可观察证据。
