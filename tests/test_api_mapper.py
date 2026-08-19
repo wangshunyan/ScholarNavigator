@@ -289,6 +289,11 @@ def test_warnings_and_source_errors_enter_missing_evidence_and_cost_report() -> 
                     "local_model_batch_count": 0,
                     "local_model_fallback_count": 0,
                     "local_model_fingerprint": None,
+                    "local_model_prompt_version": None,
+                    "local_model_device": None,
+                    "local_model_max_length": None,
+                    "local_model_candidate_count": 0,
+                    "local_model_inference_success_count": 0,
                 },
         },
         {
@@ -317,6 +322,11 @@ def test_warnings_and_source_errors_enter_missing_evidence_and_cost_report() -> 
                     "local_model_batch_count": 0,
                     "local_model_fallback_count": 0,
                     "local_model_fingerprint": None,
+                    "local_model_prompt_version": None,
+                    "local_model_device": None,
+                    "local_model_max_length": None,
+                    "local_model_candidate_count": 0,
+                    "local_model_inference_success_count": 0,
                 },
         },
     ]
