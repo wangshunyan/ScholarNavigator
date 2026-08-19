@@ -67,10 +67,10 @@ Linux/Python 3.12 锁已在服务器 Python 3.12.3/x86_64 环境生成，覆盖 
 ## 当前结论
 
 1. 旧 `local_hybrid` 结果仅代表 legacy 标题匹配语料和全矩阵向量实现，不能作为 P0/Faiss 新方案的正式成绩。
-2. 这说明“摘要语义向量 + BM25 RRF”是有效优化，但提升幅度还不足以称为最终强方案。当前仍有 2,129 个 gold 属于 `not_retrieved`，核心瓶颈仍是初始召回。
-3. 规则 Judgement 仍丢失较多已召回 gold：`local_hybrid` 的 Judgement FN 率为 0.347。下一步应优先调低标题/摘要证据的假阴性，或加入受控 LLM judgement 消融。
-4. `local_bm25 + arXiv` 的旧完整运行未完成，公开 API 出现 429、读取超时和 TLS 握手超时。该目录只保留为可靠性诊断，不得写入质量对比或提交结果。
-5. `contest_full_local_hybrid_v1` 是中断目录，不作为正式结果。Windows 下不要在 benchmark 运行中读取 `results.jsonl`，否则可能影响原子替换；需要观察进度时只检查进程，或中断后使用同一 RunId `-Resume`。
+2. 在同一 1000 条内部评测下，Dense 相对 rules 将 F1@20 从 0.01087 提升至 0.02155、Recall@20 从 0.06195 提升至 0.13508；完整 reranker 进一步达到 F1@20=0.02442、Recall@20=0.15010。资源账本和 reranker 审计均通过，但这些仍是内部指标，不等同于赛事官方 scorer。
+3. Reranker 的完整运行使用真实 GPU 推理且零 fallback；代价是平均端到端延迟由 Dense 的 0.968 s 增至 3.909 s。提交材料应同时呈现质量增益和资源代价。
+4. `contest_full_dense_reranker_llm_v4` 未启动，因为服务器 provider 为 disabled；不得把 LLM 规划写成实测创新结果。未来必须以新的完整 RunId、逐查询一次调用和完整审计账本重新运行。
+5. `local_bm25 + arXiv` 的旧完整运行及 `contest_full_local_hybrid_v1` 只保留为可靠性/中断诊断，不得写入正式质量对比或提交结果。
 
 ## 后续正式实验口径
 
