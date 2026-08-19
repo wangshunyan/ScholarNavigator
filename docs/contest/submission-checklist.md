@@ -10,7 +10,7 @@
 - PaSa 官方标题库已转换为 `datasets/local_bm25/pasa_papers.jsonl`，共 569,432 篇并保留 `arxiv_id`。
 - 已构建 SQLite FTS5 本地 BM25 索引；`.env` 已配置本地语料，运行时配置可识别 `local_bm25`。
 - 旧的 31,136 条公开 arXiv 摘要标题匹配语料和对应向量索引已标记为 legacy，不作为新方案正式依据。
-- P0 精确 arXiv ID 语料、Faiss ANN、索引 Recall、构建耗时和峰值内存报告待完成后再勾选。
+- P0 精确 arXiv ID 语料、Faiss ANN、索引 Recall、构建耗时和峰值内存报告已完成并冻结；具体证据见 `docs/contest/experiment-results.md`。
 - 已接入旧版 `local_hybrid`：BM25 与摘要向量各取候选，RRF 融合后进入原有去重、判断、排序和结构化输出链路；P0/Faiss 版本需要重新验证。
 - 本地 BM25 已增加自然语言查询填充词过滤，避免礼貌语和泛化词主导标题检索；相关测试已通过。
 - 已提供 `scripts/check_local_hybrid_search.py`，可重复检查索引加载、摘要返回、BM25/semantic 来源和前 5 条 gold 命中。
@@ -24,10 +24,10 @@
 ## 提交前必须完成
 
 1. P0 精确语料和 Faiss 资源报告完成并冻结；旧 `contest_full_local_*` 仅作为 legacy 对照。
-2. P0/Faiss 变更后必须先完成 `contest_qual200_bm25_v1`、`contest_qual200_dense_v1`、`contest_qual200_reranker_v1` 并通过配对 bootstrap 和资源账本门禁；不得直接恢复旧 `hybrid_deep_rrf`。
-3. 只有门禁通过的候选可运行 `contest_full_rules_v1`、`contest_full_dense_v1`、`contest_full_dense_reranker_v1`、`contest_full_dense_reranker_llm_v1`。
+2. P0/Faiss 变更后的 200 条资格门禁已完成；`contest_qual200_reranker_v4_gpu1` 通过零 fallback 和资源审计。
+3. `contest_full_rules_v1`、`contest_full_dense_v1` 和 `contest_full_dense_reranker_v4` 已完成；LLM 组因 provider disabled 未启动，不作为成绩依据。
 4. 只使用完整成功运行目录中真实生成的 `config.json`、`metrics.json`、`summary.md`、`results.jsonl`、`stage_metrics.json`、`error_analysis.json` 和 `resource_ledger.json` 写实验结果。
-5. 配置可用 LLM 后，完成受控消融，或者在说明书中明确“当前提交采用规则主线，LLM 接口默认关闭且未作为成绩依据”。不得把未运行的 LLM 功能写成实测创新结果。
+5. 当前提交明确“LLM 接口已实现但 provider disabled，未运行且未作为成绩依据”。不得把未运行的 LLM 功能写成实测创新结果。
 6. 将新主线的 `local_bm25` 与 `local_hybrid` 对比、阶段诊断中的初始候选 Recall、Judgement FN 和平均延迟写入说明书。
 7. 填写团队、学校、指导教师、成员分工、软件著作权/开源许可证等竞赛表单字段，并完成匿名要求检查。
 8. 录制 3 到 5 条交互式演示，确认视频没有 API Key、本地绝对路径或无关个人信息。
@@ -44,7 +44,7 @@
 
 ## 当前风险
 
-- 旧 `local_hybrid` 的 F1@20 为 0.0147，但它使用 legacy 标题匹配语料，不能作为新主线成绩；P0/Faiss 结果尚未产生。
+- 旧 `local_hybrid` 的 F1@20 为 0.0147，但它使用 legacy 标题匹配语料，不能作为新主线成绩；P0/Faiss 结果已由新运行目录提供。
 - `hybrid_deep_rrf` 目前只有 100 条候选实验，不能作为最终成绩；必须跑完 1000 条并通过资源账本后才能引用为主结果。
 - LLM 当前默认 disabled；若要把 LLM 规划作为创新点，必须配置模型并记录版本、Token、延迟和回退。
 - PaSa `id2paper.json` 是论文 ID 与标题库；正式语义摘要必须来自带 arXiv ID 的 Cornell/arXiv 元数据精确关联，不能使用标题匹配或 AutoScholarQuery gold。

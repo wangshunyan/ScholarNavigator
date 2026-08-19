@@ -142,7 +142,9 @@ SciFact BM25 上界审计位于 `scripts/audit_scifact_bm25.py` 和 `scholar_age
 
 服务器主线已完成 P0 精确关联和 Faiss 资源审计。官方 arXiv 元数据 3,134,984 行与 PaSa 569,432 篇论文按规范化 arXiv ID 精确关联，title 不参与匹配，AutoScholarQuery gold/qrels 不进入索引；生成语料 SHA-256 为 `008ce46f15cc634f61bbadd4b960c6617c8d785c03dd2a307ed8d03fe9448d73`。BGE-small 384 维向量使用持久化 Faiss HNSW/IP，`M=32`、`efConstruction=80`、`efSearch=64`，Recall@10 为 0.984，构建约 1764.6 秒、峰值 RSS 约 4.82 GB；ANN 与 exact-flat 延迟分别约 0.0239 秒和 0.6153 秒。
 
-Dense 完整运行 `contest_full_dense_v1` 已完成 1000 条，内部 F1@20 为 0.022，Recall@20 为 0.135，初始候选 Recall 为 0.235，平均延迟约 0.968 秒。神经 reranker 使用 Qwen3-Reranker-0.6B；`contest_qual200_reranker_v4_gpu1` 已通过 200 条资格门禁，随后启动 `contest_full_dense_reranker_v4`。在完整 reranker 运行生成并核验 `RUN_COMPLETED`、零失败、零 fallback 和资源账本前，不得引用其指标或启动 LLM 组。LLM 组固定每条查询最多一次调用、最多两条补充查询、temperature=0、严格 JSON Schema、保留原始查询；其内部指标仍不等同于赛事官方 scorer。
+Dense 完整运行 `contest_full_dense_v1` 已完成 1000 条，内部 F1@20 为 0.02155，Recall@20 为 0.13508，平均延迟约 0.968 秒。神经 reranker 使用 Qwen3-Reranker-0.6B；`contest_qual200_reranker_v4_gpu1` 已通过 200 条资格门禁，`contest_full_dense_reranker_v4` 已完成并通过完整审计：F1@20=0.02442、Recall@20=0.15010、MRR=0.09406，平均延迟 3.909 秒，零失败、零 fallback。LLM 组固定每条查询最多一次调用、最多两条补充查询、temperature=0、严格 JSON Schema、保留原始查询；其内部指标仍不等同于赛事官方 scorer。
+
+服务器 LLM runtime 检查结果为 `provider_disabled`，因此 `contest_full_dense_reranker_llm_v4` 未启动，不能把 LLM 规划写成实测增益。Linux/Python 3.12.3 锁已从服务器环境生成，但离线 wheelhouse 缺少兼容包，离线安装资格保持未就绪。
 
 `scripts/audit_local_bm25_budget.py` 只读使用上述官方语料、SciFact 固定 50 条 manifest、冻结 `current_rules` 计划和既有 local-BM25 Snapshot，离线重建每个已执行 safe-original 子查询的完整 Top-200 排名。审计协议在读取 gold 指标前冻结于 `benchmark/beir_scifact_local_bm25_budget_audit_manifest.json`：现有 adapter 为每列表 Top-20 后按计划顺序统一身份去重；原始查询上界只取原始 query 的 Top-200；全部子查询上界把各列表 Top-200 按冻结顺序合并、去重后截断 200。三者都使用相同 tokenizer、BM25 参数和稳定 Corpus ID 并列裁决，gold 只在候选池完成后精确匹配；命令不导入 SearchService、不调用 connector/LLM、不写 Snapshot。
 
@@ -1134,8 +1136,8 @@ Precision@20。本轮合成矩阵不生成真实标签、κ、Precision 或正�
 
 ### 赛题三 200 条资格门禁
 
-P0 精确 ID 语料和 Faiss 索引变化后，固定 AutoScholarQuery test 前 200 条及其顺序，比较 `contest_qual200_bm25_v1`、`contest_qual200_dense_v1` 和 `contest_qual200_reranker_v1`。候选必须在 F1@20 或 Recall@20 上严格提升，且配对 query-level bootstrap 95% 区间下界大于 0，baseline/candidate 资源账本均通过，才有资格运行完整 1000 条。
+P0 精确 ID 语料和 Faiss 索引变化后，固定 AutoScholarQuery test 前 200 条及其顺序，比较 `contest_qual200_bm25_v1`、`contest_qual200_dense_v1` 和当前有效的 `contest_qual200_reranker_v4_gpu1`。候选必须在 F1@20 或 Recall@20 上严格提升，且配对 query-level bootstrap 95% 区间下界大于 0，baseline/candidate 资源账本均通过，才有资格运行完整 1000 条。
 
-Reranker 候选还必须通过真实推理审计：`local_model_fallback_count` 必须为 0，且结果必须包含正数 batch、候选数、推理成功数、模型指纹、设备、最大长度和固定 prompt 版本。旧 `contest_qual200_reranker_v1` 的 CUDA 索引断言运行只保留为失败诊断；修复后使用 `contest_qual200_reranker_v2`，不恢复旧目录。
+Reranker 候选还必须通过真实推理审计：`local_model_fallback_count` 必须为 0，且结果必须包含正数 batch、候选数、推理成功数、模型指纹、设备、最大长度和固定 prompt 版本。旧 `contest_qual200_reranker_v1` 至 v3 均只保留为失败或性能诊断；当前有效资格为 `contest_qual200_reranker_v4_gpu1`，不得恢复旧目录。
 
 正式四组为规则基线、语义召回、语义召回+Qwen3 Reranker、语义召回+Qwen3 Reranker+`llm_semantic`。LLM 组每条查询最多一次调用、最多两条补充查询、temperature=0、严格 JSON Schema、始终保留原始查询，并记录模型、Prompt 版本、Token、调用次数、延迟、失败和 `current_rules` 回退。Provider 不可用时只报告未完成，不伪造指标。

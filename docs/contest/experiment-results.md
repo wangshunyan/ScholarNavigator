@@ -55,12 +55,14 @@
 
 | 配置 | 运行目录 | 状态 | F1@20 | Recall@20 | 资源账本 | 说明 |
 | --- | --- | --- | ---: | ---: | --- | --- |
-| rules | `contest_full_rules_v1` | 已完成 | 待由完整产物汇总 | 待由完整产物汇总 | 已核验后填写 | P0/Faiss 规则基线。 |
-| dense | `contest_full_dense_v1` | 已完成 | 0.0220 | 0.1350 | passed | 初始候选 Recall 为 0.235，平均延迟 0.968 s。 |
-| dense + reranker | `contest_full_dense_reranker_v4` | 运行中 | 不得引用 | 不得引用 | 待完成 | v4 已通过 200 条 GPU 资格门禁。 |
-| dense + reranker + LLM | `contest_full_dense_reranker_llm_v4` | 未启动 | 不得引用 | 不得引用 | 不适用 | 必须等待 reranker 完整核验和 provider 可用性检查。 |
+| rules | `contest_full_rules_v1` | 已完成 | 0.01087 | 0.06195 | passed | MRR 0.04071，平均延迟 0.719 s。 |
+| dense | `contest_full_dense_v1` | 已完成 | 0.02155 | 0.13508 | passed | MRR 0.09171，平均延迟 0.968 s。 |
+| dense + reranker | `contest_full_dense_reranker_v4` | 已完成并审计通过 | 0.02442 | 0.15010 | passed | MRR 0.09406，平均延迟 3.909 s；零失败、零 fallback。 |
+| dense + reranker + LLM | `contest_full_dense_reranker_llm_v4` | 未完成 | 不得引用 | 不得引用 | 不适用 | provider 为 disabled，未启动，不伪造成绩。 |
 
-`contest_qual200_reranker_v4_gpu1` 已完成 200/200、零失败、零 fallback，并通过资源账本和配对 bootstrap 门禁；F1@20 增量为 +0.013747，Recall@20 增量为 +0.078419。该内部指标不等同于赛事官方 scorer。
+`contest_qual200_reranker_v4_gpu1` 已完成 200/200、零失败、零 fallback，并通过资源账本和配对 bootstrap 门禁；F1@20 增量为 +0.013747，Recall@20 增量为 +0.078419。完整 reranker 审计确认 1000 条、Qwen3 prompt v1、2048 最大长度、batch=8、候选上限=120、P50/P95 为 0.730/0.839 s、吞吐 156.13 candidates/s、峰值显存约 5.49 GiB。以上内部指标不等同于赛事官方 scorer。
+
+Linux/Python 3.12 锁已在服务器 Python 3.12.3/x86_64 环境生成，覆盖 23 个包；由于服务器 pip wheelhouse 缺少兼容 wheel，离线安装资格为 `not_ready_missing_verified_version_or_artifact`，不能宣称完全离线可复现。
 
 ## 当前结论
 

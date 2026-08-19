@@ -1,0 +1,19 @@
+# python_dependency_lock_v1
+# group: runtime
+# environment: python 3.12.3 linux x86_64
+annotated-doc==0.0.5
+annotated-types==0.8.0
+anyio==4.14.2
+click==8.4.2
+fastapi==0.138.0
+h11==0.16.0
+idna==3.19
+numpy==2.5.2
+packaging==25.0
+pydantic==2.11.7
+pydantic-core==2.33.2
+rank-bm25==0.2.2
+starlette==1.6.0
+typing-extensions==4.16.0
+typing-inspection==0.4.4
+uvicorn==0.48.0
