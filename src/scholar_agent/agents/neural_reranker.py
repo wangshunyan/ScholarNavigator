@@ -351,13 +351,16 @@ def _causal_relevance_scores(
     # CPU gather avoids CUDA's asynchronous advanced-index kernel and remains
     # well-defined when Qwen returns a view with nonstandard strides.
     logits_cpu = logits.detach().to("cpu").contiguous()
-    position_indices = (
-        logits_cpu.new_tensor(positions)
-        .long()
-        .view(batch_size, 1, 1)
-        .expand(-1, 1, vocab_size)
+    torch = __import__("torch")
+    final_logits = torch.stack(
+        [
+            logits_cpu[row].index_select(
+                0, logits_cpu.new_tensor([position]).long()
+            ).squeeze(0)
+            for row, position in enumerate(positions)
+        ],
+        dim=0,
     )
-    final_logits = logits_cpu.gather(1, position_indices).squeeze(1)
     positive_logits = final_logits[:, positive]
     negative_logits = final_logits[:, negative]
     return positive_logits - negative_logits
