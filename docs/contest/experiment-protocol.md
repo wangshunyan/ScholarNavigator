@@ -42,6 +42,12 @@ python scripts/audit_contest_llm_run.py \
 
 审计要求 1000 条结果、完成标记、每条调用数不超过 1、补充查询不超过 2、Prompt/模型元数据、Token、延迟、Schema 拒绝和 `current_rules` 回退记录齐全。Provider 不可用时只记录 LLM 组未完成，不伪造指标。
 
+当外部 provider 未配置时，可在服务器项目目录内使用 `scripts/serve_local_llm_provider.py` 启动绑定
+`127.0.0.1` 的 Transformers/Qwen3-4B 本地 OpenAI-compatible provider。模型必须下载至
+`datasets/semantic/models/`，服务固定 GPU1、`temperature=0`，并只接受能被解析为 JSON object 的输出；
+运行进程使用临时环境变量连接 loopback endpoint，不修改或读取 `.env`。本地模型服务只解决运行时可用性，
+不改变当前 Prompt、数据、候选池、RunId 门禁或 LLM 完整审计要求。
+
 `hybrid` 是零外部 API 的本地混合检索，首次运行前必须已用带 arXiv ID 的 Cornell/arXiv 元数据精确生成摘要语料和 Faiss 索引。中断后必须复用原 `run-id`，且配置、数据哈希和索引参数必须完全一致：
 
 P0 构建器流式读取官方逐行 JSON 快照，只按规范化 arXiv ID 关联，不读取标题做匹配。官方快照同一 ID 的历史修订按 `update_date` 选择最新记录并写入冲突计数；缺少可区分更新时间的冲突记录会拒绝构建。

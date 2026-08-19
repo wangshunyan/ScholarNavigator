@@ -226,6 +226,13 @@ LLM 默认关闭，当前可选用于三个位置：
 2. 相关性判断：仅判断已检索候选的标题、摘要、venue 和标识符等元数据；按批次和候选上限调用，失败批次回退规则判断。
 3. 语义查询规划：`llm_semantic` 只接收原始查询、显式约束、规则解析分面、运行档位和数量上限，保留原查询并最多接受两条补充查询。严格 Schema 和确定性校验会拒绝缺失核心主题或必要词、命中排除词、可疑标识符或引用、过长、重复及无关的输出；配置缺失、超时、预算停止、快照缺失或全部被拒绝时回退 `current_rules`，不会中断搜索。
 
+竞赛服务器可选使用 `scripts/serve_local_llm_provider.py` 将项目目录内的 Qwen
+instruction model 暴露为 loopback-only OpenAI-compatible `/v1/chat/completions` 服务。
+该适配层固定 `temperature=0`，不接受 streaming，并只返回严格 JSON object；它将真实
+prompt/completion token 数返回给现有资源账本。服务不读取或写入 `.env`，实验进程使用临时
+环境变量连接环回端点。该本地运行时只是 provider 实现，不改变 `llm_semantic` 的 Prompt、
+Schema 校验、原始查询保留、预算或 `current_rules` 回退语义。
+
 三个 active Prompt 均由统一 loader 通过 `importlib.resources` 从 `src/scholar_agent/prompts/` 内的 Markdown 加载，不依赖工作目录。`manifest.json` 记录版本和 active 状态；渲染器以稳定 JSON 替换 `{{payload}}`，并用版本、system 文本和 user 模板计算 SHA-256。Prompt 缺失、为空或无效时不会调用 LLM，而是记录稳定 warning 并继续规则路径。
 
 论文标题、摘要、作者、venue、URL 与来源错误按
