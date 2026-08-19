@@ -145,6 +145,11 @@ attempt 及显式 supersession 链同时绑定到 `run_manifest_v1` 和原子 ge
 connector、预算、LLM、取消和终态事件，按稳定 operation identity 记录预留、消费、释放、
 请求、分页、重试、cache 与未知 token/cost；不建立第二套请求或预算执行路径。账本随原子
 completion generation 提交，并可登记到 `run_manifest_v1`、复现胶囊和所选 shard attempt。
+
+本地 Qwen3-Reranker 适配器使用模型随附的官方 causal-LM 判定模板，固定
+`qwen3-reranker-v1` prompt、左 padding 和 8192 最大长度。最终 yes/no logits 在 CPU 上安全提取，避免
+CUDA 异步索引异常掩盖真实回退。每次重排都记录模型指纹、设备、batch 数、候选数、最大长度、推理成功数和
+fallback 计数；qualification gate 将任何 fallback 视为 reranker 资格失败。
 `resource_accounting_integrity_v1` 再验证 run/query/operation 汇总及预算守恒，拒绝未提交、
 被 supersede 或取消后的消耗。观察器默认关闭，启用前后 SearchService 结果、排序、去重、
 事件和预算行为必须相同。详情见

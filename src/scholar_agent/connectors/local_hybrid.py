@@ -513,6 +513,9 @@ def _rerank_if_configured(
         "local_hybrid_neural_reranker",
         f"local_hybrid_reranker_model:{result.model_fingerprint[:16]}",
         f"local_hybrid_reranker_latency_ms:{result.latency_seconds * 1000:.3f}",
+        f"local_hybrid_reranker_prompt_version:{result.prompt_version}",
+        f"local_hybrid_reranker_device:{result.device or 'unknown'}",
+        f"local_hybrid_reranker_max_length:{result.max_length}",
     ]
     if result.fallback_used:
         warnings.append("local_hybrid_reranker_fallback_current_order")
@@ -526,6 +529,13 @@ def _rerank_if_configured(
             local_model_batch_count=result.batch_count,
             local_model_fallback_count=1 if result.fallback_used else 0,
             local_model_fingerprint=result.model_fingerprint,
+            local_model_prompt_version=result.prompt_version,
+            local_model_device=result.device,
+            local_model_max_length=result.max_length,
+            local_model_candidate_count=result.candidate_count,
+            local_model_inference_success_count=(
+                1 if result.inference_success else 0
+            ),
         ),
     )
 

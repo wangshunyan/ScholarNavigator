@@ -23,6 +23,11 @@ P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid`
 
 运行 `scripts/check_contest_qualification.py` 后，只有门禁通过的候选可进入完整四组：`contest_full_rules_v1`、`contest_full_dense_v1`、`contest_full_dense_reranker_v1`、`contest_full_dense_reranker_llm_v1`。每个运行需保存配置、commit、输入哈希、PID、命令、日志、资源账本和 committed generation。
 
+神经 reranker 资格运行还必须证明真实模型推理成功：结果中不得出现
+`local_model_fallback_count`，且必须有正数 batch、候选数、推理成功数、模型指纹、设备、最大长度和 prompt 版本。旧的
+`contest_qual200_reranker_v1` 曾发生 CUDA 索引断言，只能作为失败诊断；修复后的资格运行使用新 RunId
+`contest_qual200_reranker_v2`，不能用同一目录恢复旧配置。
+
 `hybrid` 是零外部 API 的本地混合检索，首次运行前必须已用带 arXiv ID 的 Cornell/arXiv 元数据精确生成摘要语料和 Faiss 索引。中断后必须复用原 `run-id`，且配置、数据哈希和索引参数必须完全一致：
 
 P0 构建器流式读取官方逐行 JSON 快照，只按规范化 arXiv ID 关联，不读取标题做匹配。官方快照同一 ID 的历史修订按 `update_date` 选择最新记录并写入冲突计数；缺少可区分更新时间的冲突记录会拒绝构建。

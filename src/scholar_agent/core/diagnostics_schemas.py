@@ -21,6 +21,11 @@ class ConnectorDiagnostics(BaseModel):
     local_model_batch_count: int = Field(default=0, ge=0)
     local_model_fallback_count: int = Field(default=0, ge=0)
     local_model_fingerprint: str | None = None
+    local_model_prompt_version: str | None = None
+    local_model_device: str | None = None
+    local_model_max_length: int | None = Field(default=None, ge=1)
+    local_model_candidate_count: int = Field(default=0, ge=0)
+    local_model_inference_success_count: int = Field(default=0, ge=0)
 
 
 def merge_connector_diagnostics(
@@ -60,5 +65,35 @@ def merge_connector_diagnostics(
                 if item.local_model_fingerprint is not None
             ),
             None,
+        ),
+        local_model_prompt_version=next(
+            (
+                item.local_model_prompt_version
+                for item in reversed(items)
+                if item.local_model_prompt_version is not None
+            ),
+            None,
+        ),
+        local_model_device=next(
+            (
+                item.local_model_device
+                for item in reversed(items)
+                if item.local_model_device is not None
+            ),
+            None,
+        ),
+        local_model_max_length=next(
+            (
+                item.local_model_max_length
+                for item in reversed(items)
+                if item.local_model_max_length is not None
+            ),
+            None,
+        ),
+        local_model_candidate_count=sum(
+            item.local_model_candidate_count for item in items
+        ),
+        local_model_inference_success_count=sum(
+            item.local_model_inference_success_count for item in items
         ),
     )

@@ -1130,4 +1130,6 @@ Precision@20。本轮合成矩阵不生成真实标签、κ、Precision 或正�
 
 P0 精确 ID 语料和 Faiss 索引变化后，固定 AutoScholarQuery test 前 200 条及其顺序，比较 `contest_qual200_bm25_v1`、`contest_qual200_dense_v1` 和 `contest_qual200_reranker_v1`。候选必须在 F1@20 或 Recall@20 上严格提升，且配对 query-level bootstrap 95% 区间下界大于 0，baseline/candidate 资源账本均通过，才有资格运行完整 1000 条。
 
+Reranker 候选还必须通过真实推理审计：`local_model_fallback_count` 必须为 0，且结果必须包含正数 batch、候选数、推理成功数、模型指纹、设备、最大长度和固定 prompt 版本。旧 `contest_qual200_reranker_v1` 的 CUDA 索引断言运行只保留为失败诊断；修复后使用 `contest_qual200_reranker_v2`，不恢复旧目录。
+
 正式四组为规则基线、语义召回、语义召回+Qwen3 Reranker、语义召回+Qwen3 Reranker+`llm_semantic`。LLM 组每条查询最多一次调用、最多两条补充查询、temperature=0、严格 JSON Schema、始终保留原始查询，并记录模型、Prompt 版本、Token、调用次数、延迟、失败和 `current_rules` 回退。Provider 不可用时只报告未完成，不伪造指标。

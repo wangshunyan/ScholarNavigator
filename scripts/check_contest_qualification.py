@@ -25,7 +25,9 @@ EXPECTED_BASELINE = "contest_qual200_bm25_v1"
 EXPECTED_CANDIDATES = {
     "contest_qual200_dense_v1",
     "contest_qual200_reranker_v1",
+    "contest_qual200_reranker_v2",
 }
+RERANKER_PROMPT_VERSION = "qwen3-reranker-v1"
 BOOTSTRAP_SEED = 20260818
 BOOTSTRAP_ITERATIONS = 5000
 
@@ -64,6 +66,8 @@ def check_qualification(baseline: Path, candidate: Path) -> dict[str, Any]:
         "candidate": candidate_run["resource_report"],
     }
     resource_passed = all(item.get("status") == "passed" for item in resource.values())
+    reranker_audit = candidate_run.get("reranker_audit")
+    reranker_passed = reranker_audit is None or reranker_audit.get("status") == "passed"
     return {
         "schema_version": "contest-qualification-gate-v1",
         "baseline_run_id": baseline.name,
@@ -72,7 +76,11 @@ def check_qualification(baseline: Path, candidate: Path) -> dict[str, Any]:
         "metrics": comparisons,
         "strict_positive_improvement": improvements,
         "resource_ledger_passed": resource_passed,
-        "eligible_for_full_1000": any(improvements.values()) and resource_passed,
+        "reranker_audit": reranker_audit,
+        "reranker_audit_passed": reranker_passed,
+        "eligible_for_full_1000": (
+            any(improvements.values()) and resource_passed and reranker_passed
+        ),
         "internal_metric_scope": "not_official_competition_scorer",
     }
 
@@ -125,7 +133,87 @@ def _load_run(path: Path, expected_run_id: str) -> dict[str, Any]:
         "judgement_policy": config.get("judgement_policy"),
         "data_hashes": config.get("data_hashes") or config.get("input_hashes"),
     }
-    return {"config": config, "config_hashes": config_hashes, "metrics": metrics, "resource_report": resource_report}
+    result = {
+        "config": config,
+        "config_hashes": config_hashes,
+        "metrics": metrics,
+        "resource_report": resource_report,
+    }
+    if "reranker" in expected_run_id:
+        result["reranker_audit"] = _audit_reranker_run(path)
+    return result
+
+
+def _audit_reranker_run(path: Path) -> dict[str, Any]:
+    """Require evidence that the neural reranker actually inferred."""
+
+    results_path = path / "results.jsonl"
+    fallback_count = 0
+    batch_count = 0
+    success_count = 0
+    candidate_count = 0
+    prompt_versions: set[str] = set()
+    devices: set[str] = set()
+    max_lengths: set[int] = set()
+    fingerprints: set[str] = set()
+    row_count = 0
+
+    def visit(value: Any) -> None:
+        nonlocal fallback_count, batch_count, success_count, candidate_count
+        if isinstance(value, dict):
+            for key, item in value.items():
+                if key == "local_model_fallback_count":
+                    fallback_count += int(item or 0)
+                elif key == "local_model_batch_count":
+                    batch_count += int(item or 0)
+                elif key == "local_model_inference_success_count":
+                    success_count += int(item or 0)
+                elif key == "local_model_candidate_count":
+                    candidate_count += int(item or 0)
+                elif key == "local_model_prompt_version" and item:
+                    prompt_versions.add(str(item))
+                elif key == "local_model_device" and item:
+                    devices.add(str(item))
+                elif key == "local_model_max_length" and item:
+                    max_lengths.add(int(item))
+                elif key == "local_model_fingerprint" and item:
+                    fingerprints.add(str(item))
+                visit(item)
+        elif isinstance(value, list):
+            for item in value:
+                visit(item)
+
+    if results_path.is_file():
+        for line in results_path.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                row_count += 1
+                visit(json.loads(line))
+    reasons: list[str] = []
+    if row_count != 200:
+        reasons.append("reranker_result_row_count_invalid")
+    if fallback_count != 0:
+        reasons.append("reranker_fallback_detected")
+    if batch_count <= 0 or success_count <= 0:
+        reasons.append("reranker_inference_missing")
+    if candidate_count <= 0:
+        reasons.append("reranker_candidate_audit_missing")
+    if prompt_versions != {RERANKER_PROMPT_VERSION}:
+        reasons.append("reranker_prompt_version_invalid")
+    if not devices or not fingerprints or not max_lengths:
+        reasons.append("reranker_runtime_metadata_missing")
+    return {
+        "status": "passed" if not reasons else "failed",
+        "reasons": reasons,
+        "result_row_count": row_count,
+        "fallback_count": fallback_count,
+        "batch_count": batch_count,
+        "inference_success_count": success_count,
+        "candidate_count": candidate_count,
+        "prompt_versions": sorted(prompt_versions),
+        "devices": sorted(devices),
+        "max_lengths": sorted(max_lengths),
+        "fingerprint_count": len(fingerprints),
+    }
 
 
 def _case_metrics(metrics: dict[str, Any]) -> dict[str, dict[str, float]]:

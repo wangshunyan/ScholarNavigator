@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from scripts import check_contest_qualification as qualification
@@ -66,3 +67,42 @@ def test_qualification_rejects_no_metric_improvement(monkeypatch) -> None:
 
     assert report["eligible_for_full_1000"] is False
     assert not any(report["strict_positive_improvement"].values())
+
+
+def test_reranker_audit_rejects_fallback_and_accepts_real_inference(tmp_path: Path) -> None:
+    path = tmp_path / "contest_qual200_reranker_v2"
+    path.mkdir()
+    rows = []
+    for index in range(200):
+        rows.append(
+            {
+                "case_id": f"q-{index}",
+                "diagnostics": {
+                    "local_model_batch_count": 15,
+                    "local_model_fallback_count": 0,
+                    "local_model_inference_success_count": 1,
+                    "local_model_candidate_count": 120,
+                    "local_model_prompt_version": "qwen3-reranker-v1",
+                    "local_model_device": "cuda:0",
+                    "local_model_max_length": 8192,
+                    "local_model_fingerprint": "model-fingerprint",
+                },
+            }
+        )
+    (path / "results.jsonl").write_text(
+        "\n".join(json.dumps(row) for row in rows) + "\n",
+        encoding="utf-8",
+    )
+
+    passed = qualification._audit_reranker_run(path)
+    assert passed["status"] == "passed"
+    assert passed["fallback_count"] == 0
+
+    rows[0]["diagnostics"]["local_model_fallback_count"] = 1
+    (path / "results.jsonl").write_text(
+        "\n".join(json.dumps(row) for row in rows) + "\n",
+        encoding="utf-8",
+    )
+    failed = qualification._audit_reranker_run(path)
+    assert failed["status"] == "failed"
+    assert "reranker_fallback_detected" in failed["reasons"]

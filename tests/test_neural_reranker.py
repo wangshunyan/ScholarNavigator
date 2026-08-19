@@ -6,6 +6,8 @@ from pathlib import Path
 from scholar_agent.agents.neural_reranker import (
     NeuralReranker,
     NeuralRerankerConfig,
+    RERANKER_PROMPT_VERSION,
+    _format_reranker_prompt,
     _causal_relevance_scores,
     model_fingerprint,
 )
@@ -95,3 +97,36 @@ def test_causal_scores_use_last_token_for_left_padding() -> None:
     scores = _causal_relevance_scores(logits, input_ids, attention_mask, Tokenizer())
 
     assert scores.tolist() == [8.0, 6.0]
+
+
+def test_qwen_prompt_is_deterministic_and_preserves_query_and_document() -> None:
+    prompt = _format_reranker_prompt(
+        "find retrieval papers",
+        "A paper about dense retrieval.",
+        "academic retrieval task",
+    )
+
+    assert RERANKER_PROMPT_VERSION == "qwen3-reranker-v1"
+    assert prompt == (
+        "<Instruct>: academic retrieval task\n\n"
+        "<Query>: find retrieval papers\n\n"
+        "<Document>: A paper about dense retrieval."
+    )
+
+
+def test_causal_scores_move_logits_to_cpu_before_indexing() -> None:
+    torch = __import__("torch")
+
+    class Tokenizer:
+        padding_side = "right"
+
+        def encode(self, value: str, *, add_special_tokens: bool) -> list[int]:
+            return [1] if value == "yes" else [0]
+
+    input_ids = torch.zeros((1, 3), dtype=torch.long)
+    mask = torch.tensor([[1, 1, 0]])
+    logits = torch.zeros((1, 3, 2), dtype=torch.float32)
+    logits[0, 1, 1] = 2
+    logits[0, 1, 0] = -1
+
+    assert _causal_relevance_scores(logits, input_ids, mask, Tokenizer()).tolist() == [3.0]

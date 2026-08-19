@@ -13,12 +13,29 @@ from typing import Any
 from scholar_agent.core.paper_schemas import Paper
 
 
+RERANKER_PROMPT_VERSION = "qwen3-reranker-v1"
+RERANKER_INSTRUCTION = (
+    "Given a web search query, retrieve relevant passages that answer the query"
+)
+RERANKER_MAX_LENGTH = 8192
+_RERANKER_PREFIX = (
+    '<|im_start|>system\n'
+    'Judge whether the Document meets the requirements based on the Query and '
+    'the Instruct provided. Note that the answer can only be "yes" or "no."'
+    '<|im_end|>\n<|im_start|>user\n'
+)
+_RERANKER_SUFFIX = (
+    '<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n'
+)
+
 @dataclass(frozen=True)
 class NeuralRerankerConfig:
     model_path: Path
     candidate_limit: int = 120
     batch_size: int = 8
     device: str = "auto"
+    max_length: int = RERANKER_MAX_LENGTH
+    prompt_version: str = RERANKER_PROMPT_VERSION
 
 
 @dataclass(frozen=True)
@@ -29,6 +46,12 @@ class NeuralRerankResult:
     batch_count: int = 0
     fallback_used: bool = False
     error: str | None = None
+    prompt_version: str = RERANKER_PROMPT_VERSION
+    model_kind: str | None = None
+    device: str | None = None
+    max_length: int = RERANKER_MAX_LENGTH
+    candidate_count: int = 0
+    inference_success: bool = False
 
 
 class NeuralReranker:
@@ -39,7 +62,12 @@ class NeuralReranker:
     """
 
     def __init__(self, config: NeuralRerankerConfig) -> None:
-        if config.candidate_limit <= 0 or config.batch_size <= 0:
+        if (
+            config.candidate_limit <= 0
+            or config.batch_size <= 0
+            or config.max_length <= 0
+            or not config.prompt_version.strip()
+        ):
             raise ValueError("neural_reranker_limits_invalid")
         self.config = config
         self._tokenizer: Any | None = None
@@ -47,6 +75,9 @@ class NeuralReranker:
         self._torch: Any | None = None
         self._device: Any | None = None
         self._model_kind: str | None = None
+        self._device_name: str | None = None
+        self._prefix_tokens: list[int] = []
+        self._suffix_tokens: list[int] = []
         self._fingerprint = model_fingerprint(config.model_path)
 
     def rerank(self, query: str, papers: list[Paper], *, limit: int) -> NeuralRerankResult:
@@ -58,6 +89,11 @@ class NeuralReranker:
                 latency_seconds=time.perf_counter() - started,
                 model_fingerprint=self._fingerprint,
                 batch_count=0,
+                prompt_version=self.config.prompt_version,
+                model_kind=self._model_kind,
+                device=self._device_name,
+                max_length=self.config.max_length,
+                candidate_count=0,
             )
         try:
             self._load()
@@ -73,13 +109,7 @@ class NeuralReranker:
                     f"{paper.title}\n{paper.abstract}".strip()
                     for paper in batch
                 ]
-                encoded = self._tokenizer(
-                    [query] * len(texts),
-                    texts,
-                    padding=True,
-                    truncation=True,
-                    return_tensors="pt",
-                )
+                encoded = self._encode_pairs(query, texts)
                 encoded = {key: value.to(self._device) for key, value in encoded.items()}
                 with self._torch.inference_mode():
                     output = self._model(**encoded)
@@ -103,6 +133,12 @@ class NeuralReranker:
                 latency_seconds=time.perf_counter() - started,
                 model_fingerprint=self._fingerprint,
                 batch_count=batch_count,
+                prompt_version=self.config.prompt_version,
+                model_kind=self._model_kind,
+                device=self._device_name,
+                max_length=self.config.max_length,
+                candidate_count=len(selected),
+                inference_success=True,
             )
         except (
             OSError,
@@ -119,7 +155,47 @@ class NeuralReranker:
                 batch_count=(len(selected) + self.config.batch_size - 1) // self.config.batch_size,
                 fallback_used=True,
                 error=type(exc).__name__,
+                prompt_version=self.config.prompt_version,
+                model_kind=self._model_kind,
+                device=self._device_name,
+                max_length=self.config.max_length,
+                candidate_count=len(selected),
             )
+
+    def _encode_pairs(self, query: str, documents: list[str]) -> Any:
+        assert self._tokenizer is not None
+        body_limit = self.config.max_length - len(self._prefix_tokens) - len(
+            self._suffix_tokens
+        )
+        if body_limit <= 0:
+            raise ValueError("neural_reranker_prompt_exceeds_max_length")
+        pairs = [
+            _format_reranker_prompt(query, document, RERANKER_INSTRUCTION)
+            for document in documents
+        ]
+        tokenized = self._tokenizer(
+            pairs,
+            padding=False,
+            truncation=True,
+            max_length=body_limit,
+            return_attention_mask=False,
+        )
+        input_ids = [
+            self._prefix_tokens + list(tokens) + self._suffix_tokens
+            for tokens in tokenized["input_ids"]
+        ]
+        encoded = self._tokenizer.pad(
+            {"input_ids": input_ids},
+            padding=True,
+            max_length=self.config.max_length,
+            return_tensors="pt",
+        )
+        if encoded["input_ids"].shape[1] > self.config.max_length:
+            raise ValueError("neural_reranker_encoded_length_exceeded")
+        attention_mask = encoded.get("attention_mask")
+        if attention_mask is not None and not bool(attention_mask[:, -1].all()):
+            raise ValueError("neural_reranker_final_token_is_padding")
+        return encoded
 
     def _load(self) -> None:
         if self._model is not None:
@@ -127,7 +203,7 @@ class NeuralReranker:
         if not self.config.model_path.is_dir():
             raise OSError(f"neural_reranker_model_missing:{self.config.model_path}")
         import torch
-        from transformers import AutoModelForSequenceClassification, AutoTokenizer
+        from transformers import AutoTokenizer
 
         device_name = self.config.device
         if device_name == "auto":
@@ -135,8 +211,9 @@ class NeuralReranker:
         self._torch = torch
         self._device = torch.device(device_name)
         self._tokenizer = AutoTokenizer.from_pretrained(
-            str(self.config.model_path), local_files_only=True
+            str(self.config.model_path), local_files_only=True, padding_side="left"
         )
+        self._tokenizer.padding_side = "left"
         if self._tokenizer.pad_token_id is None:
             self._tokenizer.pad_token = self._tokenizer.eos_token
         config_path = Path(self.config.model_path) / "config.json"
@@ -152,7 +229,9 @@ class NeuralReranker:
             self._model_kind = "causal_lm"
             self._model.to(self._device)
             self._model.eval()
+            self._finish_load()
             return
+        from transformers import AutoModelForSequenceClassification
         try:
             self._model = AutoModelForSequenceClassification.from_pretrained(
                 str(self.config.model_path), local_files_only=True
@@ -167,6 +246,17 @@ class NeuralReranker:
             self._model_kind = "causal_lm"
         self._model.to(self._device)
         self._model.eval()
+        self._finish_load()
+
+    def _finish_load(self) -> None:
+        self._device_name = str(self._device)
+        assert self._tokenizer is not None
+        self._prefix_tokens = self._tokenizer.encode(
+            _RERANKER_PREFIX, add_special_tokens=False
+        )
+        self._suffix_tokens = self._tokenizer.encode(
+            _RERANKER_SUFFIX, add_special_tokens=False
+        )
 
 
 def rerank_local_papers(
@@ -211,6 +301,8 @@ def _causal_relevance_scores(
 ) -> Any:
     """Score the final-token yes/no decision used by Qwen rerankers."""
 
+    if getattr(logits, "ndim", 0) != 3:
+        raise ValueError("neural_reranker_logits_shape_invalid")
     sequence_length = int(input_ids.shape[1])
     batch_size = int(input_ids.shape[0])
     if attention_mask is None:
@@ -226,13 +318,28 @@ def _causal_relevance_scores(
         raise ValueError("neural_reranker_token_position_out_of_bounds")
     positive = _single_token_id(tokenizer, ("yes", "Yes", "是"))
     negative = _single_token_id(tokenizer, ("no", "No", "否"))
-    if positive is None or negative is None:
+    vocab_size = int(logits.shape[-1])
+    if positive is None or negative is None or not (
+        0 <= positive < vocab_size and 0 <= negative < vocab_size
+    ):
         raise ValueError("neural_reranker_yes_no_tokens_missing")
-    row_indices = logits.new_tensor(range(len(positions)), dtype=None).long()
-    column_indices = logits.new_tensor(positions, dtype=None).long()
-    positive_logits = logits[row_indices, column_indices, positive]
-    negative_logits = logits[row_indices, column_indices, negative]
+    # Move before indexed selection: CUDA's asynchronous index assertion can
+    # poison the process before the normal fallback handler runs.
+    logits_cpu = logits.detach().to("cpu")
+    row_indices = logits_cpu.new_tensor(range(len(positions))).long()
+    column_indices = logits_cpu.new_tensor(positions).long()
+    final_logits = logits_cpu[row_indices, column_indices]
+    positive_logits = final_logits[:, positive]
+    negative_logits = final_logits[:, negative]
     return positive_logits - negative_logits
+
+
+def _format_reranker_prompt(instruction: str, document: str, task: str) -> str:
+    """Build the stable body used by the Qwen3 reranker prompt."""
+
+    return (
+        f"<Instruct>: {task}\n\n<Query>: {instruction}\n\n<Document>: {document}"
+    )
 
 
 def _single_token_id(tokenizer: Any, values: tuple[str, ...]) -> int | None:
