@@ -164,7 +164,10 @@ if [[ "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_llm"
 fi
 
 if [[ "$CONFIGURATION" == "dense_reranker_llm" ]]; then
-  ARGS+=("--max-llm-calls" "200" "--max-search-rounds" "3")
+  # SearchBudget is instantiated for each benchmark query. One therefore
+  # enforces the competition contract per query, rather than capping the
+  # entire 1000-query run at an arbitrary total.
+  ARGS+=("--max-llm-calls" "1" "--max-search-rounds" "3")
 fi
 
 if [[ "$RESUME" == "1" ]]; then

@@ -1,0 +1,67 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+from scripts.audit_contest_llm_run import audit_run
+
+
+def _row(index: int, *, calls: int = 1, supplemental: int = 2) -> dict:
+    return {
+        "case_id": f"q-{index}",
+        "status": "succeeded",
+        "cost_report": {"llm_call_count": calls},
+        "stage_diagnostics": {
+            "initial_query_planning": {
+                "planning": {
+                    "policy": "llm_semantic",
+                    "llm_call_attempted": True,
+                    "fallback_used": False,
+                    "original_query_retained": True,
+                    "prompt_version": "llm-query-planning-v1",
+                    "model": "configured-model",
+                    "recorded_llm_latency_seconds": 0.2,
+                },
+                "subqueries": [
+                    {"purpose": "original_query"},
+                    *[{"purpose": "llm_semantic:topic"} for _ in range(supplemental)],
+                ],
+            }
+        },
+    }
+
+
+def _run(tmp_path: Path) -> Path:
+    path = tmp_path / "contest_full_dense_reranker_llm_v4"
+    (path / ".run_commits" / "generations" / "generation-00001002").mkdir(parents=True)
+    (path / ".run_commits" / "generations" / "generation-00001002" / "RUN_COMPLETED").write_text("{}", encoding="utf-8")
+    (path / "config.json").write_text(json.dumps({"query_planning_policy": "llm_semantic", "limit": 1000, "top_k": 20, "budgets": {"max_llm_calls": 1, "max_search_rounds": 3}}), encoding="utf-8")
+    (path / "metrics.json").write_text("{}", encoding="utf-8")
+    (path / "resource_ledger.json").write_text("{}", encoding="utf-8")
+    (path / "results.jsonl").write_text("\n".join(json.dumps(_row(index)) for index in range(1000)) + "\n", encoding="utf-8")
+    return path
+
+
+def test_audit_accepts_complete_controlled_llm_run(tmp_path: Path) -> None:
+    report = audit_run(_run(tmp_path))
+    assert report["status"] == "passed"
+    assert report["claimable_live_llm_effect"] is True
+
+
+def test_audit_rejects_multiple_calls_or_supplemental_queries(tmp_path: Path) -> None:
+    path = _run(tmp_path)
+    rows = [_row(index, calls=2 if index == 0 else 1, supplemental=3 if index == 1 else 2) for index in range(1000)]
+    (path / "results.jsonl").write_text("\n".join(json.dumps(row) for row in rows) + "\n", encoding="utf-8")
+    report = audit_run(path)
+    assert report["status"] == "failed"
+    assert "per_query_llm_call_count_exceeded" in report["reasons"]
+    assert "supplemental_query_count_exceeded" in report["reasons"]
+
+
+def test_contest_runners_enforce_the_per_query_llm_contract() -> None:
+    root = Path(__file__).resolve().parents[1]
+    shell = (root / "scripts" / "run_contest_benchmark.sh").read_text(encoding="utf-8")
+    powershell = (root / "scripts" / "run_contest_benchmark.ps1").read_text(encoding="utf-8")
+    assert 'ARGS+=("--max-llm-calls" "1" "--max-search-rounds" "3")' in shell
+    assert '"--max-llm-calls", "1",' in powershell
+    assert '"--max-search-rounds", "3"' in powershell

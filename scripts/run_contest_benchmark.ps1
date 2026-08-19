@@ -108,7 +108,7 @@ if ($Configuration -in @("reranker", "dense_reranker_llm")) {
 
 if ($Configuration -eq "dense_reranker_llm") {
     $arguments += @(
-        "--max-llm-calls", "200",
+        "--max-llm-calls", "1",
         "--max-search-rounds", "3"
     )
 }

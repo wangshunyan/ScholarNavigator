@@ -1,0 +1,146 @@
+#!/usr/bin/env python3
+"""Audit the controlled 1000-query LLM planning ablation without secrets."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+from typing import Any
+
+
+def _parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--run", required=True, type=Path)
+    parser.add_argument("--output", required=True, type=Path)
+    return parser
+
+
+def _read_json(path: Path) -> dict[str, Any]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ValueError(f"object_required:{path.name}")
+    return value
+
+
+def _planning(row: dict[str, Any]) -> dict[str, Any]:
+    diagnostics = row.get("stage_diagnostics") or {}
+    initial = diagnostics.get("initial_query_planning") or {}
+    value = initial.get("planning") or {}
+    return value if isinstance(value, dict) else {}
+
+
+def _subqueries(row: dict[str, Any]) -> list[dict[str, Any]]:
+    diagnostics = row.get("stage_diagnostics") or {}
+    initial = diagnostics.get("initial_query_planning") or {}
+    values = initial.get("subqueries") or []
+    return [value for value in values if isinstance(value, dict)]
+
+
+def audit_run(path: Path) -> dict[str, Any]:
+    root = path.expanduser().resolve()
+    required = ("config.json", "metrics.json", "resource_ledger.json", "results.jsonl")
+    missing = [name for name in required if not (root / name).is_file()]
+    completed = list((root / ".run_commits" / "generations").glob("generation-*/RUN_COMPLETED"))
+    config = _read_json(root / "config.json") if not missing else {}
+    rows = [
+        json.loads(line)
+        for line in (root / "results.jsonl").read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ] if not missing else []
+    reasons: list[str] = []
+    if missing:
+        reasons.extend(f"missing_artifact:{name}" for name in missing)
+    if not completed:
+        reasons.append("run_not_completed")
+    if config.get("query_planning_policy") != "llm_semantic":
+        reasons.append("llm_policy_missing")
+    if int(config.get("limit") or 0) != 1000 or int(config.get("top_k") or 0) != 20:
+        reasons.append("full1000_or_topk_contract_drift")
+    budgets = config.get("budgets") or {}
+    if int(budgets.get("max_llm_calls") or -1) != 1:
+        reasons.append("per_query_llm_call_limit_drift")
+    if int(budgets.get("max_search_rounds") or -1) != 3:
+        reasons.append("supplemental_query_limit_drift")
+    if len(rows) != 1000:
+        reasons.append("result_row_count_invalid")
+
+    attempted = fallbacks = schema_rejections = retained = 0
+    prompt_versions: set[str] = set()
+    models: set[str] = set()
+    call_counts: list[int] = []
+    latencies: list[float] = []
+    for row in rows:
+        planning = _planning(row)
+        subqueries = _subqueries(row)
+        if planning.get("policy") != "llm_semantic":
+            reasons.append("llm_planning_record_missing")
+        attempted += int(bool(planning.get("llm_call_attempted")))
+        fallbacks += int(bool(planning.get("fallback_used")))
+        schema_rejections += int(planning.get("fallback_reason") == "invalid_schema")
+        retained += int(bool(planning.get("original_query_retained")))
+        if planning.get("prompt_version"):
+            prompt_versions.add(str(planning["prompt_version"]))
+        if planning.get("model"):
+            models.add(str(planning["model"]))
+        latency = planning.get("recorded_llm_latency_seconds")
+        if latency is not None:
+            latencies.append(float(latency))
+        supplemental = [
+            item for item in subqueries
+            if str(item.get("purpose") or "").startswith("llm_semantic:")
+        ]
+        if len(supplemental) > 2:
+            reasons.append("supplemental_query_count_exceeded")
+        cost = row.get("cost_report") or {}
+        calls = int(cost.get("llm_call_count") or 0)
+        call_counts.append(calls)
+        if calls > 1:
+            reasons.append("per_query_llm_call_count_exceeded")
+    if attempted != len(rows):
+        reasons.append("llm_call_not_attempted_for_every_query")
+    if retained != len(rows):
+        reasons.append("original_query_not_retained")
+    if not prompt_versions or not models:
+        reasons.append("llm_runtime_metadata_missing")
+    if any(row.get("status") != "succeeded" for row in rows):
+        reasons.append("failed_query_present")
+    latencies.sort()
+    p50 = latencies[(len(latencies) - 1) * 50 // 100] if latencies else 0.0
+    p95 = latencies[(len(latencies) - 1) * 95 // 100] if latencies else 0.0
+    return {
+        "schema_version": "contest-llm-ablation-audit-v1",
+        "run_id": root.name,
+        "status": "passed" if not reasons else "failed",
+        "reasons": sorted(set(reasons)),
+        "result_row_count": len(rows),
+        "llm_call_attempted_count": attempted,
+        "fallback_count": fallbacks,
+        "schema_rejection_count": schema_rejections,
+        "original_query_retained_count": retained,
+        "per_query_call_maximum": max(call_counts, default=0),
+        "prompt_versions": sorted(prompt_versions),
+        "models": sorted(models),
+        "latency_p50_seconds": p50,
+        "latency_p95_seconds": p95,
+        "claimable_live_llm_effect": not reasons and fallbacks == 0,
+        "internal_metric_scope": "not_official_competition_scorer",
+    }
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = _parser().parse_args(argv)
+    try:
+        report = audit_run(args.run)
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    except (OSError, ValueError, TypeError, json.JSONDecodeError) as exc:
+        print(f"llm_audit_failed:{exc}", file=sys.stderr)
+        return 1
+    print(json.dumps(report, ensure_ascii=False, sort_keys=True))
+    return 0 if report["status"] == "passed" else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

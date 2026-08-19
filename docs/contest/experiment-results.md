@@ -8,7 +8,8 @@
 
 - PaSa 官方标题库已转换为 569,432 篇本地 JSONL，并用 SQLite FTS5 建立低内存 BM25 索引。
 - 旧的公开 arXiv 摘要数据标题匹配语料为 legacy 产物，原有 31,136 条和对应向量索引不得作为 P0 正式结果。
-- P0 新语料和 Faiss ANN 尚未完成重建；在新语料哈希、索引 Recall、构建耗时、峰值内存和延迟完成审计前，不写入新的正式分数。
+- P0 新语料已由官方 arXiv 元数据按规范化 arXiv ID 精确关联到 569,432 篇 PaSa 论文；不使用标题匹配、AutoScholarQuery gold 或 qrels。语料 SHA-256 为 `008ce46f15cc634f61bbadd4b960c6617c8d785c03dd2a307ed8d03fe9448d73`。
+- BGE-small Faiss HNSW/IP 已完成服务器审计：569,432 个 384 维向量，`M=32`、`efConstruction=80`、`efSearch=64`，Recall@10 为 0.984；构建约 1764.6 秒、峰值 RSS 约 4.82 GB、ANN 延迟约 0.0239 秒、exact-flat 对照约 0.6153 秒。
 - `local_hybrid` 已接入正式评测链路：本地 BM25 与摘要语义向量分别召回，使用 RRF 融合，再进入去重、规则判断、排序和结构化输出。
 - Benchmark 输出包含逐 query 结果、F1/Precision/Recall/MRR/nDCG、阶段诊断、错误分析和资源账本。
 - 后端 runtime config 和前端源选择已支持 `local_hybrid`，界面中显示为“语义混合”。
@@ -50,6 +51,17 @@
 
 以上两组结果只用于说明旧链路和资源账本曾经可运行；它们使用旧标题匹配语料和全矩阵向量实现，不是 P0/Faiss 正式成绩。
 
+## P0/Faiss 正式运行状态
+
+| 配置 | 运行目录 | 状态 | F1@20 | Recall@20 | 资源账本 | 说明 |
+| --- | --- | --- | ---: | ---: | --- | --- |
+| rules | `contest_full_rules_v1` | 已完成 | 待由完整产物汇总 | 待由完整产物汇总 | 已核验后填写 | P0/Faiss 规则基线。 |
+| dense | `contest_full_dense_v1` | 已完成 | 0.0220 | 0.1350 | passed | 初始候选 Recall 为 0.235，平均延迟 0.968 s。 |
+| dense + reranker | `contest_full_dense_reranker_v4` | 运行中 | 不得引用 | 不得引用 | 待完成 | v4 已通过 200 条 GPU 资格门禁。 |
+| dense + reranker + LLM | `contest_full_dense_reranker_llm_v4` | 未启动 | 不得引用 | 不得引用 | 不适用 | 必须等待 reranker 完整核验和 provider 可用性检查。 |
+
+`contest_qual200_reranker_v4_gpu1` 已完成 200/200、零失败、零 fallback，并通过资源账本和配对 bootstrap 门禁；F1@20 增量为 +0.013747，Recall@20 增量为 +0.078419。该内部指标不等同于赛事官方 scorer。
+
 ## 当前结论
 
 1. 旧 `local_hybrid` 结果仅代表 legacy 标题匹配语料和全矩阵向量实现，不能作为 P0/Faiss 新方案的正式成绩。
@@ -60,12 +72,12 @@
 
 ## 后续正式实验口径
 
-P0/Faiss 主线当前没有可引用的正式成绩。完成服务器体检、精确 ID 语料和 Faiss 资源审计后，先运行固定资格实验：
+P0/Faiss 语料、索引和 Dense 完整运行已经完成。当前只可引用完整成功的 rules、Dense，以及在完成核验后可引用的 reranker/LLM 运行：
 
 ```powershell
  .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration rules -RunId contest_qual200_bm25_v1
  .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration dense -RunId contest_qual200_dense_v1
- .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration reranker -RunId contest_qual200_reranker_v1
+ .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration reranker -RunId contest_qual200_reranker_v4_gpu1
 ```
 
 只有门禁通过后，才运行对应完整组：
@@ -73,8 +85,8 @@ P0/Faiss 主线当前没有可引用的正式成绩。完成服务器体检、�
 ```powershell
  .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration rules -RunId contest_full_rules_v1
  .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration dense -RunId contest_full_dense_v1
- .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration reranker -RunId contest_full_dense_reranker_v1
- .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration dense_reranker_llm -RunId contest_full_dense_reranker_llm_v1
+ .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration reranker -RunId contest_full_dense_reranker_v4
+ .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration dense_reranker_llm -RunId contest_full_dense_reranker_llm_v4
 ```
 
 Linux/服务器同等命令：

@@ -21,7 +21,7 @@ P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid`
 .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration reranker -RunId contest_qual200_reranker_v2
 ```
 
-运行 `scripts/check_contest_qualification.py` 后，只有门禁通过的候选可进入完整四组：`contest_full_rules_v1`、`contest_full_dense_v1`、`contest_full_dense_reranker_v1`、`contest_full_dense_reranker_llm_v1`。每个运行需保存配置、commit、输入哈希、PID、命令、日志、资源账本和 committed generation。
+运行 `scripts/check_contest_qualification.py` 后，只有门禁通过的候选可进入完整四组。当前 P0/Faiss 主线使用 `contest_full_rules_v1`、`contest_full_dense_v1`、`contest_full_dense_reranker_v4` 和 `contest_full_dense_reranker_llm_v4`。每个运行需保存配置、commit、输入哈希、PID、命令、日志、资源账本和 committed generation。
 
 神经 reranker 资格运行还必须证明真实模型推理成功：结果中不得出现
 `local_model_fallback_count`，且必须有正数 batch、候选数、推理成功数、模型指纹、设备、最大长度、固定 batch size=8、候选上限=120、延迟样本和 CUDA 峰值显存；汇总报告必须包含 P50/P95 延迟和候选吞吐。旧的
@@ -31,6 +31,16 @@ P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid`
 `contest_qual200_reranker_v2_gpu1` 进行显式 GPU 隔离重试。该重试必须在 gate 中零 fallback、零失败且资源审计通过后才有资格进入完整实验。
 若修复模型推理或固定最大输入长度，旧 v2/v2_gpu1 也不得恢复；使用新的 `contest_qual200_reranker_v3_gpu1`，并再次完整执行 200 条资格门禁。
 v3 如因完整序列 logits 的 CPU 传输导致性能不满足实验资源边界，保留其 committed generation 作为性能诊断；仅优化最终时间步传输的 v4 使用 `contest_qual200_reranker_v4_gpu1`，仍需从前 200 条完整运行并通过同一门禁。
+
+LLM 组必须等待完整 reranker 组核验通过后才启动。它固定使用 `llm_semantic`、当前 Prompt、`temperature=0`、严格 JSON Schema，且每个查询最多一次 LLM 调用、最多两条补充查询并始终保留原始查询。runner 将 `--max-llm-calls=1` 作为每条 SearchBudget 的上限，并固定 `--max-search-rounds=3`。完整运行结束后必须执行：
+
+```bash
+python scripts/audit_contest_llm_run.py \
+  --run outputs/benchmark_runs/contest_full_dense_reranker_llm_v4 \
+  --output outputs/benchmark_runs/contest_full_dense_reranker_llm_v4/llm_audit.json
+```
+
+审计要求 1000 条结果、完成标记、每条调用数不超过 1、补充查询不超过 2、Prompt/模型元数据、Token、延迟、Schema 拒绝和 `current_rules` 回退记录齐全。Provider 不可用时只记录 LLM 组未完成，不伪造指标。
 
 `hybrid` 是零外部 API 的本地混合检索，首次运行前必须已用带 arXiv ID 的 Cornell/arXiv 元数据精确生成摘要语料和 Faiss 索引。中断后必须复用原 `run-id`，且配置、数据哈希和索引参数必须完全一致：
 
