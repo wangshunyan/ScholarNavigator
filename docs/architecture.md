@@ -149,7 +149,7 @@ completion generation 提交，并可登记到 `run_manifest_v1`、复现胶囊�
 本地 Qwen3-Reranker 适配器使用模型随附的官方 causal-LM 判定模板，固定
 `qwen3-reranker-v1` prompt、左 padding 和 8192 最大长度。最终 yes/no logits 在 CPU 上安全提取，避免
 CUDA 异步索引异常掩盖真实回退。每次重排都记录模型指纹、设备、batch 数、候选数、最大长度、推理成功数和
-fallback 计数；qualification gate 将任何 fallback 视为 reranker 资格失败。
+fallback 计数；同时写入固定 batch size、候选上限和 CUDA allocator 观测的单次峰值显存。qualification gate 汇总每条实际调用的延迟为 P50/P95、以候选数/总重排时间计算吞吐，并将任何 fallback、非 GPU 推理、缺失显存或固定运行参数视为 reranker 资格失败。
 `resource_accounting_integrity_v1` 再验证 run/query/operation 汇总及预算守恒，拒绝未提交、
 被 supersede 或取消后的消耗。观察器默认关闭，启用前后 SearchService 结果、排序、去重、
 事件和预算行为必须相同。详情见
@@ -202,7 +202,7 @@ API 将预算映射为内部 `SearchBudget`，SearchService 使用单次运行�
 | Local BM25 | 配置化 JSONL | 默认关闭；只索引 `title + abstract`，显式映射稳定文档 ID 与论文标识 |
 | Local Hybrid | 配置化 JSONL + BGE 向量 | 默认关闭；用本地 BM25 与摘要语义向量分别召回，再通过 RRF 输出去重候选 |
 
-产品默认来源仍固定为 OpenAlex、arXiv、Semantic Scholar 和 PubMed；`local_bm25` 和 `local_hybrid` 只在调用方同时显式选择来源并提供语料/字段配置时注册到本次运行。`local_bm25` 使用 SQLite FTS5 的确定性 Unicode tokenizer，按 BM25 分数和文档 ID 稳定排序。`local_hybrid` 复用同一 BM25 语料，并额外读取按规范化 arXiv ID 与 PaSa 精确关联的 title+abstract 语义语料；标题不参与语料关联，元数据缺失 ID 时不得加入。语义检索使用本地 SentenceTransformers/BGE 模型和可持久化 Faiss ANN，保留 exact-flat 路径用于离线 Recall 对照；索引构建默认选择可用 CUDA，也可通过 `SCHOLARNAVIGATOR_LOCAL_HYBRID_DEVICE=cpu` 强制 CPU，运行账本记录实际设备。查询时对 BM25 与语义候选做 Reciprocal Rank Fusion。资格实验可额外启用本地 Qwen3-Reranker-0.6B，对固定候选池做批量 Cross-Encoder 重排，并记录模型指纹、候选上限、batch、device 与延迟；默认关闭，模型缺失或推理异常只能回退进入重排前的确定性顺序。Reranker 不接收 gold、qrels、case ID 或评测标签。磁盘索引缓存指纹包含语料 SHA-256、字段映射、tokenizer/connector 版本、模型指纹、Faiss 类型/参数和向量维度；不同语料、模型或字段配置不能共享 Snapshot key。连接器不接收 Dataset Adapter、qrels、gold、crosswalk 或 case ID，返回的身份只能来自配置字段或配置为稳定身份的原始文档 ID。
+产品默认来源仍固定为 OpenAlex、arXiv、Semantic Scholar 和 PubMed；`local_bm25` 和 `local_hybrid` 只在调用方同时显式选择来源并提供语料/字段配置时注册到本次运行。`local_bm25` 使用 SQLite FTS5 的确定性 Unicode tokenizer，按 BM25 分数和文档 ID 稳定排序。`local_hybrid` 复用同一 BM25 语料，并额外读取按规范化 arXiv ID 与 PaSa 精确关联的 title+abstract 语义语料；标题不参与语料关联，元数据缺失 ID 时不得加入。语义检索使用本地 SentenceTransformers/BGE 模型和可持久化 Faiss ANN，保留 exact-flat 路径用于离线 Recall 对照；索引构建默认选择可用 CUDA，也可通过 `SCHOLARNAVIGATOR_LOCAL_HYBRID_DEVICE=cpu` 强制 CPU，运行账本记录实际设备。查询时对 BM25 与语义候选做 Reciprocal Rank Fusion。资格实验可额外启用本地 Qwen3-Reranker-0.6B，对固定候选池做批量 Cross-Encoder 重排，并记录模型指纹、候选上限、batch、device、每调用延迟和 CUDA 峰值显存；默认关闭，模型缺失或推理异常只能回退进入重排前的确定性顺序，且回退结果不得作为神经重排成绩。Reranker 不接收 gold、qrels、case ID 或评测标签。磁盘索引缓存指纹包含语料 SHA-256、字段映射、tokenizer/connector 版本、模型指纹、Faiss 类型/参数和向量维度；不同语料、模型或字段配置不能共享 Snapshot key。连接器不接收 Dataset Adapter、qrels、gold、crosswalk 或 case ID，返回的身份只能来自配置字段或配置为稳定身份的原始文档 ID。
 
 单个来源失败不会终止整个检索；错误会进入 `source_stats`、`warnings`、SSE 事件和 `missing_evidence`。
 
