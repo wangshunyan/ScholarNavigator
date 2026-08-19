@@ -122,10 +122,11 @@ class NeuralReranker:
                 if self._model_kind == "causal_lm":
                     scores.extend(
                         _causal_relevance_scores(
-                            output.logits,
-                            encoded["input_ids"],
-                            encoded.get("attention_mask"),
-                            self._tokenizer,
+                        output.logits,
+                        encoded["input_ids"],
+                        encoded.get("attention_mask"),
+                        self._tokenizer,
+                        padding_side="left",
                         ).tolist()
                     )
                 else:
@@ -313,6 +314,8 @@ def _causal_relevance_scores(
     input_ids: Any,
     attention_mask: Any,
     tokenizer: Any,
+    *,
+    padding_side: str | None = None,
 ) -> Any:
     """Score the final-token yes/no decision used by Qwen rerankers."""
 
@@ -325,7 +328,7 @@ def _causal_relevance_scores(
         raise ValueError("neural_reranker_logits_sequence_misaligned")
     if attention_mask is None:
         positions = [logits_sequence_length - 1] * batch_size
-    elif getattr(tokenizer, "padding_side", "right") == "left":
+    elif (padding_side or getattr(tokenizer, "padding_side", "right")) == "left":
         # Causal-LM APIs score the token following the final prompt token. Some
         # Qwen attention paths return one fewer logit than input tokens, so the
         # last actual logit, rather than the input width, is authoritative.

@@ -94,7 +94,9 @@ def test_causal_scores_use_last_token_for_left_padding() -> None:
     logits[1, 3, 1] = 3
     logits[1, 3, 0] = -3
 
-    scores = _causal_relevance_scores(logits, input_ids, attention_mask, Tokenizer())
+    scores = _causal_relevance_scores(
+        logits, input_ids, attention_mask, Tokenizer(), padding_side="left"
+    )
 
     assert scores.tolist() == [8.0, 6.0]
 
@@ -114,7 +116,9 @@ def test_causal_scores_use_last_available_logit_when_qwen_omits_one_position() -
     logits[0, 3, 1] = 4
     logits[0, 3, 0] = -2
 
-    assert _causal_relevance_scores(logits, input_ids, attention_mask, Tokenizer()).tolist() == [6.0]
+    assert _causal_relevance_scores(
+        logits, input_ids, attention_mask, Tokenizer(), padding_side="left"
+    ).tolist() == [6.0]
 
 
 def test_qwen_prompt_is_deterministic_and_preserves_query_and_document() -> None:
@@ -147,7 +151,9 @@ def test_causal_scores_move_logits_to_cpu_before_indexing() -> None:
     logits[0, 1, 1] = 2
     logits[0, 1, 0] = -1
 
-    assert _causal_relevance_scores(logits, input_ids, mask, Tokenizer()).tolist() == [3.0]
+    assert _causal_relevance_scores(
+        logits, input_ids, mask, Tokenizer(), padding_side="right"
+    ).tolist() == [3.0]
 
 
 def test_causal_scores_gather_each_row_from_a_contiguous_cpu_tensor() -> None:
@@ -168,7 +174,9 @@ def test_causal_scores_gather_each_row_from_a_contiguous_cpu_tensor() -> None:
     logits[1, 3, 1] = 2
     logits[1, 3, 0] = -2
 
-    assert _causal_relevance_scores(logits, input_ids, mask, Tokenizer()).tolist() == [6.0, 4.0]
+    assert _causal_relevance_scores(
+        logits, input_ids, mask, Tokenizer(), padding_side="left"
+    ).tolist() == [6.0, 4.0]
 
 
 def test_rerank_result_exposes_fixed_runtime_limits_and_vram_defaults(tmp_path: Path) -> None:
