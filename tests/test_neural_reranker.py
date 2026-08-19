@@ -150,6 +150,27 @@ def test_causal_scores_move_logits_to_cpu_before_indexing() -> None:
     assert _causal_relevance_scores(logits, input_ids, mask, Tokenizer()).tolist() == [3.0]
 
 
+def test_causal_scores_gather_each_row_from_a_contiguous_cpu_tensor() -> None:
+    torch = __import__("torch")
+
+    class Tokenizer:
+        padding_side = "left"
+
+        def encode(self, value: str, *, add_special_tokens: bool) -> list[int]:
+            return [1] if value == "yes" else [0]
+
+    input_ids = torch.zeros((2, 4), dtype=torch.long)
+    mask = torch.tensor([[0, 0, 1, 1], [0, 1, 1, 1]])
+    # A transposed view covers the non-contiguous storage case before gather.
+    logits = torch.zeros((4, 2, 2), dtype=torch.float32).transpose(0, 1)
+    logits[0, 3, 1] = 5
+    logits[0, 3, 0] = -1
+    logits[1, 3, 1] = 2
+    logits[1, 3, 0] = -2
+
+    assert _causal_relevance_scores(logits, input_ids, mask, Tokenizer()).tolist() == [6.0, 4.0]
+
+
 def test_rerank_result_exposes_fixed_runtime_limits_and_vram_defaults(tmp_path: Path) -> None:
     result = NeuralReranker(
         NeuralRerankerConfig(model_path=tmp_path / "missing-model")

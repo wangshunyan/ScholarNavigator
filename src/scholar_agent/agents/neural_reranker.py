@@ -344,12 +344,17 @@ def _causal_relevance_scores(
         0 <= positive < vocab_size and 0 <= negative < vocab_size
     ):
         raise ValueError("neural_reranker_yes_no_tokens_missing")
-    # Move before indexed selection: CUDA's asynchronous index assertion can
-    # poison the process before the normal fallback handler runs.
-    logits_cpu = logits.detach().to("cpu")
-    row_indices = logits_cpu.new_tensor(range(len(positions))).long()
-    column_indices = logits_cpu.new_tensor(positions).long()
-    final_logits = logits_cpu[row_indices, column_indices]
+    # Move to a contiguous CPU tensor before selecting the decision token.
+    # CPU gather avoids CUDA's asynchronous advanced-index kernel and remains
+    # well-defined when Qwen returns a view with nonstandard strides.
+    logits_cpu = logits.detach().to("cpu").contiguous()
+    position_indices = (
+        logits_cpu.new_tensor(positions)
+        .long()
+        .view(batch_size, 1, 1)
+        .expand(-1, 1, vocab_size)
+    )
+    final_logits = logits_cpu.gather(1, position_indices).squeeze(1)
     positive_logits = final_logits[:, positive]
     negative_logits = final_logits[:, negative]
     return positive_logits - negative_logits
