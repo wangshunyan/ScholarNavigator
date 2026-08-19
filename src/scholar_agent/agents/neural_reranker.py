@@ -348,13 +348,14 @@ def _causal_relevance_scores(
         0 <= positive < vocab_size and 0 <= negative < vocab_size
     ):
         raise ValueError("neural_reranker_yes_no_tokens_missing")
-    # Move to a contiguous CPU tensor before selecting the decision token.
-    # CPU gather avoids CUDA's asynchronous advanced-index kernel and remains
-    # well-defined when Qwen returns a view with nonstandard strides.
-    logits_cpu = logits.detach().to("cpu").contiguous()
     if effective_padding_side == "left":
-        final_logits = logits_cpu[:, -1, :]
+        # Slice the known final Qwen decision position on-device, then move
+        # only one vocabulary row per item to CPU for the yes/no comparison.
+        # This avoids copying the complete sequence logits for every batch.
+        final_logits = logits[:, -1, :].detach().to("cpu").contiguous()
     else:
+        # Generic right-padding models need a per-row decision position.
+        logits_cpu = logits.detach().to("cpu").contiguous()
         torch = __import__("torch")
         final_logits = torch.stack(
             [

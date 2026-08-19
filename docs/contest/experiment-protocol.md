@@ -30,6 +30,7 @@ P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid`
 若 v2 运行期间 GPU 被其他任务占用并产生 OOM，保留 v2 失败证据，不覆盖该目录；在同一代码、数据、索引和 reranker 参数下，可使用
 `contest_qual200_reranker_v2_gpu1` 进行显式 GPU 隔离重试。该重试必须在 gate 中零 fallback、零失败且资源审计通过后才有资格进入完整实验。
 若修复模型推理或固定最大输入长度，旧 v2/v2_gpu1 也不得恢复；使用新的 `contest_qual200_reranker_v3_gpu1`，并再次完整执行 200 条资格门禁。
+v3 如因完整序列 logits 的 CPU 传输导致性能不满足实验资源边界，保留其 committed generation 作为性能诊断；仅优化最终时间步传输的 v4 使用 `contest_qual200_reranker_v4_gpu1`，仍需从前 200 条完整运行并通过同一门禁。
 
 `hybrid` 是零外部 API 的本地混合检索，首次运行前必须已用带 arXiv ID 的 Cornell/arXiv 元数据精确生成摘要语料和 Faiss 索引。中断后必须复用原 `run-id`，且配置、数据哈希和索引参数必须完全一致：
 
