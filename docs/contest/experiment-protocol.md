@@ -40,12 +40,32 @@ Judgement 配置漂移；通过前不得将其写入正式成绩或启动完整�
 若修复模型推理或固定最大输入长度，旧 v2/v2_gpu1 也不得恢复；使用新的 `contest_qual200_reranker_v3_gpu1`，并再次完整执行 200 条资格门禁。
 v3 如因完整序列 logits 的 CPU 传输导致性能不满足实验资源边界，保留其 committed generation 作为性能诊断；仅优化最终时间步传输的 v4 使用 `contest_qual200_reranker_v4_gpu1`，仍需从前 200 条完整运行并通过同一门禁。
 
-LLM 组必须等待完整 reranker 组核验通过后才启动。它固定使用 `llm_semantic`、当前 Prompt、`temperature=0`、严格 JSON Schema，且每个查询最多一次 LLM 调用、最多两条补充查询并始终保留原始查询。活动 Prompt `llm_query_planning@1.0.1` 为降低无效扩展风险固定生成一条不超过 12 词、逐字保留核心 topic 词的补充查询；runner 将 `--max-llm-calls=1` 作为每条 SearchBudget 的上限，并固定 `--max-search-rounds=3`。完整运行结束后必须执行：
+LLM 组必须等待完整 reranker 组核验通过后才启动。它固定使用 `llm_semantic`、当前 Prompt、`temperature=0`、严格 JSON Schema，且每个查询最多一次 LLM 调用、最多两条补充查询并始终保留原始查询。活动 Prompt `llm_query_planning@1.0.1` 为降低无效扩展风险固定生成一条不超过 12 词、逐字保留核心 topic 词的补充查询；runner 将 `--max-llm-calls=1` 作为每条 SearchBudget 的上限，并固定 `--max-search-rounds=3`。
+
+当前 `contest_full_dense_reranker_llm_v14` 是在旧审计字段之前开始的诊断运行，并且已有 fallback；不得作为正式成绩或资格依据。新的 LLM 主线必须使用以下不可复用 RunId，且只能在 v14 自然结束并完成诊断审计后启动：
+
+```bash
+./scripts/run_contest_benchmark.sh --mode smoke --configuration dense_reranker_llm --run-id contest_smoke_dense_reranker_llm_v15
+./scripts/run_contest_benchmark.sh --mode qualification --configuration dense_reranker_llm --run-id contest_qual200_dense_reranker_llm_v15
+python scripts/audit_contest_llm_run.py \
+  --run outputs/benchmark_runs/contest_qual200_dense_reranker_llm_v15 \
+  --expected-rows 200 \
+  --output outputs/benchmark_runs/contest_qual200_dense_reranker_llm_v15/llm_audit.json
+python scripts/check_contest_qualification.py \
+  --baseline outputs/benchmark_runs/contest_qual200_reranker_v4_gpu1 \
+  --candidate outputs/benchmark_runs/contest_qual200_dense_reranker_llm_v15 \
+  --output outputs/benchmark_runs/contest_qual200_dense_reranker_llm_v15/qualification_gate.json
+```
+
+门禁只允许 `current_rules` 到 `llm_semantic` 的查询规划变更，以及每条一次 LLM 调用/三轮检索预算；它会同时验证同一语料、Faiss 索引、reranker、候选上限、查询顺序、`top_k=20`、资源账本、GPU reranker 审计和 200 条完整 LLM 审计。只有 F1@20 或 Recall@20 严格提升且配对 bootstrap 95% 置信区间下界大于零，才允许新的完整 RunId `contest_full_dense_reranker_llm_v15`。
+
+完整运行结束后必须执行：
 
 ```bash
 python scripts/audit_contest_llm_run.py \
-  --run outputs/benchmark_runs/contest_full_dense_reranker_llm_v4 \
-  --output outputs/benchmark_runs/contest_full_dense_reranker_llm_v4/llm_audit.json
+  --run outputs/benchmark_runs/contest_full_dense_reranker_llm_v15 \
+  --expected-rows 1000 \
+  --output outputs/benchmark_runs/contest_full_dense_reranker_llm_v15/llm_audit.json
 ```
 
 审计要求 1000 条结果、完成标记、每条调用数不超过 1、补充查询不超过 2、Prompt/模型元数据、Token、延迟、Schema 拒绝和 `current_rules` 回退记录齐全。Provider 不可用时只记录 LLM 组未完成，不伪造指标。

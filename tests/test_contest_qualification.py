@@ -174,3 +174,71 @@ def test_soft_judgement_qualification_rejects_unreviewed_config_delta(
         assert str(exc) == "soft_judgement_delta_not_allowlisted"
     else:
         raise AssertionError("unreviewed soft judgement delta was accepted")
+
+
+def test_llm_qualification_requires_reranker_baseline_and_llm_audit(
+    monkeypatch,
+) -> None:
+    baseline = _run(0.0)
+    baseline["config"].update(
+        {
+            "query_planning_policy": "current_rules",
+            "budgets": {"max_llm_calls": 0, "max_search_rounds": 1},
+        }
+    )
+    candidate = _run(0.1)
+    candidate["config"].update(
+        {
+            "query_planning_policy": "llm_semantic",
+            "llm_mode": "openai_compatible",
+            "budgets": {"max_llm_calls": 1, "max_search_rounds": 3},
+        }
+    )
+    candidate["reranker_audit"] = {"status": "passed"}
+    candidate["llm_audit"] = {"status": "passed", "fallback_count": 0}
+
+    def fake_load(path: Path, expected: str) -> dict:
+        assert path.name == expected
+        return baseline if path.name == qualification.LLM_QUALIFICATION_BASELINE else candidate
+
+    monkeypatch.setattr(qualification, "_load_run", fake_load)
+    report = qualification.check_qualification(
+        Path(qualification.LLM_QUALIFICATION_BASELINE),
+        Path(qualification.LLM_QUALIFICATION_CANDIDATE),
+    )
+
+    assert report["eligible_for_full_1000"] is True
+    assert report["llm_audit_passed"] is True
+
+
+def test_llm_qualification_rejects_failed_llm_audit(monkeypatch) -> None:
+    baseline = _run(0.0)
+    baseline["config"].update(
+        {
+            "query_planning_policy": "current_rules",
+            "budgets": {"max_llm_calls": 0, "max_search_rounds": 1},
+        }
+    )
+    candidate = _run(0.1)
+    candidate["config"].update(
+        {
+            "query_planning_policy": "llm_semantic",
+            "llm_mode": "openai_compatible",
+            "budgets": {"max_llm_calls": 1, "max_search_rounds": 3},
+        }
+    )
+    candidate["reranker_audit"] = {"status": "passed"}
+    candidate["llm_audit"] = {"status": "failed", "fallback_count": 1}
+    monkeypatch.setattr(
+        qualification,
+        "_load_run",
+        lambda path, _: baseline if path.name == qualification.LLM_QUALIFICATION_BASELINE else candidate,
+    )
+
+    report = qualification.check_qualification(
+        Path(qualification.LLM_QUALIFICATION_BASELINE),
+        Path(qualification.LLM_QUALIFICATION_CANDIDATE),
+    )
+
+    assert report["llm_audit_passed"] is False
+    assert report["eligible_for_full_1000"] is False

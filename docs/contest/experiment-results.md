@@ -58,7 +58,7 @@
 | rules | `contest_full_rules_v1` | 已完成 | 0.01087 | 0.06195 | passed | MRR 0.04071，平均延迟 0.719 s。 |
 | dense | `contest_full_dense_v1` | 已完成 | 0.02155 | 0.13508 | passed | MRR 0.09171，平均延迟 0.968 s。 |
 | dense + reranker | `contest_full_dense_reranker_v4` | 已完成并审计通过 | 0.02442 | 0.15010 | passed | MRR 0.09406，平均延迟 3.909 s；零失败、零 fallback。 |
-| dense + reranker + LLM | `contest_full_dense_reranker_llm_v4` | 未完成 | 不得引用 | 不得引用 | 不适用 | provider 为 disabled，未启动，不伪造成绩。 |
+| dense + reranker + LLM | `contest_full_dense_reranker_llm_v14` | 诊断运行，未完成正式审计 | 不得引用 | 不得引用 | 不适用 | 本地 loopback Provider 运行中；已有 fallback，不能作为正式成绩。v15 必须先通过 smoke、200 条审计和资格门禁。 |
 
 `contest_qual200_reranker_v4_gpu1` 已完成 200/200、零失败、零 fallback，并通过资源账本和配对 bootstrap 门禁；F1@20 增量为 +0.013747，Recall@20 增量为 +0.078419。完整 reranker 审计确认 1000 条、Qwen3 prompt v1、2048 最大长度、batch=8、候选上限=120、P50/P95 为 0.730/0.839 s、吞吐 156.13 candidates/s、峰值显存约 5.49 GiB。以上内部指标不等同于赛事官方 scorer。
 
@@ -82,7 +82,7 @@ LLM 传输层对每个逻辑调用采用固定的有限重试协议：HTTP `429/
 1. 旧 `local_hybrid` 结果仅代表 legacy 标题匹配语料和全矩阵向量实现，不能作为 P0/Faiss 新方案的正式成绩。
 2. 在同一 1000 条内部评测下，Dense 相对 rules 将 F1@20 从 0.01087 提升至 0.02155、Recall@20 从 0.06195 提升至 0.13508；完整 reranker 进一步达到 F1@20=0.02442、Recall@20=0.15010。资源账本和 reranker 审计均通过，但这些仍是内部指标，不等同于赛事官方 scorer。
 3. Reranker 的完整运行使用真实 GPU 推理且零 fallback；代价是平均端到端延迟由 Dense 的 0.968 s 增至 3.909 s。提交材料应同时呈现质量增益和资源代价。
-4. `contest_full_dense_reranker_llm_v4` 未启动，因为服务器 provider 为 disabled；不得把 LLM 规划写成实测创新结果。未来必须以新的完整 RunId、逐查询一次调用和完整审计账本重新运行。
+4. `contest_full_dense_reranker_llm_v14` 是旧审计字段之前启动的诊断运行，且已有 fallback；不得把它写成实测创新结果。v15 必须使用新的完整审计字段，先通过 200 条资格门禁，再决定是否运行 `contest_full_dense_reranker_llm_v15`。
 5. `local_bm25 + arXiv` 的旧完整运行及 `contest_full_local_hybrid_v1` 只保留为可靠性/中断诊断，不得写入正式质量对比或提交结果。
 
 ## 后续正式实验口径
@@ -101,7 +101,9 @@ P0/Faiss 语料、索引和 Dense 完整运行已经完成。当前只可引用�
  .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration rules -RunId contest_full_rules_v1
  .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration dense -RunId contest_full_dense_v1
  .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration reranker -RunId contest_full_dense_reranker_v4
- .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration dense_reranker_llm -RunId contest_full_dense_reranker_llm_v4
+ .\scripts\run_contest_benchmark.ps1 -Mode smoke -Configuration dense_reranker_llm -RunId contest_smoke_dense_reranker_llm_v15
+ .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration dense_reranker_llm -RunId contest_qual200_dense_reranker_llm_v15
+ .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration dense_reranker_llm -RunId contest_full_dense_reranker_llm_v15
 ```
 
 Linux/服务器同等命令：

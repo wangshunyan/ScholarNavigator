@@ -15,6 +15,13 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument(
+        "--expected-rows",
+        type=int,
+        choices=(200, 1000),
+        default=1000,
+        help="Expected completed query count: 200 for qualification or 1000 for full.",
+    )
     return parser
 
 
@@ -39,7 +46,9 @@ def _subqueries(row: dict[str, Any]) -> list[dict[str, Any]]:
     return [value for value in values if isinstance(value, dict)]
 
 
-def audit_run(path: Path) -> dict[str, Any]:
+def audit_run(path: Path, *, expected_rows: int = 1000) -> dict[str, Any]:
+    if expected_rows not in (200, 1000):
+        raise ValueError("expected_rows_must_be_200_or_1000")
     root = path.expanduser().resolve()
     required = ("config.json", "metrics.json", "resource_ledger.json", "results.jsonl")
     missing = [name for name in required if not (root / name).is_file()]
@@ -57,14 +66,15 @@ def audit_run(path: Path) -> dict[str, Any]:
         reasons.append("run_not_completed")
     if config.get("query_planning_policy") != "llm_semantic":
         reasons.append("llm_policy_missing")
-    if int(config.get("limit") or 0) != 1000 or int(config.get("top_k") or 0) != 20:
-        reasons.append("full1000_or_topk_contract_drift")
+    if int(config.get("limit") or 0) != expected_rows or int(config.get("top_k") or 0) != 20:
+        contract = "full1000" if expected_rows == 1000 else "qualification200"
+        reasons.append(f"{contract}_or_topk_contract_drift")
     budgets = config.get("budgets") or {}
     if int(budgets.get("max_llm_calls") or -1) != 1:
         reasons.append("per_query_llm_call_limit_drift")
     if int(budgets.get("max_search_rounds") or -1) != 3:
         reasons.append("supplemental_query_limit_drift")
-    if len(rows) != 1000:
+    if len(rows) != expected_rows:
         reasons.append("result_row_count_invalid")
 
     attempted = fallbacks = schema_rejections = retained = 0
@@ -167,6 +177,7 @@ def audit_run(path: Path) -> dict[str, Any]:
         "run_id": root.name,
         "status": "passed" if not reasons else "failed",
         "reasons": sorted(set(reasons)),
+        "expected_row_count": expected_rows,
         "result_row_count": len(rows),
         "llm_call_attempted_count": attempted,
         "fallback_count": fallbacks,
@@ -197,7 +208,7 @@ def audit_run(path: Path) -> dict[str, Any]:
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     try:
-        report = audit_run(args.run)
+        report = audit_run(args.run, expected_rows=args.expected_rows)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     except (OSError, ValueError, TypeError, json.JSONDecodeError) as exc:

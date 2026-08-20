@@ -44,14 +44,15 @@ def _row(index: int, *, calls: int = 1, supplemental: int = 2) -> dict:
     }
 
 
-def _run(tmp_path: Path) -> Path:
-    path = tmp_path / "contest_full_dense_reranker_llm_v4"
+def _run(tmp_path: Path, *, expected_rows: int = 1000) -> Path:
+    run_name = "contest_full_dense_reranker_llm_v4" if expected_rows == 1000 else "contest_qual200_dense_reranker_llm_v15"
+    path = tmp_path / run_name
     (path / ".run_commits" / "generations" / "generation-00001002").mkdir(parents=True)
     (path / ".run_commits" / "generations" / "generation-00001002" / "RUN_COMPLETED").write_text("{}", encoding="utf-8")
-    (path / "config.json").write_text(json.dumps({"query_planning_policy": "llm_semantic", "limit": 1000, "top_k": 20, "budgets": {"max_llm_calls": 1, "max_search_rounds": 3}}), encoding="utf-8")
+    (path / "config.json").write_text(json.dumps({"query_planning_policy": "llm_semantic", "limit": expected_rows, "top_k": 20, "budgets": {"max_llm_calls": 1, "max_search_rounds": 3}}), encoding="utf-8")
     (path / "metrics.json").write_text("{}", encoding="utf-8")
     (path / "resource_ledger.json").write_text("{}", encoding="utf-8")
-    (path / "results.jsonl").write_text("\n".join(json.dumps(_row(index)) for index in range(1000)) + "\n", encoding="utf-8")
+    (path / "results.jsonl").write_text("\n".join(json.dumps(_row(index)) for index in range(expected_rows)) + "\n", encoding="utf-8")
     return path
 
 
@@ -61,6 +62,17 @@ def test_audit_accepts_complete_controlled_llm_run(tmp_path: Path) -> None:
     assert report["claimable_live_llm_effect"] is True
     assert report["transport_telemetry"]["available_row_count"] == 1000
     assert report["transport_telemetry"]["http_attempt_total"] == 1000
+
+
+def test_audit_accepts_200_query_qualification_only_when_requested(tmp_path: Path) -> None:
+    path = _run(tmp_path, expected_rows=200)
+    qualification = audit_run(path, expected_rows=200)
+    full = audit_run(path)
+
+    assert qualification["status"] == "passed"
+    assert qualification["expected_row_count"] == 200
+    assert full["status"] == "failed"
+    assert "full1000_or_topk_contract_drift" in full["reasons"]
 
 
 def test_audit_rejects_multiple_calls_or_supplemental_queries(tmp_path: Path) -> None:

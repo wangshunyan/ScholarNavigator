@@ -19,11 +19,14 @@ from scholar_agent.evaluation.resource_accounting import (  # noqa: E402
     ResourceLedgerV1,
     validate_resource_ledger,
 )
+from scripts.audit_contest_llm_run import audit_run  # noqa: E402
 
 
 EXPECTED_BASELINE = "contest_qual200_bm25_v1"
 SOFT_JUDGEMENT_BASELINE = "contest_qual200_reranker_v4_gpu1"
 SOFT_JUDGEMENT_CANDIDATE = "contest_qual200_dense_reranker_soft_v1"
+LLM_QUALIFICATION_BASELINE = "contest_qual200_reranker_v4_gpu1"
+LLM_QUALIFICATION_CANDIDATE = "contest_qual200_dense_reranker_llm_v15"
 EXPECTED_CANDIDATES = {
     "contest_qual200_dense_v1",
     "contest_qual200_reranker_v1",
@@ -32,6 +35,7 @@ EXPECTED_CANDIDATES = {
     "contest_qual200_reranker_v3_gpu1",
     "contest_qual200_reranker_v4_gpu1",
     "contest_qual200_dense_reranker_soft_v1",
+    LLM_QUALIFICATION_CANDIDATE,
 }
 RERANKER_PROMPT_VERSION = "qwen3-reranker-v1"
 BOOTSTRAP_SEED = 20260818
@@ -54,6 +58,8 @@ def check_qualification(baseline: Path, candidate: Path) -> dict[str, Any]:
         raise ValueError("candidate_run_id_invalid")
     if candidate.name == SOFT_JUDGEMENT_CANDIDATE:
         _validate_soft_judgement_pair(baseline_run["config"], candidate_run["config"])
+    elif candidate.name == LLM_QUALIFICATION_CANDIDATE:
+        _validate_llm_pair(baseline_run["config"], candidate_run["config"])
     elif baseline_run["config_hashes"] != candidate_run["config_hashes"]:
         raise ValueError("qualification_shared_config_drift")
     baseline_cases = _case_metrics(baseline_run["metrics"])
@@ -77,6 +83,8 @@ def check_qualification(baseline: Path, candidate: Path) -> dict[str, Any]:
     resource_passed = all(item.get("status") == "passed" for item in resource.values())
     reranker_audit = candidate_run.get("reranker_audit")
     reranker_passed = reranker_audit is None or reranker_audit.get("status") == "passed"
+    llm_audit = candidate_run.get("llm_audit")
+    llm_passed = llm_audit is None or llm_audit.get("status") == "passed"
     return {
         "schema_version": "contest-qualification-gate-v1",
         "baseline_run_id": baseline.name,
@@ -87,15 +95,20 @@ def check_qualification(baseline: Path, candidate: Path) -> dict[str, Any]:
         "resource_ledger_passed": resource_passed,
         "reranker_audit": reranker_audit,
         "reranker_audit_passed": reranker_passed,
+        "llm_audit": llm_audit,
+        "llm_audit_passed": llm_passed,
         "eligible_for_full_1000": (
-            any(improvements.values()) and resource_passed and reranker_passed
+            any(improvements.values())
+            and resource_passed
+            and reranker_passed
+            and llm_passed
         ),
         "internal_metric_scope": "not_official_competition_scorer",
     }
 
 
 def _expected_baseline_for(candidate_run_id: str) -> str:
-    if candidate_run_id == SOFT_JUDGEMENT_CANDIDATE:
+    if candidate_run_id in {SOFT_JUDGEMENT_CANDIDATE, LLM_QUALIFICATION_CANDIDATE}:
         return SOFT_JUDGEMENT_BASELINE
     return EXPECTED_BASELINE
 
@@ -154,6 +167,40 @@ def _validate_soft_judgement_pair(
         raise ValueError("soft_judgement_delta_not_allowlisted")
 
 
+def _validate_llm_pair(
+    baseline_config: dict[str, Any], candidate_config: dict[str, Any]
+) -> None:
+    """Allow only the reviewed planning and per-query budget change for LLM qualification."""
+
+    comparable_keys = (
+        "dataset", "dataset_split", "dataset_sha256", "case_count", "case_ids",
+        "offset", "limit", "selection_order", "result_policy", "sources",
+        "local_bm25", "local_hybrid", "run_profile", "top_k",
+        "enable_query_evolution", "query_evolution_policy", "ranking_policy",
+        "query_planner_version", "enable_refchain", "enable_semantic_seed_expansion",
+        "current_year", "max_workers", "diagnostics", "enable_resource_ledger",
+        "query_adapter_policy", "retrieval_mode", "data_hashes",
+        "judgement_policy", "judgement_config",
+    )
+    if any(baseline_config.get(key) != candidate_config.get(key) for key in comparable_keys):
+        raise ValueError("llm_qualification_shared_config_drift")
+    if baseline_config.get("query_planning_policy") != "current_rules":
+        raise ValueError("llm_qualification_baseline_policy_invalid")
+    if candidate_config.get("query_planning_policy") != "llm_semantic":
+        raise ValueError("llm_qualification_candidate_policy_invalid")
+
+    baseline_budgets = dict(baseline_config.get("budgets") or {})
+    candidate_budgets = dict(candidate_config.get("budgets") or {})
+    candidate_calls = candidate_budgets.pop("max_llm_calls", None)
+    candidate_rounds = candidate_budgets.pop("max_search_rounds", None)
+    baseline_budgets.pop("max_llm_calls", None)
+    baseline_budgets.pop("max_search_rounds", None)
+    if baseline_budgets != candidate_budgets:
+        raise ValueError("llm_qualification_budget_drift")
+    if candidate_calls != 1 or candidate_rounds != 3:
+        raise ValueError("llm_qualification_budget_contract_invalid")
+
+
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     try:
@@ -210,6 +257,8 @@ def _load_run(path: Path, expected_run_id: str) -> dict[str, Any]:
     }
     if "reranker" in expected_run_id:
         result["reranker_audit"] = _audit_reranker_run(path)
+    if expected_run_id == LLM_QUALIFICATION_CANDIDATE:
+        result["llm_audit"] = audit_run(path, expected_rows=200)
     return result
 
 
