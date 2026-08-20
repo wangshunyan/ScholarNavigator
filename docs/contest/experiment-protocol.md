@@ -69,6 +69,29 @@ P0 构建器流式读取官方逐行 JSON 快照，只按规范化 arXiv ID 关�
   -Resume
 ```
 
+### LLM 运行恢复
+
+LLM 全量运行发生网络、Provider 或进程中断时，恢复前先只读检查运行目录的
+`config.json`、`resource_ledger.json`、`.run_commits/generations/` 和日志，并确认
+尚未存在 `RUN_COMPLETED`。仅当以下条件全部相同，才允许复用原 RunId：代码 commit、
+语料与 Faiss 索引哈希、reranker 模型指纹、`top_k`、候选上限、`max_workers`、
+`max_llm_calls=1` 与 `max_search_rounds=3`。Runner 会比较 resume signature；任一
+语义配置漂移必须新建 RunId，不能强行恢复。
+
+服务器恢复命令不读取或打印 `.env`，且只能在原项目目录使用：
+
+```bash
+./scripts/run_contest_benchmark.sh \
+  --mode full \
+  --configuration dense_reranker_llm \
+  --run-id <原运行目录名> \
+  --resume
+```
+
+恢复后已 committed 的查询不会再次执行。运行目录含有任一 fallback、失败或未完成
+generation 时，均不得写入正式成绩；应先完成审计，再以新的 RunId 重新做 smoke 和
+200 条资格门禁。
+
 索引构建命令：
 
 ```powershell
