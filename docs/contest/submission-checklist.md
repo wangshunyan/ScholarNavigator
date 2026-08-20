@@ -25,9 +25,9 @@
 
 1. P0 精确语料和 Faiss 资源报告完成并冻结；旧 `contest_full_local_*` 仅作为 legacy 对照。
 2. P0/Faiss 变更后的 200 条资格门禁已完成；`contest_qual200_reranker_v4_gpu1` 通过零 fallback 和资源审计。
-3. `contest_full_rules_v1`、`contest_full_dense_v1` 和 `contest_full_dense_reranker_v4` 已完成；LLM 组因 provider disabled 未启动，不作为成绩依据。
+3. `contest_full_rules_v1`、`contest_full_dense_v1` 和 `contest_full_dense_reranker_v4` 已完成。旧 LLM 全量运行 `contest_full_dense_reranker_llm_v14` 正在以本地 loopback Provider 执行，但已出现 fallback，只能保留为诊断；新的 LLM RunId 必须先通过 smoke 与 200 条资格门禁，完成前不作为成绩依据。
 4. 只使用完整成功运行目录中真实生成的 `config.json`、`metrics.json`、`summary.md`、`results.jsonl`、`stage_metrics.json`、`error_analysis.json` 和 `resource_ledger.json` 写实验结果。
-5. 当前提交明确“LLM 接口已实现但 provider disabled，未运行且未作为成绩依据”。不得把未运行的 LLM 功能写成实测创新结果。
+5. 当前提交明确“LLM 接口已实现，但尚无零 fallback、完整审计通过的 1000 条正式 LLM 运行”。不得把诊断、smoke 或未完成的 LLM 功能写成实测创新结果。
 6. 将新主线的 `local_bm25` 与 `local_hybrid` 对比、阶段诊断中的初始候选 Recall、Judgement FN 和平均延迟写入说明书。
 7. 填写团队、学校、指导教师、成员分工、软件著作权/开源许可证等竞赛表单字段，并完成匿名要求检查。
 8. 录制 3 到 5 条交互式演示，确认视频没有 API Key、本地绝对路径或无关个人信息。
@@ -51,3 +51,4 @@
 - OpenAlex 在 2026 年 8 月 17 日的小样本中出现 HTTP 429 且未带来新增 gold，当前不作为默认主候选来源。
 - 标题库专用阈值配置在前 5 条有改善，但在第 6 至第 10 条没有 gold 被召回，不能作为泛化证据或默认配置。
 - SciFact 数据包不在本地；它只能作为辅助验证，不应代替 AutoScholarQuery 主评测。
+- 历史 `record160` 冻结输入和两个所需 Git commit 在本机与服务器均缺失；相关全历史发布验收保持阻塞，详见 [historical-evidence-blockers.md](historical-evidence-blockers.md)。
