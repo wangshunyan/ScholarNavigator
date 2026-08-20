@@ -152,7 +152,7 @@ def _validate_soft_judgement_pair(
         "llm_mode",
         "data_hashes",
     )
-    if any(baseline_config.get(key) != candidate_config.get(key) for key in comparable_keys):
+    if not _shared_config_matches(baseline_config, candidate_config, comparable_keys):
         raise ValueError("soft_judgement_shared_config_drift")
 
     baseline_judgement = dict(baseline_config.get("judgement_config") or {})
@@ -184,7 +184,7 @@ def _validate_llm_pair(
         "query_adapter_policy", "retrieval_mode", "data_hashes",
         "judgement_policy", "judgement_config",
     )
-    if any(baseline_config.get(key) != candidate_config.get(key) for key in comparable_keys):
+    if not _shared_config_matches(baseline_config, candidate_config, comparable_keys):
         raise ValueError("llm_qualification_shared_config_drift")
     if baseline_config.get("query_planning_policy") != "current_rules":
         raise ValueError("llm_qualification_baseline_policy_invalid")
@@ -201,6 +201,31 @@ def _validate_llm_pair(
         raise ValueError("llm_qualification_budget_drift")
     if candidate_calls != 1 or candidate_rounds != 3:
         raise ValueError("llm_qualification_budget_contract_invalid")
+
+
+def _shared_config_matches(
+    baseline_config: dict[str, Any],
+    candidate_config: dict[str, Any],
+    comparable_keys: tuple[str, ...],
+) -> bool:
+    return all(
+        _qualification_config_value(baseline_config, key)
+        == _qualification_config_value(candidate_config, key)
+        for key in comparable_keys
+    )
+
+
+def _qualification_config_value(config: dict[str, Any], key: str) -> Any:
+    value = config.get(key)
+    if key != "local_hybrid" or not isinstance(value, dict):
+        return value
+
+    # The corpus digest and document count establish input identity. The path
+    # only identifies the checkout that produced a resumable run, so a clean
+    # worktree used for a later qualification must not look like data drift.
+    normalized = dict(value)
+    normalized.pop("bm25_corpus_path", None)
+    return normalized
 
 
 def main(argv: list[str] | None = None) -> int:

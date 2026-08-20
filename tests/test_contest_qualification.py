@@ -215,6 +215,36 @@ def test_llm_qualification_requires_reranker_baseline_and_llm_audit(
     assert report["llm_audit_passed"] is True
 
 
+def test_shared_config_ignores_bm25_path_but_keeps_corpus_identity() -> None:
+    baseline = {
+        "local_hybrid": {
+            "bm25_corpus_path": "/first-worktree/datasets/local_bm25/pasa_papers.jsonl",
+            "bm25_corpus_sha256": "same-corpus",
+            "bm25_document_count": 569432,
+        }
+    }
+    candidate = {
+        "local_hybrid": {
+            "bm25_corpus_path": "/second-worktree/datasets/local_bm25/pasa_papers.jsonl",
+            "bm25_corpus_sha256": "same-corpus",
+            "bm25_document_count": 569432,
+        }
+    }
+
+    assert qualification._shared_config_matches(
+        baseline,
+        candidate,
+        ("local_hybrid",),
+    )
+
+    candidate["local_hybrid"]["bm25_corpus_sha256"] = "other-corpus"
+    assert not qualification._shared_config_matches(
+        baseline,
+        candidate,
+        ("local_hybrid",),
+    )
+
+
 def test_llm_qualification_rejects_failed_llm_audit(monkeypatch) -> None:
     baseline = _run(0.0)
     baseline["config"].update(
