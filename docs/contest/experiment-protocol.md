@@ -30,6 +30,11 @@ P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid`
 与常驻本地 Provider 争用 GPU0，出现 reranker fallback 后停止，作为失败诊断保留；v2
 固定 `--reranker-device cuda:1`，其余检索与 Judgement 参数不变。门禁会拒绝任何除该受审
 delta 与物理 GPU 选择外的检索、数据、预算或 Judgement 配置漂移；通过前不得将其写入正式成绩或启动完整运行。
+v2 已完成 200/200、零失败、零 fallback，并通过资源账本、GPU reranker 审计和 paired-bootstrap
+门禁：F1@20 平均增量 `+0.004531`，95% CI `[+0.002197, +0.007617]`；Recall@20
+平均增量 `+0.027917`，95% CI `[+0.011667, +0.048333]`。这些均为内部工程指标，
+不等同赛事官方 scorer。由此启动的完整运行使用独立 RunId
+`contest_full_dense_reranker_soft_v2`，完成并通过同等完整性、资源与 reranker 审计前不得引用其指标。
 完整运行的阶段一离线瓶颈证据和该候选的边界记录在
 [`stage1-bottleneck-analysis.md`](stage1-bottleneck-analysis.md)。
 
