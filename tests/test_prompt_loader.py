@@ -43,7 +43,9 @@ def test_active_prompt_loads_with_version_and_hash(name: str) -> None:
     prompt = load_prompt(name)
 
     assert prompt.name == name
-    assert prompt.version == "1.0.0"
+    assert prompt.version == (
+        "1.0.1" if name == "llm_query_planning" else "1.0.0"
+    )
     assert prompt.system_text
     assert prompt.user_text
     assert len(prompt.content_hash) == 64
@@ -172,7 +174,9 @@ def test_llm_query_planning_prompt_has_strict_bounded_schema() -> None:
     text = load_prompt("llm_query_planning").system_text
 
     assert "supplemental_queries" in text
-    assert "最多两条" in text
+    assert "恰好包含一条" in text
+    assert "最多 12 个" in text
+    assert "核心 topic" in text
     assert "不得猜测具体论文标题" in text
     assert "DOI" in text
 

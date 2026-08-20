@@ -119,7 +119,7 @@ def test_llm_semantic_valid_output_is_accepted_with_provenance() -> None:
     assert plan.query_planning.output_valid is True
     assert plan.query_planning.fallback_used is False
     assert plan.subqueries[1].provenance[0] == "llm_semantic"
-    assert "prompt:llm_query_planning@1.0.0" in plan.subqueries[1].provenance
+    assert "prompt:llm_query_planning@1.0.1" in plan.subqueries[1].provenance
 
 
 def test_llm_semantic_invalid_schema_falls_back_to_current_rules() -> None:

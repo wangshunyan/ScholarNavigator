@@ -12,7 +12,7 @@
     "user": "relevance_judgement/user.md"
   },
   "llm_query_planning": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "runtime_enabled": true,
     "system": "llm_query_planning/system.md",
     "user": "llm_query_planning/user.md"
