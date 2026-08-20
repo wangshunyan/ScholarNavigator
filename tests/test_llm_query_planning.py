@@ -54,6 +54,7 @@ class FakeLLMClient:
             completion_tokens=0,
             total_tokens=0,
         )
+        self.last_call_diagnostics = None
 
     def chat_json(self, messages, *, temperature=0, timeout=None):  # noqa: ANN001
         self.calls.append(
@@ -64,6 +65,14 @@ class FakeLLMClient:
         self.token_usage.prompt_tokens += 11
         self.token_usage.completion_tokens += 7
         self.token_usage.total_tokens += 18
+        self.last_call_diagnostics = SimpleNamespace(
+            http_attempts=1,
+            http_429_count=0,
+            retry_after_seconds=(),
+            retry_wait_seconds=0.0,
+            failure_class=None,
+            cache_hit=False,
+        )
         return deepcopy(self.response)
 
 
@@ -241,6 +250,18 @@ def test_llm_semantic_records_token_and_latency_diagnostics() -> None:
     assert plan.query_planning.llm_completion_tokens == 7
     assert plan.query_planning.llm_total_tokens == 18
     assert plan.query_planning.recorded_llm_latency_seconds >= 0
+
+
+def test_llm_semantic_serializes_complete_transport_diagnostics() -> None:
+    plan = _plan(FakeLLMClient())
+    diagnostics = plan.query_planning.model_dump(mode="json")
+
+    assert diagnostics["llm_http_attempts"] == 1
+    assert diagnostics["llm_http_429_count"] == 0
+    assert diagnostics["llm_retry_after_seconds"] == []
+    assert diagnostics["llm_retry_wait_seconds"] == 0.0
+    assert diagnostics["llm_provider_failure_class"] is None
+    assert diagnostics["llm_provider_cache_hit"] is False
 
 
 def test_current_rules_never_calls_llm_semantic_planner() -> None:

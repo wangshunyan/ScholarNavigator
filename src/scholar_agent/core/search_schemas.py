@@ -400,6 +400,18 @@ class QueryPlanningResult(BaseModel):
     llm_completion_tokens: int = Field(default=0, ge=0)
     llm_total_tokens: int = Field(default=0, ge=0)
     recorded_llm_latency_seconds: float = Field(default=0.0, ge=0.0)
+    # Transport fields are part of the formal LLM-run audit contract. They
+    # must survive QueryPlanningResult serialization into benchmark results.
+    llm_schema_version: str | None = None
+    llm_temperature: float | None = None
+    llm_max_supplemental_queries: int | None = Field(default=None, ge=0, le=2)
+    llm_max_tokens: int | None = Field(default=None, ge=1)
+    llm_http_attempts: int = Field(default=0, ge=0)
+    llm_http_429_count: int = Field(default=0, ge=0)
+    llm_retry_after_seconds: list[float] = Field(default_factory=list)
+    llm_retry_wait_seconds: float = Field(default=0.0, ge=0.0)
+    llm_provider_failure_class: str | None = None
+    llm_provider_cache_hit: bool = False
 
 
 class SearchPlan(BaseModel):
