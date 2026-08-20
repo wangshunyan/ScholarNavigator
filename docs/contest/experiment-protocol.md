@@ -21,7 +21,7 @@ P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid`
 .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration reranker -RunId contest_qual200_reranker_v2
 ```
 
-运行 `scripts/check_contest_qualification.py` 后，只有门禁通过的候选可进入完整四组。当前 P0/Faiss 主线使用 `contest_full_rules_v1`、`contest_full_dense_v1`、`contest_full_dense_reranker_v4` 和 `contest_full_dense_reranker_llm_v4`。每个运行需保存配置、commit、输入哈希、PID、命令、日志、资源账本和 committed generation。新 runner 在 `config.json` 写入 `code.commit` 与脱敏 `execution.process_id/launch_command/log_path`，并固定日志为 `outputs/run_logs/<RunId>.log`；这些会话字段不进入 resume 语义签名。
+运行 `scripts/check_contest_qualification.py` 后，只有门禁通过的候选可进入完整四组。当前 P0/Faiss 主线已完成 `contest_full_rules_v1`、`contest_full_dense_v1` 和 `contest_full_dense_reranker_v4`；`contest_full_dense_reranker_llm_v14` 仅为诊断运行，正式 LLM 主线必须先完成 `contest_qual200_dense_reranker_llm_v15`，再决定是否启动 `contest_full_dense_reranker_llm_v15`。每个运行需保存配置、commit、输入哈希、PID、命令、日志、资源账本和 committed generation。新 runner 在 `config.json` 写入 `code.commit` 与脱敏 `execution.process_id/launch_command/log_path`，并固定日志为 `outputs/run_logs/<RunId>.log`；这些会话字段不进入 resume 语义签名。
 
 `dense_reranker_soft` 是一个独立的候选 policy，仅将 `partially_relevant_threshold` 从
 `0.45` 降至 `0.35`，保留原有硬约束、检索、RRF 和 reranker 参数。它必须先使用
