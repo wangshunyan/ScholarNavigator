@@ -423,13 +423,17 @@ def _run_install_profiles(
             home.mkdir(parents=True)
             tmp.mkdir()
             venv.EnvBuilder(with_pip=True).create(environment)
-            python = environment / "bin/python"
+            scripts = environment / ("Scripts" if os.name == "nt" else "bin")
+            python = scripts / ("python.exe" if os.name == "nt" else "python")
             env = {
+                **os.environ,
                 "HOME": str(home),
                 "TMPDIR": str(tmp),
+                "TEMP": str(tmp),
+                "TMP": str(tmp),
                 "LANG": "C",
                 "LC_ALL": "C",
-                "PATH": str(environment / "bin"),
+                "PATH": str(scripts) + os.pathsep + os.environ.get("PATH", ""),
                 "PIP_DISABLE_PIP_VERSION_CHECK": "1",
             }
             if source_root is not None:
@@ -465,8 +469,11 @@ def _run_install_profiles(
                 timeout=30,
                 check=False,
             ) if install.returncode == 0 else None
+            cli_executable = scripts / (
+                f"{cli[0]}.exe" if os.name == "nt" else cli[0]
+            )
             cli_result = subprocess.run(
-                [str(environment / "bin" / cli[0]), *cli[1:]],
+                [str(cli_executable), *cli[1:]],
                 cwd=profile,
                 env=env,
                 capture_output=True,
