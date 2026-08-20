@@ -56,26 +56,26 @@ flowchart LR
 
 完整实验命令与恢复方式见 `docs/contest/experiment-protocol.md`。
 
-## 已完成的诊断证据
+## 已完成的内部工程证据
 
-2026 年 8 月 17 日，固定前 5 条真实运行中，local+arXiv 相比 arXiv 单源的 Recall@20 从 0.000 提升到 0.200，F1@20 从 0.000 提升到 0.019，平均 API 调用均为 2.2。该结果仅用于选择主候选配置，不代表完整 1000 条成绩。
+下表只列出已完成、可追溯的 P0/Faiss 1000 条内部运行。内部 F1/Recall 不等同赛事官方 scorer，也不代表隐藏测试集、官方排名或获奖结果。
 
-已完成的完整结果：
+| 配置 | 运行目录 | F1@20 | P@20 | R@20 | MRR | 平均 API | 平均 Token | 平均延迟 | 成功率 |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| rules | `contest_full_rules_v1` | 0.01087 | 0.00620 | 0.06195 | 0.04071 | 0.0 | 0.0 | 0.719 s | 1.000 |
+| Dense | `contest_full_dense_v1` | 0.02155 | 0.01225 | 0.13508 | 0.09171 | 0.0 | 0.0 | 0.968 s | 1.000 |
+| Dense + reranker | `contest_full_dense_reranker_v4` | 0.02442 | 0.01390 | 0.15010 | 0.09406 | 0.0 | 0.0 | 3.909 s | 1.000 |
 
-| 配置 | F1@20 | P@20 | R@20 | MRR | 平均 API | 平均 Token | 平均延迟 | 成功率 |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| local baseline | 0.0109 | 0.0062 | 0.0620 | 0.0407 | 0.0 | 0.0 | 0.777 s | 1.000 |
-| hybrid candidate | 0.0147 | 0.0085 | 0.0846 | 0.0596 | 0.0 | 0.0 | 0.766 s | 1.000 |
-
-阶段诊断显示，`local_hybrid` 的初始候选 Recall 为 0.145，最终返回 Recall@20 为 0.085，Judgement 假阴性率为 0.347；相比 `local_bm25` 的初始候选 Recall 0.131、最终返回 Recall@20 0.062、Judgement 假阴性率 0.467 有提升，但仍未解决主要召回瓶颈。
+阶段诊断显示，reranker v4 的初始候选 Recall 为 0.29675，Judgement 后 Recall 为 0.19454，最终 Recall@20 为 0.15010。已检索 gold 中有 197 个在 Judgement 阶段被过滤、105 个在 Top-20 外，故软 Judgement 作为独立、默认关闭的受控候选进行资格验证。`contest_qual200_dense_reranker_soft_v2` 已通过 200 条配对资格门禁；其完整 1000 条运行未完成前不得在此表添加任何 soft Judgement 指标。
 
 ## 创新点与边界
 
-- 本地 PaSa 标题 BM25 与公开摘要 BGE 向量检索的受控混合召回，适配普通 Windows 设备的内存限制。
+- 本地 PaSa 标题 BM25 与按 arXiv ID 精确关联的摘要 BGE 向量检索的受控混合召回。
 - 从查询理解、检索调用到结构化结果的端到端可观测性，便于复现实验与成本分析。
 - 结果级证据链、引用图与导出，支持科研人员复核推荐理由。
+- Qwen3-Reranker-0.6B 使用固定官方判定模板、2048 token 上限、batch=8 与显式 GPU 隔离；soft Judgement 仅改变一个预先声明的阈值并通过配对 bootstrap 决策。
 
-当前限制：旧 `local_hybrid` 的 F1@20 为 0.0147，但它采用标题匹配语料，只能作为 legacy 对照；P0/Faiss Dense 主线的完整结果必须从相应运行目录填写。神经 reranker 与 LLM 只有在完整 1000 条运行、资源账本和审计全部通过后才能填写为实测结论；Provider 不可用或运行不完整时必须明确标为未完成。
+当前限制：旧 `local_hybrid` 标题匹配语料只能作为 legacy 对照；LLM v5-v16 均为诊断，尚无零 fallback、完整审计通过的 1000 条 LLM 结果。soft Judgement 完整运行尚未完成，不能提前声明质量提升。Linux/Python 3.12 离线 wheelhouse 验证与 `record160` 历史冻结证据仍是最终 release tag 的阻塞项。
 
 ## 演示与复现
 

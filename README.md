@@ -102,7 +102,19 @@ P0 语料或 Faiss 索引变化后，不恢复旧 `local/hybrid` 结果。先在
 
 `contest_qual200_reranker_v1` 是已知 CUDA 失败诊断，v2/v2_gpu1 因 logits 位置兼容性导致回退，均不能作为资格或正式结果。v3 修复了正确性但暴露完整序列 logits 的 CPU 传输瓶颈，故不作正式结果。`contest_qual200_reranker_v4_gpu1` 固定 2048 token、120 候选和 batch=8，并只传输最终决策时间步；它必须同时满足真实 GPU 推理、零回退、P50/P95 延迟、吞吐和峰值显存审计，并通过配对 bootstrap 与资源账本门禁后，才可运行 `contest_full_dense_reranker_v4`。Qwen3 Reranker 只从本地模型目录加载；缺失或失败时回退并记录，不能写作神经重排成绩。内部 F1/Recall 不等同于赛事官方 scorer。
 
-完整 LLM 组必须在完整 reranker 核验通过后使用 `contest_full_dense_reranker_llm_v4` 运行。每条查询最多一次调用、最多两条补充查询、`temperature=0`、严格 JSON Schema 且保留原始查询；运行完成后必须执行 `scripts/audit_contest_llm_run.py`。Provider 不可用时仅记录该组未完成，不能伪造成绩。
+LLM 组必须在完整 reranker 核验通过后，以新的 RunId 先完成 smoke 和 200 条资格门禁。每条查询最多一次调用、最多两条补充查询、`temperature=0`、严格 JSON Schema 且保留原始查询；运行完成后必须执行 `scripts/audit_contest_llm_run.py`。历史 LLM v5-v16 均为诊断，不能作为正式成绩；Provider 不可用、fallback 非零、审计失败或 bootstrap 不通过时仅记录该组未完成，不能伪造成绩。
+
+`dense_reranker_soft` 是不改变默认 `current_rules` 的独立受控候选，仅降低已审计的 partial-relevance 阈值。自动 GPU 选择曾在常驻本地 Provider 时引发 fallback；资格运行必须显式隔离 reranker，例如：
+
+```bash
+bash scripts/run_contest_benchmark.sh \
+  --mode qualification \
+  --configuration dense_reranker_soft \
+  --run-id <new-run-id> \
+  --reranker-device cuda:1
+```
+
+只有 200 条完整、零失败、零 fallback、资源账本与 reranker 审计通过，并且 paired-bootstrap 95% 区间支持 F1@20 或 Recall@20 提升，才允许新的完整 1000 条 RunId。所有内部 F1/Recall 仅为工程比较，不等同赛事官方 scorer。
 
 参赛补齐步骤、优化优先级和提交材料清单见 [docs/contest/next-steps.md](docs/contest/next-steps.md)；演示查询可参考 [docs/contest/demo-queries.md](docs/contest/demo-queries.md)。
 
