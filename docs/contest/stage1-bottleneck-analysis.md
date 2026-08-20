@@ -64,5 +64,5 @@ gold rank 为 `14.36`，中位 rank 为 `8`。因此，软 Judgement 与候选�
    `contest_qual200_reranker_v4_gpu1` 做同一 200 条查询的配对门禁。只有 F1@20 或
    Recall@20 严格提升、bootstrap 95% 区间支持、零失败、零 fallback 和资源账本
    通过，才可启动新的完整 RunId。
-3. 正在运行的 `contest_full_dense_reranker_llm_v14` 不修改、不重启、不并发运行
-   新服务器实验。它完成且审计通过前，不将 LLM 作为实测提升写入结果。
+3. `contest_full_dense_reranker_llm_v14` 已完成诊断审计：虽有 1000 条结果和零失败，
+   但有 4 次 fallback，因此不将 LLM 作为实测提升写入结果，也不作为 v15 的资格依据。

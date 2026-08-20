@@ -58,7 +58,7 @@
 | rules | `contest_full_rules_v1` | 已完成 | 0.01087 | 0.06195 | passed | MRR 0.04071，平均延迟 0.719 s。 |
 | dense | `contest_full_dense_v1` | 已完成 | 0.02155 | 0.13508 | passed | MRR 0.09171，平均延迟 0.968 s。 |
 | dense + reranker | `contest_full_dense_reranker_v4` | 已完成并审计通过 | 0.02442 | 0.15010 | passed | MRR 0.09406，平均延迟 3.909 s；零失败、零 fallback。 |
-| dense + reranker + LLM | `contest_full_dense_reranker_llm_v14` | 诊断运行，未完成正式审计 | 不得引用 | 不得引用 | 不适用 | 本地 loopback Provider 运行中；已有 fallback，不能作为正式成绩。v15 必须先通过 smoke、200 条审计和资格门禁。 |
+| dense + reranker + LLM | `contest_full_dense_reranker_llm_v14` | 已完成诊断审计，不通过正式门禁 | 不得引用 | 不得引用 | 不适用 | 1000 条结果、零失败但有 4 次 fallback；不能作为正式成绩。v15 必须先通过 smoke、200 条审计和资格门禁。 |
 
 `contest_qual200_reranker_v4_gpu1` 已完成 200/200、零失败、零 fallback，并通过资源账本和配对 bootstrap 门禁；F1@20 增量为 +0.013747，Recall@20 增量为 +0.078419。完整 reranker 审计确认 1000 条、Qwen3 prompt v1、2048 最大长度、batch=8、候选上限=120、P50/P95 为 0.730/0.839 s、吞吐 156.13 candidates/s、峰值显存约 5.49 GiB。以上内部指标不等同于赛事官方 scorer。
 
