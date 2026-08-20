@@ -221,6 +221,7 @@ def test_shared_config_ignores_bm25_path_but_keeps_corpus_identity() -> None:
             "bm25_corpus_path": "/first-worktree/datasets/local_bm25/pasa_papers.jsonl",
             "bm25_corpus_sha256": "same-corpus",
             "bm25_document_count": 569432,
+            "reranker_device": "cuda:1",
         }
     }
     candidate = {
@@ -228,6 +229,7 @@ def test_shared_config_ignores_bm25_path_but_keeps_corpus_identity() -> None:
             "bm25_corpus_path": "/second-worktree/datasets/local_bm25/pasa_papers.jsonl",
             "bm25_corpus_sha256": "same-corpus",
             "bm25_document_count": 569432,
+            "reranker_device": "cuda:0",
         }
     }
 

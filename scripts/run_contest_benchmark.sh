@@ -8,6 +8,7 @@ OFFSET="0"
 LIMIT="0"
 RESUME="0"
 RERANKER_MODEL="datasets/semantic/models/Qwen3-Reranker-0.6B"
+RERANKER_DEVICE="auto"
 MAX_WORKERS="1"
 
 while [[ $# -gt 0 ]]; do
@@ -40,6 +41,10 @@ while [[ $# -gt 0 ]]; do
       RERANKER_MODEL="$2"
       shift 2
       ;;
+    --reranker-device)
+      RERANKER_DEVICE="$2"
+      shift 2
+      ;;
     --max-workers)
       MAX_WORKERS="$2"
       shift 2
@@ -61,6 +66,11 @@ esac
 
 if ! [[ "$MAX_WORKERS" =~ ^[1-9][0-9]*$ ]] || [[ "$MAX_WORKERS" -gt 32 ]]; then
   echo "max-workers must be an integer from 1 to 32" >&2
+  exit 2
+fi
+
+if ! [[ "$RERANKER_DEVICE" =~ ^(auto|cpu|cuda(:[0-9]+)?)$ ]]; then
+  echo "reranker-device must be auto, cpu, cuda, or cuda:<index>" >&2
   exit 2
 fi
 
@@ -173,7 +183,7 @@ if [[ "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft
     "--local-hybrid-reranker-model" "$RERANKER_MODEL"
     "--local-hybrid-reranker-candidate-limit" "120"
     "--local-hybrid-reranker-batch-size" "8"
-    "--local-hybrid-reranker-device" "auto"
+    "--local-hybrid-reranker-device" "$RERANKER_DEVICE"
   )
 fi
 

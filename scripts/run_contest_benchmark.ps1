@@ -17,7 +17,10 @@ param(
     [ValidateRange(1, 32)]
     [int]$MaxWorkers = 1,
 
-    [string]$RerankerModel = "datasets\semantic\models\Qwen3-Reranker-0.6B"
+    [string]$RerankerModel = "datasets\semantic\models\Qwen3-Reranker-0.6B",
+
+    [ValidatePattern("^(auto|cpu|cuda(:\d+)?)$")]
+    [string]$RerankerDevice = "auto"
 )
 
 $ErrorActionPreference = "Stop"
@@ -112,7 +115,7 @@ if ($Configuration -in @("reranker", "dense_reranker_soft", "dense_reranker_llm"
         "--local-hybrid-reranker-model", $RerankerModel,
         "--local-hybrid-reranker-candidate-limit", "120",
         "--local-hybrid-reranker-batch-size", "8",
-        "--local-hybrid-reranker-device", "auto"
+        "--local-hybrid-reranker-device", $RerankerDevice
     )
 }
 

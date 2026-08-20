@@ -60,8 +60,9 @@ gold rank 为 `14.36`，中位 rank 为 `8`。因此，软 Judgement 与候选�
 1. `dense_reranker_soft` 是独立候选，仅将 `partially_relevant_threshold` 从
    `0.45` 调为 `0.35`，保留所有硬约束、BM25+Dense、RRF、reranker、候选上限和
    查询配置。
-2. 它必须先运行 `contest_qual200_dense_reranker_soft_v1`，与
-   `contest_qual200_reranker_v4_gpu1` 做同一 200 条查询的配对门禁。只有 F1@20 或
+2. `contest_qual200_dense_reranker_soft_v1` 因 GPU0 资源争用发生 reranker fallback，
+   仅保留为诊断。受控重试必须使用 `contest_qual200_dense_reranker_soft_v2` 并固定
+   reranker 到 `cuda:1`，与 `contest_qual200_reranker_v4_gpu1` 做同一 200 条查询的配对门禁。只有 F1@20 或
    Recall@20 严格提升、bootstrap 95% 区间支持、零失败、零 fallback 和资源账本
    通过，才可启动新的完整 RunId。
 3. `contest_full_dense_reranker_llm_v14` 已完成诊断审计：虽有 1000 条结果和零失败，

@@ -1616,6 +1616,15 @@ def _parse_sources(value: str) -> list[str]:
     return sources
 
 
+def _reranker_device_argument(value: str) -> str:
+    normalized = value.strip().lower()
+    if re.fullmatch(r"(?:auto|cpu|cuda(?::\d+)?)", normalized):
+        return normalized
+    raise argparse.ArgumentTypeError(
+        "reranker device must be auto, cpu, cuda, or cuda:<index>"
+    )
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="运行公开学术检索 Benchmark。")
     parser.add_argument("--dataset", required=True, choices=supported_datasets())
@@ -1673,7 +1682,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--local-hybrid-reranker-batch-size", type=int, default=8)
     parser.add_argument(
         "--local-hybrid-reranker-device",
-        choices=["auto", "cpu", "cuda"],
+        type=_reranker_device_argument,
         default="auto",
     )
     parser.add_argument(

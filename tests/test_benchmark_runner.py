@@ -881,11 +881,11 @@ def test_cli_exposes_neural_reranker_configuration() -> None:
             "--local-hybrid-reranker-batch-size",
             "8",
             "--local-hybrid-reranker-device",
-            "cuda",
+            "cuda:1",
         ]
     )
 
     assert args.local_hybrid_reranker_model == "models/qwen3"
     assert args.local_hybrid_reranker_candidate_limit == 120
     assert args.local_hybrid_reranker_batch_size == 8
-    assert args.local_hybrid_reranker_device == "cuda"
+    assert args.local_hybrid_reranker_device == "cuda:1"

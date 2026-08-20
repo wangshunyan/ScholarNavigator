@@ -24,7 +24,7 @@ from scripts.audit_contest_llm_run import audit_run  # noqa: E402
 
 EXPECTED_BASELINE = "contest_qual200_bm25_v1"
 SOFT_JUDGEMENT_BASELINE = "contest_qual200_reranker_v4_gpu1"
-SOFT_JUDGEMENT_CANDIDATE = "contest_qual200_dense_reranker_soft_v1"
+SOFT_JUDGEMENT_CANDIDATE = "contest_qual200_dense_reranker_soft_v2"
 LLM_QUALIFICATION_BASELINE = "contest_qual200_reranker_v4_gpu1"
 LLM_QUALIFICATION_CANDIDATE = "contest_qual200_dense_reranker_llm_v16"
 EXPECTED_CANDIDATES = {
@@ -34,7 +34,7 @@ EXPECTED_CANDIDATES = {
     "contest_qual200_reranker_v2_gpu1",
     "contest_qual200_reranker_v3_gpu1",
     "contest_qual200_reranker_v4_gpu1",
-    "contest_qual200_dense_reranker_soft_v1",
+    SOFT_JUDGEMENT_CANDIDATE,
     LLM_QUALIFICATION_CANDIDATE,
 }
 RERANKER_PROMPT_VERSION = "qwen3-reranker-v1"
@@ -225,6 +225,7 @@ def _qualification_config_value(config: dict[str, Any], key: str) -> Any:
     # worktree used for a later qualification must not look like data drift.
     normalized = dict(value)
     normalized.pop("bm25_corpus_path", None)
+    normalized.pop("reranker_device", None)
     return normalized
 
 

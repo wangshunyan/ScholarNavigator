@@ -31,6 +31,8 @@ def test_linux_runner_wires_semantic_corpus_and_soft_config() -> None:
     assert 'dense_reranker_soft' in script
     assert '"--judgement-config" "benchmark/judgement_soft_current_rules_v1.json"' in script
     assert '"datasets/semantic/pasa_papers_with_abstracts.jsonl"' in script
+    assert '--reranker-device)' in script
+    assert '"--local-hybrid-reranker-device" "$RERANKER_DEVICE"' in script
 
 
 def test_windows_runner_wires_semantic_corpus_and_soft_config() -> None:
@@ -39,3 +41,5 @@ def test_windows_runner_wires_semantic_corpus_and_soft_config() -> None:
     assert '"benchmark\\judgement_soft_current_rules_v1.json"' in script
     assert '"datasets\\semantic\\pasa_papers_with_abstracts.jsonl"' in script
     assert '"dense_reranker_soft", "dense_reranker_llm"' in script
+    assert '[string]$RerankerDevice = "auto"' in script
+    assert '"--local-hybrid-reranker-device", $RerankerDevice' in script

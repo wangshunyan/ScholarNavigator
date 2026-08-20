@@ -25,9 +25,11 @@ P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid`
 
 `dense_reranker_soft` 是一个独立的候选 policy，仅将 `partially_relevant_threshold` 从
 `0.45` 降至 `0.35`，保留原有硬约束、检索、RRF 和 reranker 参数。它必须先使用
-`contest_qual200_dense_reranker_soft_v1` 与 `contest_qual200_reranker_v4_gpu1` 做同一
-200 条查询的配对资格比较。门禁会拒绝任何除该受审 delta 外的检索、数据、预算或
-Judgement 配置漂移；通过前不得将其写入正式成绩或启动完整运行。
+`contest_qual200_dense_reranker_soft_v2` 与 `contest_qual200_reranker_v4_gpu1` 做同一
+200 条查询的配对资格比较。`contest_qual200_dense_reranker_soft_v1` 因自动设备选择
+与常驻本地 Provider 争用 GPU0，出现 reranker fallback 后停止，作为失败诊断保留；v2
+固定 `--reranker-device cuda:1`，其余检索与 Judgement 参数不变。门禁会拒绝任何除该受审
+delta 与物理 GPU 选择外的检索、数据、预算或 Judgement 配置漂移；通过前不得将其写入正式成绩或启动完整运行。
 完整运行的阶段一离线瓶颈证据和该候选的边界记录在
 [`stage1-bottleneck-analysis.md`](stage1-bottleneck-analysis.md)。
 

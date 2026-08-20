@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import tempfile
 import time
 from dataclasses import asdict, dataclass
@@ -692,7 +693,7 @@ def _normalize_config(config: LocalHybridConfig) -> LocalHybridConfig:
         raise ValueError("local_hybrid_reranker_model_not_found")
     if config.reranker_candidate_limit <= 0 or config.reranker_batch_size <= 0:
         raise ValueError("local_hybrid_reranker_limits_invalid")
-    if config.reranker_device not in {"auto", "cpu", "cuda"}:
+    if not re.fullmatch(r"(?:auto|cpu|cuda(?::\d+)?)", config.reranker_device):
         raise ValueError("local_hybrid_reranker_device_invalid")
     bm25 = config.bm25_config
     return LocalHybridConfig(

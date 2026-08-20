@@ -182,6 +182,27 @@ def test_reranker_configuration_requires_a_local_model_directory(tmp_path: Path)
         local_hybrid_module._normalize_config(config)
 
 
+def test_reranker_configuration_accepts_explicit_cuda_index(tmp_path: Path) -> None:
+    semantic = tmp_path / "semantic.jsonl"
+    bm25 = tmp_path / "bm25.jsonl"
+    encoder = tmp_path / "encoder"
+    reranker_model = tmp_path / "reranker"
+    semantic.write_text('{"arxiv_id":"2501.00001","title":"Paper","abstract":"A"}\n')
+    bm25.write_text('{"_id":"2501.00001","title":"Paper","abstract":""}\n')
+    encoder.mkdir()
+    reranker_model.mkdir()
+    config = LocalHybridConfig(
+        bm25_config=LocalBM25Config(corpus_path=bm25, cache_dir=tmp_path / "cache"),
+        semantic_corpus_path=semantic,
+        semantic_index_dir=tmp_path / "index",
+        model_path=encoder,
+        reranker_model_path=reranker_model,
+        reranker_device="cuda:1",
+    )
+
+    assert local_hybrid_module._normalize_config(config).reranker_device == "cuda:1"
+
+
 def test_connector_reports_reranker_diagnostics_and_uses_candidate_pool(
     tmp_path: Path, monkeypatch
 ) -> None:
