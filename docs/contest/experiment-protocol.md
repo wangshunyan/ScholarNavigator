@@ -28,6 +28,8 @@ P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid`
 `contest_qual200_dense_reranker_soft_v1` 与 `contest_qual200_reranker_v4_gpu1` 做同一
 200 条查询的配对资格比较。门禁会拒绝任何除该受审 delta 外的检索、数据、预算或
 Judgement 配置漂移；通过前不得将其写入正式成绩或启动完整运行。
+完整运行的阶段一离线瓶颈证据和该候选的边界记录在
+[`stage1-bottleneck-analysis.md`](stage1-bottleneck-analysis.md)。
 
 神经 reranker 资格运行还必须证明真实模型推理成功：结果中不得出现
 `local_model_fallback_count`，且必须有正数 batch、候选数、推理成功数、模型指纹、设备、最大长度、固定 batch size=8、候选上限=120、延迟样本和 CUDA 峰值显存；汇总报告必须包含 P50/P95 延迟和候选吞吐。旧的
