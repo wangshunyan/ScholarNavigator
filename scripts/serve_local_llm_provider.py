@@ -25,7 +25,14 @@ def parser() -> argparse.ArgumentParser:
     value.add_argument("--host", default="127.0.0.1")
     value.add_argument("--port", default=18080, type=int)
     value.add_argument("--device", default="cuda:1")
-    value.add_argument("--max-input-tokens", default=4096, type=int)
+    value.add_argument("--max-input-tokens", default=2048, type=_positive_int)
+    return value
+
+
+def _positive_int(raw_value: str) -> int:
+    value = int(raw_value)
+    if value < 1:
+        raise argparse.ArgumentTypeError("must be a positive integer")
     return value
 
 

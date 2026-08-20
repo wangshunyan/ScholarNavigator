@@ -77,6 +77,20 @@ python scripts/audit_contest_llm_run.py \
 运行进程使用临时环境变量连接 loopback endpoint，不修改或读取 `.env`。本地模型服务只解决运行时可用性，
 不改变当前 Prompt、数据、候选池、RunId 门禁或 LLM 完整审计要求。
 
+为避免长输入导致 GPU 峰值显存不可控，v15 服务固定使用不超过 2048 个输入 token：
+
+```bash
+python scripts/serve_local_llm_provider.py \
+  --model-path datasets/semantic/models/Qwen3-4B \
+  --model-id Qwen/Qwen3-4B \
+  --host 127.0.0.1 --port 18080 --device cuda:0 \
+  --max-input-tokens 2048
+```
+
+该上限只截断本地 Provider 的输入上下文，不改变活动 Prompt、每查询一次逻辑调用、512 completion
+token 上限、JSON Schema 或原始查询保留规则。服务重启只能在现有运行自然结束后进行；正在运行的
+`contest_full_dense_reranker_llm_v14` 不可用此参数重启或恢复。
+
 LLM 完整审计要求每条结果都记录 Schema 版本、`temperature=0`、补充查询上限、Token、
 LLM 延迟、HTTP attempts、429 次数、Retry-After、重试等待、失败类别和缓存命中；任一字段
 缺失、非零 temperature、超过两条补充查询、超过一次逻辑调用或出现 fallback，均不能通过

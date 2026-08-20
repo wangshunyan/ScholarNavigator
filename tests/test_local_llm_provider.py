@@ -4,6 +4,8 @@ import json
 import logging
 from types import SimpleNamespace
 
+import pytest
+
 from fastapi.testclient import TestClient
 
 from scholar_agent.llm.local_provider import (
@@ -14,6 +16,7 @@ from scholar_agent.llm.local_provider import (
     canonical_json_object,
     create_app,
 )
+from scripts.serve_local_llm_provider import parser as local_provider_parser
 
 
 class FakeService:
@@ -190,3 +193,11 @@ def test_endpoint_logs_only_stable_error_code(caplog) -> None:  # noqa: ANN001
     assert response.json()["detail"] == "model_generation_failed"
     assert "local_provider_error:model_generation_failed" in caplog.text
     assert request_content not in caplog.text
+
+
+def test_local_provider_defaults_to_bounded_context_and_rejects_nonpositive_input() -> None:
+    parser = local_provider_parser()
+
+    assert parser.parse_args(["--model-path", "models/Qwen3-4B"]).max_input_tokens == 2048
+    with pytest.raises(SystemExit):
+        parser.parse_args(["--model-path", "models/Qwen3-4B", "--max-input-tokens", "0"])
