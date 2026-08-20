@@ -179,6 +179,10 @@ def test_soft_judgement_qualification_rejects_unreviewed_config_delta(
 def test_llm_qualification_requires_reranker_baseline_and_llm_audit(
     monkeypatch,
 ) -> None:
+    assert (
+        qualification._expected_baseline_for(qualification.LLM_QUALIFICATION_CANDIDATE)
+        == qualification.LLM_QUALIFICATION_BASELINE
+    )
     baseline = _run(0.0)
     baseline["config"].update(
         {

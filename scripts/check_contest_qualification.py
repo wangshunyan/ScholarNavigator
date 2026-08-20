@@ -108,8 +108,10 @@ def check_qualification(baseline: Path, candidate: Path) -> dict[str, Any]:
 
 
 def _expected_baseline_for(candidate_run_id: str) -> str:
-    if candidate_run_id in {SOFT_JUDGEMENT_CANDIDATE, LLM_QUALIFICATION_CANDIDATE}:
+    if candidate_run_id == SOFT_JUDGEMENT_CANDIDATE:
         return SOFT_JUDGEMENT_BASELINE
+    if candidate_run_id == LLM_QUALIFICATION_CANDIDATE:
+        return LLM_QUALIFICATION_BASELINE
     return EXPECTED_BASELINE
 
 
