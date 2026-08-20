@@ -26,7 +26,7 @@ EXPECTED_BASELINE = "contest_qual200_bm25_v1"
 SOFT_JUDGEMENT_BASELINE = "contest_qual200_reranker_v4_gpu1"
 SOFT_JUDGEMENT_CANDIDATE = "contest_qual200_dense_reranker_soft_v1"
 LLM_QUALIFICATION_BASELINE = "contest_qual200_reranker_v4_gpu1"
-LLM_QUALIFICATION_CANDIDATE = "contest_qual200_dense_reranker_llm_v15"
+LLM_QUALIFICATION_CANDIDATE = "contest_qual200_dense_reranker_llm_v16"
 EXPECTED_CANDIDATES = {
     "contest_qual200_dense_v1",
     "contest_qual200_reranker_v1",

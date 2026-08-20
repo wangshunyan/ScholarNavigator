@@ -45,7 +45,7 @@ def _row(index: int, *, calls: int = 1, supplemental: int = 2) -> dict:
 
 
 def _run(tmp_path: Path, *, expected_rows: int = 1000) -> Path:
-    run_name = "contest_full_dense_reranker_llm_v4" if expected_rows == 1000 else "contest_qual200_dense_reranker_llm_v15"
+    run_name = "contest_full_dense_reranker_llm_v4" if expected_rows == 1000 else "contest_qual200_dense_reranker_llm_v16"
     path = tmp_path / run_name
     (path / ".run_commits" / "generations" / "generation-00001002").mkdir(parents=True)
     (path / ".run_commits" / "generations" / "generation-00001002" / "RUN_COMPLETED").write_text("{}", encoding="utf-8")
