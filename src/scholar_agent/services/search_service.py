@@ -379,6 +379,7 @@ class SearchService:
         self._semantic_seed_resolver = semantic_seed_resolver
         self._max_workers = max(1, max_workers)
         self._llm_client = llm_client
+        self._resolved_llm_client: Any | None = None
         self._llm_planning_runtime = llm_planning_runtime
         self._judgement_policy = judgement_policy
         self._judgement_config = judgement_config
@@ -2310,10 +2311,13 @@ class SearchService:
     def _resolve_llm_client(self, enabled: bool) -> Any | None:
         if self._llm_client is not None:
             return self._llm_client
+        if self._resolved_llm_client is not None:
+            return self._resolved_llm_client
         if not enabled or not is_llm_enabled():
             return None
         try:
-            return OpenAICompatibleLLMClient.from_env()
+            self._resolved_llm_client = OpenAICompatibleLLMClient.from_env()
+            return self._resolved_llm_client
         except LLMProviderError:
             return None
 

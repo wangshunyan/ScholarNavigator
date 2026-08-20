@@ -4,11 +4,16 @@ from __future__ import annotations
 
 import json
 import os
+import random
 import re
 import socket
 import time
+import hashlib
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from threading import BoundedSemaphore, RLock
 from typing import Any
+from email.utils import parsedate_to_datetime
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
@@ -26,8 +31,14 @@ SUPPORTED_PROVIDER = "openai_compatible"
 DISABLED_PROVIDER = "disabled"
 DEFAULT_TIMEOUT_SECONDS = 30.0
 DEFAULT_MAX_TOKENS = 1024
-TRANSIENT_RETRY_STATUS_CODES = frozenset({408, 425, 500, 502, 503, 504})
-TRANSIENT_RETRY_DELAYS_SECONDS = (1.0, 3.0)
+# A logical planning call has a strict two-attempt transport budget. 429 is
+# transient, but repeated rate-limit responses must fail fast and let the
+# planner's controlled fallback handle the query.
+TRANSIENT_RETRY_STATUS_CODES = frozenset({408, 425, 429, 500, 502, 503, 504})
+MAX_HTTP_ATTEMPTS_PER_CALL = 2
+TRANSIENT_RETRY_DELAYS_SECONDS = (1.0,)
+LLM_GLOBAL_CONCURRENCY_LIMIT = 1
+_PROVIDER_REQUEST_SLOT = BoundedSemaphore(LLM_GLOBAL_CONCURRENCY_LIMIT)
 JSON_ONLY_COMPATIBILITY_INSTRUCTION = (
     "Compatibility requirement: return exactly one valid JSON object and no "
     "markdown, prose, or code fences."
@@ -54,6 +65,8 @@ class LLMErrorDetails:
     service_error_code: str | None = None
     summary: str | None = None
     unsupported_parameters: tuple[str, ...] = ()
+    failure_class: str | None = None
+    retry_after_seconds: float | None = None
 
     def model_dump(self) -> dict[str, Any]:
         return {
@@ -62,6 +75,8 @@ class LLMErrorDetails:
             "service_error_code": self.service_error_code,
             "summary": self.summary,
             "unsupported_parameters": list(self.unsupported_parameters),
+            "failure_class": self.failure_class,
+            "retry_after_seconds": self.retry_after_seconds,
         }
 
 
@@ -73,6 +88,11 @@ class LLMCallDiagnostics:
     http_attempts: int
     latency_ms: int
     fallback_reason: str | None = None
+    http_429_count: int = 0
+    retry_after_seconds: tuple[float, ...] = ()
+    retry_wait_seconds: float = 0.0
+    failure_class: str | None = None
+    cache_hit: bool = False
 
     def model_dump(self) -> dict[str, Any]:
         return {
@@ -80,7 +100,22 @@ class LLMCallDiagnostics:
             "http_attempts": self.http_attempts,
             "latency_ms": self.latency_ms,
             "fallback_reason": self.fallback_reason,
+            "http_429_count": self.http_429_count,
+            "retry_after_seconds": list(self.retry_after_seconds),
+            "retry_wait_seconds": self.retry_wait_seconds,
+            "failure_class": self.failure_class,
+            "cache_hit": self.cache_hit,
         }
+
+
+@dataclass(frozen=True)
+class _TransportResult:
+    response: dict[str, Any]
+    http_attempts: int
+    http_429_count: int
+    retry_after_seconds: tuple[float, ...]
+    retry_wait_seconds: float
+    failure_class: str | None = None
 
 
 class LLMProviderError(RuntimeError):
@@ -236,6 +271,12 @@ class OpenAICompatibleLLMClient:
     )
     _json_only_compatibility: bool = field(default=False, init=False, repr=False)
     _omit_thinking_parameter: bool = field(default=False, init=False, repr=False)
+    _successful_response_cache: dict[str, dict[str, Any]] = field(
+        default_factory=dict,
+        init=False,
+        repr=False,
+    )
+    _response_cache_lock: RLock = field(default_factory=RLock, init=False, repr=False)
 
     @classmethod
     def from_env(cls) -> "OpenAICompatibleLLMClient":
@@ -281,29 +322,74 @@ class OpenAICompatibleLLMClient:
             # OpenAI-compatible raw HTTP endpoints expect the extension itself.
             payload["chat_template_kwargs"] = {"thinking": False}
 
-        http_attempts = 1
+        cache_key = _response_cache_key(payload)
+        cached_response = self._load_cached_response(cache_key)
+        if cached_response is not None:
+            self.last_call_diagnostics = LLMCallDiagnostics(
+                mode=mode,
+                http_attempts=0,
+                latency_ms=max(0, round((time.monotonic() - started) * 1000)),
+                cache_hit=True,
+            )
+            return _response_content_object(cached_response)
+
+        transport: _TransportResult | None = None
         fallback_reason: str | None = None
         try:
-            parsed_response, http_attempts = self._send_with_retries(
-                payload,
-                timeout=timeout_seconds,
+            transport = _coerce_transport_result(
+                self._send_with_retries(
+                    payload,
+                    timeout=timeout_seconds,
+                )
             )
         except LLMProviderError as exc:
+            self.last_call_diagnostics = _failed_call_diagnostics(
+                exc,
+                started=started,
+            )
             fallback = self._compatibility_fallback(payload, exc)
             if fallback is None:
                 raise
             payload, mode, fallback_reason = fallback
-            parsed_response, fallback_attempts = self._send_with_retries(
-                payload,
-                timeout=timeout_seconds,
+            remaining_attempts = (
+                MAX_HTTP_ATTEMPTS_PER_CALL
+                - self.last_call_diagnostics.http_attempts
             )
-            http_attempts += fallback_attempts
+            if remaining_attempts <= 0:
+                raise exc
+            try:
+                fallback_transport = _coerce_transport_result(
+                    self._send_with_retries(
+                        payload,
+                        timeout=timeout_seconds,
+                        max_attempts=remaining_attempts,
+                    )
+                )
+            except LLMProviderError as fallback_error:
+                self.last_call_diagnostics = _failed_call_diagnostics(
+                    fallback_error,
+                    started=started,
+                    previous=self.last_call_diagnostics,
+                )
+                raise
+            transport = _combine_transport_results(
+                _transport_from_diagnostics(self.last_call_diagnostics),
+                fallback_transport,
+            )
+
+        if transport is None:
+            raise AssertionError("provider transport result unavailable")
+        parsed_response = transport.response
 
         self.last_call_diagnostics = LLMCallDiagnostics(
             mode=mode,
-            http_attempts=http_attempts,
+            http_attempts=transport.http_attempts,
             latency_ms=max(0, round((time.monotonic() - started) * 1000)),
             fallback_reason=fallback_reason,
+            http_429_count=transport.http_429_count,
+            retry_after_seconds=transport.retry_after_seconds,
+            retry_wait_seconds=transport.retry_wait_seconds,
+            failure_class=transport.failure_class,
         )
         self.last_call_usage_fields = _parse_token_usage_fields(
             parsed_response.get("usage")
@@ -315,24 +401,30 @@ class OpenAICompatibleLLMClient:
             self.token_usage.add(self.last_call_usage)
 
         try:
-            content = parsed_response["choices"][0]["message"]["content"]
-        except (KeyError, IndexError, TypeError) as exc:
-            raise LLMResponseError("llm_malformed_chat_response") from exc
+            content = _response_content_object(parsed_response)
+        except LLMResponseError:
+            raise
+        self._store_cached_response(cache_key, parsed_response)
+        return content
 
-        try:
-            parsed_content = json.loads(content)
-        except (json.JSONDecodeError, TypeError) as exc:
-            raise LLMResponseError("llm_invalid_json_content") from exc
-        if not isinstance(parsed_content, dict):
-            raise LLMResponseError("llm_json_content_not_object")
-        return parsed_content
+    def _load_cached_response(self, cache_key: str) -> dict[str, Any] | None:
+        with self._response_cache_lock:
+            value = self._successful_response_cache.get(cache_key)
+            return dict(value) if value is not None else None
+
+    def _store_cached_response(self, cache_key: str, response: dict[str, Any]) -> None:
+        cached = dict(response)
+        cached.pop("usage", None)
+        with self._response_cache_lock:
+            self._successful_response_cache[cache_key] = cached
 
     def _send_with_retries(
         self,
         payload: dict[str, Any],
         *,
         timeout: float,
-    ) -> tuple[dict[str, Any], int]:
+        max_attempts: int = MAX_HTTP_ATTEMPTS_PER_CALL,
+    ) -> _TransportResult:
         """Retry only provider/network failures that are safe to repeat.
 
         The request is a deterministic, non-streaming JSON planning call. A
@@ -340,18 +432,51 @@ class OpenAICompatibleLLMClient:
         timeouts, while schema/4xx errors must still surface immediately.
         """
 
+        if max_attempts < 1 or max_attempts > MAX_HTTP_ATTEMPTS_PER_CALL:
+            raise ValueError("max_attempts_out_of_range")
         attempts = 0
-        for retry_index, delay in enumerate((0.0, *TRANSIENT_RETRY_DELAYS_SECONDS)):
-            if delay:
+        http_429_count = 0
+        retry_after_values: list[float] = []
+        retry_wait_seconds = 0.0
+        previous_error: LLMProviderError | None = None
+        for attempt_index in range(max_attempts):
+            if previous_error is not None:
+                delay = _retry_delay_seconds(previous_error, attempt_index, self.base_url)
+                retry_wait_seconds += delay
+                retry_after = previous_error.details.retry_after_seconds
+                if retry_after is not None:
+                    retry_after_values.append(retry_after)
                 time.sleep(delay)
             attempts += 1
             try:
-                return self._send_request(payload, timeout=timeout), attempts
+                response = self._send_request(payload, timeout=timeout)
+                return _TransportResult(
+                    response=response,
+                    http_attempts=attempts,
+                    http_429_count=http_429_count,
+                    retry_after_seconds=tuple(retry_after_values),
+                    retry_wait_seconds=retry_wait_seconds,
+                    failure_class=(
+                        previous_error.details.failure_class
+                        if previous_error is not None
+                        else None
+                    ),
+                )
             except LLMProviderError as exc:
-                if not _is_transient_error(exc) or retry_index >= len(
-                    TRANSIENT_RETRY_DELAYS_SECONDS
-                ):
+                if exc.details.http_status == 429:
+                    http_429_count += 1
+                if not _is_transient_error(exc) or attempt_index + 1 >= max_attempts:
+                    setattr(exc, "transport_diagnostics", LLMCallDiagnostics(
+                        mode="structured_json",
+                        http_attempts=attempts,
+                        latency_ms=0,
+                        http_429_count=http_429_count,
+                        retry_after_seconds=tuple(retry_after_values),
+                        retry_wait_seconds=retry_wait_seconds,
+                        failure_class=exc.details.failure_class,
+                    ))
                     raise
+                previous_error = exc
         raise AssertionError("transient retry loop did not return or raise")
 
     def _send_request(
@@ -370,17 +495,19 @@ class OpenAICompatibleLLMClient:
             method="POST",
         )
         try:
-            with urlopen(  # noqa: S310 - URL is configured by trusted backend env.
-                request,
-                timeout=timeout,
-            ) as response:
-                response_body = response.read().decode("utf-8")
+            with _PROVIDER_REQUEST_SLOT:
+                with urlopen(  # noqa: S310 - URL is configured by trusted backend env.
+                    request,
+                    timeout=timeout,
+                ) as response:
+                    response_body = response.read().decode("utf-8")
         except socket.timeout as exc:
             raise LLMTimeoutError(
                 "llm_request_timeout",
                 details=LLMErrorDetails(
                     error_type=type(exc).__name__,
                     summary="request timed out",
+                    failure_class="timeout",
                 ),
             ) from exc
         except HTTPError as exc:
@@ -392,6 +519,7 @@ class OpenAICompatibleLLMClient:
                 details=LLMErrorDetails(
                     error_type=type(exc.reason).__name__,
                     summary=summary,
+                    failure_class="network_error",
                 ),
             ) from exc
 
@@ -516,6 +644,32 @@ def _chat_completions_url(base_url: str) -> str:
     return f"{normalized}/chat/completions"
 
 
+def _response_cache_key(payload: dict[str, Any]) -> str:
+    """Hash a logical JSON request without persisting its query text."""
+
+    serialized = json.dumps(
+        payload,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(serialized).hexdigest()
+
+
+def _response_content_object(parsed_response: dict[str, Any]) -> dict[str, Any]:
+    try:
+        content = parsed_response["choices"][0]["message"]["content"]
+    except (KeyError, IndexError, TypeError) as exc:
+        raise LLMResponseError("llm_malformed_chat_response") from exc
+    try:
+        parsed_content = json.loads(content)
+    except (json.JSONDecodeError, TypeError) as exc:
+        raise LLMResponseError("llm_invalid_json_content") from exc
+    if not isinstance(parsed_content, dict):
+        raise LLMResponseError("llm_json_content_not_object")
+    return parsed_content
+
+
 def _base_url_host(base_url: str | None) -> str | None:
     if not base_url:
         return None
@@ -528,6 +682,7 @@ def _http_provider_error(error: HTTPError) -> LLMProviderError:
     service_error_code: str | None = None
     summary = _sanitize_error_message(str(error.reason))
     unsupported_parameters: tuple[str, ...] = ()
+    retry_after_seconds = _retry_after_seconds(error.headers)
     try:
         error_body = error.read().decode("utf-8", errors="replace")
         parsed = json.loads(error_body)
@@ -556,6 +711,13 @@ def _http_provider_error(error: HTTPError) -> LLMProviderError:
         service_error_code=service_error_code,
         summary=summary,
         unsupported_parameters=unsupported_parameters,
+        failure_class=_provider_failure_class(
+            http_status=error.code,
+            error_type=error_type,
+            service_error_code=service_error_code,
+            summary=summary,
+        ),
+        retry_after_seconds=retry_after_seconds,
     )
     message_parts = [f"llm_http_error:{error.code}"]
     if error_type:
@@ -568,9 +730,146 @@ def _http_provider_error(error: HTTPError) -> LLMProviderError:
 
 
 def _is_transient_error(error: LLMProviderError) -> bool:
+    if error.details.failure_class == "insufficient_quota":
+        return False
     if isinstance(error, LLMTimeoutError):
         return True
     return error.details.http_status in TRANSIENT_RETRY_STATUS_CODES
+
+
+def _provider_failure_class(
+    *,
+    http_status: int | None,
+    error_type: str | None,
+    service_error_code: str | None,
+    summary: str | None,
+) -> str:
+    text = " ".join(
+        value.casefold()
+        for value in (error_type, service_error_code, summary)
+        if value
+    )
+    if any(marker in text for marker in ("insufficient_quota", "insufficient quota", "quota exceeded", "billing")):
+        return "insufficient_quota"
+    if http_status == 429:
+        return "rate_limit"
+    if http_status in {500, 502, 503, 504} or "overload" in text or "resourceexhausted" in text:
+        return "temporary_overload"
+    if http_status is not None and 400 <= http_status < 500:
+        return "client_error"
+    return "provider_error"
+
+
+def _retry_after_seconds(headers: Any) -> float | None:
+    getter = getattr(headers, "get", None)
+    raw = getter("Retry-After") if callable(getter) else None
+    if raw is None:
+        return None
+    text = str(raw).strip()
+    try:
+        seconds = float(text)
+    except ValueError:
+        try:
+            target = parsedate_to_datetime(text)
+            if target.tzinfo is None:
+                target = target.replace(tzinfo=timezone.utc)
+            seconds = (target - datetime.now(timezone.utc)).total_seconds()
+        except (TypeError, ValueError, IndexError, OverflowError):
+            return None
+    return min(60.0, max(0.0, seconds))
+
+
+def _retry_delay_seconds(
+    error: LLMProviderError,
+    attempt_index: int,
+    base_url: str,
+) -> float:
+    if _is_loopback_provider(base_url):
+        return TRANSIENT_RETRY_DELAYS_SECONDS[0]
+    retry_after = error.details.retry_after_seconds
+    if retry_after is not None:
+        return retry_after
+    base = min(8.0, float(2 ** max(0, attempt_index - 1)))
+    return base + random.uniform(0.0, min(1.0, base * 0.25))
+
+
+def _is_loopback_provider(base_url: str) -> bool:
+    host = (_base_url_host(base_url) or "").split(":", 1)[0].casefold()
+    return host in {"127.0.0.1", "localhost", "::1"}
+
+
+def _failed_call_diagnostics(
+    error: LLMProviderError,
+    *,
+    started: float,
+    previous: LLMCallDiagnostics | None = None,
+) -> LLMCallDiagnostics:
+    transport = getattr(error, "transport_diagnostics", None)
+    attempts = int(getattr(transport, "http_attempts", 1))
+    http_429_count = int(getattr(transport, "http_429_count", 0))
+    retry_after = tuple(getattr(transport, "retry_after_seconds", ()))
+    retry_wait = float(getattr(transport, "retry_wait_seconds", 0.0))
+    if previous is not None:
+        attempts += previous.http_attempts
+        http_429_count += previous.http_429_count
+        retry_after = (*previous.retry_after_seconds, *retry_after)
+        retry_wait += previous.retry_wait_seconds
+    return LLMCallDiagnostics(
+        mode="structured_json",
+        http_attempts=attempts,
+        latency_ms=max(0, round((time.monotonic() - started) * 1000)),
+        http_429_count=http_429_count,
+        retry_after_seconds=retry_after,
+        retry_wait_seconds=retry_wait,
+        failure_class=error.details.failure_class,
+    )
+
+
+def _transport_from_diagnostics(diagnostics: LLMCallDiagnostics | None) -> _TransportResult:
+    if diagnostics is None:
+        raise AssertionError("transport diagnostics unavailable")
+    return _TransportResult(
+        response={},
+        http_attempts=diagnostics.http_attempts,
+        http_429_count=diagnostics.http_429_count,
+        retry_after_seconds=diagnostics.retry_after_seconds,
+        retry_wait_seconds=diagnostics.retry_wait_seconds,
+        failure_class=diagnostics.failure_class,
+    )
+
+
+def _combine_transport_results(
+    first: _TransportResult,
+    second: _TransportResult,
+) -> _TransportResult:
+    return _TransportResult(
+        response=second.response,
+        http_attempts=first.http_attempts + second.http_attempts,
+        http_429_count=first.http_429_count + second.http_429_count,
+        retry_after_seconds=(*first.retry_after_seconds, *second.retry_after_seconds),
+        retry_wait_seconds=first.retry_wait_seconds + second.retry_wait_seconds,
+        failure_class=second.failure_class or first.failure_class,
+    )
+
+
+def _coerce_transport_result(value: Any) -> _TransportResult:
+    """Keep test/integration seams that supplied the previous tuple shape."""
+
+    if isinstance(value, _TransportResult):
+        return value
+    if (
+        isinstance(value, tuple)
+        and len(value) == 2
+        and isinstance(value[0], dict)
+    ):
+        return _TransportResult(
+            response=value[0],
+            http_attempts=max(0, int(value[1])),
+            http_429_count=0,
+            retry_after_seconds=(),
+            retry_wait_seconds=0.0,
+        )
+    raise TypeError("invalid_transport_result")
 
 
 def _extract_unsupported_parameters(

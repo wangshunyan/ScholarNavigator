@@ -68,6 +68,12 @@ class LLMPlanningExecution(BaseModel):
     completion_tokens: int = Field(default=0, ge=0)
     total_tokens: int = Field(default=0, ge=0)
     recorded_latency_seconds: float = Field(default=0.0, ge=0.0)
+    http_attempts: int = Field(default=0, ge=0)
+    http_429_count: int = Field(default=0, ge=0)
+    retry_after_seconds: list[float] = Field(default_factory=list)
+    retry_wait_seconds: float = Field(default=0.0, ge=0.0)
+    provider_failure_class: str | None = None
+    provider_cache_hit: bool = False
 
 
 class LLMPlanningRuntime(Protocol):
@@ -192,6 +198,7 @@ def plan_llm_semantic(
     except Exception as exc:  # noqa: BLE001 - optional planner never breaks search
         reason = _fallback_reason(exc)
         failure_updates = _execution_updates(base_updates, execution)
+        failure_updates.update(_planning_diagnostics_updates(llm_client))
         diagnostics_provider = getattr(runtime, "failure_diagnostics", None)
         if callable(diagnostics_provider):
             failure_updates.update(diagnostics_provider())
@@ -357,6 +364,7 @@ def _execute_live(
         completion_tokens=max(0, after[1] - before[1]),
         total_tokens=max(0, after[2] - before[2]),
         recorded_latency_seconds=elapsed,
+        **_client_diagnostics_updates(client),
     )
 
 
@@ -479,6 +487,44 @@ def _execution_updates(
         "llm_completion_tokens": execution.completion_tokens,
         "llm_total_tokens": execution.total_tokens,
         "recorded_llm_latency_seconds": execution.recorded_latency_seconds,
+        "llm_http_attempts": execution.http_attempts,
+        "llm_http_429_count": execution.http_429_count,
+        "llm_retry_after_seconds": execution.retry_after_seconds,
+        "llm_retry_wait_seconds": execution.retry_wait_seconds,
+        "llm_provider_failure_class": execution.provider_failure_class,
+        "llm_provider_cache_hit": execution.provider_cache_hit,
+    }
+
+
+def _client_diagnostics_updates(client: Any | None) -> dict[str, Any]:
+    diagnostics = getattr(client, "last_call_diagnostics", None)
+    if diagnostics is None:
+        return {}
+    return {
+        "http_attempts": max(0, int(getattr(diagnostics, "http_attempts", 0))),
+        "http_429_count": max(0, int(getattr(diagnostics, "http_429_count", 0))),
+        "retry_after_seconds": [
+            max(0.0, float(value))
+            for value in getattr(diagnostics, "retry_after_seconds", ())
+        ],
+        "retry_wait_seconds": max(
+            0.0,
+            float(getattr(diagnostics, "retry_wait_seconds", 0.0)),
+        ),
+        "provider_failure_class": getattr(diagnostics, "failure_class", None),
+        "provider_cache_hit": bool(getattr(diagnostics, "cache_hit", False)),
+    }
+
+
+def _planning_diagnostics_updates(client: Any | None) -> dict[str, Any]:
+    values = _client_diagnostics_updates(client)
+    return {
+        "llm_http_attempts": values.get("http_attempts", 0),
+        "llm_http_429_count": values.get("http_429_count", 0),
+        "llm_retry_after_seconds": values.get("retry_after_seconds", []),
+        "llm_retry_wait_seconds": values.get("retry_wait_seconds", 0.0),
+        "llm_provider_failure_class": values.get("provider_failure_class"),
+        "llm_provider_cache_hit": values.get("provider_cache_hit", False),
     }
 
 

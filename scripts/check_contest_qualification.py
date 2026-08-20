@@ -22,6 +22,8 @@ from scholar_agent.evaluation.resource_accounting import (  # noqa: E402
 
 
 EXPECTED_BASELINE = "contest_qual200_bm25_v1"
+SOFT_JUDGEMENT_BASELINE = "contest_qual200_reranker_v4_gpu1"
+SOFT_JUDGEMENT_CANDIDATE = "contest_qual200_dense_reranker_soft_v1"
 EXPECTED_CANDIDATES = {
     "contest_qual200_dense_v1",
     "contest_qual200_reranker_v1",
@@ -29,6 +31,7 @@ EXPECTED_CANDIDATES = {
     "contest_qual200_reranker_v2_gpu1",
     "contest_qual200_reranker_v3_gpu1",
     "contest_qual200_reranker_v4_gpu1",
+    "contest_qual200_dense_reranker_soft_v1",
 }
 RERANKER_PROMPT_VERSION = "qwen3-reranker-v1"
 BOOTSTRAP_SEED = 20260818
@@ -44,11 +47,14 @@ def _parser() -> argparse.ArgumentParser:
 
 
 def check_qualification(baseline: Path, candidate: Path) -> dict[str, Any]:
-    baseline_run = _load_run(baseline, EXPECTED_BASELINE)
+    expected_baseline = _expected_baseline_for(candidate.name)
+    baseline_run = _load_run(baseline, expected_baseline)
     candidate_run = _load_run(candidate, candidate.name)
     if candidate.name not in EXPECTED_CANDIDATES:
         raise ValueError("candidate_run_id_invalid")
-    if baseline_run["config_hashes"] != candidate_run["config_hashes"]:
+    if candidate.name == SOFT_JUDGEMENT_CANDIDATE:
+        _validate_soft_judgement_pair(baseline_run["config"], candidate_run["config"])
+    elif baseline_run["config_hashes"] != candidate_run["config_hashes"]:
         raise ValueError("qualification_shared_config_drift")
     baseline_cases = _case_metrics(baseline_run["metrics"])
     candidate_cases = _case_metrics(candidate_run["metrics"])
@@ -86,6 +92,66 @@ def check_qualification(baseline: Path, candidate: Path) -> dict[str, Any]:
         ),
         "internal_metric_scope": "not_official_competition_scorer",
     }
+
+
+def _expected_baseline_for(candidate_run_id: str) -> str:
+    if candidate_run_id == SOFT_JUDGEMENT_CANDIDATE:
+        return SOFT_JUDGEMENT_BASELINE
+    return EXPECTED_BASELINE
+
+
+def _validate_soft_judgement_pair(
+    baseline_config: dict[str, Any], candidate_config: dict[str, Any]
+) -> None:
+    """Accept only the reviewed soft-threshold delta for this paired experiment."""
+
+    comparable_keys = (
+        "dataset",
+        "dataset_split",
+        "dataset_sha256",
+        "case_count",
+        "case_ids",
+        "offset",
+        "limit",
+        "selection_order",
+        "result_policy",
+        "sources",
+        "local_bm25",
+        "local_hybrid",
+        "run_profile",
+        "top_k",
+        "enable_query_evolution",
+        "query_evolution_policy",
+        "query_planning_policy",
+        "ranking_policy",
+        "query_planner_version",
+        "enable_refchain",
+        "enable_semantic_seed_expansion",
+        "current_year",
+        "max_workers",
+        "budgets",
+        "diagnostics",
+        "enable_resource_ledger",
+        "query_adapter_policy",
+        "retrieval_mode",
+        "llm_mode",
+        "data_hashes",
+    )
+    if any(baseline_config.get(key) != candidate_config.get(key) for key in comparable_keys):
+        raise ValueError("soft_judgement_shared_config_drift")
+
+    baseline_judgement = dict(baseline_config.get("judgement_config") or {})
+    candidate_judgement = dict(candidate_config.get("judgement_config") or {})
+    changes = {
+        key: (baseline_judgement.get(key), candidate_judgement.get(key))
+        for key in sorted(set(baseline_judgement) | set(candidate_judgement))
+        if baseline_judgement.get(key) != candidate_judgement.get(key)
+    }
+    if changes != {
+        "config_version": ("current-rules-v1", "soft-current-rules-v1"),
+        "partially_relevant_threshold": (0.45, 0.35),
+    }:
+        raise ValueError("soft_judgement_delta_not_allowlisted")
 
 
 def main(argv: list[str] | None = None) -> int:

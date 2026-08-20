@@ -333,12 +333,14 @@ def test_chat_json_http_error_exposes_only_sanitized_diagnostics(
         "http_status": 400,
         "error_type": "invalid_request_error",
         "service_error_code": "unsupported_parameter",
-        "summary": (
-            "Unsupported parameter(s): `extra_body`; "
-            "Authorization: [redacted]"
-        ),
-        "unsupported_parameters": [],
-    }
+            "summary": (
+                "Unsupported parameter(s): `extra_body`; "
+                "Authorization: [redacted]"
+            ),
+            "unsupported_parameters": [],
+            "failure_class": "client_error",
+            "retry_after_seconds": None,
+        }
     assert "sk-test-secret" not in str(error)
     assert "sk-test-secret" not in json.dumps(error.details.model_dump())
 
@@ -408,10 +410,85 @@ def test_chat_json_retries_once_without_unsupported_response_format(
     assert "response_format" not in captured_payloads[0]
 
 
-def test_chat_json_does_not_retry_unrelated_http_error(
+def test_chat_json_retries_http_429_once_with_one_second_delay(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     _set_enabled_env(monkeypatch)
+    monkeypatch.setenv(provider.BASE_URL_ENV, "http://127.0.0.1:18080/v1")
+    sleeps: list[float] = []
+    monkeypatch.setattr(provider.time, "sleep", sleeps.append)
+    attempts = 0
+
+    def fake_urlopen(request, timeout: float):  # noqa: ANN001
+        nonlocal attempts
+        del timeout
+        attempts += 1
+        if attempts == 1:
+            raise HTTPError(
+                url=request.full_url,
+                code=429,
+                msg="Too Many Requests",
+                hdrs=None,
+                fp=FakeErrorBody("rate limited", code="rate_limit"),
+            )
+        return FakeResponse(
+            {"choices": [{"message": {"content": '{"ok":true}'}}]}
+        )
+
+    monkeypatch.setattr(provider, "urlopen", fake_urlopen)
+
+    client = provider.OpenAICompatibleLLMClient.from_env()
+    assert client.chat_json([{"role": "user", "content": "query"}]) == {
+        "ok": True
+    }
+
+    assert attempts == 2
+    assert sleeps == [1.0]
+    assert client.last_call_diagnostics is not None
+    assert client.last_call_diagnostics.http_attempts == 2
+
+
+def test_remote_429_respects_retry_after_and_records_transport_diagnostics(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _set_enabled_env(monkeypatch)
+    sleeps: list[float] = []
+    monkeypatch.setattr(provider.time, "sleep", sleeps.append)
+    attempts = 0
+
+    def fake_urlopen(request, timeout: float):  # noqa: ANN001
+        nonlocal attempts
+        del timeout
+        attempts += 1
+        if attempts == 1:
+            raise HTTPError(
+                url=request.full_url,
+                code=429,
+                msg="Too Many Requests",
+                hdrs={"Retry-After": "3"},
+                fp=FakeErrorBody("rate limited", code="rate_limit"),
+            )
+        return FakeResponse({"choices": [{"message": {"content": '{"ok":true}'}}]})
+
+    monkeypatch.setattr(provider, "urlopen", fake_urlopen)
+    client = provider.OpenAICompatibleLLMClient.from_env()
+
+    assert client.chat_json([{"role": "user", "content": "query"}]) == {"ok": True}
+    assert attempts == 2
+    assert sleeps == [3.0]
+    assert client.last_call_diagnostics is not None
+    assert client.last_call_diagnostics.http_429_count == 1
+    assert client.last_call_diagnostics.retry_after_seconds == (3.0,)
+    assert client.last_call_diagnostics.retry_wait_seconds == 3.0
+    assert client.last_call_diagnostics.failure_class == "rate_limit"
+
+
+def test_insufficient_quota_fails_without_retry(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _set_enabled_env(monkeypatch)
+    sleeps: list[float] = []
+    monkeypatch.setattr(provider.time, "sleep", sleeps.append)
     attempts = 0
 
     def fake_urlopen(request, timeout: float):  # noqa: ANN001
@@ -423,16 +500,53 @@ def test_chat_json_does_not_retry_unrelated_http_error(
             code=429,
             msg="Too Many Requests",
             hdrs=None,
-            fp=FakeErrorBody("rate limited", code="rate_limit"),
+            fp=FakeErrorBody(
+                "insufficient quota",
+                error_type="insufficient_quota",
+                code="insufficient_quota",
+            ),
         )
 
     monkeypatch.setattr(provider, "urlopen", fake_urlopen)
+    client = provider.OpenAICompatibleLLMClient.from_env()
 
     with pytest.raises(provider.LLMProviderError) as exc_info:
-        provider.chat_json([{"role": "user", "content": "query"}])
+        client.chat_json([{"role": "user", "content": "query"}])
 
     assert attempts == 1
-    assert exc_info.value.details.http_status == 429
+    assert sleeps == []
+    assert exc_info.value.details.failure_class == "insufficient_quota"
+    assert client.last_call_diagnostics is not None
+    assert client.last_call_diagnostics.http_attempts == 1
+    assert client.last_call_diagnostics.http_429_count == 1
+    assert client.last_call_diagnostics.failure_class == "insufficient_quota"
+
+
+def test_successful_identical_request_uses_memory_cache(monkeypatch: pytest.MonkeyPatch) -> None:
+    _set_enabled_env(monkeypatch)
+    attempts = 0
+
+    def fake_urlopen(request, timeout: float):  # noqa: ANN001
+        nonlocal attempts
+        del request, timeout
+        attempts += 1
+        return FakeResponse(
+            {
+                "choices": [{"message": {"content": '{"ok":true}'}}],
+                "usage": {"prompt_tokens": 2, "completion_tokens": 1, "total_tokens": 3},
+            }
+        )
+
+    monkeypatch.setattr(provider, "urlopen", fake_urlopen)
+    client = provider.OpenAICompatibleLLMClient.from_env()
+    messages = [{"role": "user", "content": "same query"}]
+
+    assert client.chat_json(messages) == {"ok": True}
+    assert client.chat_json(messages) == {"ok": True}
+    assert attempts == 1
+    assert client.last_call_diagnostics is not None
+    assert client.last_call_diagnostics.cache_hit is True
+    assert client.last_call_diagnostics.http_attempts == 0
 
 
 def test_chat_json_retries_transient_503_and_reports_attempts(
@@ -446,7 +560,7 @@ def test_chat_json_retries_transient_503_and_reports_attempts(
         nonlocal attempts
         del timeout
         attempts += 1
-        if attempts < 3:
+        if attempts < 2:
             raise HTTPError(
                 url=request.full_url,
                 code=503,
@@ -466,9 +580,9 @@ def test_chat_json_retries_transient_503_and_reports_attempts(
     assert client.chat_json([{"role": "user", "content": "query"}]) == {
         "ok": True
     }
-    assert attempts == 3
+    assert attempts == 2
     assert client.last_call_diagnostics is not None
-    assert client.last_call_diagnostics.http_attempts == 3
+    assert client.last_call_diagnostics.http_attempts == 2
 
 
 def test_chat_json_retries_transient_timeout_once_then_succeeds(

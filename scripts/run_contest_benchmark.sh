@@ -8,6 +8,7 @@ OFFSET="0"
 LIMIT="0"
 RESUME="0"
 RERANKER_MODEL="datasets/semantic/models/Qwen3-Reranker-0.6B"
+MAX_WORKERS="1"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -39,6 +40,10 @@ while [[ $# -gt 0 ]]; do
       RERANKER_MODEL="$2"
       shift 2
       ;;
+    --max-workers)
+      MAX_WORKERS="$2"
+      shift 2
+      ;;
     *)
       echo "unknown argument: $1" >&2
       exit 2
@@ -54,10 +59,15 @@ case "$MODE" in
     ;;
 esac
 
+if ! [[ "$MAX_WORKERS" =~ ^[1-9][0-9]*$ ]] || [[ "$MAX_WORKERS" -gt 32 ]]; then
+  echo "max-workers must be an integer from 1 to 32" >&2
+  exit 2
+fi
+
 case "$CONFIGURATION" in
-  local|hybrid|hybrid_deep_rrf|network_hybrid|rules|dense|reranker|dense_reranker_llm) ;;
+  local|hybrid|hybrid_deep_rrf|network_hybrid|rules|dense|reranker|dense_reranker_soft|dense_reranker_llm) ;;
   *)
-    echo "configuration must be local, hybrid, hybrid_deep_rrf, or network_hybrid" >&2
+    echo "configuration must be a supported contest configuration" >&2
     exit 2
     ;;
 esac
@@ -88,12 +98,12 @@ RUN_PROFILE="evaluation"
 if [[ "$MODE" != "full" ]]; then
   RUN_PROFILE="fast"
 fi
-if [[ "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
+if [[ "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
   RUN_PROFILE="high_recall"
 fi
 
 SOURCES="local_bm25"
-if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
+if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
   SOURCES="local_hybrid"
 elif [[ "$CONFIGURATION" == "network_hybrid" ]]; then
   SOURCES="local_bm25,arxiv"
@@ -119,7 +129,7 @@ ARGS=(
   "--query-planning-policy" "$([[ "$CONFIGURATION" == "dense_reranker_llm" ]] && echo llm_semantic || echo current_rules)"
   "--judgement-policy" "current_rules"
   "--ranking-policy" "$RANKING_POLICY"
-  "--max-workers" "1"
+  "--max-workers" "$MAX_WORKERS"
   "--sources" "$SOURCES"
   "--local-bm25-corpus" "datasets/local_bm25/pasa_papers.jsonl"
   "--local-bm25-document-id-identity" "arxiv_id"
@@ -127,11 +137,15 @@ ARGS=(
   "--local-bm25-doi-field" "doi"
 )
 
-if [[ "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
+if [[ "$CONFIGURATION" == "dense_reranker_soft" ]]; then
+  ARGS+=("--judgement-config" "benchmark/judgement_soft_current_rules_v1.json")
+fi
+
+if [[ "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
   ARGS+=("--max-candidate-papers" "300")
 fi
 
-if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
+if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
   BM25_LIMIT="60"
   SEMANTIC_LIMIT="60"
   if [[ "$CONFIGURATION" == "hybrid_deep_rrf" ]]; then
@@ -154,7 +168,7 @@ if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" || "
   )
 fi
 
-if [[ "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
+if [[ "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_llm" ]]; then
   ARGS+=(
     "--local-hybrid-reranker-model" "$RERANKER_MODEL"
     "--local-hybrid-reranker-candidate-limit" "120"

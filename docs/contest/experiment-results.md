@@ -66,6 +66,19 @@ Linux/Python 3.12 锁已在服务器 Python 3.12.3/x86_64 环境生成，覆盖 
 
 ## 当前结论
 
+## 运行可靠性与并发口径
+
+LLM 传输层对每个逻辑调用采用固定的有限重试协议：HTTP `429/408/425/5xx`
+属于可重试状态，最多 2 次 HTTP attempt，第一次失败后固定等待 1 秒；第二次仍失败
+即交给上层 `current_rules` 回退，并在账本中记录失败原因。Schema、认证和其他不可重试
+的客户端错误不会重复发送。兼容性参数降级也计入同一个 2 次总预算，不能额外扩大调用数。
+
+`--max-workers` 是单条 query 内子查询检索的 worker 数，不是 1000 条 query 的并发数。
+正式 `contest_full_dense_reranker_llm_v14` 运行目录的启动参数为 `--max-workers 1`，
+因此不能宣称该运行使用 4 路并发；Windows/Linux runner 现在支持显式传入
+`--max-workers 4`，但必须先以独立 smoke 和资源账本验证后才能用于新 RunId。当前 v14
+不修改、不重启、不用新参数恢复。
+
 1. 旧 `local_hybrid` 结果仅代表 legacy 标题匹配语料和全矩阵向量实现，不能作为 P0/Faiss 新方案的正式成绩。
 2. 在同一 1000 条内部评测下，Dense 相对 rules 将 F1@20 从 0.01087 提升至 0.02155、Recall@20 从 0.06195 提升至 0.13508；完整 reranker 进一步达到 F1@20=0.02442、Recall@20=0.15010。资源账本和 reranker 审计均通过，但这些仍是内部指标，不等同于赛事官方 scorer。
 3. Reranker 的完整运行使用真实 GPU 推理且零 fallback；代价是平均端到端延迟由 Dense 的 0.968 s 增至 3.909 s。提交材料应同时呈现质量增益和资源代价。

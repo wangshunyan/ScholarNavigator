@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -67,6 +68,10 @@ def audit_run(path: Path) -> dict[str, Any]:
         reasons.append("result_row_count_invalid")
 
     attempted = fallbacks = schema_rejections = retained = 0
+    transport_metadata_rows = http_attempts_total = http_429_total = 0
+    retry_wait_seconds_total = 0.0
+    cache_hit_count = 0
+    failure_classes: Counter[str] = Counter()
     prompt_versions: set[str] = set()
     models: set[str] = set()
     call_counts: list[int] = []
@@ -87,6 +92,18 @@ def audit_run(path: Path) -> dict[str, Any]:
         latency = planning.get("recorded_llm_latency_seconds")
         if latency is not None:
             latencies.append(float(latency))
+        if "llm_http_attempts" in planning:
+            transport_metadata_rows += 1
+            http_attempts_total += max(0, int(planning.get("llm_http_attempts") or 0))
+            http_429_total += max(0, int(planning.get("llm_http_429_count") or 0))
+            retry_wait_seconds_total += max(
+                0.0,
+                float(planning.get("llm_retry_wait_seconds") or 0.0),
+            )
+            cache_hit_count += int(bool(planning.get("llm_provider_cache_hit")))
+            failure_class = planning.get("llm_provider_failure_class")
+            if failure_class:
+                failure_classes[str(failure_class)] += 1
         supplemental = [
             item for item in subqueries
             if str(item.get("purpose") or "").startswith("llm_semantic:")
@@ -100,6 +117,8 @@ def audit_run(path: Path) -> dict[str, Any]:
             reasons.append("per_query_llm_call_count_exceeded")
     if attempted != len(rows):
         reasons.append("llm_call_not_attempted_for_every_query")
+    if fallbacks:
+        reasons.append("llm_fallback_detected")
     if retained != len(rows):
         reasons.append("original_query_not_retained")
     if not prompt_versions or not models:
@@ -124,6 +143,14 @@ def audit_run(path: Path) -> dict[str, Any]:
         "models": sorted(models),
         "latency_p50_seconds": p50,
         "latency_p95_seconds": p95,
+        "transport_telemetry": {
+            "available_row_count": transport_metadata_rows,
+            "http_attempt_total": http_attempts_total,
+            "http_429_total": http_429_total,
+            "retry_wait_seconds_total": retry_wait_seconds_total,
+            "provider_cache_hit_count": cache_hit_count,
+            "failure_classes": dict(sorted(failure_classes.items())),
+        },
         "claimable_live_llm_effect": not reasons and fallbacks == 0,
         "internal_metric_scope": "not_official_competition_scorer",
     }

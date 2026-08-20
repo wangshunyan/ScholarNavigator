@@ -3,7 +3,7 @@ param(
     [ValidateSet("smoke", "qualification", "full")]
     [string]$Mode = "smoke",
 
-    [ValidateSet("local", "hybrid", "hybrid_deep_rrf", "network_hybrid", "rules", "dense", "reranker", "dense_reranker_llm")]
+    [ValidateSet("local", "hybrid", "hybrid_deep_rrf", "network_hybrid", "rules", "dense", "reranker", "dense_reranker_soft", "dense_reranker_llm")]
     [string]$Configuration = "hybrid",
 
     [string]$RunId = "",
@@ -13,6 +13,9 @@ param(
     [int]$Limit = 0,
 
     [switch]$Resume,
+
+    [ValidateRange(1, 32)]
+    [int]$MaxWorkers = 1,
 
     [string]$RerankerModel = "datasets\semantic\models\Qwen3-Reranker-0.6B"
 )
@@ -42,7 +45,7 @@ $arguments = @(
     "--offset", $Offset,
     "--limit", $Limit,
     "--run-profile", $(
-        if ($Configuration -in @("hybrid_deep_rrf", "dense", "reranker", "dense_reranker_llm")) {
+        if ($Configuration -in @("hybrid_deep_rrf", "dense", "reranker", "dense_reranker_soft", "dense_reranker_llm")) {
             "high_recall"
         } elseif ($Mode -eq "full") {
             "evaluation"
@@ -57,9 +60,9 @@ $arguments = @(
     "--query-planning-policy", $(if ($Configuration -eq "dense_reranker_llm") { "llm_semantic" } else { "current_rules" }),
     "--judgement-policy", "current_rules",
     "--ranking-policy", $(if ($Configuration -eq "hybrid_deep_rrf") { "rrf_fusion" } else { "current_rules" }),
-    "--max-workers", "1",
+    "--max-workers", $MaxWorkers,
     "--sources", $(
-        if ($Configuration -in @("hybrid", "hybrid_deep_rrf", "dense", "reranker", "dense_reranker_llm")) {
+        if ($Configuration -in @("hybrid", "hybrid_deep_rrf", "dense", "reranker", "dense_reranker_soft", "dense_reranker_llm")) {
             "local_hybrid"
         } elseif ($Configuration -eq "network_hybrid") {
             "local_bm25,arxiv"
@@ -73,14 +76,14 @@ $arguments = @(
     "--local-bm25-doi-field", "doi"
 )
 
-if ($Configuration -in @("hybrid_deep_rrf", "dense", "reranker", "dense_reranker_llm")) {
+if ($Configuration -in @("hybrid_deep_rrf", "dense", "reranker", "dense_reranker_soft", "dense_reranker_llm")) {
     $arguments += @(
         "--max-candidate-papers",
         "300"
     )
 }
 
-if ($Configuration -in @("hybrid", "hybrid_deep_rrf", "dense", "reranker", "dense_reranker_llm")) {
+if ($Configuration -in @("hybrid", "hybrid_deep_rrf", "dense", "reranker", "dense_reranker_soft", "dense_reranker_llm")) {
     $arguments += @(
         "--local-hybrid-semantic-corpus",
         "datasets\semantic\pasa_papers_with_abstracts.jsonl",
@@ -97,7 +100,14 @@ if ($Configuration -in @("hybrid", "hybrid_deep_rrf", "dense", "reranker", "dens
     )
 }
 
-if ($Configuration -in @("reranker", "dense_reranker_llm")) {
+if ($Configuration -eq "dense_reranker_soft") {
+    $arguments += @(
+        "--judgement-config",
+        "benchmark\judgement_soft_current_rules_v1.json"
+    )
+}
+
+if ($Configuration -in @("reranker", "dense_reranker_soft", "dense_reranker_llm")) {
     $arguments += @(
         "--local-hybrid-reranker-model", $RerankerModel,
         "--local-hybrid-reranker-candidate-limit", "120",

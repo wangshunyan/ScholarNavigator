@@ -232,6 +232,10 @@ class BudgetedLLMClient:
         value = getattr(self._client, "base_url_host", None)
         return str(value) if value else None
 
+    @property
+    def last_call_diagnostics(self) -> Any:
+        return getattr(self._client, "last_call_diagnostics", None)
+
     def chat_json(
         self,
         messages: list[dict[str, str]],

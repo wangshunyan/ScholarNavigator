@@ -23,6 +23,12 @@ P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid`
 
 运行 `scripts/check_contest_qualification.py` 后，只有门禁通过的候选可进入完整四组。当前 P0/Faiss 主线使用 `contest_full_rules_v1`、`contest_full_dense_v1`、`contest_full_dense_reranker_v4` 和 `contest_full_dense_reranker_llm_v4`。每个运行需保存配置、commit、输入哈希、PID、命令、日志、资源账本和 committed generation。新 runner 在 `config.json` 写入 `code.commit` 与脱敏 `execution.process_id/launch_command/log_path`，并固定日志为 `outputs/run_logs/<RunId>.log`；这些会话字段不进入 resume 语义签名。
 
+`dense_reranker_soft` 是一个独立的候选 policy，仅将 `partially_relevant_threshold` 从
+`0.45` 降至 `0.35`，保留原有硬约束、检索、RRF 和 reranker 参数。它必须先使用
+`contest_qual200_dense_reranker_soft_v1` 与 `contest_qual200_reranker_v4_gpu1` 做同一
+200 条查询的配对资格比较。门禁会拒绝任何除该受审 delta 外的检索、数据、预算或
+Judgement 配置漂移；通过前不得将其写入正式成绩或启动完整运行。
+
 神经 reranker 资格运行还必须证明真实模型推理成功：结果中不得出现
 `local_model_fallback_count`，且必须有正数 batch、候选数、推理成功数、模型指纹、设备、最大长度、固定 batch size=8、候选上限=120、延迟样本和 CUDA 峰值显存；汇总报告必须包含 P50/P95 延迟和候选吞吐。旧的
 `contest_qual200_reranker_v1` 曾发生 CUDA 索引断言，只能作为失败诊断；修复后的资格运行使用新 RunId

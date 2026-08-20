@@ -21,6 +21,10 @@ def _row(index: int, *, calls: int = 1, supplemental: int = 2) -> dict:
                     "prompt_version": "llm-query-planning-v1",
                     "model": "configured-model",
                     "recorded_llm_latency_seconds": 0.2,
+                    "llm_http_attempts": 1,
+                    "llm_http_429_count": 0,
+                    "llm_retry_wait_seconds": 0.0,
+                    "llm_provider_cache_hit": False,
                 },
                 "subqueries": [
                     {"purpose": "original_query"},
@@ -46,6 +50,8 @@ def test_audit_accepts_complete_controlled_llm_run(tmp_path: Path) -> None:
     report = audit_run(_run(tmp_path))
     assert report["status"] == "passed"
     assert report["claimable_live_llm_effect"] is True
+    assert report["transport_telemetry"]["available_row_count"] == 1000
+    assert report["transport_telemetry"]["http_attempt_total"] == 1000
 
 
 def test_audit_rejects_multiple_calls_or_supplemental_queries(tmp_path: Path) -> None:
@@ -56,6 +62,19 @@ def test_audit_rejects_multiple_calls_or_supplemental_queries(tmp_path: Path) ->
     assert report["status"] == "failed"
     assert "per_query_llm_call_count_exceeded" in report["reasons"]
     assert "supplemental_query_count_exceeded" in report["reasons"]
+
+
+def test_audit_rejects_a_completed_run_with_fallback(tmp_path: Path) -> None:
+    path = _run(tmp_path)
+    rows = [_row(index) for index in range(1000)]
+    rows[0]["stage_diagnostics"]["initial_query_planning"]["planning"]["fallback_used"] = True
+    (path / "results.jsonl").write_text(
+        "\n".join(json.dumps(row) for row in rows) + "\n",
+        encoding="utf-8",
+    )
+    report = audit_run(path)
+    assert report["status"] == "failed"
+    assert "llm_fallback_detected" in report["reasons"]
 
 
 def test_contest_runners_enforce_the_per_query_llm_contract() -> None:

@@ -2,6 +2,18 @@
 
 ## 统一口径
 
+### LLM 传输重试与并发审计
+
+LLM provider 的逻辑调用使用固定传输预算：`429` 与 `408/425/500/502/503/504`
+可重试，最多 2 次 HTTP attempt，第一次失败后仅等待 1 秒；不可重试错误不重复发送，
+第二次失败由上层受控回退处理。兼容性参数降级共享同一个 attempt 预算。运行产物应同时
+保留 provider 的 HTTP attempt 数与最终回退状态，不能把重试后的成功误写为零失败成本。
+
+Benchmark runner 的 `max_workers` 只控制同一 query 的子查询检索 worker。当前正式 LLM
+运行固定为 `max_workers=1` 以保持可复现和 GPU 资源隔离；若要使用 4 路子查询并发，必须
+为新 RunId 显式设置 `--max-workers 4`，先完成 smoke、显存/延迟和资源账本检查，不能在
+运行中的 RunId 上修改配置或直接 resume。
+
 离线评测与批量评测共同使用 `scholar_agent.evaluation` 中的结果选择、论文匹配和指标实现。
 
 默认结果策略为 `highly_and_partial`：先取 `highly_relevant`，再取 `partially_relevant`，各类别内按原始 rank 稳定排序。`highly_only` 只取高度相关论文；弱相关、不相关和证据不足论文均不进入正式列表。

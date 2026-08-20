@@ -24,6 +24,12 @@ def _metrics(delta: float) -> dict:
 
 def _run(delta: float) -> dict:
     return {
+        "config": {
+            "judgement_config": {
+                "config_version": "current-rules-v1",
+                "partially_relevant_threshold": 0.45,
+            }
+        },
         "config_hashes": {
             "dataset": "auto_scholar_query",
             "dataset_split": "test",
@@ -118,3 +124,53 @@ def test_gpu_isolated_reranker_retry_is_an_explicit_candidate() -> None:
     assert "contest_qual200_reranker_v2_gpu1" in qualification.EXPECTED_CANDIDATES
     assert "contest_qual200_reranker_v3_gpu1" in qualification.EXPECTED_CANDIDATES
     assert "contest_qual200_reranker_v4_gpu1" in qualification.EXPECTED_CANDIDATES
+
+
+def test_soft_judgement_qualification_requires_reranker_v4_baseline(
+    monkeypatch,
+) -> None:
+    baseline = _run(0.0)
+    candidate = _run(0.1)
+    candidate["config"]["judgement_config"] = {
+        "config_version": "soft-current-rules-v1",
+        "partially_relevant_threshold": 0.35,
+    }
+
+    def fake_load(path: Path, expected: str) -> dict:
+        assert path.name == expected
+        return baseline if path.name == qualification.SOFT_JUDGEMENT_BASELINE else candidate
+
+    monkeypatch.setattr(qualification, "_load_run", fake_load)
+    report = qualification.check_qualification(
+        Path(qualification.SOFT_JUDGEMENT_BASELINE),
+        Path(qualification.SOFT_JUDGEMENT_CANDIDATE),
+    )
+
+    assert report["baseline_run_id"] == qualification.SOFT_JUDGEMENT_BASELINE
+    assert report["eligible_for_full_1000"] is True
+
+
+def test_soft_judgement_qualification_rejects_unreviewed_config_delta(
+    monkeypatch,
+) -> None:
+    baseline = _run(0.0)
+    candidate = _run(0.1)
+    candidate["config"]["judgement_config"] = {
+        "config_version": "soft-current-rules-v1",
+        "partially_relevant_threshold": 0.30,
+    }
+    monkeypatch.setattr(
+        qualification,
+        "_load_run",
+        lambda path, _: baseline if path.name == qualification.SOFT_JUDGEMENT_BASELINE else candidate,
+    )
+
+    try:
+        qualification.check_qualification(
+            Path(qualification.SOFT_JUDGEMENT_BASELINE),
+            Path(qualification.SOFT_JUDGEMENT_CANDIDATE),
+        )
+    except ValueError as exc:
+        assert str(exc) == "soft_judgement_delta_not_allowlisted"
+    else:
+        raise AssertionError("unreviewed soft judgement delta was accepted")
