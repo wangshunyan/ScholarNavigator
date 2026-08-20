@@ -18,7 +18,7 @@ P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid`
 ```powershell
 .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration rules -RunId contest_qual200_bm25_v1
 .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration dense -RunId contest_qual200_dense_v1
-.\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration reranker -RunId contest_qual200_reranker_v2
+.\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration reranker -RunId contest_qual200_reranker_v4_gpu1
 ```
 
 运行 `scripts/check_contest_qualification.py` 后，只有门禁通过的候选可进入完整四组。当前 P0/Faiss 主线已完成 `contest_full_rules_v1`、`contest_full_dense_v1` 和 `contest_full_dense_reranker_v4`；`contest_full_dense_reranker_llm_v14` 仅为诊断运行，正式 LLM 主线必须先完成 `contest_qual200_dense_reranker_llm_v15`，再决定是否启动 `contest_full_dense_reranker_llm_v15`。每个运行需保存配置、commit、输入哈希、PID、命令、日志、资源账本和 committed generation。新 runner 在 `config.json` 写入 `code.commit` 与脱敏 `execution.process_id/launch_command/log_path`，并固定日志为 `outputs/run_logs/<RunId>.log`；这些会话字段不进入 resume 语义签名。
