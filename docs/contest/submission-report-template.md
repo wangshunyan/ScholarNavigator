@@ -80,3 +80,40 @@ flowchart LR
 ## 演示与复现
 
 使用 VSCode 任务 `ScholarNavigator: run app` 启动系统。录制 3 到 5 条 `docs/contest/demo-queries.md` 中的复杂查询，展示输入、检索进度、结果证据、引用图、导出和运行成本。
+
+### 算法流程文字版
+
+1. 接收自然语言查询，抽取主题、方法、数据集、时间、venue、排除条件等结构化约束，并始终保留原始查询。
+2. 由规则式规划器生成受预算约束的子查询；LLM 规划若启用，只能生成经过严格 JSON Schema 与本地约束校验的一条补充查询。
+3. 在 PaSa 标题库执行 BM25，在按 arXiv ID 精确关联的 title+abstract 语料执行 BGE Faiss 检索；两路候选取并集并用固定 RRF 融合，保留原始检索分数和来源。
+4. 对候选执行统一身份去重、硬约束检查和 Judgement；soft Judgement 仅作为独立、默认关闭的单阈值消融，不改变默认规则。
+5. 使用 Qwen3-Reranker-0.6B 以固定模板对有限候选池重排，记录模型指纹、设备、batch、候选数、延迟和显存。
+6. 输出 Top-20 论文、匹配证据、结构化摘要、引用关系图、导出结果和成本诊断。gold/qrels 只在此后用于离线指标与误差分析。
+
+### 可复现实验命令
+
+以下命令使用新 RunId；已有完成运行不重复覆盖。正式运行必须先通过同一 200 条资格门禁，完整命令、哈希约束和 resume 规则以 `docs/contest/experiment-protocol.md` 为准。
+
+```powershell
+.\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration rules -RunId <rules-qual-run-id>
+.\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration dense -RunId <dense-qual-run-id>
+.\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration reranker -RunId <reranker-qual-run-id> -RerankerDevice cuda:1
+.\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration dense_reranker_soft -RunId <soft-qual-run-id> -RerankerDevice cuda:1
+```
+
+```bash
+bash scripts/run_contest_benchmark.sh \
+  --mode qualification \
+  --configuration dense_reranker_soft \
+  --run-id <soft-qual-run-id> \
+  --reranker-device cuda:1
+```
+
+### 答辩讲解提纲
+
+1. 问题：复杂科研查询同时包含主题、方法、数据集与排除约束，关键词检索容易漏召或误召。
+2. 方法：规则查询理解驱动 BM25 与 Dense 双路召回，固定 RRF、证据级去重和神经重排共同提高可解释性与排序质量。
+3. 数据治理：P0 语义语料只用规范化 arXiv ID 关联，拒绝标题匹配，gold/qrels 不进入在线链路。
+4. 证据：展示 rules、Dense、reranker 的完整内部结果，以及候选召回、Judgement 和 Top-20 三阶段诊断；明确内部指标不是官方 scorer。
+5. 可靠性：展示资源账本、checkpoint/resume、模型审计、失败/回退记录和发布包排除规则。
+6. 边界：LLM 完整消融尚未达成零 fallback 和显著性门禁，故不作为实测创新成绩；最终 tag 仍受离线 wheelhouse 与历史 `record160` 证据阻塞。
