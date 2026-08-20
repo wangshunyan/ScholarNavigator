@@ -133,6 +133,9 @@ def plan_llm_semantic(
         "prompt_version": prompt.version,
         "prompt_hash": prompt.content_hash,
         "original_query_retained": True,
+        "llm_schema_version": LLM_QUERY_PLANNING_SCHEMA_VERSION,
+        "llm_temperature": 0.0,
+        "llm_max_supplemental_queries": maximum,
     }
     if maximum == 0:
         return _fallback(
@@ -156,6 +159,7 @@ def plan_llm_semantic(
         maximum=maximum,
     )
     request_options = get_llm_request_options()
+    base_updates["llm_max_tokens"] = int(request_options["max_tokens"])
     request = LLMPlanningRequest(
         provider=provider,
         model=model,

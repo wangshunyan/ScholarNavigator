@@ -68,7 +68,8 @@ def audit_run(path: Path) -> dict[str, Any]:
         reasons.append("result_row_count_invalid")
 
     attempted = fallbacks = schema_rejections = retained = 0
-    transport_metadata_rows = http_attempts_total = http_429_total = 0
+    execution_metadata_rows = transport_metadata_rows = http_attempts_total = http_429_total = 0
+    schema_contract_rows = temperature_zero_rows = supplemental_budget_rows = 0
     retry_wait_seconds_total = 0.0
     cache_hit_count = 0
     failure_classes: Counter[str] = Counter()
@@ -89,10 +90,33 @@ def audit_run(path: Path) -> dict[str, Any]:
             prompt_versions.add(str(planning["prompt_version"]))
         if planning.get("model"):
             models.add(str(planning["model"]))
-        latency = planning.get("recorded_llm_latency_seconds")
-        if latency is not None:
-            latencies.append(float(latency))
-        if "llm_http_attempts" in planning:
+        execution_fields = (
+            "llm_prompt_tokens",
+            "llm_completion_tokens",
+            "llm_total_tokens",
+            "recorded_llm_latency_seconds",
+        )
+        if all(field in planning for field in execution_fields):
+            execution_metadata_rows += 1
+            latencies.append(float(planning["recorded_llm_latency_seconds"]))
+        if planning.get("llm_schema_version"):
+            schema_contract_rows += 1
+        try:
+            temperature_zero_rows += int(float(planning.get("llm_temperature")) == 0.0)
+        except (TypeError, ValueError):
+            pass
+        supplemental_budget_rows += int(
+            planning.get("llm_max_supplemental_queries") == 2
+        )
+        transport_fields = (
+            "llm_http_attempts",
+            "llm_http_429_count",
+            "llm_retry_after_seconds",
+            "llm_retry_wait_seconds",
+            "llm_provider_failure_class",
+            "llm_provider_cache_hit",
+        )
+        if all(field in planning for field in transport_fields):
             transport_metadata_rows += 1
             http_attempts_total += max(0, int(planning.get("llm_http_attempts") or 0))
             http_429_total += max(0, int(planning.get("llm_http_429_count") or 0))
@@ -123,6 +147,16 @@ def audit_run(path: Path) -> dict[str, Any]:
         reasons.append("original_query_not_retained")
     if not prompt_versions or not models:
         reasons.append("llm_runtime_metadata_missing")
+    if execution_metadata_rows != len(rows):
+        reasons.append("llm_execution_metadata_missing")
+    if transport_metadata_rows != len(rows):
+        reasons.append("llm_transport_metadata_missing")
+    if schema_contract_rows != len(rows):
+        reasons.append("llm_schema_contract_missing")
+    if temperature_zero_rows != len(rows):
+        reasons.append("llm_temperature_contract_drift")
+    if supplemental_budget_rows != len(rows):
+        reasons.append("llm_supplemental_budget_metadata_missing")
     if any(row.get("status") != "succeeded" for row in rows):
         reasons.append("failed_query_present")
     latencies.sort()
@@ -143,6 +177,10 @@ def audit_run(path: Path) -> dict[str, Any]:
         "models": sorted(models),
         "latency_p50_seconds": p50,
         "latency_p95_seconds": p95,
+        "execution_metadata_available_row_count": execution_metadata_rows,
+        "schema_contract_available_row_count": schema_contract_rows,
+        "temperature_zero_row_count": temperature_zero_rows,
+        "supplemental_budget_available_row_count": supplemental_budget_rows,
         "transport_telemetry": {
             "available_row_count": transport_metadata_rows,
             "http_attempt_total": http_attempts_total,

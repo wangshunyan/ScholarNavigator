@@ -57,6 +57,11 @@ python scripts/audit_contest_llm_run.py \
 运行进程使用临时环境变量连接 loopback endpoint，不修改或读取 `.env`。本地模型服务只解决运行时可用性，
 不改变当前 Prompt、数据、候选池、RunId 门禁或 LLM 完整审计要求。
 
+LLM 完整审计要求每条结果都记录 Schema 版本、`temperature=0`、补充查询上限、Token、
+LLM 延迟、HTTP attempts、429 次数、Retry-After、重试等待、失败类别和缓存命中；任一字段
+缺失、非零 temperature、超过两条补充查询、超过一次逻辑调用或出现 fallback，均不能通过
+正式 LLM 组门禁。
+
 `hybrid` 是零外部 API 的本地混合检索，首次运行前必须已用带 arXiv ID 的 Cornell/arXiv 元数据精确生成摘要语料和 Faiss 索引。中断后必须复用原 `run-id`，且配置、数据哈希和索引参数必须完全一致：
 
 P0 构建器流式读取官方逐行 JSON 快照，只按规范化 arXiv ID 关联，不读取标题做匹配。官方快照同一 ID 的历史修订按 `update_date` 选择最新记录并写入冲突计数；缺少可区分更新时间的冲突记录会拒绝构建。

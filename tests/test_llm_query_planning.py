@@ -233,6 +233,10 @@ def test_llm_semantic_keeps_valid_query_when_a_sibling_is_rejected() -> None:
 def test_llm_semantic_records_token_and_latency_diagnostics() -> None:
     plan = _plan(FakeLLMClient())
 
+    assert plan.query_planning.llm_schema_version == "1"
+    assert plan.query_planning.llm_temperature == 0.0
+    assert plan.query_planning.llm_max_supplemental_queries == 2
+    assert plan.query_planning.llm_max_tokens > 0
     assert plan.query_planning.llm_prompt_tokens == 11
     assert plan.query_planning.llm_completion_tokens == 7
     assert plan.query_planning.llm_total_tokens == 18

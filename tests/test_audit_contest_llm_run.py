@@ -20,10 +20,19 @@ def _row(index: int, *, calls: int = 1, supplemental: int = 2) -> dict:
                     "original_query_retained": True,
                     "prompt_version": "llm-query-planning-v1",
                     "model": "configured-model",
+                    "llm_schema_version": "1",
+                    "llm_temperature": 0.0,
+                    "llm_max_supplemental_queries": 2,
+                    "llm_max_tokens": 512,
+                    "llm_prompt_tokens": 10,
+                    "llm_completion_tokens": 5,
+                    "llm_total_tokens": 15,
                     "recorded_llm_latency_seconds": 0.2,
                     "llm_http_attempts": 1,
                     "llm_http_429_count": 0,
+                    "llm_retry_after_seconds": [],
                     "llm_retry_wait_seconds": 0.0,
+                    "llm_provider_failure_class": None,
                     "llm_provider_cache_hit": False,
                 },
                 "subqueries": [
@@ -75,6 +84,32 @@ def test_audit_rejects_a_completed_run_with_fallback(tmp_path: Path) -> None:
     report = audit_run(path)
     assert report["status"] == "failed"
     assert "llm_fallback_detected" in report["reasons"]
+
+
+def test_audit_rejects_missing_execution_transport_or_schema_metadata(
+    tmp_path: Path,
+) -> None:
+    path = _run(tmp_path)
+    rows = [_row(index) for index in range(1000)]
+    planning = rows[0]["stage_diagnostics"]["initial_query_planning"]["planning"]
+    del planning["llm_prompt_tokens"]
+    del planning["llm_http_attempts"]
+    del planning["llm_schema_version"]
+    planning["llm_temperature"] = 0.2
+    planning["llm_max_supplemental_queries"] = 1
+    (path / "results.jsonl").write_text(
+        "\n".join(json.dumps(row) for row in rows) + "\n",
+        encoding="utf-8",
+    )
+
+    report = audit_run(path)
+
+    assert report["status"] == "failed"
+    assert "llm_execution_metadata_missing" in report["reasons"]
+    assert "llm_transport_metadata_missing" in report["reasons"]
+    assert "llm_schema_contract_missing" in report["reasons"]
+    assert "llm_temperature_contract_drift" in report["reasons"]
+    assert "llm_supplemental_budget_metadata_missing" in report["reasons"]
 
 
 def test_contest_runners_enforce_the_per_query_llm_contract() -> None:
