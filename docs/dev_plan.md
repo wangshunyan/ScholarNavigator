@@ -67,7 +67,7 @@
 - **实际验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_full_text_evidence.py`，`3 passed`；`compileall` 和 `git diff --check` 通过。
 - [x] 已完成
 
-### [ ] P1-01-B 许可来源获取与结果侧证据映射
+### [x] P1-01-B 许可来源获取与结果侧证据映射
 
 - **任务编号**：P1-01-B；**独立提交**：网络获取/解析适配和结果映射必须与 P1-01-A 分开。
 - **目标能力**：只从许可明确的开放来源获取全文，并把段落证据安全映射到候选结果。
@@ -80,8 +80,26 @@
 - **外部依赖**：开放许可全文、解析库和可能的来源 API；需要真实网络授权时单独记录。
 - **完成条件**：fixture 与至少一个真实、许可可核验来源均可追溯，默认搜索回归通过。
 - **离线实现与验证（2026-08-21）**：已完成 allow-list、许可前置、HTTP 状态/媒体类型/大小限制、HTML 可见文本解析、PDF `parser_unavailable` 和 API 结果映射；`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_full_text_evidence.py tests/test_api_mapper.py tests/test_dedup.py tests/test_top20_delivery_fidelity.py tests/test_structured_output_provenance_gate.py`，`53 passed`，随后 `compileall` 与 `git diff --check` 通过。
-- **当前阻塞**：尚无已记录的真实开放来源及可独立核验的许可回执；不得以 fake fixture 或未经核验的 URL 标记完成，也不自动抓取外部全文。
-- [ ] 未开始
+- **真实来源验证（2026-08-21）**：对 PMC Open Access 记录执行只读核验：来源返回许可证属性和下载记录；在 allow-list、HTTPS、2 MB 与 10 秒限制下解析公开 HTML 全文成功，生成段落证据和内容 SHA-256。首次临时 `parse_failed` 被正常 fail closed，后续独立重试成功；未保存正文、未写入检索语料或正式评测结果。
+- **完成说明**：P1-01-B 只覆盖许可前置的受限获取、文本/HTML 解析、失败闭合和 API 映射。PDF 实际文字提取单列 P1-01-C，当前环境未安装 PDF 解析依赖，不能以 `parser_unavailable` 伪称完成。
+- [x] 已完成
+
+### [x] P1-01-C PDF 全文解析适配
+
+- **任务编号**：P1-01-C；**独立提交**：仅增加可锁定的 PDF 解析依赖、受限解析适配和 fixture，不改检索或排序默认路径。
+- **目标能力**：对已通过 P1-01-B 许可/来源校验的 PDF 产生相同的稳定段落证据。
+- **当前缺口**：当前环境没有 `pypdf`、`PyPDF2` 或系统 `pdftotext`；PDF 响应正确返回 `parser_unavailable`，尚未解析实际 PDF 正文。
+- **实现范围**：锁定一个 Python PDF 文本解析器，加入页数/字节/异常边界、PDF fixture、稳定哈希及 API 映射回归；不进行 OCR、不抓取受限 PDF。
+- **实现方案**：仅当 P1-01-B 已完成许可和 URL allow-list 后，使用锁定版本解析内存字节；无文本层、加密、超页数或库错误均 fail closed，保留摘要降级。
+- **验收标准**：fixture PDF 在重复解析时得到相同段落证据；加密/损坏/图片型 PDF 不产生虚构文本；真实、许可可核验 PDF 通过独立只读验证；默认搜索不受影响。
+- **自动化验证方式**：离线 PDF fixture、损坏/加密 fixture、依赖锁检查、API 映射和 P1 回归测试。
+- **失败处理**：依赖或真实许可 PDF 不可用时保持 `parser_unavailable` / `parse_failed`，不安装未锁定依赖、不标记完成。
+- **外部依赖**：锁定并可安装的 PDF 解析库，以及真实开放许可 PDF。
+- **完成条件**：代码、测试、锁文件、真实来源验证和本记录齐全。
+- **完成说明（2026-08-21）**：新增 `pypdf==6.16.1` 作为精确运行时依赖，并以受限内存字节解析 PDF；加密、损坏、无文本层、超页数和库错误均返回失败状态而非生成文本。现有 Linux 离线 wheelhouse 不因本次依赖新增而宣称已验证，仍由 P4-01 处理。
+- **自动化验证（2026-08-21）**：`tests/test_full_text_evidence.py` 覆盖文本 PDF、HTML、许可/allow-list、大小限制、未知媒体类型、损坏和加密 PDF，`7 passed`。
+- **真实来源验证（2026-08-21）**：对已核验许可证的公开 PDF 执行只读受限解析，获得 `succeeded`、`application/pdf`、25 个段落和内容 SHA-256；未保存正文、未写入检索语料或正式评测结果。
+- [x] 已完成
 
 ## P2：论文质量过滤
 

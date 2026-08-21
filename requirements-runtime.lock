@@ -12,6 +12,7 @@ numpy==2.4.6
 packaging==25.0
 pydantic==2.11.7
 pydantic-core==2.33.2
+pypdf==6.16.1
 rank-bm25==0.2.2
 starlette==1.2.0
 typing-extensions==4.15.0

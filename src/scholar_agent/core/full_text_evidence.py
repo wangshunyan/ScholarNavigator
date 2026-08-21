@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+from io import BytesIO
 import re
 from html.parser import HTMLParser
 from typing import Any, Callable, Literal
@@ -77,6 +78,7 @@ class FullTextFetchResult(BaseModel):
 
 DEFAULT_FULL_TEXT_TIMEOUT_SECONDS = 10.0
 DEFAULT_MAX_FULL_TEXT_BYTES = 2_000_000
+DEFAULT_MAX_PDF_PAGES = 100
 _TEXT_MEDIA_TYPES = {"text/plain", "text/html", "application/xhtml+xml"}
 
 
@@ -88,6 +90,7 @@ def fetch_open_full_text(
     allowed_hosts: set[str],
     timeout_seconds: float = DEFAULT_FULL_TEXT_TIMEOUT_SECONDS,
     max_bytes: int = DEFAULT_MAX_FULL_TEXT_BYTES,
+    max_pdf_pages: int = DEFAULT_MAX_PDF_PAGES,
     opener: Callable[..., Any] = urlopen,
 ) -> FullTextFetchResult:
     """Fetch one explicit open-text URL under a closed allow-list policy.
@@ -111,7 +114,7 @@ def fetch_open_full_text(
             license_id=license_id.strip(),
             failure_reason="full_text_url_not_allowed",
         )
-    if timeout_seconds <= 0 or max_bytes <= 0:
+    if timeout_seconds <= 0 or max_bytes <= 0 or max_pdf_pages <= 0:
         raise ValueError("full_text_fetch_limits_invalid")
 
     request = Request(clean_url, headers={"User-Agent": "ScholarNavigator"})
@@ -132,10 +135,11 @@ def fetch_open_full_text(
         return _failure("fetch_failed", clean_url, license_id, f"fetch_error:{type(exc).__name__}")
     if len(payload) > max_bytes:
         return _failure("response_too_large", clean_url, license_id, "response_bytes_exceeded", content_type)
-    if content_type == "application/pdf":
-        return _failure("parser_unavailable", clean_url, license_id, "pdf_parser_unavailable", content_type)
     try:
-        text = _decode_text(payload, content_type)
+        if content_type == "application/pdf":
+            text = _pdf_to_text(payload, max_pages=max_pdf_pages)
+        else:
+            text = _decode_text(payload, content_type)
         if content_type in {"text/html", "application/xhtml+xml"}:
             text = _html_to_text(text)
         document = build_paragraph_evidence(
@@ -145,7 +149,8 @@ def fetch_open_full_text(
             license_verified=True,
         )
     except FullTextEvidenceError as exc:
-        return _failure("parse_failed", clean_url, license_id, str(exc), content_type)
+        status = "parser_unavailable" if str(exc) == "pdf_parser_unavailable" else "parse_failed"
+        return _failure(status, clean_url, license_id, str(exc), content_type)
     return FullTextFetchResult(
         status="succeeded",
         document=document,
@@ -266,6 +271,29 @@ def _decode_text(payload: bytes, media_type: str) -> str:
     if not payload:
         raise FullTextEvidenceError("full_text_empty")
     return payload.decode("utf-8", errors="strict")
+
+
+def _pdf_to_text(payload: bytes, *, max_pages: int) -> str:
+    try:
+        from pypdf import PdfReader
+        from pypdf.errors import PdfReadError
+    except ImportError as exc:
+        raise FullTextEvidenceError("pdf_parser_unavailable") from exc
+    try:
+        reader = PdfReader(BytesIO(payload), strict=True)
+        if reader.is_encrypted:
+            raise FullTextEvidenceError("pdf_encrypted")
+        if len(reader.pages) > max_pages:
+            raise FullTextEvidenceError("pdf_page_limit_exceeded")
+        pages = [page.extract_text() or "" for page in reader.pages]
+    except FullTextEvidenceError:
+        raise
+    except (PdfReadError, OSError, ValueError) as exc:
+        raise FullTextEvidenceError("pdf_parse_failed") from exc
+    text = "\n\n".join(page.strip() for page in pages if page.strip())
+    if not text:
+        raise FullTextEvidenceError("pdf_text_unavailable")
+    return text
 
 
 class _VisibleTextParser(HTMLParser):

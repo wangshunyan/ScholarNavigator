@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+from io import BytesIO
+
 import pytest
+from pypdf import PdfWriter
+from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject
 
 from scholar_agent.core.full_text_evidence import (
     FullTextLicenseError,
@@ -85,6 +89,29 @@ def _opener(response: _Response):
     return open_request
 
 
+def _text_pdf(value: str) -> bytes:
+    writer = PdfWriter()
+    page = writer.add_blank_page(width=612, height=792)
+    font = writer._add_object(  # noqa: SLF001 - creates a self-contained fixture.
+        DictionaryObject(
+            {
+                NameObject("/Type"): NameObject("/Font"),
+                NameObject("/Subtype"): NameObject("/Type1"),
+                NameObject("/BaseFont"): NameObject("/Helvetica"),
+            }
+        )
+    )
+    page[NameObject("/Resources")] = DictionaryObject(
+        {NameObject("/Font"): DictionaryObject({NameObject("/F1"): font})}
+    )
+    stream = DecodedStreamObject()
+    stream.set_data(f"BT /F1 12 Tf 72 720 Td ({value}) Tj ET".encode("ascii"))
+    page[NameObject("/Contents")] = writer._add_object(stream)  # noqa: SLF001
+    buffer = BytesIO()
+    writer.write(buffer)
+    return buffer.getvalue()
+
+
 def test_allowlisted_html_fetch_builds_visible_paragraph_evidence() -> None:
     result = fetch_open_full_text(
         source_url="https://open.example.test/paper",
@@ -126,7 +153,7 @@ def test_fetch_requires_verified_license_and_allowlisted_https_host() -> None:
     assert blocked.status == "url_not_allowed"
 
 
-def test_fetch_limits_unsupported_types_and_pdf_fail_closed() -> None:
+def test_fetch_limits_unsupported_types_and_pdf_evidence() -> None:
     common = {
         "source_url": "https://open.example.test/paper",
         "license_id": "CC-BY-4.0",
@@ -145,9 +172,37 @@ def test_fetch_limits_unsupported_types_and_pdf_fail_closed() -> None:
     )
     pdf = fetch_open_full_text(
         **common,
-        opener=_opener(_Response(b"%PDF", "application/pdf")),
+        opener=_opener(_Response(_text_pdf("PDF evidence paragraph."), "application/pdf")),
     )
 
     assert too_large.status == "response_too_large"
     assert unsupported.status == "unsupported_media_type"
-    assert pdf.status == "parser_unavailable"
+    assert pdf.status == "succeeded"
+    assert pdf.document is not None
+    assert pdf.document.paragraphs[0].text == "PDF evidence paragraph."
+
+
+def test_encrypted_or_malformed_pdf_fails_closed() -> None:
+    common = {
+        "source_url": "https://open.example.test/paper",
+        "license_id": "CC-BY-4.0",
+        "license_verified": True,
+        "allowed_hosts": {"open.example.test"},
+        "timeout_seconds": 2,
+    }
+    malformed = fetch_open_full_text(
+        **common,
+        opener=_opener(_Response(b"%PDF-1.7 invalid", "application/pdf")),
+    )
+    writer = PdfWriter()
+    writer.add_blank_page(width=72, height=72)
+    writer.encrypt("fixture-password")
+    encrypted_buffer = BytesIO()
+    writer.write(encrypted_buffer)
+    encrypted = fetch_open_full_text(
+        **common,
+        opener=_opener(_Response(encrypted_buffer.getvalue(), "application/pdf")),
+    )
+
+    assert malformed.status == "parse_failed"
+    assert encrypted.status == "parse_failed"
