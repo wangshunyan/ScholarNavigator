@@ -154,6 +154,22 @@
 - **外部阻塞**：当前没有独立、可审计的撤稿/重复风险来源回执，因此未把该证据契约接入正式 200 条运行，也未宣称质量收益；获得独立回执后必须使用新 policy 版本和新 RunId 重跑资格门禁。
 - [ ] 实现与离线验证完成；真实资格已执行但门禁未通过
 
+### [x] P2-01-B1 Crossref 明确撤稿回执采集
+
+- **任务编号**：P2-01-B1；**独立提交**：仅包含可选 Crossref 适配、严格 ledger 输出和离线 fixture，不改变默认搜索或排序。
+- **目标能力**：将 Crossref 对 DOI 的明确“被撤稿”关系转换为可由 `quality_soft_v1` 消费的 `retraction_status=flagged` 回执。
+- **当前缺口**：质量策略只能读取调用方提供的严格 ledger，缺少一个不依赖密钥、不会把“未发现”误写为安全状态的独立来源适配。
+- **实现范围**：新增只接受规范 `doi:` 标识的 Crossref 收集器和显式 CLI；只识别 `is-retracted-by` 或类型为 `retraction` 的更新关系，输出 compact report 与有证据时的 JSONL ledger；不抓取全文、不写入检索语料、不创建 `clear` 回执。
+- **实现方案**：固定 HTTPS Crossref works 地址、JSON 响应、1 MiB 上限和 1--30 秒超时；每项网络/HTTP/格式失败均只记为 `unknown`，不产生 ledger 行。报告只保存输入文件 SHA-256、数量和终态计数，绝不保存响应正文；已有输出默认 fail closed，避免覆盖旧回执。
+- **验收标准**：明确撤稿关系仅产生一个 `flagged` 回执；关系缺失、404、网络故障与非法响应都不产生质量分；输入必须是规范 DOI，默认检索行为不变。
+- **自动化验证方式**：离线 mock 覆盖关系、更新类型、404、网络故障、非 JSON、规范标识、空 ledger 拒绝及 compact 输出；compile 与 diff 检查。
+- **失败处理**：没有明确关系或来源不可达时只留下 `no_explicit_evidence` / 终态计数，不运行质量资格实验，不用默认值伪造 `clear`。
+- **外部依赖**：实际运行需要 Crossref 可访问及由合法 P0 语料导出的规范 DOI 列表；实现与 fixture 完全离线，不读取 `.env` 或 API Key。
+- **完成条件**：收集器、CLI、离线测试和本记录同步；P2-01-B 的真实独立回执覆盖与质量资格提升仍单独要求。
+- **完成说明（2026-08-21）**：新增 `src/scholar_agent/core/quality_evidence_sources.py` 与 `scripts/collect_crossref_retraction_evidence.py`。它只在来源明确表示论文被撤稿时生成 `flagged` 回执；不因无关系生成 `clear`。CLI 需要用户显式提供 DOI 文件并写入新路径，未发现证据时只产生报告并以非零状态退出。
+- **实际验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_quality_evidence_sources.py tests/test_paper_quality.py tests/test_benchmark_runner.py`，`50 passed`；`compileall`、CLI help 与 `git diff --check` 通过。未调用 Crossref，不产生真实 ledger 或质量指标。
+- [x] 已完成
+
 ## P3：真实评测与指标闭环
 
 ### [ ] P3-01 P0-01 的离线资格与真实运行门禁
