@@ -4,7 +4,11 @@ from __future__ import annotations
 
 import hashlib
 import re
-from typing import Literal
+from html.parser import HTMLParser
+from typing import Any, Callable, Literal
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlparse
+from urllib.request import Request, urlopen
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -15,6 +19,10 @@ class FullTextEvidenceError(ValueError):
 
 class FullTextLicenseError(FullTextEvidenceError):
     """Raised when the caller has not established a usable license basis."""
+
+
+class FullTextFetchError(FullTextEvidenceError):
+    """Raised for a bounded full-text fetch or parse failure."""
 
 
 class FullTextSource(BaseModel):
@@ -43,6 +51,108 @@ class FullTextEvidenceDocument(BaseModel):
     schema_version: Literal["full-text-evidence-v1"] = "full-text-evidence-v1"
     source: FullTextSource
     paragraphs: list[ParagraphEvidence] = Field(default_factory=list)
+
+
+class FullTextFetchResult(BaseModel):
+    """Outcome for one allow-listed, license-verified full-text attempt."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    status: Literal[
+        "succeeded",
+        "license_unverified",
+        "url_not_allowed",
+        "fetch_failed",
+        "response_too_large",
+        "unsupported_media_type",
+        "parser_unavailable",
+        "parse_failed",
+    ]
+    document: FullTextEvidenceDocument | None = None
+    source_url: str | None = None
+    license_id: str | None = None
+    response_media_type: str | None = None
+    failure_reason: str | None = None
+
+
+DEFAULT_FULL_TEXT_TIMEOUT_SECONDS = 10.0
+DEFAULT_MAX_FULL_TEXT_BYTES = 2_000_000
+_TEXT_MEDIA_TYPES = {"text/plain", "text/html", "application/xhtml+xml"}
+
+
+def fetch_open_full_text(
+    *,
+    source_url: str,
+    license_id: str,
+    license_verified: bool,
+    allowed_hosts: set[str],
+    timeout_seconds: float = DEFAULT_FULL_TEXT_TIMEOUT_SECONDS,
+    max_bytes: int = DEFAULT_MAX_FULL_TEXT_BYTES,
+    opener: Callable[..., Any] = urlopen,
+) -> FullTextFetchResult:
+    """Fetch one explicit open-text URL under a closed allow-list policy.
+
+    Callers must supply a prior license decision. This helper never discovers a
+    license, follows a landing page, or falls back to an arbitrary URL.
+    """
+
+    clean_url = source_url.strip()
+    if not license_verified or not license_id.strip():
+        return FullTextFetchResult(
+            status="license_unverified",
+            source_url=clean_url or None,
+            license_id=license_id.strip() or None,
+            failure_reason="full_text_license_unverified",
+        )
+    if not _is_allowed_url(clean_url, allowed_hosts):
+        return FullTextFetchResult(
+            status="url_not_allowed",
+            source_url=clean_url or None,
+            license_id=license_id.strip(),
+            failure_reason="full_text_url_not_allowed",
+        )
+    if timeout_seconds <= 0 or max_bytes <= 0:
+        raise ValueError("full_text_fetch_limits_invalid")
+
+    request = Request(clean_url, headers={"User-Agent": "ScholarNavigator"})
+    try:
+        with opener(request, timeout=timeout_seconds) as response:
+            status = int(getattr(response, "status", getattr(response, "code", 200)))
+            if status < 200 or status >= 300:
+                return _failure("fetch_failed", clean_url, license_id, f"http_status:{status}")
+            headers = getattr(response, "headers", None)
+            content_type = _media_type(_header(headers, "Content-Type"))
+            declared_length = _header(headers, "Content-Length")
+            if declared_length is not None and _content_length_exceeds(declared_length, max_bytes):
+                return _failure("response_too_large", clean_url, license_id, "content_length_exceeded", content_type)
+            if content_type not in _TEXT_MEDIA_TYPES and content_type != "application/pdf":
+                return _failure("unsupported_media_type", clean_url, license_id, "media_type_not_supported", content_type)
+            payload = response.read(max_bytes + 1)
+    except (HTTPError, URLError, TimeoutError, OSError) as exc:
+        return _failure("fetch_failed", clean_url, license_id, f"fetch_error:{type(exc).__name__}")
+    if len(payload) > max_bytes:
+        return _failure("response_too_large", clean_url, license_id, "response_bytes_exceeded", content_type)
+    if content_type == "application/pdf":
+        return _failure("parser_unavailable", clean_url, license_id, "pdf_parser_unavailable", content_type)
+    try:
+        text = _decode_text(payload, content_type)
+        if content_type in {"text/html", "application/xhtml+xml"}:
+            text = _html_to_text(text)
+        document = build_paragraph_evidence(
+            text,
+            source_url=clean_url,
+            license_id=license_id,
+            license_verified=True,
+        )
+    except FullTextEvidenceError as exc:
+        return _failure("parse_failed", clean_url, license_id, str(exc), content_type)
+    return FullTextFetchResult(
+        status="succeeded",
+        document=document,
+        source_url=clean_url,
+        license_id=license_id.strip(),
+        response_media_type=content_type,
+    )
 
 
 def build_paragraph_evidence(
@@ -109,3 +219,85 @@ def _normalize_text(value: str) -> str:
 
 def _sha256(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def _failure(
+    status: Literal[
+        "fetch_failed", "response_too_large", "unsupported_media_type", "parser_unavailable", "parse_failed"
+    ],
+    source_url: str,
+    license_id: str,
+    reason: str,
+    media_type: str | None = None,
+) -> FullTextFetchResult:
+    return FullTextFetchResult(
+        status=status,
+        source_url=source_url,
+        license_id=license_id.strip(),
+        response_media_type=media_type,
+        failure_reason=reason,
+    )
+
+
+def _is_allowed_url(value: str, allowed_hosts: set[str]) -> bool:
+    parsed = urlparse(value)
+    host = (parsed.hostname or "").casefold()
+    return parsed.scheme == "https" and host in {item.casefold() for item in allowed_hosts}
+
+
+def _header(headers: Any, name: str) -> str | None:
+    getter = getattr(headers, "get", None)
+    value = getter(name) if callable(getter) else None
+    return str(value).strip() if value else None
+
+
+def _media_type(value: str | None) -> str:
+    return (value or "").split(";", 1)[0].strip().casefold()
+
+
+def _content_length_exceeds(value: str, maximum: int) -> bool:
+    try:
+        return int(value) > maximum
+    except ValueError:
+        return False
+
+
+def _decode_text(payload: bytes, media_type: str) -> str:
+    if not payload:
+        raise FullTextEvidenceError("full_text_empty")
+    return payload.decode("utf-8", errors="strict")
+
+
+class _VisibleTextParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self._parts: list[str] = []
+        self._ignored_depth = 0
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        del attrs
+        if tag.casefold() in {"script", "style", "noscript"}:
+            self._ignored_depth += 1
+        if tag.casefold() in {"p", "div", "section", "article", "br", "li", "h1", "h2", "h3"}:
+            self._parts.append("\n\n")
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag.casefold() in {"script", "style", "noscript"} and self._ignored_depth:
+            self._ignored_depth -= 1
+
+    def handle_data(self, data: str) -> None:
+        if not self._ignored_depth:
+            self._parts.append(data)
+
+    def text(self) -> str:
+        return "".join(self._parts)
+
+
+def _html_to_text(value: str) -> str:
+    parser = _VisibleTextParser()
+    try:
+        parser.feed(value)
+        parser.close()
+    except Exception as exc:  # HTMLParser errors must become a terminal status.
+        raise FullTextEvidenceError("full_text_html_parse_failed") from exc
+    return parser.text()

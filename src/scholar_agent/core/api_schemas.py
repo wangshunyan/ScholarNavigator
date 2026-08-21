@@ -208,6 +208,23 @@ class PaperUrls(BaseModel):
     pdf: str | None = None
 
 
+class FullTextParagraphEvidence(BaseModel):
+    evidence_id: str
+    paragraph_index: int = Field(ge=0)
+    text: str
+    text_sha256: str
+    start_char: int = Field(ge=0)
+    end_char: int = Field(gt=0)
+
+
+class FullTextEvidenceDocument(BaseModel):
+    schema_version: str
+    source_url: str
+    license_id: str
+    content_sha256: str
+    paragraphs: list[FullTextParagraphEvidence] = Field(default_factory=list)
+
+
 class Paper(BaseModel):
     title: str
     authors: list[str]
@@ -217,6 +234,7 @@ class Paper(BaseModel):
     identifiers: PaperIdentifiers = Field(default_factory=PaperIdentifiers)
     urls: PaperUrls = Field(default_factory=PaperUrls)
     sources: list[str] = Field(default_factory=list)
+    full_text_evidence: list[FullTextEvidenceDocument] = Field(default_factory=list)
 
 
 class EvidenceItem(BaseModel):

@@ -18,6 +18,7 @@ from scholar_agent.core.paper_schemas import (  # noqa: E402
     PaperIdentifiers,
     PaperUrls,
 )
+from scholar_agent.core.full_text_evidence import build_paragraph_evidence  # noqa: E402
 from scholar_agent.core.diagnostics_schemas import ConnectorDiagnostics  # noqa: E402
 from scholar_agent.core.search_schemas import (  # noqa: E402
     BudgetStatus,
@@ -38,6 +39,7 @@ from scholar_agent.core.search_schemas import (  # noqa: E402
     TimeRange,
 )
 from scholar_agent.services.api_mapper import (  # noqa: E402
+    map_paper,
     map_search_service_output_to_api_result,
 )
 from scholar_agent.services.search_service import SearchServiceOutput  # noqa: E402
@@ -623,6 +625,30 @@ def _paper(
         sources=sources or ["openalex"],
         citation_count=42,
     )
+
+
+def test_map_paper_exposes_license_verified_full_text_evidence() -> None:
+    paper = _paper("Evidence paper").model_copy(
+        update={
+            "full_text_evidence": [
+                build_paragraph_evidence(
+                    "A grounded result paragraph.",
+                    source_url="https://example.test/evidence-paper.txt",
+                    license_id="CC-BY-4.0",
+                    license_verified=True,
+                )
+            ]
+        }
+    )
+
+    mapped = map_paper(paper)
+
+    assert len(mapped.full_text_evidence) == 1
+    document = mapped.full_text_evidence[0]
+    assert document.license_id == "CC-BY-4.0"
+    assert document.source_url == "https://example.test/evidence-paper.txt"
+    assert document.paragraphs[0].text == "A grounded result paragraph."
+    assert document.paragraphs[0].evidence_id.startswith("paragraph:")
 
 
 def _ranked(

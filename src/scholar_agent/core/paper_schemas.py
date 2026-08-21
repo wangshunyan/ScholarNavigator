@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
+from scholar_agent.core.full_text_evidence import FullTextEvidenceDocument
+
 
 class PaperIdentifiers(BaseModel):
     doi: str | None = None
@@ -29,3 +31,4 @@ class Paper(BaseModel):
     urls: PaperUrls = Field(default_factory=PaperUrls)
     sources: list[str] = Field(default_factory=list)
     citation_count: int = 0
+    full_text_evidence: list[FullTextEvidenceDocument] = Field(default_factory=list)

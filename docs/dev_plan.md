@@ -73,11 +73,14 @@
 - **目标能力**：只从许可明确的开放来源获取全文，并把段落证据安全映射到候选结果。
 - **当前缺口**：尚无受限下载器、HTML/PDF 解析适配、许可元数据核验和结果 API 映射。
 - **实现范围**：允许列表来源、超时/大小限制、解析失败状态、段落证据引用；不抓取受限内容，不阻断摘要搜索。
+- **实现方案**：调用方先提供可审计的许可回执；受限获取器仅接受 HTTPS 和显式 allow-list 主机，对响应状态、媒体类型、超时和字节数 fail closed。纯文本/HTML 解析进入 P1-01-A 的稳定段落证据模型；未安装 PDF 解析器时返回 `parser_unavailable`。只有成功产物才写入 `Paper.full_text_evidence`，API 复用现有不可信文本/URL净化边界输出证据链。
 - **验收标准**：来源许可可追溯、下载和解析失败闭合、结果保留摘要降级、证据 URL/哈希/段落 ID 可审计。
 - **自动化验证方式**：离线 HTML/PDF fixture、模拟 HTTP 状态、许可拒绝、大小/超时和 API 映射测试；真实来源只做独立资格验证。
 - **失败处理**：外部来源不可用时不伪造全文，保留 `evidence_unavailable`；未有真实开放来源回执不得完成。
 - **外部依赖**：开放许可全文、解析库和可能的来源 API；需要真实网络授权时单独记录。
 - **完成条件**：fixture 与至少一个真实、许可可核验来源均可追溯，默认搜索回归通过。
+- **离线实现与验证（2026-08-21）**：已完成 allow-list、许可前置、HTTP 状态/媒体类型/大小限制、HTML 可见文本解析、PDF `parser_unavailable` 和 API 结果映射；`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_full_text_evidence.py tests/test_api_mapper.py tests/test_dedup.py tests/test_top20_delivery_fidelity.py tests/test_structured_output_provenance_gate.py`，`53 passed`，随后 `compileall` 与 `git diff --check` 通过。
+- **当前阻塞**：尚无已记录的真实开放来源及可独立核验的许可回执；不得以 fake fixture 或未经核验的 URL 标记完成，也不自动抓取外部全文。
 - [ ] 未开始
 
 ## P2：论文质量过滤

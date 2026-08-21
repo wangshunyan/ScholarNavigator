@@ -178,6 +178,35 @@ def map_paper(paper: InternalPaper) -> api.Paper:
             ),
         ),
         sources=list(paper.sources),
+        full_text_evidence=[
+            api.FullTextEvidenceDocument(
+                schema_version=document.schema_version,
+                source_url=_public_url(
+                    document.source.source_url,
+                    "paper.urls.landing_page",
+                    record_identity,
+                )
+                or "",
+                license_id=document.source.license_id,
+                content_sha256=document.source.content_sha256,
+                paragraphs=[
+                    api.FullTextParagraphEvidence(
+                        evidence_id=paragraph.evidence_id,
+                        paragraph_index=paragraph.paragraph_index,
+                        text=_public_text(
+                            paragraph.text,
+                            "paper.abstract",
+                            record_identity,
+                        ),
+                        text_sha256=paragraph.text_sha256,
+                        start_char=paragraph.start_char,
+                        end_char=paragraph.end_char,
+                    )
+                    for paragraph in document.paragraphs
+                ],
+            )
+            for document in paper.full_text_evidence
+        ],
     )
 
 
