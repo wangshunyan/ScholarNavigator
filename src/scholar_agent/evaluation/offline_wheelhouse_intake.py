@@ -532,6 +532,7 @@ def install_test(
     manifest: Mapping[str, Any],
     repository_root: Path,
 ) -> dict[str, Any]:
+    wheelhouse = wheelhouse.resolve()
     if manifest["violations"]:
         raise WheelhouseError("wheelhouse_manifest_has_violations")
     if manifest["missing_wheels"]:

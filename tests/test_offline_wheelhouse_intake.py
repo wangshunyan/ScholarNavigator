@@ -11,6 +11,7 @@ from pathlib import Path
 
 import pytest
 
+from scholar_agent.evaluation import offline_wheelhouse_intake
 from scholar_agent.evaluation.offline_wheelhouse_intake import (
     EXIT_NOT_READY,
     WheelhouseError,
@@ -19,6 +20,7 @@ from scholar_agent.evaluation.offline_wheelhouse_intake import (
     build_synthetic_wheel,
     freeze_release_contract,
     inspect_wheel,
+    install_test,
     synthetic_install_test,
     verify_manifest,
 )
@@ -34,6 +36,31 @@ def test_compressed_wheel_metadata_tags_match_expanded_filename_tags() -> None:
         "cp312-cp312-manylinux2014_x86_64",
         "cp312-cp312-manylinux_2_17_x86_64",
     }
+
+
+def test_install_test_resolves_relative_wheelhouse_before_launch(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    wheelhouse = tmp_path / "wheelhouse"
+    wheelhouse.mkdir()
+    captured: dict[str, Path] = {}
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(
+        offline_wheelhouse_intake,
+        "_run_install_profiles",
+        lambda path, *_args, **_kwargs: captured.setdefault("wheelhouse", path) and [
+            {"passed": True}
+        ],
+    )
+
+    report = install_test(
+        Path("wheelhouse"),
+        {"violations": [], "missing_wheels": [], "wheelhouse_index": [], "install_plan": []},
+        tmp_path,
+    )
+
+    assert report["exit_code"] == 0
+    assert captured["wheelhouse"] == wheelhouse.resolve()
 
 
 def _json(path: str) -> dict[str, object]:
