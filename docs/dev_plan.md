@@ -152,7 +152,7 @@
 - **离线运行接入（2026-08-21）**：benchmark runner 新增 `--quality-evidence-ledger`，且只在显式 `quality_soft_v1` policy 下接受。运行配置仅记录 schema、文件/语义 SHA-256 和记录数，不保存账本路径或来源记录；每条查询把已验证回执传入完整检索链。缺少 policy 或 policy 不匹配时 fail closed。`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_paper_quality.py tests/test_benchmark_runner.py` 为 `40 passed`；P2 组合回归（quality、RRF、SearchService、benchmark、qualification、registry）为 `119 passed`。这只完成外部回执的离线可复现实验接线，仍缺独立回执和通过资格门禁的质量提升，任务保持未完成。
 - **全仓验证状态（2026-08-21）**：按 `AGENTS.md` 执行 `PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q` 得到 `2097 passed, 230 failed, 58 errors`。失败主要是既有 evidence registry 基线未登记 `quality_soft_v1`、历史冻结输入/提交缺失和发布环境门禁漂移；本次 P2 相关专项保持全绿。前端 `npm run lint`、`npm run build`、`compileall` 和 `git diff --check` 通过。未跳过、删除或弱化全仓测试。
 - **外部阻塞**：当前没有独立、可审计的撤稿/重复风险来源回执，因此未把该证据契约接入正式 200 条运行，也未宣称质量收益；获得独立回执后必须使用新 policy 版本和新 RunId 重跑资格门禁。
-- **运行输入状态（2026-08-21）**：旧服务器保留 `contest_full_dense_reranker_v4` 的 1000 条成功结果和 completed `initial_reranked` 快照。首次受 SHA-256 校验 SSH 流式导出得到 51,319 个规范 `arxiv:` 候选（66,327 个阶段候选、零缺失/非法 ID），服务器原始结果 SHA-256 为 `4f6e1c...fae2`；其报告 RunId 来自本机临时目录，故保留为诊断。修正导出器后，已以新路径重新导出相同候选并显式绑定 `contest_full_dense_reranker_v4`、服务器 config SHA-256 `9b002a...a927`、结果 SHA-256 `4f6e1c...fae2` 与候选文件 SHA-256 `33f745...b975`；报告确认不加载 gold 或查询内容。首次 20 条 arXiv→Crossref 探测为 `resolved=3`、`no_doi=7`、`not_returned=10`、`no_explicit_retraction_relation=3`、`flagged_evidence_count=0`，没有生成 ledger。正式候选范围现已可审计，但仍不构成风险回执、资格提升或正式成绩证据，P2-01-B 保持未完成。
+- **运行输入状态（2026-08-21）**：旧服务器保留 `contest_full_dense_reranker_v4` 的 1000 条成功结果和 completed `initial_reranked` 快照。首次受 SHA-256 校验 SSH 流式导出得到 51,319 个规范 `arxiv:` 候选（66,327 个阶段候选、零缺失/非法 ID），服务器原始结果 SHA-256 为 `4f6e1c...fae2`；其报告 RunId 来自本机临时目录，故保留为诊断。修正导出器后，已以新路径重新导出相同候选并显式绑定 `contest_full_dense_reranker_v4`、服务器 config SHA-256 `9b002a...a927`、结果 SHA-256 `4f6e1c...fae2` 与候选文件 SHA-256 `33f745...b975`；报告确认不加载 gold 或查询内容。首次 20 条 arXiv→Crossref 探测为 `resolved=3`、`no_doi=7`、`not_returned=10`、`no_explicit_retraction_relation=3`、`flagged_evidence_count=0`；随后用完整候选池 hash-ranked 的独立 20 条样本探测为 `no_doi=10`、`not_returned=10`、`flagged_evidence_count=0`。两次均未生成 ledger。正式候选范围现已可审计，但仍不构成风险回执、资格提升或正式成绩证据，P2-01-B 保持未完成。
 - [ ] 实现与离线验证完成；真实资格已执行但门禁未通过
 
 ### [x] P2-01-B1 Crossref 明确撤稿回执采集
@@ -235,6 +235,22 @@
 - **完成说明（2026-08-21）**：`export_quality_evidence_candidates.py` 现在可在本机从 SSH 管道读取原始结果流，逐行处理并验证服务器预先报告的 SHA-256；它不会写入原始 results 内容，也不在服务器创建脚本、工作树或输出。
 - **实际验证（2026-08-21）**：初版 `48 passed`；随后发现流式报告必须显式绑定服务器源 RunId，补充缺失/非法 RunId 回归后为 `49 passed`，`compileall` 与 `git diff --check` 通过。已使用修正提交从服务器 v4 原始结果流重新导出，并通过 SHA-256 与正式 RunId 绑定；原始 `results.jsonl` 未落盘。受限 20 条来源探测无 explicit flagged evidence；P2-01-B 门禁仍未完成。
 - [x] 实现、正式候选重导出与来源探测完成；P2-01-B 门禁仍未完成
+
+### [x] P2-01-B6 确定性 bounded 风险探测抽样
+
+- **任务编号**：P2-01-B6；**独立提交**：只增加对 B5 已绑定候选文件的确定性、最大 20 条外部来源探测选择，不改变检索、排序、质量权重或默认策略。
+- **目标能力**：在不依赖候选文件顺序、标题、查询或 gold 的前提下，对完整正式候选池获得可重现的受限风险探测样本。
+- **当前缺口**：文件前缀 20 条只是可执行诊断，不代表完整候选池；扩大到 51,319 条会超过既定公共 arXiv 元数据单批上限并产生无证据的外部请求。
+- **实现范围**：新增只接受已排序规范 `arxiv:` ID 文件的 selector，以固定域分隔 SHA-256 排序无放回选择 1--20 条；输出选中 ID、来源/选中 SHA-256、方法和无 gold/query 声明。
+- **实现方案**：无效/重复/非规范输入、样本数越界、总体不足和已有输出均 fail closed；所选 ID 再交给既有 exact arXiv→Crossref collector，未发现关系绝不生成 `clear` 或 ledger。
+- **验收标准**：同一候选文件得到同一 20 条样本；报告能绑定候选文件和选中清单；不读查询/gold；collector 仍最多请求 20 个精确 arXiv ID。
+- **自动化验证方式**：fixture 覆盖确定性、范围、规范性、总体不足和输出覆盖保护；运行 selector、来源、导出、质量与 runner 回归及编译/diff 检查。
+- **失败处理**：没有 `flagged` 回执时只保存 compact probe report，不创建 ledger、不重跑同一策略、不升级为资格运行。
+- **外部依赖**：selector 完全离线；真实 probe 需要 B5 的正式候选 ID、公开 arXiv/Crossref 可用性。
+- **完成条件**：代码、测试、真实 bounded probe 与本记录同步；获得候选样本不等于质量提升或解除 P2-01-B 门禁。
+- **完成说明（2026-08-21）**：新增 `scripts/select_quality_evidence_probe.py`，对 B5 的正式候选文件使用 `sha256_ranked_without_replacement` 和固定 `quality-evidence-probe-v1` 域选择 20 条，不读取或保存查询/标题/gold。
+- **实际验证（2026-08-21）**：专项 `70 passed`、`compileall` 与 `git diff --check` 通过。对 51,319 条正式候选的 hash-ranked 20 条探测为 `arxiv:no_doi=10`、`arxiv:not_returned=10`、`flagged_evidence_count=0`，无 ledger；不宣称质量收益。
+- [x] 实现、离线验证和受限真实 probe 完成；P2-01-B 门禁仍未完成
 
 ## P3：真实评测与指标闭环
 
