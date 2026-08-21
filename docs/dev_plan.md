@@ -135,12 +135,12 @@
 - **完成条件**：代码、测试和真实资格证据齐全；未通过质量门禁时保持未完成。
 - **实现说明（2026-08-21）**：新增默认关闭的 `quality_soft_v1` 排名 policy。它只把 P2-01-A 的本地质量报告转为最大 `0.02` 的低权重排序贡献，仅在既有 Judgement 类别内比较；不硬过滤、不改写 `final_score`、检索分数或相关性分数。撤稿与重复风险仍是 `unknown`，贡献固定为零惩罚。每条输出记录 policy、质量分、贡献、配置 SHA-256、原排名及换序原因；runner 的 `config.json` 同步记录固定配置及哈希。`current_rules` 仍为默认且未修改。
 - **自动化验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_paper_quality.py tests/test_reranker.py tests/test_rrf_fusion.py tests/test_ranking_policy_api.py tests/test_benchmark_runner.py tests/test_full_text_evidence.py tests/test_dedup.py tests/test_api_mapper.py`，`87 passed`；随后 `git diff --check` 与 `compileall` 通过。补齐 Linux `scripts/run_contest_benchmark.sh` 的 `dense_reranker_quality` 入口后，相关 Python 回归为 `49 passed`，shell `bash -n` 语法检查通过。
-- **真实资格状态**：未运行新的 200 条资格集，尚无 F1、Recall、MRR、延迟或资源账本提升证据；因此本任务保持未完成，不能进入正式成绩。下一步仅在当前服务器运行自然结束、可用隔离环境和一致 P0/Faiss/reranker 资产全部满足后，以新 RunId 运行 `dense_reranker_quality` 的 200 条资格实验。
+- **真实资格状态**：新的 200 条资格集已执行并完成；虽然运行、reranker 审计和资源账本均可审计，但没有 F1/Recall 提升证据，因此本任务保持未完成，不能进入正式成绩，也不运行质量策略全量实验。
 - **失败处理记录（2026-08-21）**：首次新 RunId `contest_qual200_dense_reranker_quality_v1` 在零结果时因 Linux wrapper 漏传语义语料配置而退出，错误为 `local_hybrid_config_required`；该 RunId 保留为启动诊断，不计入资格结果。已修复 wrapper 条件并将下一次运行改用全新 RunId。
 - **资格运行状态（2026-08-21）**：`contest_qual200_dense_reranker_quality_v2` 已完成 200/200，生成完整 metrics、stage_metrics、error_analysis、resource_ledger、summary 和 generation `RUN_COMPLETED`；运行使用 `quality_soft_v1`、GPU1、单 worker。尚未把它标记为通过，需用配对的 `contest_qual200_reranker_v4_gpu1` 基线执行资格门禁，确认 F1/Recall 的固定 bootstrap、零失败、reranker 审计和资源账本。
 - **资格门禁结果（2026-08-21）**：使用服务器主目录中已完成的 `contest_qual200_reranker_v4_gpu1` 作基线执行 `scripts/check_contest_qualification.py`。200 条、零失败、reranker 审计和资源账本均通过；但 F1@20 与 Recall@20 的平均成对差值均为 `0.0`，固定 5000 次 bootstrap 的 95% 区间均为 `[0.0, 0.0]`，因此 `eligible_for_full_1000=false`，不运行质量策略全量实验。离线分析显示 v2 没有任何 Top-20 顺序变化；该策略保留为诊断实现，不写入正式成绩。
 - **诊断修正（2026-08-21）**：发现 API 映射层丢弃质量策略诊断字段，已补齐 `quality_policy`、`quality_score`、`quality_contribution`、配置哈希和换序原因的公开结果映射；相关回归共 `76 passed`。这不改变已完成 v2 的失败门禁结论，也不构成质量提升证据。
-- [ ] 实现与离线验证完成；真实资格实验待执行
+- [ ] 实现与离线验证完成；真实资格已执行但门禁未通过
 
 ## P3：真实评测与指标闭环
 
