@@ -91,7 +91,7 @@
       "docs/evaluation.md",
       "docs/report/technical_report.md"
     ],
-    "tracked_evidence_file_count": 76,
+    "tracked_evidence_file_count": 77,
     "tracked_evidence_files": [
       {
         "path": "benchmark/autoscholar_full1000_resume/resume_manifest.json",
@@ -312,6 +312,10 @@
       {
         "path": "benchmark/llm_relevance_judging_v1_record160_incomplete/manifest.json",
         "sha256": "4f7765445dc0e4cf1ef3d52433cf30d113acfc864b3fd2cc0d35f90dbc06e4de"
+      },
+      {
+        "path": "benchmark/offline_wheelhouse_intake_linux_py312_v1_evidence/manifest.json",
+        "sha256": "b07cf559d7fe2940996aa602e919632c571a939f0ba265c73a826ee9e8379e95"
       },
       {
         "path": "benchmark/offline_wheelhouse_intake_v1_manifest.json",
@@ -1151,7 +1155,7 @@
       "evidence_sources": [
         {
           "path": "docs/dev_plan.md",
-          "sha256": "7e9594a872445e4e9d79275c2f56faaff2ac3c6e8f5a184f6ceb062c0021039e"
+          "sha256": "2138e6361adb2d4cf49dfc84ff18263cf7898f878e899f75e06ba39961957152"
         }
       ],
       "evidence_status": "evidence_unavailable",
@@ -1290,7 +1294,7 @@
       "evidence_sources": [
         {
           "path": "docs/dev_plan.md",
-          "sha256": "7e9594a872445e4e9d79275c2f56faaff2ac3c6e8f5a184f6ceb062c0021039e"
+          "sha256": "2138e6361adb2d4cf49dfc84ff18263cf7898f878e899f75e06ba39961957152"
         }
       ],
       "evidence_status": "evidence_unavailable",

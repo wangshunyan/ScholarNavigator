@@ -8,13 +8,13 @@
 
 - [x] **P3-00 full 已完成并审计通过**。`contest_full_dense_reranker_rrf_soft_v3` 在旧服务器 GPU1 自然完成；1000/1000、零失败、零 reranker fallback，`RUN_COMPLETED` 和 reranker 审计均为 passed。内部 F1@20=0.02726023、Recall@20=0.16817491、MRR=0.09833638、平均延迟=4.022s；这些不是赛事官方 scorer 成绩。
 - **下一步**：P3-01 的 5 条 LLM feedback smoke 和 200 条资格。任一质量或审计门禁失败时保留诊断，不启动其 full RunId。
-- **终态 blocker 的边界**：Linux/Python 3.12 离线 wheelhouse 与 `record160` 只阻塞最终 release tag 和全仓历史验收，不阻塞 P3-00、P3-01、离线代码/测试、竞赛材料或普通 GitHub 审计提交。`record160` 不可恢复时必须保留 blocker 记录，但不能把项目状态写为“暂停等待外部条件”。
+- **终态 blocker 的边界**：已验证的 Linux/Python 3.12 wheelhouse 不再是 blocker；`record160` 历史输入及对应 Git 对象仍只阻塞最终 release tag 和全仓历史验收，不阻塞 P3-00、P3-01、离线代码/测试、竞赛材料或普通 GitHub 审计提交。`record160` 不可恢复时必须保留 blocker 记录，但不能把项目状态写为“暂停等待外部条件”。
 
 ## 当前审计基线
 
 - P0-01 的离线反馈闭环已实现；P0-02 的脱敏快照与回放契约已实现并通过专项回归。
 - `contest_qual200_dense_reranker_llm_feedback_v19` 仍是未完成的服务器资格运行；当前只保留为运行中诊断，不把未完成结果写入正式成绩。
-- P3-00 已完成“BM25+Dense union -> fixed RRF -> soft Judgement”的独立 200 条资格和 1000 条审计闭环；P3-01 真实 LLM 资格/完整运行、质量过滤独立提升、Linux 离线依赖和历史冻结证据仍未完成。
+- P3-00 已完成“BM25+Dense union -> fixed RRF -> soft Judgement”的独立 200 条资格和 1000 条审计闭环；P3-01 真实 LLM 资格/完整运行和历史冻结证据仍未完成。P2 质量 policy 已以负面结论收束，Linux 离线依赖已完成。
 - 可离线完成：代码、fake provider、fixture、Record/Replay、解析器、质量 policy、审计逻辑和报告格式；需要真实 Provider/GPU：LLM smoke/qualification/full；需要外部数据或官方接口：开放全文、撤稿/出版元数据和赛事官方 scorer。
 
 ## P0：LLM 结果反馈驱动搜索闭环
@@ -310,12 +310,12 @@
 - **任务编号**：P4-01；**独立提交**：文档、依赖锁、发布包校验和阻塞记录分别保持可回滚。
 
 - **目标能力**：保持代码、依赖锁、实验文档、发布包和历史证据状态一致。
-- **当前缺口**：Linux 离线 wheelhouse 与 `record160` 历史冻结输入仍阻塞最终 release tag。
+- **当前缺口**：`record160` 历史冻结输入及对应 Git 对象仍阻塞最终 release tag；Linux 离线 wheelhouse 已有可追溯安装回执。
 - **实现范围**：更新真实状态、运行 registry/发布包门禁，不删除、跳过或弱化测试。
 - **实现方案**：复用现有 evidence registry、锁验证和允许列表发布包工具。
 - **验证方式**：专项测试、registry check、发布包禁止路径检查和完整测试报告。
 - **失败处理**：保留明确阻塞记录，只推送普通审计提交。
-- **外部依赖**：Linux Python 3.12 wheelhouse、历史 commits 与冻结输入。
+- **外部依赖**：历史 commits 与冻结输入。
 - **完成条件**：所有门禁有真实证据后才允许最终 tag。
 - **验收标准**：代码、文档、锁文件、实验清单和允许列表发布包一致；禁止路径与密钥排除校验通过；Linux/Python 3.12 离线安装和历史冻结证据有真实回执；未清零时不创建最终 tag。
 - **自动化验证方式**：registry gate、lock/wheelhouse check、发布包内容扫描、后端全测、前端 lint/build 和 Git 分支/tag 一致性检查。
