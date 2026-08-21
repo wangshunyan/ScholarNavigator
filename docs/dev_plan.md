@@ -152,6 +152,7 @@
 - **离线运行接入（2026-08-21）**：benchmark runner 新增 `--quality-evidence-ledger`，且只在显式 `quality_soft_v1` policy 下接受。运行配置仅记录 schema、文件/语义 SHA-256 和记录数，不保存账本路径或来源记录；每条查询把已验证回执传入完整检索链。缺少 policy 或 policy 不匹配时 fail closed。`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_paper_quality.py tests/test_benchmark_runner.py` 为 `40 passed`；P2 组合回归（quality、RRF、SearchService、benchmark、qualification、registry）为 `119 passed`。这只完成外部回执的离线可复现实验接线，仍缺独立回执和通过资格门禁的质量提升，任务保持未完成。
 - **全仓验证状态（2026-08-21）**：按 `AGENTS.md` 执行 `PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q` 得到 `2097 passed, 230 failed, 58 errors`。失败主要是既有 evidence registry 基线未登记 `quality_soft_v1`、历史冻结输入/提交缺失和发布环境门禁漂移；本次 P2 相关专项保持全绿。前端 `npm run lint`、`npm run build`、`compileall` 和 `git diff --check` 通过。未跳过、删除或弱化全仓测试。
 - **外部阻塞**：当前没有独立、可审计的撤稿/重复风险来源回执，因此未把该证据契约接入正式 200 条运行，也未宣称质量收益；获得独立回执后必须使用新 policy 版本和新 RunId 重跑资格门禁。
+- **运行输入状态（2026-08-21）**：旧服务器保留 `contest_full_dense_reranker_v4` 的 1000 条成功结果和 completed `initial_reranked` 快照，适合作为非 legacy 候选来源；但服务器工作树从 `afe07044` 与已验证的 `81e29e7` 分叉，`git pull --ff-only origin main` 被安全拒绝。为避免服务器 merge/rebase、临时脚本或 1 GiB 原始查询结果回收，本机导出器尚未对该正式产物执行。该同步阻塞不构成质量回执或资格提升证据，P2-01-B 保持未完成。
 - [ ] 实现与离线验证完成；真实资格已执行但门禁未通过
 
 ### [x] P2-01-B1 Crossref 明确撤稿回执采集
