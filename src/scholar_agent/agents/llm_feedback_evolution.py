@@ -138,8 +138,9 @@ def evolve_with_llm_feedback(
         break
     diagnostics.rejection_reasons = dict(sorted(rejection_reasons.items()))
     if query is None:
-        diagnostics.fallback_used = True
-        diagnostics.fallback_reason = "all_queries_rejected"
+        # The first-round result remains authoritative. A locally rejected
+        # follow-up is a safe no-op, not a provider fallback or degraded path.
+        diagnostics.skipped_reason = "all_queries_rejected"
         return _record(gap, diagnostics, "all_queries_rejected")
 
     diagnostics.accepted_query_count = 1

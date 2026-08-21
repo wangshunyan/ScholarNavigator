@@ -220,7 +220,8 @@ def test_feedback_rejects_invalid_or_duplicate_queries(
 
     assert record.generated_queries == []
     assert record.llm_feedback is not None
-    assert record.llm_feedback.fallback_reason == reason
+    assert record.llm_feedback.skipped_reason == reason
+    assert record.llm_feedback.fallback_used is False
 
 
 def test_feedback_provider_failure_does_not_create_second_round_query() -> None:
