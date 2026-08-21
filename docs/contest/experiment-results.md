@@ -66,7 +66,7 @@
 
 `contest_qual200_reranker_v4_gpu1` 已完成 200/200、零失败、零 fallback，并通过资源账本和配对 bootstrap 门禁；F1@20 增量为 +0.013747，Recall@20 增量为 +0.078419。完整 reranker 审计确认 1000 条、Qwen3 prompt v1、2048 最大长度、batch=8、候选上限=120、P50/P95 为 0.730/0.839 s、吞吐 156.13 candidates/s、峰值显存约 5.49 GiB。以上内部指标不等同于赛事官方 scorer。
 
-Linux/Python 3.12 锁已在服务器 Python 3.12.3/x86_64 环境生成，覆盖 23 个包；由于服务器 pip wheelhouse 缺少兼容 wheel，离线安装资格为 `not_ready_missing_verified_version_or_artifact`，不能宣称完全离线可复现。
+Linux/Python 3.12 锁已在服务器 Python 3.12.3/x86_64 环境重新生成，当前闭包覆盖 24 个包。独立 wheelhouse 验收为 `24/24`、零违规，两套隔离 `--no-index` 安装均通过；回执见 `benchmark/python_dependency_lock_linux_py312_v1_evidence/` 和 `benchmark/offline_wheelhouse_intake_linux_py312_v1_evidence/`。该结果只证明依赖安装证据，不解除 `record160` 历史输入和最终发布门禁。
 
 ## 当前结论
 

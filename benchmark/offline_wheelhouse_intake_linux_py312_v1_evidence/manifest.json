@@ -1,0 +1,802 @@
+{
+  "accepted_wheel_count": 24,
+  "dependency_edges": [
+    {
+      "from": "anyio",
+      "to": "idna"
+    },
+    {
+      "from": "anyio",
+      "to": "typing-extensions"
+    },
+    {
+      "from": "fastapi",
+      "to": "annotated-doc"
+    },
+    {
+      "from": "fastapi",
+      "to": "pydantic"
+    },
+    {
+      "from": "fastapi",
+      "to": "starlette"
+    },
+    {
+      "from": "fastapi",
+      "to": "typing-extensions"
+    },
+    {
+      "from": "fastapi",
+      "to": "typing-inspection"
+    },
+    {
+      "from": "httpcore",
+      "to": "certifi"
+    },
+    {
+      "from": "httpcore",
+      "to": "h11"
+    },
+    {
+      "from": "httpx",
+      "to": "anyio"
+    },
+    {
+      "from": "httpx",
+      "to": "certifi"
+    },
+    {
+      "from": "httpx",
+      "to": "httpcore"
+    },
+    {
+      "from": "httpx",
+      "to": "idna"
+    },
+    {
+      "from": "pydantic",
+      "to": "annotated-types"
+    },
+    {
+      "from": "pydantic",
+      "to": "pydantic-core"
+    },
+    {
+      "from": "pydantic",
+      "to": "typing-extensions"
+    },
+    {
+      "from": "pydantic",
+      "to": "typing-inspection"
+    },
+    {
+      "from": "pydantic-core",
+      "to": "typing-extensions"
+    },
+    {
+      "from": "pytest",
+      "to": "iniconfig"
+    },
+    {
+      "from": "pytest",
+      "to": "packaging"
+    },
+    {
+      "from": "pytest",
+      "to": "pluggy"
+    },
+    {
+      "from": "pytest",
+      "to": "pygments"
+    },
+    {
+      "from": "rank-bm25",
+      "to": "numpy"
+    },
+    {
+      "from": "starlette",
+      "to": "anyio"
+    },
+    {
+      "from": "starlette",
+      "to": "typing-extensions"
+    },
+    {
+      "from": "typing-inspection",
+      "to": "typing-extensions"
+    },
+    {
+      "from": "uvicorn",
+      "to": "click"
+    },
+    {
+      "from": "uvicorn",
+      "to": "h11"
+    }
+  ],
+  "dependency_lock": {
+    "package_count": 24,
+    "protocol": "python_dependency_lock_v1",
+    "sha256": "eb364e828ce19d18cf758254f81cb646d2c016593f07e6b8367ef76005e9ce67"
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "expected_wheel_count": 24,
+  "formal_validation_complete": false,
+  "install_plan": [
+    "annotated-doc==0.0.5 --hash=sha256:117bac03a25ede5df5440e855b32d556049ca169ead221505badf432fed4b101",
+    "annotated-types==0.8.0 --hash=sha256:f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0",
+    "anyio==4.14.2 --hash=sha256:9f505dda5ac9f0c8309b5e8bd445a8c2bf7246f3ce950121e45ea15bc41d1494",
+    "certifi==2026.7.22 --hash=sha256:62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775",
+    "click==8.4.2 --hash=sha256:e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76",
+    "fastapi==0.138.0 --hash=sha256:b6f54fd1bd72c80b0f899f172c61a600f6f7af9b43d4d772a018f35624048cb0",
+    "h11==0.16.0 --hash=sha256:63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86",
+    "httpcore==1.0.9 --hash=sha256:2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55",
+    "httpx==0.28.1 --hash=sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad",
+    "idna==3.19 --hash=sha256:815e7be7a7806d54abb586dc943addc79e8b2ee16915059658cbeff4b1b43bf4",
+    "iniconfig==2.3.0 --hash=sha256:f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12",
+    "numpy==2.5.2 --hash=sha256:3cdec01fa790a186d430433fdd4d4ffb70eed6f0eeb4bf05c8dbe2dce0a9bcb8",
+    "packaging==25.0 --hash=sha256:29572ef2b1f17581046b3a2227d5c611fb25ec70ca1ba8554b24b0e69331a484",
+    "pluggy==1.6.0 --hash=sha256:e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746",
+    "pydantic==2.11.7 --hash=sha256:dde5df002701f6de26248661f6835bbe296a47bf73990135c7d07ce741b9623b",
+    "pydantic-core==2.33.2 --hash=sha256:8f57a69461af2a5fa6e6bbd7a5f60d3b7e6cebb687f55106933188e79ad155c1",
+    "pygments==2.21.0 --hash=sha256:2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+    "pypdf==6.16.1 --hash=sha256:63fec31c4092ae50b6729beedcb469055b60d20c834bde1c402df241f371f644",
+    "pytest==9.1.1 --hash=sha256:37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c",
+    "rank-bm25==0.2.2 --hash=sha256:7bd4a95571adadfc271746fa146a4bcfd89c0cf731e49c3d1ad863290adbe8ae",
+    "starlette==1.6.0 --hash=sha256:a86dd39d14bb45f85a3d18525215a9ef0cfd1f192ac793220e72598c90335f0c",
+    "typing-extensions==4.16.0 --hash=sha256:481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+    "typing-inspection==0.4.4 --hash=sha256:65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147",
+    "uvicorn==0.48.0 --hash=sha256:48097851328b87ec36117d3d575234519eb58c2b22d79666e9bbc6c49a761dad"
+  ],
+  "missing_wheels": [],
+  "protocol": "offline_wheelhouse_intake_v1",
+  "real_wheelhouse_qualified": true,
+  "schema_version": "1",
+  "source_commit": "d54ded421a32f92768ca3b7c7b581890de506c51",
+  "status": "wheelhouse_qualified",
+  "violations": [],
+  "wheelhouse_index": [
+    {
+      "filename": "annotated_doc-0.0.5-py3-none-any.whl",
+      "groups": [
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "MIT"
+      },
+      "metadata_sha256": "8c24d70c5d9153d22123353a906042fd7603df2d15c2196290b0f8a962558c46",
+      "name": "annotated-doc",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [],
+      "sha256": "117bac03a25ede5df5440e855b32d556049ca169ead221505badf432fed4b101",
+      "size": 5302,
+      "source_type": "unknown",
+      "version": "0.0.5"
+    },
+    {
+      "filename": "annotated_types-0.8.0-py3-none-any.whl",
+      "groups": [
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "MIT"
+      },
+      "metadata_sha256": "614985b278f601b8ef863f82783b991cc3ada4b89f592eb71c7c48c5f2ef2298",
+      "name": "annotated-types",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [],
+      "sha256": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0",
+      "size": 13427,
+      "source_type": "unknown",
+      "version": "0.8.0"
+    },
+    {
+      "filename": "anyio-4.14.2-py3-none-any.whl",
+      "groups": [
+        "development",
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "MIT"
+      },
+      "metadata_sha256": "c5e6fc4dfd833319913b287be7a30d9935e9208c7ef917630621855aaac4d419",
+      "name": "anyio",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "exceptiongroup>=1.0.2; python_version < \"3.11\"",
+        "idna>=2.8",
+        "trio>=0.32.0; extra == \"trio\"",
+        "typing_extensions>=4.5; python_version < \"3.13\""
+      ],
+      "sha256": "9f505dda5ac9f0c8309b5e8bd445a8c2bf7246f3ce950121e45ea15bc41d1494",
+      "size": 125813,
+      "source_type": "unknown",
+      "version": "4.14.2"
+    },
+    {
+      "filename": "certifi-2026.7.22-py3-none-any.whl",
+      "groups": [
+        "development"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "MPL-2.0"
+      },
+      "metadata_sha256": "ef5af1638fbb23676ac3c5777dfcfc2cd9c348fe4172ed5ba3d277655b248090",
+      "name": "certifi",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [],
+      "sha256": "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775",
+      "size": 136983,
+      "source_type": "unknown",
+      "version": "2026.7.22"
+    },
+    {
+      "filename": "click-8.4.2-py3-none-any.whl",
+      "groups": [
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "BSD-3-Clause"
+      },
+      "metadata_sha256": "194c9dd81d567f9081f026c7e401060fbafa7bc147c8e0a58b3668b40a64c031",
+      "name": "click",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "colorama; platform_system == 'Windows'"
+      ],
+      "sha256": "e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76",
+      "size": 119243,
+      "source_type": "unknown",
+      "version": "8.4.2"
+    },
+    {
+      "filename": "fastapi-0.138.0-py3-none-any.whl",
+      "groups": [
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "MIT"
+      },
+      "metadata_sha256": "2e3ab9c009bd1ae818de320164dac550b4b4e19f1b2a326bd5af46e4e5543ed6",
+      "name": "fastapi",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "annotated-doc>=0.0.2",
+        "email-validator>=2.0.0; extra == \"all\"",
+        "email-validator>=2.0.0; extra == \"standard\"",
+        "email-validator>=2.0.0; extra == \"standard-no-fastapi-cloud-cli\"",
+        "fastapi-cli[standard-no-fastapi-cloud-cli]>=0.0.8; extra == \"standard-no-fastapi-cloud-cli\"",
+        "fastapi-cli[standard]>=0.0.8; extra == \"all\"",
+        "fastapi-cli[standard]>=0.0.8; extra == \"standard\"",
+        "fastar>=0.9.0; extra == \"standard\"",
+        "httpx<1.0.0,>=0.23.0; extra == \"all\"",
+        "httpx<1.0.0,>=0.23.0; extra == \"standard\"",
+        "httpx<1.0.0,>=0.23.0; extra == \"standard-no-fastapi-cloud-cli\"",
+        "itsdangerous>=1.1.0; extra == \"all\"",
+        "jinja2>=3.1.5; extra == \"all\"",
+        "jinja2>=3.1.5; extra == \"standard\"",
+        "jinja2>=3.1.5; extra == \"standard-no-fastapi-cloud-cli\"",
+        "pydantic-extra-types>=2.0.0; extra == \"all\"",
+        "pydantic-extra-types>=2.0.0; extra == \"standard\"",
+        "pydantic-extra-types>=2.0.0; extra == \"standard-no-fastapi-cloud-cli\"",
+        "pydantic-settings>=2.0.0; extra == \"all\"",
+        "pydantic-settings>=2.0.0; extra == \"standard\"",
+        "pydantic-settings>=2.0.0; extra == \"standard-no-fastapi-cloud-cli\"",
+        "pydantic>=2.9.0",
+        "python-multipart>=0.0.18; extra == \"all\"",
+        "python-multipart>=0.0.18; extra == \"standard\"",
+        "python-multipart>=0.0.18; extra == \"standard-no-fastapi-cloud-cli\"",
+        "pyyaml>=5.3.1; extra == \"all\"",
+        "starlette>=0.46.0",
+        "typing-extensions>=4.8.0",
+        "typing-inspection>=0.4.2",
+        "uvicorn[standard]>=0.12.0; extra == \"all\"",
+        "uvicorn[standard]>=0.12.0; extra == \"standard\"",
+        "uvicorn[standard]>=0.12.0; extra == \"standard-no-fastapi-cloud-cli\""
+      ],
+      "sha256": "b6f54fd1bd72c80b0f899f172c61a600f6f7af9b43d4d772a018f35624048cb0",
+      "size": 126779,
+      "source_type": "unknown",
+      "version": "0.138.0"
+    },
+    {
+      "filename": "h11-0.16.0-py3-none-any.whl",
+      "groups": [
+        "development",
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "MIT"
+      },
+      "metadata_sha256": "28f326098ac09fcba79b8f180f96087c841fe2456215cb7b872a9c7d5cd19d64",
+      "name": "h11",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [],
+      "sha256": "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86",
+      "size": 37515,
+      "source_type": "unknown",
+      "version": "0.16.0"
+    },
+    {
+      "filename": "httpcore-1.0.9-py3-none-any.whl",
+      "groups": [
+        "development"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "BSD-3-Clause"
+      },
+      "metadata_sha256": "fe2d4fda6199128978779e0cf27f3c045c531863fcdd987eacc74f3a18d41c21",
+      "name": "httpcore",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "anyio<5.0,>=4.0; extra == 'asyncio'",
+        "certifi",
+        "h11>=0.16",
+        "h2<5,>=3; extra == 'http2'",
+        "socksio==1.*; extra == 'socks'",
+        "trio<1.0,>=0.22.0; extra == 'trio'"
+      ],
+      "sha256": "2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55",
+      "size": 78784,
+      "source_type": "unknown",
+      "version": "1.0.9"
+    },
+    {
+      "filename": "httpx-0.28.1-py3-none-any.whl",
+      "groups": [
+        "development"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "BSD-3-Clause"
+      },
+      "metadata_sha256": "febb9b0f8f3e80d57c8199c304f35c4336e8581d1d18d7983c92766b82793b25",
+      "name": "httpx",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "anyio",
+        "brotli; (platform_python_implementation == 'CPython') and extra == 'brotli'",
+        "brotlicffi; (platform_python_implementation != 'CPython') and extra == 'brotli'",
+        "certifi",
+        "click==8.*; extra == 'cli'",
+        "h2<5,>=3; extra == 'http2'",
+        "httpcore==1.*",
+        "idna",
+        "pygments==2.*; extra == 'cli'",
+        "rich<14,>=10; extra == 'cli'",
+        "socksio==1.*; extra == 'socks'",
+        "zstandard>=0.18.0; extra == 'zstd'"
+      ],
+      "sha256": "d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad",
+      "size": 73517,
+      "source_type": "unknown",
+      "version": "0.28.1"
+    },
+    {
+      "filename": "idna-3.19-py3-none-any.whl",
+      "groups": [
+        "development",
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "BSD-3-Clause"
+      },
+      "metadata_sha256": "4d113161aca8582e8d28fddf3ea50f19b607209c2b3e4364379a163454680084",
+      "name": "idna",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "coverage >= 7.10.0 ; extra == \"all\"",
+        "hypothesis >= 6.141.1 ; extra == \"all\"",
+        "mypy >= 1.11.2 ; extra == \"all\"",
+        "pytest >= 8.3.2 ; extra == \"all\"",
+        "ruff >= 0.16.0 ; extra == \"all\"",
+        "ty >= 0.0.37 ; extra == \"all\""
+      ],
+      "sha256": "815e7be7a7806d54abb586dc943addc79e8b2ee16915059658cbeff4b1b43bf4",
+      "size": 68550,
+      "source_type": "unknown",
+      "version": "3.19"
+    },
+    {
+      "filename": "iniconfig-2.3.0-py3-none-any.whl",
+      "groups": [
+        "development"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "MIT"
+      },
+      "metadata_sha256": "40d773f84e4e112f495bbf4f1be9cbd2d456c0aeb6ef5311f75d1bf322f2165b",
+      "name": "iniconfig",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [],
+      "sha256": "f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12",
+      "size": 7484,
+      "source_type": "unknown",
+      "version": "2.3.0"
+    },
+    {
+      "filename": "numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "groups": [
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0"
+      },
+      "metadata_sha256": "9a895d801184d2176f926af84eb47f2db1af2756afac99d64a2bf482d5d5e024",
+      "name": "numpy",
+      "python_abi_platform_tags": [
+        "cp312-cp312-manylinux_2_27_x86_64",
+        "cp312-cp312-manylinux_2_28_x86_64"
+      ],
+      "requires_dist": [],
+      "sha256": "3cdec01fa790a186d430433fdd4d4ffb70eed6f0eeb4bf05c8dbe2dce0a9bcb8",
+      "size": 16722264,
+      "source_type": "unknown",
+      "version": "2.5.2"
+    },
+    {
+      "filename": "packaging-25.0-py3-none-any.whl",
+      "groups": [
+        "development",
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "unknown",
+        "value": "unknown"
+      },
+      "metadata_sha256": "5b611a609c38fefc3d616bf45d20aec98fb7d53f245daca9e2c30fc85c7ac282",
+      "name": "packaging",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [],
+      "sha256": "29572ef2b1f17581046b3a2227d5c611fb25ec70ca1ba8554b24b0e69331a484",
+      "size": 66469,
+      "source_type": "unknown",
+      "version": "25.0"
+    },
+    {
+      "filename": "pluggy-1.6.0-py3-none-any.whl",
+      "groups": [
+        "development"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "MIT"
+      },
+      "metadata_sha256": "7438c35ee25a095eb7416f84b461c2d74425c5e734ad54c3912453c65244e01c",
+      "name": "pluggy",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "coverage; extra == \"testing\"",
+        "pre-commit; extra == \"dev\"",
+        "pytest-benchmark; extra == \"testing\"",
+        "pytest; extra == \"testing\"",
+        "tox; extra == \"dev\""
+      ],
+      "sha256": "e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746",
+      "size": 20538,
+      "source_type": "unknown",
+      "version": "1.6.0"
+    },
+    {
+      "filename": "pydantic-2.11.7-py3-none-any.whl",
+      "groups": [
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "MIT"
+      },
+      "metadata_sha256": "f791b40bde997db7ff175b238bff97d50cf9505a8aa307e0bf791d57ed1ae282",
+      "name": "pydantic",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "annotated-types>=0.6.0",
+        "email-validator>=2.0.0; extra == 'email'",
+        "pydantic-core==2.33.2",
+        "typing-extensions>=4.12.2",
+        "typing-inspection>=0.4.0",
+        "tzdata; (python_version >= '3.9' and platform_system == 'Windows') and extra == 'timezone'"
+      ],
+      "sha256": "dde5df002701f6de26248661f6835bbe296a47bf73990135c7d07ce741b9623b",
+      "size": 444782,
+      "source_type": "unknown",
+      "version": "2.11.7"
+    },
+    {
+      "filename": "pydantic_core-2.33.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "groups": [
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "MIT"
+      },
+      "metadata_sha256": "efc941a0e673e0acdfcf3ff2308fea147305b36484dd58275a97863ed8f270ab",
+      "name": "pydantic-core",
+      "python_abi_platform_tags": [
+        "cp312-cp312-manylinux2014_x86_64",
+        "cp312-cp312-manylinux_2_17_x86_64"
+      ],
+      "requires_dist": [
+        "typing-extensions>=4.6.0,!=4.7.0"
+      ],
+      "sha256": "8f57a69461af2a5fa6e6bbd7a5f60d3b7e6cebb687f55106933188e79ad155c1",
+      "size": 2002028,
+      "source_type": "unknown",
+      "version": "2.33.2"
+    },
+    {
+      "filename": "pygments-2.21.0-py3-none-any.whl",
+      "groups": [
+        "development"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "BSD-2-Clause"
+      },
+      "metadata_sha256": "1dde075570136774c706bf0009183a793fe0ee262e4a5590cc6eff8453eedd43",
+      "name": "pygments",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "colorama>=0.4.6; extra == 'windows-terminal'"
+      ],
+      "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+      "size": 1250147,
+      "source_type": "unknown",
+      "version": "2.21.0"
+    },
+    {
+      "filename": "pypdf-6.16.1-py3-none-any.whl",
+      "groups": [
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "BSD-3-Clause"
+      },
+      "metadata_sha256": "ce1f311ce0d4ce2679ba2e3020c2df8149a7c9eddd62f3c18ea91abdecc18898",
+      "name": "pypdf",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "Pillow>=8.0.0 ; extra == \"full\"",
+        "Pillow>=8.0.0 ; extra == \"image\"",
+        "PyCryptodome ; extra == \"cryptodome\"",
+        "arabic-reshaper ; extra == \"full\"",
+        "arabic-reshaper ; extra == \"rtl-text\"",
+        "cryptography>3.0 ; extra == \"crypto\"",
+        "cryptography>3.0 ; extra == \"full\"",
+        "flit ; extra == \"dev\"",
+        "fonttools ; extra == \"fonts\"",
+        "fonttools ; extra == \"full\"",
+        "myst_parser ; extra == \"docs\"",
+        "pip-tools ; extra == \"dev\"",
+        "pre-commit ; extra == \"dev\"",
+        "pytest-cov ; extra == \"dev\"",
+        "pytest-socket ; extra == \"dev\"",
+        "pytest-timeout ; extra == \"dev\"",
+        "pytest-xdist ; extra == \"dev\"",
+        "python-bidi ; extra == \"full\"",
+        "python-bidi ; extra == \"rtl-text\"",
+        "sphinx ; extra == \"docs\"",
+        "sphinx_rtd_theme ; extra == \"docs\"",
+        "typing_extensions >= 4.0; python_version < '3.11'",
+        "wheel ; extra == \"dev\""
+      ],
+      "sha256": "63fec31c4092ae50b6729beedcb469055b60d20c834bde1c402df241f371f644",
+      "size": 382924,
+      "source_type": "unknown",
+      "version": "6.16.1"
+    },
+    {
+      "filename": "pytest-9.1.1-py3-none-any.whl",
+      "groups": [
+        "development"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "MIT"
+      },
+      "metadata_sha256": "c5d032518012789cabc870d46589aca3aeda36cf9fa4399ee88bda3d10438451",
+      "name": "pytest",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "argcomplete; extra == \"dev\"",
+        "attrs>=19.2; extra == \"dev\"",
+        "colorama>=0.4; sys_platform == \"win32\"",
+        "exceptiongroup>=1; python_version < \"3.11\"",
+        "hypothesis>=3.56; extra == \"dev\"",
+        "iniconfig>=1.0.1",
+        "mock; extra == \"dev\"",
+        "packaging>=22",
+        "pluggy<2,>=1.5",
+        "pygments>=2.7.2",
+        "requests; extra == \"dev\"",
+        "setuptools; extra == \"dev\"",
+        "tomli>=1; python_version < \"3.11\"",
+        "xmlschema; extra == \"dev\""
+      ],
+      "sha256": "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c",
+      "size": 386536,
+      "source_type": "unknown",
+      "version": "9.1.1"
+    },
+    {
+      "filename": "rank_bm25-0.2.2-py3-none-any.whl",
+      "groups": [
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "Apache2.0"
+      },
+      "metadata_sha256": "1de65ad7ae030a81c3006d546f1939bf15dc1e3b45728c469a9c4097b08840e8",
+      "name": "rank-bm25",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "numpy",
+        "pytest ; extra == 'dev'"
+      ],
+      "sha256": "7bd4a95571adadfc271746fa146a4bcfd89c0cf731e49c3d1ad863290adbe8ae",
+      "size": 8584,
+      "source_type": "unknown",
+      "version": "0.2.2"
+    },
+    {
+      "filename": "starlette-1.6.0-py3-none-any.whl",
+      "groups": [
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "BSD-3-Clause"
+      },
+      "metadata_sha256": "43f6240f976044f4cf9a573506d96d895391094717c55682700c931d5cd3c5a2",
+      "name": "starlette",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "anyio<5,>=3.6.2",
+        "httpx2>=2.0.0; extra == 'full'",
+        "httpx<0.29.0,>=0.27.0; extra == 'full'",
+        "itsdangerous; extra == 'full'",
+        "jinja2; extra == 'full'",
+        "python-multipart>=0.0.18; extra == 'full'",
+        "pyyaml; extra == 'full'",
+        "typing-extensions>=4.10.0; python_version < '3.13'"
+      ],
+      "sha256": "a86dd39d14bb45f85a3d18525215a9ef0cfd1f192ac793220e72598c90335f0c",
+      "size": 75969,
+      "source_type": "unknown",
+      "version": "1.6.0"
+    },
+    {
+      "filename": "typing_extensions-4.16.0-py3-none-any.whl",
+      "groups": [
+        "development",
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "PSF-2.0"
+      },
+      "metadata_sha256": "b05084ca1d50879865178d9fff9fabeab61bdfb1f361bfbde95421ffc8f9be46",
+      "name": "typing-extensions",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [],
+      "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+      "size": 45571,
+      "source_type": "unknown",
+      "version": "4.16.0"
+    },
+    {
+      "filename": "typing_inspection-0.4.4-py3-none-any.whl",
+      "groups": [
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "MIT"
+      },
+      "metadata_sha256": "bad3d9e6342ef6750cf5128ec942327b8bebdce0b6e4d6f67cb15b27ae5118da",
+      "name": "typing-inspection",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "typing-extensions>=4.15.0"
+      ],
+      "sha256": "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147",
+      "size": 14750,
+      "source_type": "unknown",
+      "version": "0.4.4"
+    },
+    {
+      "filename": "uvicorn-0.48.0-py3-none-any.whl",
+      "groups": [
+        "runtime"
+      ],
+      "license_evidence": {
+        "status": "declared_in_wheel_metadata",
+        "value": "BSD-3-Clause"
+      },
+      "metadata_sha256": "4be5af0825c0d9985da009715036e5b140603bd0debed272c7f6cc82a95d87e4",
+      "name": "uvicorn",
+      "python_abi_platform_tags": [
+        "py3-none-any"
+      ],
+      "requires_dist": [
+        "click>=7.0",
+        "colorama>=0.4; (sys_platform == 'win32') and extra == 'standard'",
+        "h11>=0.8",
+        "httptools>=0.6.3; extra == 'standard'",
+        "python-dotenv>=0.13; extra == 'standard'",
+        "pyyaml>=5.1; extra == 'standard'",
+        "typing-extensions>=4.0; python_version < '3.11'",
+        "uvloop>=0.15.1; (sys_platform != 'win32' and (sys_platform != 'cygwin' and platform_python_implementation != 'PyPy')) and extra == 'standard'",
+        "watchfiles>=0.20; extra == 'standard'",
+        "websockets>=10.4; extra == 'standard'"
+      ],
+      "sha256": "48097851328b87ec36117d3d575234519eb58c2b22d79666e9bbc6c49a761dad",
+      "size": 71410,
+      "source_type": "unknown",
+      "version": "0.48.0"
+    }
+  ]
+}

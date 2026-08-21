@@ -1,0 +1,20 @@
+{
+  "accepted_wheel_count": 24,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "expected_wheel_count": 24,
+  "formal_validation_complete": false,
+  "manifest_sha256": "55987b72d5355429b31da38e1d39cc65fc962c736a8e01a01f529b439d66a26b",
+  "missing_wheels": [],
+  "protocol": "offline_wheelhouse_intake_v1",
+  "real_wheelhouse_qualified": true,
+  "schema_version": "1",
+  "status": "wheelhouse_qualified",
+  "violations": []
+}

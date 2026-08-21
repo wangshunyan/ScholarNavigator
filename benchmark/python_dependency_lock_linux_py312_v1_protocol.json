@@ -31,7 +31,7 @@
   "network_request_count": 0,
   "protocol": "python_dependency_lock_v1",
   "quality_metric_count": 0,
-  "release_source_commit": "06a0ad3c0c524062cf1ac3ff7d84d9401c4d6df0",
+  "release_source_commit": "d54ded421a32f92768ca3b7c7b581890de506c51",
   "schema_version": "1",
   "snapshot_write_count": 0
 }

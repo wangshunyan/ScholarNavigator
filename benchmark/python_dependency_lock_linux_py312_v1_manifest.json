@@ -41,9 +41,17 @@
       "version": "2.11.7"
     },
     {
-      "declaration": "rank-bm25==0.2.2",
+      "declaration": "pypdf==6.16.1",
       "group": "runtime",
       "line": 5,
+      "marker": null,
+      "name": "pypdf",
+      "version": "6.16.1"
+    },
+    {
+      "declaration": "rank-bm25==0.2.2",
+      "group": "runtime",
+      "line": 6,
       "marker": null,
       "name": "rank-bm25",
       "version": "0.2.2"
@@ -51,7 +59,7 @@
     {
       "declaration": "uvicorn==0.48.0",
       "group": "runtime",
-      "line": 6,
+      "line": 7,
       "marker": null,
       "name": "uvicorn",
       "version": "0.48.0"
@@ -443,6 +451,121 @@
     },
     {
       "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "Pillow>=8.0.0; extra == \"full\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "Pillow>=8.0.0; extra == \"image\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "PyCryptodome; extra == \"cryptodome\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "arabic-reshaper; extra == \"full\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "arabic-reshaper; extra == \"rtl-text\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "cryptography>3.0; extra == \"crypto\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "cryptography>3.0; extra == \"full\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "flit; extra == \"dev\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "fonttools; extra == \"fonts\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "fonttools; extra == \"full\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "myst_parser; extra == \"docs\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "pip-tools; extra == \"dev\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "pre-commit; extra == \"dev\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "pytest-cov; extra == \"dev\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "pytest-socket; extra == \"dev\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "pytest-timeout; extra == \"dev\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "pytest-xdist; extra == \"dev\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "python-bidi; extra == \"full\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "python-bidi; extra == \"rtl-text\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "sphinx; extra == \"docs\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "sphinx_rtd_theme; extra == \"docs\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "typing_extensions>=4.0; python_version < \"3.11\""
+    },
+    {
+      "group": "runtime",
+      "parent": "pypdf",
+      "requirement": "wheel; extra == \"dev\""
+    },
+    {
+      "group": "runtime",
       "parent": "rank-bm25",
       "requirement": "pytest; extra == \"dev\""
     },
@@ -527,107 +650,183 @@
   "formal_validation_complete": false,
   "lock_qualified": true,
   "offline_artifacts": {
-    "artifact_count": 0,
-    "artifacts": [],
-    "missing": [
+    "artifact_count": 24,
+    "artifacts": [
       {
+        "filename": "annotated_doc-0.0.5-py3-none-any.whl",
         "name": "annotated-doc",
+        "sha256": "117bac03a25ede5df5440e855b32d556049ca169ead221505badf432fed4b101",
+        "size": 5302,
         "version": "0.0.5"
       },
       {
+        "filename": "annotated_types-0.8.0-py3-none-any.whl",
         "name": "annotated-types",
+        "sha256": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0",
+        "size": 13427,
         "version": "0.8.0"
       },
       {
+        "filename": "anyio-4.14.2-py3-none-any.whl",
         "name": "anyio",
+        "sha256": "9f505dda5ac9f0c8309b5e8bd445a8c2bf7246f3ce950121e45ea15bc41d1494",
+        "size": 125813,
         "version": "4.14.2"
       },
       {
+        "filename": "certifi-2026.7.22-py3-none-any.whl",
         "name": "certifi",
+        "sha256": "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775",
+        "size": 136983,
         "version": "2026.7.22"
       },
       {
+        "filename": "click-8.4.2-py3-none-any.whl",
         "name": "click",
+        "sha256": "e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76",
+        "size": 119243,
         "version": "8.4.2"
       },
       {
+        "filename": "fastapi-0.138.0-py3-none-any.whl",
         "name": "fastapi",
+        "sha256": "b6f54fd1bd72c80b0f899f172c61a600f6f7af9b43d4d772a018f35624048cb0",
+        "size": 126779,
         "version": "0.138.0"
       },
       {
+        "filename": "h11-0.16.0-py3-none-any.whl",
         "name": "h11",
+        "sha256": "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86",
+        "size": 37515,
         "version": "0.16.0"
       },
       {
+        "filename": "httpcore-1.0.9-py3-none-any.whl",
         "name": "httpcore",
+        "sha256": "2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55",
+        "size": 78784,
         "version": "1.0.9"
       },
       {
+        "filename": "httpx-0.28.1-py3-none-any.whl",
         "name": "httpx",
+        "sha256": "d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad",
+        "size": 73517,
         "version": "0.28.1"
       },
       {
+        "filename": "idna-3.19-py3-none-any.whl",
         "name": "idna",
+        "sha256": "815e7be7a7806d54abb586dc943addc79e8b2ee16915059658cbeff4b1b43bf4",
+        "size": 68550,
         "version": "3.19"
       },
       {
+        "filename": "iniconfig-2.3.0-py3-none-any.whl",
         "name": "iniconfig",
+        "sha256": "f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12",
+        "size": 7484,
         "version": "2.3.0"
       },
       {
+        "filename": "numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
         "name": "numpy",
+        "sha256": "3cdec01fa790a186d430433fdd4d4ffb70eed6f0eeb4bf05c8dbe2dce0a9bcb8",
+        "size": 16722264,
         "version": "2.5.2"
       },
       {
+        "filename": "packaging-25.0-py3-none-any.whl",
         "name": "packaging",
+        "sha256": "29572ef2b1f17581046b3a2227d5c611fb25ec70ca1ba8554b24b0e69331a484",
+        "size": 66469,
         "version": "25.0"
       },
       {
+        "filename": "pluggy-1.6.0-py3-none-any.whl",
         "name": "pluggy",
+        "sha256": "e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746",
+        "size": 20538,
         "version": "1.6.0"
       },
       {
+        "filename": "pydantic-2.11.7-py3-none-any.whl",
         "name": "pydantic",
+        "sha256": "dde5df002701f6de26248661f6835bbe296a47bf73990135c7d07ce741b9623b",
+        "size": 444782,
         "version": "2.11.7"
       },
       {
+        "filename": "pydantic_core-2.33.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
         "name": "pydantic-core",
+        "sha256": "8f57a69461af2a5fa6e6bbd7a5f60d3b7e6cebb687f55106933188e79ad155c1",
+        "size": 2002028,
         "version": "2.33.2"
       },
       {
+        "filename": "pygments-2.21.0-py3-none-any.whl",
         "name": "pygments",
+        "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+        "size": 1250147,
         "version": "2.21.0"
       },
       {
+        "filename": "pypdf-6.16.1-py3-none-any.whl",
+        "name": "pypdf",
+        "sha256": "63fec31c4092ae50b6729beedcb469055b60d20c834bde1c402df241f371f644",
+        "size": 382924,
+        "version": "6.16.1"
+      },
+      {
+        "filename": "pytest-9.1.1-py3-none-any.whl",
         "name": "pytest",
+        "sha256": "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c",
+        "size": 386536,
         "version": "9.1.1"
       },
       {
+        "filename": "rank_bm25-0.2.2-py3-none-any.whl",
         "name": "rank-bm25",
+        "sha256": "7bd4a95571adadfc271746fa146a4bcfd89c0cf731e49c3d1ad863290adbe8ae",
+        "size": 8584,
         "version": "0.2.2"
       },
       {
+        "filename": "starlette-1.6.0-py3-none-any.whl",
         "name": "starlette",
+        "sha256": "a86dd39d14bb45f85a3d18525215a9ef0cfd1f192ac793220e72598c90335f0c",
+        "size": 75969,
         "version": "1.6.0"
       },
       {
+        "filename": "typing_extensions-4.16.0-py3-none-any.whl",
         "name": "typing-extensions",
+        "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+        "size": 45571,
         "version": "4.16.0"
       },
       {
+        "filename": "typing_inspection-0.4.4-py3-none-any.whl",
         "name": "typing-inspection",
+        "sha256": "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147",
+        "size": 14750,
         "version": "0.4.4"
       },
       {
+        "filename": "uvicorn-0.48.0-py3-none-any.whl",
         "name": "uvicorn",
+        "sha256": "48097851328b87ec36117d3d575234519eb58c2b22d79666e9bbc6c49a761dad",
+        "size": 71410,
         "version": "0.48.0"
       }
     ],
-    "qualified": false,
-    "required_package_count": 23
+    "missing": [],
+    "qualified": true,
+    "required_package_count": 24
   },
-  "offline_install_qualified": false,
-  "package_count": 23,
+  "offline_install_qualified": true,
+  "package_count": 24,
   "packages": [
     {
       "dependencies": [],
@@ -960,6 +1159,25 @@
       "version": "2.21.0"
     },
     {
+      "dependencies": [],
+      "direct_groups": [
+        "runtime"
+      ],
+      "groups": [
+        "runtime"
+      ],
+      "incoming_requirements": [
+        "pypdf==6.16.1"
+      ],
+      "license": "BSD-3-Clause",
+      "name": "pypdf",
+      "source_evidence": {
+        "kind": "installed_distribution_metadata",
+        "metadata_sha256": "ce1f311ce0d4ce2679ba2e3020c2df8149a7c9eddd62f3c18ea91abdecc18898"
+      },
+      "version": "6.16.1"
+    },
+    {
       "dependencies": [
         "iniconfig",
         "packaging",
@@ -1091,15 +1309,16 @@
     }
   ],
   "protocol": "python_dependency_lock_v1",
-  "runtime_package_count": 16,
+  "runtime_package_count": 17,
   "runtime_requires_dist": [
     "fastapi==0.138.0",
     "packaging==25.0",
     "pydantic==2.11.7",
+    "pypdf==6.16.1",
     "rank-bm25==0.2.2",
     "uvicorn==0.48.0"
   ],
   "schema_version": "1",
-  "source_commit": "06a0ad3c0c524062cf1ac3ff7d84d9401c4d6df0",
-  "status": "not_ready_missing_verified_version_or_artifact"
+  "source_commit": "d54ded421a32f92768ca3b7c7b581890de506c51",
+  "status": "dependency_lock_qualified"
 }

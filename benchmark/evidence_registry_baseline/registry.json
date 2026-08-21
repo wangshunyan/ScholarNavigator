@@ -319,7 +319,7 @@
       },
       {
         "path": "benchmark/python_dependency_lock_linux_py312_v1_manifest.json",
-        "sha256": "6638867da653705f4f3156357e53418ce1bb2dca6613d5fcf977c381aea7b9fe"
+        "sha256": "eb364e828ce19d18cf758254f81cb646d2c016593f07e6b8367ef76005e9ce67"
       },
       {
         "path": "benchmark/python_dependency_lock_v1_manifest.json",
@@ -1151,7 +1151,7 @@
       "evidence_sources": [
         {
           "path": "docs/dev_plan.md",
-          "sha256": "3b7cc8df4104f3a1461a521883b9ad5779dfbaddc12e50f89af932c9b065b0d0"
+          "sha256": "7e9594a872445e4e9d79275c2f56faaff2ac3c6e8f5a184f6ceb062c0021039e"
         }
       ],
       "evidence_status": "evidence_unavailable",
@@ -1290,7 +1290,7 @@
       "evidence_sources": [
         {
           "path": "docs/dev_plan.md",
-          "sha256": "3b7cc8df4104f3a1461a521883b9ad5779dfbaddc12e50f89af932c9b065b0d0"
+          "sha256": "7e9594a872445e4e9d79275c2f56faaff2ac3c6e8f5a184f6ceb062c0021039e"
         }
       ],
       "evidence_status": "evidence_unavailable",

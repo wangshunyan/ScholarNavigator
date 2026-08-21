@@ -48,3 +48,17 @@ closure are prohibited from runtime metadata. A release remains unqualified
 until both isolated venv installations, imports, CLI help, minimal FastAPI app
 load and uninstall residue checks pass. This engineering gate does not remove
 the Full1000, human Precision, or official scorer blockers.
+
+## Linux/Python 3.12 lock
+
+The target Linux/x86_64/Python 3.12.3 environment has a separate lock and
+manifest: `requirements-runtime-linux-py312.lock`,
+`requirements-dev-linux-py312.lock`, and
+`benchmark/python_dependency_lock_linux_py312_v1_manifest.json`. On the
+server, the current tested commit `d54ded421a32f92768ca3b7c7b581890de506c51`
+produced a 24-package closure with `lock_qualified=true` and
+`offline_install_qualified=true`. The corresponding non-wheel receipts are
+under `benchmark/python_dependency_lock_linux_py312_v1_evidence/`; wheel
+files are intentionally not committed. This verifies dependency and isolated
+installation evidence only; missing historical `record160` inputs still block
+final release qualification.

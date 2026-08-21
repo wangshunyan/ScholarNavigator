@@ -32,3 +32,14 @@ offline installations. Exit `2` is an artifact or supply-chain violation, exit
 synthetic test uses temporary, locally constructed micro-wheels to exercise the
 same verifier and installer. It is engineering evidence only and can never
 qualify the 23 real locked dependencies.
+
+## Linux/Python 3.12 evidence
+
+Linux/x86_64/Python 3.12.3 uses the separate protocol
+`benchmark/offline_wheelhouse_intake_linux_py312_v1_protocol.json`. At the
+current tested commit, the server accepted exactly 24/24 locked wheels with
+zero violations; both isolated `--no-index` installation profiles passed.
+The verification and installation receipts are tracked under
+`benchmark/offline_wheelhouse_intake_linux_py312_v1_evidence/`. Wheel files
+remain outside Git. This does not clear the historical `record160` or final
+release-tag blocker.

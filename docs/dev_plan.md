@@ -323,8 +323,9 @@
 - **本机实现（2026-08-21）**：修正发布候选工具链检测的 Windows 兼容性：Node/npm 在 Windows 使用解析后的 `npm.cmd`，不再因 Python 子进程无法解析批处理入口而错误报告 `node_toolchain_missing`。该修正不改变发布候选的历史输入、锁协议或 release 资格结论。
 - **实际验证（2026-08-21）**：`tests/test_build_contest_release_package.py tests/test_python_dependency_lock.py tests/test_release_candidate_reproducibility.py` 结果为 `24 passed, 5 failed`；新增 Windows toolchain 回归单独为 `1 passed`。5 个失败均为既有外部条件：锁协议声明 macOS/arm64/Python 3.13（本机为 Windows/AMD64/Python 3.12），发布候选合同固定的 Git commit `a743c59c...` 不在本地对象库且 GitHub 拒绝按对象 ID 获取。未修改测试或合同。
 - **发布包验证（2026-08-21）**：临时构建 source-only 包，`990` 项、`.env`/`outputs/`/`datasets/semantic/`/`legacy/spar_original/`/模型缓存均为 `0` 项。前端 `npm run lint`、`npm run build` 通过。依赖锁 `verify` 与 `offline-install` 均返回 exit `3`，准确报告环境身份不匹配和缺失 wheelhouse，不宣称离线安装完成。
-- **失败处理与当前阻塞**：需要 Linux/x86_64/Python 3.12 的独立 lock、完整 wheelhouse 和隔离 `--no-index` 安装回执；`record160`/发布候选历史 Git 对象需维护者或保留服务器提供。二者未具备前，保持普通审计提交，禁止创建最终 tag。
-- **外部环境复核（2026-08-21）**：旧服务器现已干净快进到已验证 main，具备目标 Linux/x86_64/Python 3.12.3 环境，并保留 `python_dependency_lock_linux_py312_v1` 协议/manifest；但 `wheelhouse/` 为零个 wheel，且 Linux runtime lock 含 `pypdf==6.16.1` 而既有 manifest 未包含该包。因此不能在未重建并审计 Linux lock/closure 的情况下下载或宣称离线安装通过。发布候选合同引用的历史 commit 也不在本地对象库，GitHub 按该对象 ID 获取被拒绝；这两项仍为外部证据/环境 blocker。
-- **复核验证（2026-08-21）**：`tests/test_python_dependency_lock.py tests/test_offline_wheelhouse_intake.py tests/test_audit_contest_llm_run.py tests/test_contest_qualification.py` 为 `45 passed, 3 failed`。两项锁测试在 Windows/Python 3.12 上因协议要求 macOS/arm64/Python 3.13 而 fail closed；wheelhouse release-contract 测试因固定历史 Git 对象不可用而 fail closed。未修改、skip 或弱化这些测试。
+- **失败处理与当前阻塞**：Linux/x86_64/Python 3.12 的独立 lock、完整 wheelhouse 和隔离 `--no-index` 安装现已有服务器回执；`record160`/发布候选历史 Git 对象仍需维护者或保留服务器提供。历史证据未具备前，保持普通审计提交，禁止创建最终 tag。
+- **外部环境复核（2026-08-21）**：旧服务器已干净快进到 `d54ded421a32f92768ca3b7c7b581890de506c51`，在 Python 3.12.3/x86_64 下重新生成 24 包 Linux lock；wheelhouse 严格验收为 24/24、零违规，两套隔离 `--no-index` 安装均通过。非 wheel 回执已回收至 Linux 专用 evidence 目录，wheel 文件未提交。发布候选合同引用的历史 commit 仍不在本地对象库，GitHub 按该对象 ID 获取被拒绝；`record160` 仍缺失。
+- **复核验证（2026-08-21）**：新增 wheelhouse CLI 的 `--skip-release-contract` 回归为 `1 passed`；完整 `tests/test_offline_wheelhouse_intake.py` 为 `15 passed, 1 failed`，唯一失败是既有固定历史 Git 对象不可用的 release-contract 测试。未修改、skip 或弱化该测试；服务器锁生成、wheelhouse verify 和 install-test 均返回 `exit_code=0`。
 - [x] 本机发布包、禁止路径扫描、前端构建和 Windows toolchain 兼容修复完成
-- [ ] Linux 离线 wheelhouse、历史冻结输入与最终发布门禁未完成
+- [x] Linux/Python 3.12 锁与 wheelhouse 隔离安装证据已完成
+- [ ] 历史冻结输入与最终发布门禁未完成

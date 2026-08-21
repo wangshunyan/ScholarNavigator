@@ -1,0 +1,22 @@
+{
+  "development_only_package_count": 7,
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "exit_code": 0,
+  "formal_validation_complete": false,
+  "lock_qualified": true,
+  "manifest_sha256": "4b088559a12106943f1fd8d4ef667d2cc40f813cce83d75853d4410c4cc3b8e1",
+  "missing_artifacts": [],
+  "offline_install_qualified": true,
+  "package_count": 24,
+  "protocol": "python_dependency_lock_v1",
+  "runtime_package_count": 17,
+  "schema_version": "1",
+  "status": "dependency_lock_qualified",
+  "violations": []
+}

@@ -1,0 +1,37 @@
+{
+  "dependency_lock": {
+    "path": "benchmark/python_dependency_lock_linux_py312_v1_manifest.json",
+    "protocol": "python_dependency_lock_v1",
+    "sha256": "eb364e828ce19d18cf758254f81cb646d2c016593f07e6b8367ef76005e9ce67"
+  },
+  "execution": {
+    "gold_or_qrels_loaded": false,
+    "llm_request_count": 0,
+    "network_request_count": 0,
+    "quality_metric_count": 0,
+    "snapshot_write_count": 0
+  },
+  "formal_validation_complete": false,
+  "intake": {
+    "allow_sdist": false,
+    "allowed_source_types": [
+      "trusted_internal_mirror",
+      "unknown",
+      "vendor_provided"
+    ],
+    "default_source_type": "unknown",
+    "max_compression_ratio": 200,
+    "max_file_count": 20000,
+    "max_member_uncompressed_bytes": 268435456,
+    "max_total_uncompressed_bytes": 1073741824,
+    "require_record_hashes": true,
+    "wheel_only": true
+  },
+  "manifest_output": "benchmark/offline_wheelhouse_intake_linux_py312_v1_manifest.json",
+  "protocol": "offline_wheelhouse_intake_v1",
+  "release_contract_output": "benchmark/offline_wheelhouse_intake_linux_py312_v1_release_contract.json",
+  "release_python_closure_output": "benchmark/offline_wheelhouse_intake_linux_py312_v1_release_closure.json",
+  "schema_version": "1",
+  "source_commit": "d54ded421a32f92768ca3b7c7b581890de506c51",
+  "wheelhouse_default": "wheelhouse/linux-x86_64-py312-v1"
+}
