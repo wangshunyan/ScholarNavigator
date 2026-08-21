@@ -187,6 +187,22 @@
 - **实际验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_quality_evidence_sources.py tests/test_paper_quality.py tests/test_benchmark_runner.py`，`58 passed`；`compileall`、CLI help 和 `git diff --check` 通过。
 - [x] 已完成
 
+### [x] P2-01-B3 已完成运行的质量回执候选导出
+
+- **任务编号**：P2-01-B3；**独立提交**：仅增加从成功 benchmark 产物导出候选稳定身份的工具和测试，不修改历史运行或默认搜索。
+- **目标能力**：为后续外部风险来源检查提供来自 `initial_reranked` 的规范 arXiv ID 清单，并保留输入产物哈希。
+- **当前缺口**：B2 需要精确 P0 arXiv ID 输入；没有安全的运行产物桥接时，手工清单无法证明候选范围与运行一致。
+- **实现范围**：读取成功运行的 `config.json`、`results.jsonl` 和已完成 `initial_reranked` 快照；严格校验 arXiv ID，输出排序去重清单和不含正文的报告。禁止读取 `gold_diagnostics`、gold/qrels 或把查询文本写入输出。
+- **实现方案**：要求每行成功且每个 case 恰有已完成初始重排快照；记录 run/config/results SHA-256、候选计数、缺失/非法 ID 计数和 `gold_or_query_content_loaded=false`；已有输出路径 fail closed。
+- **验收标准**：同一运行输出确定性规范 ID；失败运行、缺快照、非法 ID 和已有输出均拒绝；报告不含查询、标题或 gold 内容；导出本身不发起网络或 LLM 请求。
+- **自动化验证方式**：fixture 覆盖版本归一化、严格格式、失败/缺快照、覆盖保护和 CLI；P2 专项、compile 与 diff 检查。
+- **失败处理**：本机没有 P0/reranker 正式运行产物时不创建伪造清单，保留外部阻塞并等待真实运行产物；不以 legacy 运行代替正式输入。
+- **外部依赖**：真实 P0/reranker 成功运行产物；实现和测试完全离线。
+- **完成条件**：工具、测试和路线记录提交；导出工具完成不等于获得风险回执，也不解除 P2-01-B 资格门禁。
+- **完成说明（2026-08-21）**：新增 `scripts/export_quality_evidence_candidates.py`。它只读取完成运行的 `initial_reranked` 候选快照，输出严格 `arxiv:` ID 与配置/结果哈希；不会加载评测 gold 或查询正文。当前本机仅有 legacy 运行，未执行真实导出，避免伪造 P0 输入。
+- **实际验证（2026-08-21）**：相关质量/导出测试 `32 passed`；compile 与 `git diff --check` 通过。
+- [x] 已完成
+
 ## P3：真实评测与指标闭环
 
 ### [ ] P3-01 P0-01 的离线资格与真实运行门禁
