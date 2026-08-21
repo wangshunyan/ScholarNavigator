@@ -176,6 +176,64 @@ def test_soft_judgement_qualification_rejects_unreviewed_config_delta(
         raise AssertionError("unreviewed soft judgement delta was accepted")
 
 
+def test_quality_soft_qualification_allows_only_reviewed_policy_delta(
+    monkeypatch,
+) -> None:
+    baseline = _run(0.0)
+    baseline["config"]["ranking_policy"] = "current_rules"
+    candidate = _run(0.1)
+    candidate["config"].update(
+        {
+            "ranking_policy": "quality_soft_v1",
+            "quality_soft_ranking": qualification.quality_soft_ranking_catalog(),
+        }
+    )
+
+    monkeypatch.setattr(
+        qualification,
+        "_load_run",
+        lambda path, _: baseline if path.name == qualification.QUALITY_SOFT_BASELINE else candidate,
+    )
+    report = qualification.check_qualification(
+        Path(qualification.QUALITY_SOFT_BASELINE),
+        Path(qualification.QUALITY_SOFT_CANDIDATE),
+    )
+
+    assert report["candidate_run_id"] == qualification.QUALITY_SOFT_CANDIDATE
+    assert report["eligible_for_full_1000"] is True
+
+
+def test_quality_soft_qualification_rejects_catalog_drift(monkeypatch) -> None:
+    baseline = _run(0.0)
+    baseline["config"]["ranking_policy"] = "current_rules"
+    candidate = _run(0.1)
+    candidate["config"].update(
+        {
+            "ranking_policy": "quality_soft_v1",
+            "quality_soft_ranking": {
+                **qualification.quality_soft_ranking_catalog(),
+                "quality_weight": 0.02,
+                "hard_filtering": True,
+            },
+        }
+    )
+    monkeypatch.setattr(
+        qualification,
+        "_load_run",
+        lambda path, _: baseline if path.name == qualification.QUALITY_SOFT_BASELINE else candidate,
+    )
+
+    try:
+        qualification.check_qualification(
+            Path(qualification.QUALITY_SOFT_BASELINE),
+            Path(qualification.QUALITY_SOFT_CANDIDATE),
+        )
+    except ValueError as exc:
+        assert str(exc) == "quality_soft_catalog_drift"
+    else:
+        raise AssertionError("quality catalog drift was accepted")
+
+
 def test_llm_qualification_requires_reranker_baseline_and_llm_audit(
     monkeypatch,
 ) -> None:

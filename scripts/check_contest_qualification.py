@@ -19,6 +19,9 @@ from scholar_agent.evaluation.resource_accounting import (  # noqa: E402
     ResourceLedgerV1,
     validate_resource_ledger,
 )
+from scholar_agent.agents.reranker import (  # noqa: E402
+    quality_soft_ranking_catalog,
+)
 from scripts.audit_contest_llm_run import audit_run  # noqa: E402
 
 
@@ -27,6 +30,8 @@ SOFT_JUDGEMENT_BASELINE = "contest_qual200_reranker_v4_gpu1"
 SOFT_JUDGEMENT_CANDIDATE = "contest_qual200_dense_reranker_soft_v2"
 LLM_QUALIFICATION_BASELINE = "contest_qual200_reranker_v4_gpu1"
 LLM_QUALIFICATION_CANDIDATE = "contest_qual200_dense_reranker_llm_v16"
+QUALITY_SOFT_BASELINE = "contest_qual200_reranker_v4_gpu1"
+QUALITY_SOFT_CANDIDATE = "contest_qual200_dense_reranker_quality_v2"
 EXPECTED_CANDIDATES = {
     "contest_qual200_dense_v1",
     "contest_qual200_reranker_v1",
@@ -35,6 +40,7 @@ EXPECTED_CANDIDATES = {
     "contest_qual200_reranker_v3_gpu1",
     "contest_qual200_reranker_v4_gpu1",
     SOFT_JUDGEMENT_CANDIDATE,
+    QUALITY_SOFT_CANDIDATE,
     LLM_QUALIFICATION_CANDIDATE,
 }
 RERANKER_PROMPT_VERSION = "qwen3-reranker-v1"
@@ -58,6 +64,10 @@ def check_qualification(baseline: Path, candidate: Path) -> dict[str, Any]:
         raise ValueError("candidate_run_id_invalid")
     if candidate.name == SOFT_JUDGEMENT_CANDIDATE:
         _validate_soft_judgement_pair(baseline_run["config"], candidate_run["config"])
+    elif candidate.name == QUALITY_SOFT_CANDIDATE:
+        _validate_quality_soft_pair(
+            baseline_run["config"], candidate_run["config"]
+        )
     elif candidate.name == LLM_QUALIFICATION_CANDIDATE:
         _validate_llm_pair(baseline_run["config"], candidate_run["config"])
     elif baseline_run["config_hashes"] != candidate_run["config_hashes"]:
@@ -112,7 +122,58 @@ def _expected_baseline_for(candidate_run_id: str) -> str:
         return SOFT_JUDGEMENT_BASELINE
     if candidate_run_id == LLM_QUALIFICATION_CANDIDATE:
         return LLM_QUALIFICATION_BASELINE
+    if candidate_run_id == QUALITY_SOFT_CANDIDATE:
+        return QUALITY_SOFT_BASELINE
     return EXPECTED_BASELINE
+
+
+def _validate_quality_soft_pair(
+    baseline_config: dict[str, Any], candidate_config: dict[str, Any]
+) -> None:
+    """Allow only the default-off bounded quality policy delta."""
+
+    comparable_keys = (
+        "dataset",
+        "dataset_split",
+        "dataset_sha256",
+        "case_count",
+        "case_ids",
+        "offset",
+        "limit",
+        "selection_order",
+        "result_policy",
+        "sources",
+        "local_bm25",
+        "local_hybrid",
+        "run_profile",
+        "top_k",
+        "enable_query_evolution",
+        "query_evolution_policy",
+        "query_planning_policy",
+        "query_planner_version",
+        "judgement_policy",
+        "judgement_config",
+        "enable_refchain",
+        "enable_semantic_seed_expansion",
+        "current_year",
+        "max_workers",
+        "budgets",
+        "diagnostics",
+        "enable_resource_ledger",
+        "query_adapter_policy",
+        "retrieval_mode",
+        "llm_mode",
+        "data_hashes",
+    )
+    if not _shared_config_matches(baseline_config, candidate_config, comparable_keys):
+        raise ValueError("quality_soft_shared_config_drift")
+    if baseline_config.get("ranking_policy") != "current_rules":
+        raise ValueError("quality_soft_baseline_policy_invalid")
+    if candidate_config.get("ranking_policy") != "quality_soft_v1":
+        raise ValueError("quality_soft_candidate_policy_invalid")
+    expected_catalog = quality_soft_ranking_catalog()
+    if candidate_config.get("quality_soft_ranking") != expected_catalog:
+        raise ValueError("quality_soft_catalog_drift")
 
 
 def _validate_soft_judgement_pair(
