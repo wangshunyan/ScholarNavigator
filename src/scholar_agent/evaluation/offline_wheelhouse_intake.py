@@ -23,7 +23,7 @@ from typing import Any, Mapping, Sequence
 
 from packaging.markers import default_environment
 from packaging.requirements import Requirement
-from packaging.tags import sys_tags
+from packaging.tags import parse_tag, sys_tags
 from packaging.utils import canonicalize_name, parse_wheel_filename
 from packaging.version import Version
 
@@ -110,6 +110,15 @@ def _validate_entry_points(archive: zipfile.ZipFile, members: set[str]) -> list[
     return sorted(values)
 
 
+def _expanded_wheel_tags(values: Sequence[str]) -> set[str]:
+    """Normalize compressed WHEEL Tag headers before comparing filename tags."""
+
+    try:
+        return {str(tag) for value in values for tag in parse_tag(value)}
+    except ValueError as exc:
+        raise WheelhouseError("wheel_tag_metadata_invalid") from exc
+
+
 def inspect_wheel(path: Path, policy: Mapping[str, Any]) -> dict[str, Any]:
     """Validate one wheel without trusting its filename or extracting it."""
 
@@ -183,7 +192,7 @@ def inspect_wheel(path: Path, policy: Mapping[str, Any]) -> dict[str, Any]:
             raise WheelhouseError("wheel_version_metadata_mismatch")
 
         wheel_message = Parser().parsestr(archive.read(wheel_paths[0]).decode("utf-8"))
-        metadata_tags = set(wheel_message.get_all("Tag") or [])
+        metadata_tags = _expanded_wheel_tags(wheel_message.get_all("Tag") or [])
         if metadata_tags != {str(tag) for tag in filename_tags}:
             raise WheelhouseError("wheel_tag_metadata_mismatch")
 

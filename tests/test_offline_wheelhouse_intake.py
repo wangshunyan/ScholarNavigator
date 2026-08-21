@@ -14,6 +14,7 @@ import pytest
 from scholar_agent.evaluation.offline_wheelhouse_intake import (
     EXIT_NOT_READY,
     WheelhouseError,
+    _expanded_wheel_tags,
     build_manifest,
     build_synthetic_wheel,
     freeze_release_contract,
@@ -24,6 +25,15 @@ from scholar_agent.evaluation.offline_wheelhouse_intake import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_compressed_wheel_metadata_tags_match_expanded_filename_tags() -> None:
+    assert _expanded_wheel_tags(
+        ["cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64"]
+    ) == {
+        "cp312-cp312-manylinux2014_x86_64",
+        "cp312-cp312-manylinux_2_17_x86_64",
+    }
 
 
 def _json(path: str) -> dict[str, object]:
