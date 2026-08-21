@@ -2,9 +2,9 @@
 
 > 仅汇总仓库已跟踪的内部 Benchmark/审计证据，不是官方赛题成绩。
 
-- 策略数：24
+- 策略数：26
 - 默认开启：current_rules
-- 证据状态：{"evidence_unavailable": 20, "tracked_machine_evidence": 4}
+- 证据状态：{"evidence_unavailable": 22, "tracked_machine_evidence": 4}
 
 | 策略 | 类型 | 默认 | 证据 | 决策 | 指标版本 | 数据范围 | 结论 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -24,9 +24,11 @@
 | `local_bm25` | retrieval_source | 否 | tracked_machine_evidence | promising_default_off | `legacy_gold_records_v1` | SciFact fixed 50 closed corpus | 在 SciFact 官方封闭语料上显著增加内部召回，但不是开放网络成绩，且语料配置专属，保持默认关闭。 |
 | `local_bm25_original_deepening` | benchmark_only_retrieval | 否 | tracked_machine_evidence | negative | `legacy_gold_records_v1` | SciFact fixed 50 closed corpus | 只新增 1 条候选 gold，最终 Recall@20/F1@20 均未提升；不建议继续。 |
 | `prf_v1` | query_planning_feedback | 否 | evidence_unavailable | negative | `legacy_gold_records_v1` | SciFact fixed 50; AutoScholarQuery dev 0/10; AutoScholarQuery val 10/5 | 严格可比子集没有增益，且全量结果受来源响应漂移影响，不满足继续门槛。 |
+| `quality_soft_v1` | ranking_quality | 否 | evidence_unavailable | negative | `legacy_gold_records_v1` | AutoScholarQuery qualification 200 | 200 条质量资格运行可审计但 F1@20 与 Recall@20 相对 reranker v4 均无提升，未启动全量运行；外部风险回执仍不可用。 |
 | `query_adapter_hybrid` | query_adapter | 否 | evidence_unavailable | unvalidated | `not_applicable` | 未评测 | 可选 adapter 已实现，但没有独立、跟踪的配对 Benchmark 证据。 |
 | `query_adapter_safe_original` | query_adapter | 否 | evidence_unavailable | unvalidated | `not_applicable` | 未评测 | 可选 adapter 已实现，但没有独立、跟踪的配对 Benchmark 证据。 |
 | `query_evolution_coverage_gap` | query_evolution | 否 | evidence_unavailable | inconclusive | `legacy_gold_records_v1` | AutoScholarQuery dev 0/10 | 开发 10 条只增加候选、没有新增 gold，且存在来源失败；样本不足以判断。 |
+| `query_evolution_llm_feedback` | query_evolution | 否 | evidence_unavailable | inconclusive | `legacy_gold_records_v1` | AutoScholarQuery qualification 200 | LLM feedback 资格运行存在 fallback，保留为诊断，未纳入正式指标且未启动全量实验。 |
 | `query_evolution_seed_expansion` | query_evolution | 否 | evidence_unavailable | inconclusive | `legacy_gold_records_v1` | AutoScholarQuery dev 0/10 | 开发 10 条未形成新增 gold，且来源失败与小样本阻止稳定结论。 |
 | `refchain` | citation_expansion | 否 | evidence_unavailable | blocked | `legacy_gold_records_v1` | AutoScholarQuery dev 0/10 | 冻结 reference 请求失败主导且未产生扩展候选，不能评价引用链收益。 |
 | `result_policy_highly_only` | result_filtering | 否 | evidence_unavailable | unvalidated | `not_applicable` | 未评测 | 严格过滤选项已实现，但没有独立、跟踪的配对 Benchmark 证据。 |

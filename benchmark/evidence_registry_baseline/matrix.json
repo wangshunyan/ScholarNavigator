@@ -1,8 +1,8 @@
 {
   "decision_counts": {
     "blocked": 1,
-    "inconclusive": 4,
-    "negative": 11,
+    "inconclusive": 5,
+    "negative": 12,
     "promising_default_off": 2,
     "unvalidated": 5,
     "validated_default": 1
@@ -11,7 +11,7 @@
     "current_rules"
   ],
   "evidence_status_counts": {
-    "evidence_unavailable": 20,
+    "evidence_unavailable": 22,
     "tracked_machine_evidence": 4
   },
   "execution": {
@@ -467,6 +467,28 @@
     {
       "blockers": [
         "tracked_primary_artifact_unavailable",
+        "no_quality_gain",
+        "verified_external_risk_evidence_unavailable"
+      ],
+      "call_completeness": {
+        "status": "complete_server_artifact_not_tracked"
+      },
+      "conclusion": "200 条质量资格运行可审计但 F1@20 与 Recall@20 相对 reranker v4 均无提升，未启动全量运行；外部风险回执仍不可用。",
+      "core_metrics": null,
+      "datasets": [
+        "AutoScholarQuery qualification 200"
+      ],
+      "decision": "negative",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "ranking_quality",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "quality_soft_v1"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
         "formal_evaluation_missing",
         "historical_commit_unavailable"
       ],
@@ -526,6 +548,28 @@
       "family": "query_evolution",
       "metric_version": "legacy_gold_records_v1",
       "strategy_id": "query_evolution_coverage_gap"
+    },
+    {
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "fallback_present",
+        "provider_external_dependency"
+      ],
+      "call_completeness": {
+        "status": "diagnostic_fallback_present"
+      },
+      "conclusion": "LLM feedback 资格运行存在 fallback，保留为诊断，未纳入正式指标且未启动全量实验。",
+      "core_metrics": null,
+      "datasets": [
+        "AutoScholarQuery qualification 200"
+      ],
+      "decision": "inconclusive",
+      "default_enabled": false,
+      "efficiency_cost": null,
+      "evidence_status": "evidence_unavailable",
+      "family": "query_evolution",
+      "metric_version": "legacy_gold_records_v1",
+      "strategy_id": "query_evolution_llm_feedback"
     },
     {
       "blockers": [
@@ -645,5 +689,5 @@
   ],
   "schema_version": "1",
   "score_scope": "internal_benchmark_evidence_not_official_score",
-  "strategy_count": 24
+  "strategy_count": 26
 }

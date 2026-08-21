@@ -42,10 +42,10 @@ def test_inventory_is_complete_and_has_one_record_per_strategy(registry_bundle) 
     expected = set(implemented_strategy_ids())
     observed = [item["strategy_id"] for item in registry["strategies"]]
 
-    assert len(expected) == 24
+    assert len(expected) == 26
     assert set(observed) == expected
     assert len(observed) == len(set(observed))
-    assert matrix["strategy_count"] == 24
+    assert matrix["strategy_count"] == 26
     assert matrix["default_enabled_strategy_ids"] == ["current_rules"]
     assert canonical_default_strategy_ids() == ("current_rules",)
     assert canonical_default_contract() == registry["canonical_default_contract"]

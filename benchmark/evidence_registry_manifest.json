@@ -29,11 +29,11 @@
   },
   "baseline": {
     "registry_path": "benchmark/evidence_registry_baseline/registry.json",
-    "registry_sha256": "1a0ac0f418a43e84bb94e8c45b50e81e5bb37b44e45e89cd251d8087c2ddc1ca",
+    "registry_sha256": "e303f550b1d49846735fc8eb2c86fbd4ddd4eb92c05a52cb077e1216bcd82e12",
     "matrix_path": "benchmark/evidence_registry_baseline/matrix.json",
-    "matrix_sha256": "fd362735bf6b070f47ef60134f400c5a83c872862220e70b03e85e5d671692b4",
+    "matrix_sha256": "2ff45dbd421de58e90f48cc30b72b08f7c8eb65cf35eba3e99b7e2ba2ef59cd6",
     "summary_path": "benchmark/evidence_registry_baseline/summary.md",
-    "summary_sha256": "c612afb9cee9f7ffb5bdfcc263b85654d4f72ac365e196fcd76ea9ae2eae2980"
+    "summary_sha256": "0e98c82092aa58b0c248e706d222e2e34bdf4b38d5b935de96a11dc420e7e0fe"
   },
   "strategies": [
     {
@@ -794,6 +794,74 @@
         "insufficient_sample",
         "source_failure",
         "historical_commit_unavailable"
+      ],
+      "score_scope": "internal_not_official"
+    },
+    {
+      "strategy_id": "quality_soft_v1",
+      "family": "ranking_quality",
+      "implementation_commit": null,
+      "evaluation_commit": null,
+      "default_enabled": false,
+      "datasets": [
+        "AutoScholarQuery qualification 200"
+      ],
+      "configuration_delta": [
+        "ranking_policy=quality_soft_v1",
+        "quality_weight<=0.02",
+        "verified risk evidence is opt-in"
+      ],
+      "metric_version": "legacy_gold_records_v1",
+      "evidence_status": "evidence_unavailable",
+      "evidence_paths": [
+        "docs/dev_plan.md"
+      ],
+      "artifact_hashes": {},
+      "call_completeness": {
+        "status": "complete_server_artifact_not_tracked"
+      },
+      "core_metrics": null,
+      "efficiency_cost": null,
+      "decision": "negative",
+      "conclusion": "200 条质量资格运行可审计但 F1@20 与 Recall@20 相对 reranker v4 均无提升，未启动全量运行；外部风险回执仍不可用。",
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "no_quality_gain",
+        "verified_external_risk_evidence_unavailable"
+      ],
+      "score_scope": "internal_not_official"
+    },
+    {
+      "strategy_id": "query_evolution_llm_feedback",
+      "family": "query_evolution",
+      "implementation_commit": null,
+      "evaluation_commit": null,
+      "default_enabled": false,
+      "datasets": [
+        "AutoScholarQuery qualification 200"
+      ],
+      "configuration_delta": [
+        "query_evolution_policy=llm_feedback",
+        "at most one feedback query",
+        "original query retained"
+      ],
+      "metric_version": "legacy_gold_records_v1",
+      "evidence_status": "evidence_unavailable",
+      "evidence_paths": [
+        "docs/dev_plan.md"
+      ],
+      "artifact_hashes": {},
+      "call_completeness": {
+        "status": "diagnostic_fallback_present"
+      },
+      "core_metrics": null,
+      "efficiency_cost": null,
+      "decision": "inconclusive",
+      "conclusion": "LLM feedback 资格运行存在 fallback，保留为诊断，未纳入正式指标且未启动全量实验。",
+      "blockers": [
+        "tracked_primary_artifact_unavailable",
+        "fallback_present",
+        "provider_external_dependency"
       ],
       "score_scope": "internal_not_official"
     },

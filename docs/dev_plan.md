@@ -145,6 +145,8 @@
 - **自动化验证补充（2026-08-21）**：质量、reranker、API 映射、资格门禁和 benchmark 相关回归共 `79 passed`，编译检查和 `git diff --check` 通过；同步前端 API 类型后 `npm run lint` 和 `npm run build` 均通过。
 - **证据传递链修正（2026-08-21）**：`SearchService.run_search`、模块级 `run_search`、PRF 预排序以及初始/语义扩展/查询演化/引用链重排入口现在均接收并转发可选 `verified_quality_evidence`。默认空集合保持旧行为；匹配回执才影响 `quality_soft_v1` 诊断，未匹配回执保持 `unknown`，冲突回执从完整排序入口 fail closed。未修改当前 Prompt、`current_rules` 或既有实验产物。
 - **自动化验证（2026-08-21）**：新增排序策略与完整 `SearchService.run_search` 入口回归，覆盖无证据兼容、匹配/未匹配回执和冲突闭合；`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_paper_quality.py tests/test_rrf_fusion.py tests/test_search_service.py tests/test_benchmark_runner.py`，`92 passed`；编译检查通过。
+- **Registry 集成修正（2026-08-21）**：实现枚举的 26 个策略中此前有两个未登记项，已将 `query_evolution_llm_feedback` 与 `quality_soft_v1` 加入 manifest；两者均保持默认关闭、`evidence_unavailable`，分别保留 fallback/无质量提升结论，不生成正式成绩。按离线生成器刷新 registry、matrix、summary 及 manifest 三个基线哈希；`check_evidence_registry.py check` 返回 `passed=true`、`drift_count=0`，registry 专项 `9 passed`，网络/LLM/benchmark 请求均为 `0`。
+- **回归失败记录（2026-08-21）**：P2/registry 组合回归首次为 `111 passed, 1 failed`，唯一失败是已有 Windows spawn 隔离超时测试在整组运行时偶发把第二个正常任务判为 timeout；同一测试单独重跑为 `1 passed`。未删除、标记 skip 或放宽该测试；该运行波动仍保留为全仓验证风险。
 - **全仓验证状态（2026-08-21）**：按 `AGENTS.md` 执行 `PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q` 得到 `2097 passed, 230 failed, 58 errors`。失败主要是既有 evidence registry 基线未登记 `quality_soft_v1`、历史冻结输入/提交缺失和发布环境门禁漂移；本次 P2 相关专项保持全绿。前端 `npm run lint`、`npm run build`、`compileall` 和 `git diff --check` 通过。未跳过、删除或弱化全仓测试。
 - **外部阻塞**：当前没有独立、可审计的撤稿/重复风险来源回执，因此未把该证据契约接入正式 200 条运行，也未宣称质量收益；获得独立回执后必须使用新 policy 版本和新 RunId 重跑资格门禁。
 - [ ] 实现与离线验证完成；真实资格已执行但门禁未通过
