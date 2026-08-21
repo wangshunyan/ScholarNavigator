@@ -75,6 +75,49 @@ def test_audit_accepts_200_query_qualification_only_when_requested(tmp_path: Pat
     assert "full1000_or_topk_contract_drift" in full["reasons"]
 
 
+def test_audit_accepts_feedback_smoke_with_normal_skips(tmp_path: Path) -> None:
+    path = _run(tmp_path, expected_rows=5)
+    config = json.loads((path / "config.json").read_text(encoding="utf-8"))
+    config.update(
+        {"enable_query_evolution": True, "query_evolution_policy": "llm_feedback"}
+    )
+    (path / "config.json").write_text(json.dumps(config), encoding="utf-8")
+    rows = [_row(index, calls=0) for index in range(5)]
+    for row in rows:
+        row["stage_diagnostics"] = {
+            "query_evolution": {
+                "llm_feedback": [
+                    {
+                        "policy": "llm_feedback",
+                        "eligible_for_feedback": False,
+                        "skipped_reason": "coverage_sufficient",
+                        "llm_call_attempted": False,
+                        "fallback_used": False,
+                        "original_query_retained": True,
+                        "supplemental_query_count": 0,
+                        "accepted_query_count": 0,
+                        "http_attempts": 0,
+                        "http_429_count": 0,
+                        "retry_after_seconds": [],
+                        "retry_wait_seconds": 0.0,
+                        "provider_failure_class": None,
+                        "provider_cache_hit": False,
+                    }
+                ]
+            }
+        }
+    (path / "results.jsonl").write_text(
+        "\n".join(json.dumps(row) for row in rows) + "\n",
+        encoding="utf-8",
+    )
+
+    report = audit_run(path, expected_rows=5)
+
+    assert report["status"] == "passed"
+    assert report["feedback_eligible_count"] == 0
+    assert report["feedback_skipped_count"] == 5
+
+
 def test_audit_rejects_multiple_calls_or_supplemental_queries(tmp_path: Path) -> None:
     path = _run(tmp_path)
     rows = [_row(index, calls=2 if index == 0 else 1, supplemental=3 if index == 1 else 2) for index in range(1000)]

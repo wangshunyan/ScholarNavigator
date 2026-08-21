@@ -1146,6 +1146,24 @@ def _query_evolution_diagnostics(
         for record in records
         if record.coverage_gap is not None
     ]
+    feedback_records = []
+    original_query_retained = any(
+        item.query == output.search_plan.query_analysis.original_query
+        for item in output.search_plan.subqueries
+    )
+    for record in records:
+        if record.llm_feedback is None:
+            continue
+        feedback = record.llm_feedback.model_dump(mode="json")
+        feedback.update(
+            {
+                "policy": record.policy,
+                "round_index": record.round_index,
+                "original_query_retained": original_query_retained,
+                "supplemental_query_count": len(record.generated_queries),
+            }
+        )
+        feedback_records.append(feedback)
     return {
         "enabled": output.search_plan.enable_query_evolution,
         "policy": output.search_plan.query_evolution_policy,
@@ -1191,6 +1209,7 @@ def _query_evolution_diagnostics(
         "gold_lost_by_top_k_count": top_k_lost,
         "candidate_recall_gain": max(0.0, post_recall - prior_recall),
         "coverage_gaps": coverage_gaps,
+        "llm_feedback": feedback_records,
         "quality_gate": {
             "raw_candidate_count": sum(
                 gate.raw_candidate_count for gate in quality_gates
