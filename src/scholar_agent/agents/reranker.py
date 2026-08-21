@@ -12,8 +12,11 @@ from collections.abc import Mapping, Sequence
 from datetime import date
 from typing import Literal
 
+from pydantic import BaseModel, ConfigDict, Field
+
 from scholar_agent.core.identity import build_identity_profile, normalize_title
 from scholar_agent.core.paper_schemas import Paper
+from scholar_agent.core.paper_quality import assess_paper_quality
 from scholar_agent.core.search_schemas import (
     JudgementCategory,
     JudgementResult,
@@ -52,6 +55,23 @@ PRODUCTION_RERANK_KEY_FIELDS: tuple[tuple[str, str], ...] = (
 TieBreakPolicy = Literal["original_index_v1", "deterministic_tiebreak_v2"]
 DEFAULT_TIEBREAK_POLICY: TieBreakPolicy = "original_index_v1"
 DETERMINISTIC_TIEBREAK_V2 = "deterministic_tiebreak_v2"
+QUALITY_SOFT_RANKING_POLICY = "quality_soft_v1"
+
+
+class QualitySoftRankingConfig(BaseModel):
+    """Fixed, default-off low-weight ranking configuration for qualification."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["quality-soft-ranking-v1"] = "quality-soft-ranking-v1"
+    policy: Literal["quality_soft_v1"] = QUALITY_SOFT_RANKING_POLICY
+    enabled_by_default: bool = False
+    quality_weight: float = Field(default=0.02, gt=0.0, le=0.02)
+    preserve_judgement_category_boundary: bool = True
+    unknown_external_risk_penalty: float = Field(default=0.0, ge=0.0, le=0.0)
+
+
+DEFAULT_QUALITY_SOFT_RANKING_CONFIG = QualitySoftRankingConfig()
 
 
 class DeterministicTieBreakUnavailable(ValueError):
@@ -119,6 +139,94 @@ def rerank_papers(
         top_k=top_k,
         tie_break_policy=tie_break_policy,
         source_record_refs=source_record_refs,
+    )
+
+
+def quality_soft_ranking_config_hash(
+    config: QualitySoftRankingConfig = DEFAULT_QUALITY_SOFT_RANKING_CONFIG,
+) -> str:
+    """Return a stable identity for the fixed quality-ranking configuration."""
+
+    payload = json.dumps(
+        config.model_dump(mode="json"),
+        ensure_ascii=True,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def quality_soft_ranking_catalog(
+    config: QualitySoftRankingConfig = DEFAULT_QUALITY_SOFT_RANKING_CONFIG,
+) -> dict[str, object]:
+    """Describe the default-off quality policy without enabling it."""
+
+    return {
+        **config.model_dump(mode="json"),
+        "config_hash": quality_soft_ranking_config_hash(config),
+        "hard_filtering": False,
+        "quality_scope": "metadata_only_not_relevance_or_retraction_claim",
+        "category_boundary": "preserved",
+        "unknown_external_risks": "no_penalty",
+        "original_scores": "preserved_in_ranked_paper",
+    }
+
+
+def apply_quality_soft_ranking(
+    ranked_papers: Sequence[RankedPaper],
+    *,
+    config: QualitySoftRankingConfig = DEFAULT_QUALITY_SOFT_RANKING_CONFIG,
+) -> list[RankedPaper]:
+    """Apply a bounded quality tie-break without filtering or score mutation.
+
+    Relevance and original reranker scores remain untouched.  The additive
+    contribution only sorts candidates within their existing Judgement category,
+    so a high quality lower-category paper cannot cross a relevance boundary.
+    """
+
+    config_hash = quality_soft_ranking_config_hash(config)
+    annotated: list[RankedPaper] = []
+    for item in ranked_papers:
+        report = assess_paper_quality(item.paper)
+        contribution = round(report.quality_score * config.quality_weight, 6)
+        annotated.append(
+            item.model_copy(
+                update={
+                    "original_rank": item.original_rank or item.rank,
+                    "quality_policy": config.policy,
+                    "quality_score": report.quality_score,
+                    "quality_contribution": contribution,
+                    "quality_config_hash": config_hash,
+                }
+            )
+        )
+
+    annotated.sort(
+        key=lambda item: (
+            CATEGORY_TIER.get(item.category, 5),
+            -(item.final_score + (item.quality_contribution or 0.0)),
+            -item.final_score,
+            item.original_rank or item.rank,
+        )
+    )
+    return [
+        item.model_copy(
+            update={
+                "rank": index + 1,
+                "quality_rank_change_reason": _quality_rank_change_reason(item),
+            }
+        )
+        for index, item in enumerate(annotated)
+    ]
+
+
+def _quality_rank_change_reason(item: RankedPaper) -> str:
+    original_rank = item.original_rank or item.rank
+    return (
+        f"{QUALITY_SOFT_RANKING_POLICY}: original_rank={original_rank}; "
+        f"quality_score={item.quality_score or 0.0:.4f}; "
+        f"quality_contribution={item.quality_contribution or 0.0:.6f}; "
+        "unknown_external_risks=no_penalty; category_boundary=preserved"
     )
 
 

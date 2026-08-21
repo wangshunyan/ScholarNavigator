@@ -35,7 +35,7 @@ from scholar_agent.agents.semantic_seed_expansion import (
     SeedResolver,
     expand_semantic_seeds,
 )
-from scholar_agent.agents.reranker import rerank_papers
+from scholar_agent.agents.reranker import apply_quality_soft_ranking, rerank_papers
 from scholar_agent.agents.rrf_fusion import (
     build_retrieval_ranked_lists,
     fuse_ranked_papers,
@@ -2442,6 +2442,8 @@ def _rerank_all_and_top(
             build_retrieval_ranked_lists(retrieval_outputs or []),
             top_k=top_k,
         )
+    elif ranking_policy == "quality_soft_v1":
+        all_ranked_papers = apply_quality_soft_ranking(all_ranked_papers)
     if top_k <= 0:
         return all_ranked_papers, []
     return all_ranked_papers, all_ranked_papers[:top_k]

@@ -133,7 +133,10 @@
 - **失败处理**：质量来源不可用时回退为 unknown，不用默认值伪造风险；资格失败只保留诊断。
 - **外部依赖**：真实撤稿/出版回执、200 条资格集和可用实验环境。
 - **完成条件**：代码、测试和真实资格证据齐全；未通过质量门禁时保持未完成。
-- [ ] 未开始
+- **实现说明（2026-08-21）**：新增默认关闭的 `quality_soft_v1` 排名 policy。它只把 P2-01-A 的本地质量报告转为最大 `0.02` 的低权重排序贡献，仅在既有 Judgement 类别内比较；不硬过滤、不改写 `final_score`、检索分数或相关性分数。撤稿与重复风险仍是 `unknown`，贡献固定为零惩罚。每条输出记录 policy、质量分、贡献、配置 SHA-256、原排名及换序原因；runner 的 `config.json` 同步记录固定配置及哈希。`current_rules` 仍为默认且未修改。
+- **自动化验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_paper_quality.py tests/test_reranker.py tests/test_rrf_fusion.py tests/test_ranking_policy_api.py tests/test_benchmark_runner.py tests/test_full_text_evidence.py tests/test_dedup.py tests/test_api_mapper.py`，`87 passed`；随后 `git diff --check` 与 `compileall` 通过。
+- **真实资格状态**：未运行新的 200 条资格集，尚无 F1、Recall、MRR、延迟或资源账本提升证据；因此本任务保持未完成，不能进入正式成绩。下一步仅在当前服务器运行自然结束、可用隔离环境和一致 P0/Faiss/reranker 资产全部满足后，以新 RunId 运行 `dense_reranker_quality` 的 200 条资格实验。
+- [ ] 实现与离线验证完成；真实资格实验待执行
 
 ## P3：真实评测与指标闭环
 

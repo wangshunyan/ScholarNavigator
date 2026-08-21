@@ -20,6 +20,7 @@ from scholar_agent.agents.judgement_config import (
     CALIBRATED_RULES_V1_CONFIG,
     judgement_config_hash,
 )
+from scholar_agent.agents.reranker import quality_soft_ranking_config_hash
 from scholar_agent.agents.retriever import RetrievalOutput, SourceStats
 from scholar_agent.core.diagnostics_schemas import ConnectorDiagnostics
 from scholar_agent.core.paper_schemas import Paper, PaperIdentifiers
@@ -197,6 +198,34 @@ def test_ranking_policy_is_default_off_recorded_and_passed_to_service(
     assert service.kwargs[0]["ranking_policy"] == "rrf_fusion"
     assert parsed.ranking_policy == "rrf_fusion"
     assert run_benchmark._ablation_group_name(options) == "baseline"  # noqa: SLF001
+
+
+def test_quality_ranking_policy_serializes_fixed_config_and_hash(tmp_path: Path) -> None:
+    dataset = _dataset(tmp_path, count=1)
+    service = FakeService()
+    options = _options(tmp_path, dataset, run_id="quality").model_copy(
+        update={"ranking_policy": "quality_soft_v1"}
+    )
+
+    result = run_benchmark.run_benchmark(options, service=service)
+    parsed = run_benchmark._parser().parse_args(  # noqa: SLF001
+        [
+            "--dataset",
+            "auto_scholar_query",
+            "--run-id",
+            "quality-cli",
+            "--ranking-policy",
+            "quality_soft_v1",
+        ]
+    )
+
+    catalog = result.config["quality_soft_ranking"]
+    assert result.config["ranking_policy"] == "quality_soft_v1"
+    assert service.kwargs[0]["ranking_policy"] == "quality_soft_v1"
+    assert parsed.ranking_policy == "quality_soft_v1"
+    assert catalog["config_hash"] == quality_soft_ranking_config_hash()
+    assert catalog["hard_filtering"] is False
+    assert catalog["unknown_external_risks"] == "no_penalty"
 
 
 def test_query_evolution_policy_is_recorded_and_passed_to_service(

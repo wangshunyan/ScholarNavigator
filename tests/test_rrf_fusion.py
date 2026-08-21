@@ -10,6 +10,7 @@ from scholar_agent.agents.rrf_fusion import (
     fuse_ranked_papers,
 )
 from scholar_agent.core.paper_schemas import Paper, PaperIdentifiers
+from scholar_agent.core.full_text_evidence import build_paragraph_evidence
 from scholar_agent.core.pipeline_diagnostics import PipelineDiagnosticsCollector
 from scholar_agent.core.search_schemas import RankedPaper, RerankScoreBreakdown
 from scholar_agent.core.search_schemas import JudgementResult, QueryAnalysis
@@ -213,3 +214,71 @@ def test_default_ranking_policy_preserves_current_rules_output() -> None:
     assert [item.paper.title for item in all_ranked] == ["Higher", "Lower"]
     assert [item.paper.title for item in top] == ["Higher"]
     assert all(item.rrf_score is None for item in all_ranked)
+
+
+def test_quality_soft_ranking_is_bounded_diagnostic_and_keeps_categories() -> None:
+    evidence = build_paragraph_evidence(
+        "Verified open full-text evidence.",
+        source_url="https://example.test/verified.txt",
+        license_id="CC-BY-4.0",
+        license_verified=True,
+    )
+    baseline = _paper("Alpha metadata only", doi="10.1/alpha")
+    verified = _paper("Zulu verified evidence", doi="10.1/zulu").model_copy(
+        update={"full_text_evidence": [evidence]}
+    )
+    partial = _paper("A partial candidate", doi="10.1/partial")
+    judgements = [
+        JudgementResult(
+            paper=baseline,
+            score=0.8,
+            category="highly_relevant",
+            reasoning="fixture",
+        ),
+        JudgementResult(
+            paper=verified,
+            score=0.8,
+            category="highly_relevant",
+            reasoning="fixture",
+        ),
+        JudgementResult(
+            paper=partial,
+            score=1.0,
+            category="partially_relevant",
+            reasoning="fixture",
+        ),
+    ]
+
+    default_ranked, _ = _rerank_all_and_top(
+        QueryAnalysis(original_query="q"), judgements, 3
+    )
+    quality_ranked, top = _rerank_all_and_top(
+        QueryAnalysis(original_query="q"),
+        judgements,
+        3,
+        ranking_policy="quality_soft_v1",
+    )
+
+    assert [item.paper.title for item in default_ranked[:2]] == [
+        "Alpha metadata only",
+        "Zulu verified evidence",
+    ]
+    assert [item.paper.title for item in quality_ranked] == [
+        "Zulu verified evidence",
+        "Alpha metadata only",
+        "A partial candidate",
+    ]
+    assert [item.final_score for item in quality_ranked] == [
+        item.final_score
+        for item in [default_ranked[1], default_ranked[0], default_ranked[2]]
+    ]
+    assert [item.category for item in quality_ranked] == [
+        "highly_relevant",
+        "highly_relevant",
+        "partially_relevant",
+    ]
+    assert all(item.quality_policy == "quality_soft_v1" for item in quality_ranked)
+    assert all(item.quality_contribution is not None for item in quality_ranked)
+    assert max(item.quality_contribution or 0.0 for item in quality_ranked) <= 0.02
+    assert all("unknown_external_risks=no_penalty" in (item.quality_rank_change_reason or "") for item in quality_ranked)
+    assert [item.paper.title for item in top] == [item.paper.title for item in quality_ranked]

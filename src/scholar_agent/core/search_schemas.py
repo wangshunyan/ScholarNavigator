@@ -55,7 +55,7 @@ QueryPlanningPolicy = Literal[
 ]
 CombinationMode = Literal["all", "any"]
 JudgementPolicy = Literal["current_rules", "calibrated_rules_v1"]
-RankingPolicy = Literal["current_rules", "rrf_fusion"]
+RankingPolicy = Literal["current_rules", "rrf_fusion", "quality_soft_v1"]
 QueryFacetType = Literal[
     "topic",
     "method",
@@ -607,6 +607,11 @@ class RankedPaper(BaseModel):
     original_rank: int | None = Field(default=None, ge=1)
     rrf_top_20_change: str | None = None
     rrf_rank_change_reason: str | None = None
+    quality_policy: str | None = None
+    quality_score: float | None = Field(default=None, ge=0.0, le=1.0)
+    quality_contribution: float | None = Field(default=None, ge=0.0, le=0.02)
+    quality_config_hash: str | None = None
+    quality_rank_change_reason: str | None = None
 
 
 class QueryEvolutionOptions(BaseModel):

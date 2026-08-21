@@ -133,6 +133,10 @@ from scholar_agent.evaluation.stage_diagnostics import (  # noqa: E402
     analyze_search_stages,
 )
 from scholar_agent.llm.provider import get_llm_runtime_config  # noqa: E402
+from scholar_agent.agents.reranker import (  # noqa: E402
+    QUALITY_SOFT_RANKING_POLICY,
+    quality_soft_ranking_catalog,
+)
 from scholar_agent.prompts import load_manifest, load_prompt  # noqa: E402
 from scholar_agent.retrieval.query_adapter import QueryAdapterPolicy  # noqa: E402
 from scholar_agent.services.api_mapper import (  # noqa: E402
@@ -1087,6 +1091,8 @@ def _build_config(
         semantic_config["comparison"] = comparison_binding(
             options.comparison_plan_path, options.comparison_role
         )
+    if options.ranking_policy == QUALITY_SOFT_RANKING_POLICY:
+        semantic_config["quality_soft_ranking"] = quality_soft_ranking_catalog()
     if (
         options.shard_plan_path is not None
         and options.shard_index is not None
@@ -1812,7 +1818,7 @@ def _parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--ranking-policy",
-        choices=["current_rules", "rrf_fusion"],
+        choices=["current_rules", "rrf_fusion", "quality_soft_v1"],
         default="current_rules",
     )
     parser.add_argument("--judgement-config", default=None)
