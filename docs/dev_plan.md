@@ -125,7 +125,7 @@
 
 - **任务编号**：P2-01-B；**独立提交**：只在 P2-01-A 已完成后，以新 policy 接入 reranker 与 qualification runner。
 - **目标能力**：在不改变 `current_rules` 的前提下，将 P2-01-A 的质量报告作为可审计软排序信号。
-- **当前缺口**：质量信号尚未进入独立 ranking policy，也没有资格集质量/延迟证据。
+- **当前缺口**：质量 policy 已进入独立 ranking policy，但尚无独立外部风险回执带来的可审计质量收益；既有 200 条资格运行没有产生 F1/Recall 提升。
 - **实现范围**：新增默认关闭 policy、配置哈希、排名诊断和 200 条资格方案；不做硬过滤，不覆盖基线。
 - **实现方案**：限定低权重质量贡献；撤稿/重复未知不产生惩罚；只有已验证风险回执才影响信号，并保留原始相关性/检索分数。
 - **验收标准**：`current_rules` 字节级/回归行为不变；新 policy 通过 fixture 和资格门禁才允许完整运行；未证明改善时不进入正式成绩。
@@ -143,6 +143,9 @@
 - **诊断修正（2026-08-21）**：发现 API 映射层丢弃质量策略诊断字段，已补齐 `quality_policy`、`quality_score`、`quality_contribution`、配置哈希和换序原因的公开结果映射；相关回归共 `76 passed`。这不改变已完成 v2 的失败门禁结论，也不构成质量提升证据。
 - **离线证据契约（2026-08-21）**：新增 `VerifiedQualityEvidence`。调用方必须提供精确稳定论文标识、来源、来源记录 ID 和 `clear`/`flagged` 状态；模块不联网、不保存外部正文，记录 ID 只以 SHA-256 进入诊断。无匹配回执继续保持 `unknown` 且不扣分；同一风险信号出现冲突回执时 fail closed。默认 `assess_paper_quality(paper)` 的分数和范围保持不变。
 - **自动化验证补充（2026-08-21）**：质量、reranker、API 映射、资格门禁和 benchmark 相关回归共 `79 passed`，编译检查和 `git diff --check` 通过；同步前端 API 类型后 `npm run lint` 和 `npm run build` 均通过。
+- **证据传递链修正（2026-08-21）**：`SearchService.run_search`、模块级 `run_search`、PRF 预排序以及初始/语义扩展/查询演化/引用链重排入口现在均接收并转发可选 `verified_quality_evidence`。默认空集合保持旧行为；匹配回执才影响 `quality_soft_v1` 诊断，未匹配回执保持 `unknown`，冲突回执从完整排序入口 fail closed。未修改当前 Prompt、`current_rules` 或既有实验产物。
+- **自动化验证（2026-08-21）**：新增排序策略与完整 `SearchService.run_search` 入口回归，覆盖无证据兼容、匹配/未匹配回执和冲突闭合；`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_paper_quality.py tests/test_rrf_fusion.py tests/test_search_service.py tests/test_benchmark_runner.py`，`92 passed`；编译检查通过。
+- **全仓验证状态（2026-08-21）**：按 `AGENTS.md` 执行 `PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q` 得到 `2097 passed, 230 failed, 58 errors`。失败主要是既有 evidence registry 基线未登记 `quality_soft_v1`、历史冻结输入/提交缺失和发布环境门禁漂移；本次 P2 相关专项保持全绿。前端 `npm run lint`、`npm run build`、`compileall` 和 `git diff --check` 通过。未跳过、删除或弱化全仓测试。
 - **外部阻塞**：当前没有独立、可审计的撤稿/重复风险来源回执，因此未把该证据契约接入正式 200 条运行，也未宣称质量收益；获得独立回执后必须使用新 policy 版本和新 RunId 重跑资格门禁。
 - [ ] 实现与离线验证完成；真实资格已执行但门禁未通过
 

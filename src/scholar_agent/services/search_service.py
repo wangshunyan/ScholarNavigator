@@ -10,7 +10,7 @@ import os
 import pickle
 import time
 from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from multiprocessing import get_context
 from threading import RLock
 from typing import Any, Protocol
@@ -70,6 +70,7 @@ from scholar_agent.core.diagnostics_schemas import (
     merge_connector_diagnostics,
 )
 from scholar_agent.core.paper_schemas import Paper
+from scholar_agent.core.paper_quality import VerifiedQualityEvidence
 from scholar_agent.core.pipeline_diagnostics import (
     PipelineDiagnosticsCollector,
     StageCandidateSnapshot,
@@ -452,6 +453,7 @@ class SearchService:
         result_lineage_callback: Callable[[dict[str, Any]], None] | None = None,
         resource_accounting_observer: Any | None = None,
         untrusted_metadata_observer: UntrustedMetadataObserver | None = None,
+        verified_quality_evidence: Sequence[VerifiedQualityEvidence] = (),
     ) -> SearchServiceOutput:
         signals = _ExecutionSignals(
             event_callback,
@@ -612,6 +614,7 @@ class SearchService:
                         judgement_policy=effective_judgement_policy,
                         judgement_config=effective_judgement_config,
                         ranking_policy=ranking_policy,
+                        verified_quality_evidence=verified_quality_evidence,
                     )
                     initial_subqueries = search_plan.subqueries
                 elif query_planning_policy in {
@@ -753,6 +756,7 @@ class SearchService:
                 top_k,
                 ranking_policy=ranking_policy,
                 retrieval_outputs=retrieval_outputs,
+                verified_quality_evidence=verified_quality_evidence,
             )
             diagnostics.snapshot_ranked("initial_reranked", all_ranked_papers)
             signals.check_cancelled("reranking:after")
@@ -928,6 +932,7 @@ class SearchService:
                         top_k,
                         ranking_policy=ranking_policy,
                         retrieval_outputs=retrieval_outputs,
+                        verified_quality_evidence=verified_quality_evidence,
                     )
                     diagnostics.snapshot_ranked(
                         "post_semantic_seed_expansion_reranked",
@@ -1226,6 +1231,7 @@ class SearchService:
                         top_k,
                         ranking_policy=ranking_policy,
                         retrieval_outputs=retrieval_outputs,
+                        verified_quality_evidence=verified_quality_evidence,
                     )
                     diagnostics.snapshot_ranked(
                         "post_evolution_reranked",
@@ -1439,6 +1445,7 @@ class SearchService:
                     top_k,
                     ranking_policy=ranking_policy,
                     retrieval_outputs=retrieval_outputs,
+                    verified_quality_evidence=verified_quality_evidence,
                 )
                 diagnostics.snapshot_ranked(
                     "post_refchain_reranked",
@@ -1682,6 +1689,7 @@ class SearchService:
         judgement_policy: JudgementPolicy,
         judgement_config: JudgementRuleConfig,
         ranking_policy: RankingPolicy,
+        verified_quality_evidence: Sequence[VerifiedQualityEvidence],
     ) -> tuple[list[RetrievalOutput], SearchPlan]:
         """Run original-query feedback before the remaining fixed-size plan."""
 
@@ -1748,6 +1756,7 @@ class SearchService:
             max(5, search_plan.top_k),
             ranking_policy=ranking_policy,
             retrieval_outputs=first_outputs,
+            verified_quality_evidence=verified_quality_evidence,
         )
         outcome = build_prf_plan(
             search_plan.query_analysis.original_query,
@@ -2379,6 +2388,7 @@ def run_search(
     result_lineage_callback: Callable[[dict[str, Any]], None] | None = None,
     resource_accounting_observer: Any | None = None,
     untrusted_metadata_observer: UntrustedMetadataObserver | None = None,
+    verified_quality_evidence: Sequence[VerifiedQualityEvidence] = (),
 ) -> SearchServiceOutput:
     """Run the default internal search pipeline."""
 
@@ -2420,6 +2430,7 @@ def run_search(
         **lineage_kwargs,
         **resource_kwargs,
         **isolation_kwargs,
+        verified_quality_evidence=verified_quality_evidence,
     )
 
 
@@ -2430,6 +2441,7 @@ def _rerank_all_and_top(
     *,
     ranking_policy: RankingPolicy = "current_rules",
     retrieval_outputs: list[RetrievalOutput] | None = None,
+    verified_quality_evidence: Sequence[VerifiedQualityEvidence] = (),
 ) -> tuple[list[RankedPaper], list[RankedPaper]]:
     all_ranked_papers = rerank_papers(
         query_analysis,
@@ -2443,7 +2455,10 @@ def _rerank_all_and_top(
             top_k=top_k,
         )
     elif ranking_policy == "quality_soft_v1":
-        all_ranked_papers = apply_quality_soft_ranking(all_ranked_papers)
+        all_ranked_papers = apply_quality_soft_ranking(
+            all_ranked_papers,
+            verified_evidence=verified_quality_evidence,
+        )
     if top_k <= 0:
         return all_ranked_papers, []
     return all_ranked_papers, all_ranked_papers[:top_k]

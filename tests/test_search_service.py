@@ -21,6 +21,8 @@ from scholar_agent.agents.retriever import (
     clear_source_cooldowns,
 )
 from scholar_agent.core.paper_schemas import Paper, PaperIdentifiers
+from scholar_agent.core.identity import paper_identifier_set
+from scholar_agent.core.paper_quality import VerifiedQualityEvidence
 from scholar_agent.core.search_schemas import (
     EvolvedSubquery,
     QueryConstraint,
@@ -290,6 +292,39 @@ def test_run_search_complete_pipeline_with_injected_retriever() -> None:
     assert all(seconds >= 0 for seconds in output.stage_latencies.values())
     assert all(call[1] == output.search_plan.limit_per_source for call in calls)
     assert all(call[2] == ["arxiv", "openalex"] for call in calls)
+
+
+def test_run_search_forwards_verified_quality_evidence_to_quality_policy() -> None:
+    paper = make_paper("Evidence-backed retrieval", doi="10.123/verified")
+
+    def fake_retriever(
+        query: str,
+        limit_per_source: int = 20,
+        sources: list[str] | None = None,
+    ) -> RetrievalOutput:
+        del limit_per_source, sources
+        return make_output(query, [paper])
+
+    identifier = next(iter(paper_identifier_set(paper)))
+    evidence = VerifiedQualityEvidence(
+        paper_identifier=identifier,
+        signal_name="retraction_status",
+        state="clear",
+        source="verified_registry",
+        source_record_id="record-1",
+    )
+    output = SearchService(retriever=fake_retriever).run_search(
+        "LLM reranking retrieval",
+        top_k=1,
+        ranking_policy="quality_soft_v1",
+        verified_quality_evidence=[evidence],
+        enable_synthesis=False,
+    )
+
+    assert output.ranked_papers
+    assert output.ranked_papers[0].quality_policy == "quality_soft_v1"
+    assert output.ranked_papers[0].quality_score is not None
+    assert output.ranked_papers[0].quality_score > 0.0
 
 
 def test_per_run_judgement_policy_does_not_inherit_other_policy_config() -> None:

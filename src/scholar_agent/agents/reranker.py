@@ -16,7 +16,10 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from scholar_agent.core.identity import build_identity_profile, normalize_title
 from scholar_agent.core.paper_schemas import Paper
-from scholar_agent.core.paper_quality import assess_paper_quality
+from scholar_agent.core.paper_quality import (
+    VerifiedQualityEvidence,
+    assess_paper_quality,
+)
 from scholar_agent.core.search_schemas import (
     JudgementCategory,
     JudgementResult,
@@ -176,6 +179,7 @@ def apply_quality_soft_ranking(
     ranked_papers: Sequence[RankedPaper],
     *,
     config: QualitySoftRankingConfig = DEFAULT_QUALITY_SOFT_RANKING_CONFIG,
+    verified_evidence: Sequence[VerifiedQualityEvidence] = (),
 ) -> list[RankedPaper]:
     """Apply a bounded quality tie-break without filtering or score mutation.
 
@@ -187,7 +191,10 @@ def apply_quality_soft_ranking(
     config_hash = quality_soft_ranking_config_hash(config)
     annotated: list[RankedPaper] = []
     for item in ranked_papers:
-        report = assess_paper_quality(item.paper)
+        report = assess_paper_quality(
+            item.paper,
+            verified_evidence=verified_evidence,
+        )
         contribution = round(report.quality_score * config.quality_weight, 6)
         annotated.append(
             item.model_copy(

@@ -11,6 +11,8 @@ from scholar_agent.agents.rrf_fusion import (
 )
 from scholar_agent.core.paper_schemas import Paper, PaperIdentifiers
 from scholar_agent.core.full_text_evidence import build_paragraph_evidence
+from scholar_agent.core.identity import paper_identifier_set
+from scholar_agent.core.paper_quality import VerifiedQualityEvidence
 from scholar_agent.core.pipeline_diagnostics import PipelineDiagnosticsCollector
 from scholar_agent.core.search_schemas import RankedPaper, RerankScoreBreakdown
 from scholar_agent.core.search_schemas import JudgementResult, QueryAnalysis
@@ -282,3 +284,108 @@ def test_quality_soft_ranking_is_bounded_diagnostic_and_keeps_categories() -> No
     assert max(item.quality_contribution or 0.0 for item in quality_ranked) <= 0.02
     assert all("unknown_external_risks=no_penalty" in (item.quality_rank_change_reason or "") for item in quality_ranked)
     assert [item.paper.title for item in top] == [item.paper.title for item in quality_ranked]
+
+
+def test_quality_soft_ranking_receives_matching_verified_evidence() -> None:
+    paper = _paper("Evidence-backed", doi="10.1/evidence")
+    judgement = JudgementResult(
+        paper=paper,
+        score=0.8,
+        category="highly_relevant",
+        reasoning="fixture",
+    )
+    identifier = next(iter(paper_identifier_set(paper)))
+    evidence = VerifiedQualityEvidence(
+        paper_identifier=identifier,
+        signal_name="retraction_status",
+        state="clear",
+        source="verified_registry",
+        source_record_id="record-1",
+    )
+
+    without, _ = _rerank_all_and_top(
+        QueryAnalysis(original_query="q"),
+        [judgement],
+        1,
+        ranking_policy="quality_soft_v1",
+    )
+    with_evidence, _ = _rerank_all_and_top(
+        QueryAnalysis(original_query="q"),
+        [judgement],
+        1,
+        ranking_policy="quality_soft_v1",
+        verified_quality_evidence=[evidence],
+    )
+
+    assert with_evidence[0].quality_score is not None
+    assert with_evidence[0].quality_score > (without[0].quality_score or 0.0)
+
+
+def test_quality_soft_ranking_ignores_unmatched_verified_evidence() -> None:
+    paper = _paper("Known", doi="10.1/known")
+    judgement = JudgementResult(
+        paper=paper,
+        score=0.8,
+        category="highly_relevant",
+        reasoning="fixture",
+    )
+    unmatched = VerifiedQualityEvidence(
+        paper_identifier="doi:10.1/other",
+        signal_name="retraction_status",
+        state="flagged",
+        source="verified_registry",
+        source_record_id="other-record",
+    )
+
+    without, _ = _rerank_all_and_top(
+        QueryAnalysis(original_query="q"),
+        [judgement],
+        1,
+        ranking_policy="quality_soft_v1",
+    )
+    with_unmatched, _ = _rerank_all_and_top(
+        QueryAnalysis(original_query="q"),
+        [judgement],
+        1,
+        ranking_policy="quality_soft_v1",
+        verified_quality_evidence=[unmatched],
+    )
+
+    assert with_unmatched[0].quality_score == without[0].quality_score
+    assert with_unmatched[0].quality_contribution == without[0].quality_contribution
+
+
+def test_quality_soft_ranking_fails_closed_on_conflicting_evidence() -> None:
+    paper = _paper("Conflict", doi="10.1/conflict")
+    judgement = JudgementResult(
+        paper=paper,
+        score=0.8,
+        category="highly_relevant",
+        reasoning="fixture",
+    )
+    identifier = next(iter(paper_identifier_set(paper)))
+    evidence = [
+        VerifiedQualityEvidence(
+            paper_identifier=identifier,
+            signal_name="duplicate_risk",
+            state="clear",
+            source="registry_a",
+            source_record_id="record-a",
+        ),
+        VerifiedQualityEvidence(
+            paper_identifier=identifier,
+            signal_name="duplicate_risk",
+            state="flagged",
+            source="registry_b",
+            source_record_id="record-b",
+        ),
+    ]
+
+    with pytest.raises(ValueError, match="conflicting_verified_quality_evidence"):
+        _rerank_all_and_top(
+            QueryAnalysis(original_query="q"),
+            [judgement],
+            1,
+            ranking_policy="quality_soft_v1",
+            verified_quality_evidence=evidence,
+        )
