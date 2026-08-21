@@ -114,8 +114,10 @@ from scholar_agent.services.search_budget import BudgetedLLMClient, SearchBudget
 
 ENABLE_LLM_QUERY_UNDERSTANDING_ENV = "SCHOLAR_AGENT_ENABLE_LLM_QUERY_UNDERSTANDING"
 ENABLE_LLM_JUDGEMENT_ENV = "SCHOLAR_AGENT_ENABLE_LLM_JUDGEMENT"
-RETRIEVAL_CLEANUP_GRACE_SECONDS = 0.5
-ISOLATED_RETRIEVER_MIN_RUNTIME_SECONDS = 1.2
+# Windows spawn can spend most of a short budget starting an isolated child;
+# keep a bounded post-deadline window to collect a result already in flight.
+RETRIEVAL_CLEANUP_GRACE_SECONDS = 0.65
+ISOLATED_RETRIEVER_MIN_RUNTIME_SECONDS = 1.4
 
 EventCallback = Callable[[str, dict[str, Any]], None]
 ShouldCancel = Callable[[], bool]
