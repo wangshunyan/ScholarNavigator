@@ -157,7 +157,7 @@ if [[ "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$
   ARGS+=("--max-candidate-papers" "300")
 fi
 
-if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_reranker_llm_feedback" ]]; then
+if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_quality" || "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_reranker_llm_feedback" ]]; then
   BM25_LIMIT="60"
   SEMANTIC_LIMIT="60"
   if [[ "$CONFIGURATION" == "hybrid_deep_rrf" ]]; then
