@@ -287,6 +287,11 @@ export interface RankedPaper {
   original_rank?: number | null;
   rrf_top_20_change?: string | null;
   rrf_rank_change_reason?: string | null;
+  quality_policy?: string | null;
+  quality_score?: number | null;
+  quality_contribution?: number | null;
+  quality_config_hash?: string | null;
+  quality_rank_change_reason?: string | null;
 }
 
 export interface QueryAnalysis {
