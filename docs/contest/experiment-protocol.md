@@ -38,6 +38,15 @@ v2 已完成 200/200、零失败、零 fallback，并通过资源账本、GPU re
 完整运行的阶段一离线瓶颈证据和该候选的边界记录在
 [`stage1-bottleneck-analysis.md`](stage1-bottleneck-analysis.md)。
 
+`dense_reranker_rrf_soft` 是 P3-00 的新预注册资格配置，不能复用上述 v2 产物。它显式固定
+BM25 与 Dense 候选各 60 条、RRF `k=60`、120 个 reranker 候选和 soft Judgement 阈值 0.35，
+并使用新 RunId `contest_qual200_dense_reranker_rrf_soft_v3` 对比
+`contest_qual200_reranker_v4_gpu1`。除 200 条完整、零失败/回退、资源账本和 reranker 审计外，
+资格脚本还要求初始候选 Recall 不下降、Judgement 的 gold false-negative rate 严格下降、平均延迟
+不超过 baseline 的 1.10 倍，以及
+F1@20 或 Recall@20 的 paired-bootstrap 95% CI 下界大于零。gold/qrels 只用于运行后离线 metrics
+与 stage diagnostics；任何失败只保留诊断，不得启动 full run 或写入正式成绩。
+
 神经 reranker 资格运行还必须证明真实模型推理成功：结果中不得出现
 `local_model_fallback_count`，且必须有正数 batch、候选数、推理成功数、模型指纹、设备、最大长度、固定 batch size=8、候选上限=120、延迟样本和 CUDA 峰值显存；汇总报告必须包含 P50/P95 延迟和候选吞吐。旧的
 `contest_qual200_reranker_v1` 曾发生 CUDA 索引断言，只能作为失败诊断；修复后的资格运行使用新 RunId
@@ -49,30 +58,30 @@ v3 如因完整序列 logits 的 CPU 传输导致性能不满足实验资源边�
 
 LLM 组必须等待完整 reranker 组核验通过后才启动。它固定使用 `llm_semantic`、当前 Prompt、`temperature=0`、严格 JSON Schema，且每个查询最多一次 LLM 调用、最多两条补充查询并始终保留原始查询。活动 Prompt `llm_query_planning@1.0.1` 为降低无效扩展风险固定生成一条不超过 12 词、逐字保留核心 topic 词的补充查询；runner 将 `--max-llm-calls=1` 作为每条 SearchBudget 的上限，并固定 `--max-search-rounds=3`。
 
-当前 `contest_full_dense_reranker_llm_v14` 在旧审计字段之前启动，有 1000 条结果和后验诊断账本但缺少 `RUN_COMPLETED`，且记录了 fallback；它是未完成、不可审计诊断，不得恢复、不得作为正式成绩或资格依据。`contest_qual200_dense_reranker_llm_v15` 缺少正式审计字段，`contest_qual200_dense_reranker_llm_v16` 则有一次 temporary-overload fallback 且未通过 paired-bootstrap 门禁；两者都不得恢复或进入正式成绩。下列命令记录 v16 的已执行资格链路；任何后续 LLM 主线必须替换为新的不可复用 RunId：
+当前 `contest_full_dense_reranker_llm_v14` 在旧审计字段之前启动，有 1000 条结果和后验诊断账本但缺少 `RUN_COMPLETED`，且记录了 fallback；它是未完成、不可审计诊断，不得恢复、不得作为正式成绩或资格依据。`contest_qual200_dense_reranker_llm_v15` 缺少正式审计字段，`contest_qual200_dense_reranker_llm_v16` 则有一次 temporary-overload fallback 且未通过 paired-bootstrap 门禁；两者都不得恢复或进入正式成绩。后续 P0-01 反馈闭环必须使用独立的、不可复用 RunId `v20`，不能复用或延续上述初始规划诊断。
 
 ```bash
-./scripts/run_contest_benchmark.sh --mode smoke --configuration dense_reranker_llm --run-id contest_smoke_dense_reranker_llm_v16
-./scripts/run_contest_benchmark.sh --mode qualification --configuration dense_reranker_llm --run-id contest_qual200_dense_reranker_llm_v16
+./scripts/run_contest_benchmark.sh --mode smoke --configuration dense_reranker_llm_feedback --run-id contest_smoke_dense_reranker_llm_feedback_v20
+./scripts/run_contest_benchmark.sh --mode qualification --configuration dense_reranker_llm_feedback --run-id contest_qual200_dense_reranker_llm_feedback_v20
 python scripts/audit_contest_llm_run.py \
-  --run outputs/benchmark_runs/contest_qual200_dense_reranker_llm_v16 \
+  --run outputs/benchmark_runs/contest_qual200_dense_reranker_llm_feedback_v20 \
   --expected-rows 200 \
-  --output outputs/benchmark_runs/contest_qual200_dense_reranker_llm_v16/llm_audit.json
+  --output outputs/benchmark_runs/contest_qual200_dense_reranker_llm_feedback_v20/llm_audit.json
 python scripts/check_contest_qualification.py \
   --baseline outputs/benchmark_runs/contest_qual200_reranker_v4_gpu1 \
-  --candidate outputs/benchmark_runs/contest_qual200_dense_reranker_llm_v16 \
-  --output outputs/benchmark_runs/contest_qual200_dense_reranker_llm_v16/qualification_gate.json
+  --candidate outputs/benchmark_runs/contest_qual200_dense_reranker_llm_feedback_v20 \
+  --output outputs/benchmark_runs/contest_qual200_dense_reranker_llm_feedback_v20/qualification_gate.json
 ```
 
-门禁只允许 `current_rules` 到 `llm_semantic` 的查询规划变更，以及每条一次 LLM 调用/三轮检索预算；它会同时验证同一语料、Faiss 索引、reranker、候选上限、查询顺序、`top_k=20`、资源账本、GPU reranker 审计和 200 条完整 LLM 审计。只有 F1@20 或 Recall@20 严格提升且配对 bootstrap 95% 置信区间下界大于零，才允许新的、不可复用 RunId 进入完整 LLM 实验；v16 已失败，不得恢复或直接扩展。
+反馈闭环门禁固定保留 `current_rules` 首轮规划，只允许在首轮检索、Judgement 与 reranker 后增加 `llm_feedback`；它同样要求每条一次 LLM 调用/三轮检索预算、同一语料、Faiss 索引、reranker、候选上限、查询顺序、`top_k=20`、资源账本、GPU reranker 审计和 200 条完整 LLM 审计。正常跳过反馈的 smoke 可验证链路，却不能主张 LLM 效果；200 条资格必须至少有一次真实反馈调用、零 fallback，且 F1@20 或 Recall@20 严格提升并满足配对 bootstrap 95% 置信区间下界大于零，才允许新的、不可复用 RunId 进入完整 LLM 实验。
 
 完整运行结束后必须执行：
 
 ```bash
 python scripts/audit_contest_llm_run.py \
-  --run outputs/benchmark_runs/contest_full_dense_reranker_llm_v16 \
+  --run outputs/benchmark_runs/contest_full_dense_reranker_llm_feedback_v20 \
   --expected-rows 1000 \
-  --output outputs/benchmark_runs/contest_full_dense_reranker_llm_v16/llm_audit.json
+  --output outputs/benchmark_runs/contest_full_dense_reranker_llm_feedback_v20/llm_audit.json
 ```
 
 审计要求 1000 条结果、完成标记、每条调用数不超过 1、补充查询不超过 2、Prompt/模型元数据、Token、延迟、Schema 拒绝和 `current_rules` 回退记录齐全。Provider 不可用时只记录 LLM 组未完成，不伪造指标。

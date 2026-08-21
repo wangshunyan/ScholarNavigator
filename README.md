@@ -102,7 +102,7 @@ P0 语料或 Faiss 索引变化后，不恢复旧 `local/hybrid` 结果。先在
 
 `contest_qual200_reranker_v1` 是已知 CUDA 失败诊断，v2/v2_gpu1 因 logits 位置兼容性导致回退，均不能作为资格或正式结果。v3 修复了正确性但暴露完整序列 logits 的 CPU 传输瓶颈，故不作正式结果。`contest_qual200_reranker_v4_gpu1` 固定 2048 token、120 候选和 batch=8，并只传输最终决策时间步；它必须同时满足真实 GPU 推理、零回退、P50/P95 延迟、吞吐和峰值显存审计，并通过配对 bootstrap 与资源账本门禁后，才可运行 `contest_full_dense_reranker_v4`。Qwen3 Reranker 只从本地模型目录加载；缺失或失败时回退并记录，不能写作神经重排成绩。内部 F1/Recall 不等同于赛事官方 scorer。
 
-LLM 组必须在完整 reranker 核验通过后，以新的 RunId 先完成 smoke 和 200 条资格门禁。每条查询最多一次调用、最多两条补充查询、`temperature=0`、严格 JSON Schema 且保留原始查询；运行完成后必须执行 `scripts/audit_contest_llm_run.py`。历史 LLM v5-v16 均为诊断，不能作为正式成绩；Provider 不可用、fallback 非零、审计失败或 bootstrap 不通过时仅记录该组未完成，不能伪造成绩。
+LLM 组必须在完整 reranker 核验通过后，以新的 RunId 先完成 smoke 和 200 条资格门禁。P0-01 的后检索反馈链使用 `dense_reranker_llm_feedback`，保留 `current_rules` 首轮规划；每条查询最多一次调用、最多一条反馈查询、`temperature=0`、严格 JSON Schema 且保留原始查询。运行完成后必须执行 `scripts/audit_contest_llm_run.py`。正常跳过反馈的 smoke 只验证链路，不能主张实测 LLM 效果；200 条资格必须至少有一次真实反馈调用。历史 LLM v5-v16 均为诊断，不能作为正式成绩；Provider 不可用、fallback 非零、审计失败或 bootstrap 不通过时仅记录该组未完成，不能伪造成绩。
 
 `dense_reranker_soft` 是不改变默认 `current_rules` 的独立受控候选，仅降低已审计的 partial-relevance 阈值。自动 GPU 选择曾在常驻本地 Provider 时引发 fallback；资格运行必须显式隔离 reranker，例如：
 
@@ -115,6 +115,20 @@ bash scripts/run_contest_benchmark.sh \
 ```
 
 只有 200 条完整、零失败、零 fallback、资源账本与 reranker 审计通过，并且 paired-bootstrap 95% 区间支持 F1@20 或 Recall@20 提升，才允许新的完整 1000 条 RunId。当前 `contest_full_dense_reranker_soft_v2` 已满足这些条件，内部 F1@20=0.02726、Recall@20=0.16817；所有内部 F1/Recall 仅为工程比较，不等同赛事官方 scorer。
+
+P3-00 另行预注册了候选召回/Judgement 验证，不复用 v2：
+
+```powershell
+.\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration dense_reranker_rrf_soft -RunId contest_qual200_dense_reranker_rrf_soft_v3 -RerankerDevice cuda:1
+.\.venv\Scripts\python.exe scripts\check_contest_qualification.py `
+  --baseline outputs\benchmark_runs\contest_qual200_reranker_v4_gpu1 `
+  --candidate outputs\benchmark_runs\contest_qual200_dense_reranker_rrf_soft_v3 `
+  --output outputs\benchmark_runs\contest_qual200_dense_reranker_rrf_soft_v3\qualification_gate.json
+```
+
+该门禁固定 BM25+Dense 候选各 60 条、RRF `k=60` 和 soft Judgement，且要求初始候选 Recall
+不下降、Judgement false-negative rate 严格下降，且平均延迟不超过 baseline 的 1.10 倍。它只在检索结束后使用 gold/qrels 计算离线指标；
+未通过时不运行 full 1000 条，也不能进入正式内部成绩。
 
 参赛补齐步骤、优化优先级和提交材料清单见 [docs/contest/next-steps.md](docs/contest/next-steps.md)；演示查询可参考 [docs/contest/demo-queries.md](docs/contest/demo-queries.md)。
 

@@ -116,6 +116,59 @@ def test_audit_accepts_feedback_smoke_with_normal_skips(tmp_path: Path) -> None:
     assert report["status"] == "passed"
     assert report["feedback_eligible_count"] == 0
     assert report["feedback_skipped_count"] == 5
+    assert report["claimable_live_llm_effect"] is False
+
+
+def test_audit_marks_feedback_with_live_calls_as_claimable(tmp_path: Path) -> None:
+    path = _run(tmp_path, expected_rows=5)
+    config = json.loads((path / "config.json").read_text(encoding="utf-8"))
+    config.update(
+        {"enable_query_evolution": True, "query_evolution_policy": "llm_feedback"}
+    )
+    (path / "config.json").write_text(json.dumps(config), encoding="utf-8")
+    rows = [_row(index) for index in range(5)]
+    for row in rows:
+        row["stage_diagnostics"] = {
+            "query_evolution": {
+                "llm_feedback": [
+                    {
+                        "policy": "llm_feedback",
+                        "eligible_for_feedback": True,
+                        "llm_call_attempted": True,
+                        "fallback_used": False,
+                        "original_query_retained": True,
+                        "supplemental_query_count": 1,
+                        "generated_query_count": 1,
+                        "accepted_query_count": 1,
+                        "prompt_version": "llm-feedback-evolution-v1",
+                        "model": "configured-model",
+                        "schema_version": "1",
+                        "temperature": 0.0,
+                        "prompt_tokens": 10,
+                        "completion_tokens": 5,
+                        "total_tokens": 15,
+                        "latency_seconds": 0.2,
+                        "http_attempts": 1,
+                        "http_429_count": 0,
+                        "retry_after_seconds": [],
+                        "retry_wait_seconds": 0.0,
+                        "provider_failure_class": None,
+                        "provider_cache_hit": False,
+                    }
+                ]
+            }
+        }
+    (path / "results.jsonl").write_text(
+        "\n".join(json.dumps(row) for row in rows) + "\n",
+        encoding="utf-8",
+    )
+
+    report = audit_run(path, expected_rows=5)
+
+    assert report["status"] == "passed"
+    assert report["llm_call_attempted_count"] == 5
+    assert report["feedback_eligible_count"] == 5
+    assert report["claimable_live_llm_effect"] is True
 
 
 def test_audit_rejects_feedback_replay_without_snapshot_identity(tmp_path: Path) -> None:

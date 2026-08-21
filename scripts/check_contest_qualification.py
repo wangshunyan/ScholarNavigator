@@ -28,8 +28,14 @@ from scripts.audit_contest_llm_run import audit_run  # noqa: E402
 EXPECTED_BASELINE = "contest_qual200_bm25_v1"
 SOFT_JUDGEMENT_BASELINE = "contest_qual200_reranker_v4_gpu1"
 SOFT_JUDGEMENT_CANDIDATE = "contest_qual200_dense_reranker_soft_v2"
+RRF_SOFT_BASELINE = "contest_qual200_reranker_v4_gpu1"
+RRF_SOFT_CANDIDATE = "contest_qual200_dense_reranker_rrf_soft_v3"
 LLM_QUALIFICATION_BASELINE = "contest_qual200_reranker_v4_gpu1"
 LLM_QUALIFICATION_CANDIDATE = "contest_qual200_dense_reranker_llm_v16"
+LLM_FEEDBACK_QUALIFICATION_BASELINE = "contest_qual200_reranker_v4_gpu1"
+LLM_FEEDBACK_QUALIFICATION_CANDIDATE = (
+    "contest_qual200_dense_reranker_llm_feedback_v20"
+)
 QUALITY_SOFT_BASELINE = "contest_qual200_reranker_v4_gpu1"
 QUALITY_SOFT_CANDIDATE = "contest_qual200_dense_reranker_quality_v2"
 EXPECTED_CANDIDATES = {
@@ -40,12 +46,15 @@ EXPECTED_CANDIDATES = {
     "contest_qual200_reranker_v3_gpu1",
     "contest_qual200_reranker_v4_gpu1",
     SOFT_JUDGEMENT_CANDIDATE,
+    RRF_SOFT_CANDIDATE,
     QUALITY_SOFT_CANDIDATE,
     LLM_QUALIFICATION_CANDIDATE,
+    LLM_FEEDBACK_QUALIFICATION_CANDIDATE,
 }
 RERANKER_PROMPT_VERSION = "qwen3-reranker-v1"
 BOOTSTRAP_SEED = 20260818
 BOOTSTRAP_ITERATIONS = 5000
+RRF_SOFT_MAX_AVERAGE_LATENCY_MULTIPLIER = 1.10
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -64,12 +73,18 @@ def check_qualification(baseline: Path, candidate: Path) -> dict[str, Any]:
         raise ValueError("candidate_run_id_invalid")
     if candidate.name == SOFT_JUDGEMENT_CANDIDATE:
         _validate_soft_judgement_pair(baseline_run["config"], candidate_run["config"])
+    elif candidate.name == RRF_SOFT_CANDIDATE:
+        _validate_rrf_soft_pair(baseline_run["config"], candidate_run["config"])
     elif candidate.name == QUALITY_SOFT_CANDIDATE:
         _validate_quality_soft_pair(
             baseline_run["config"], candidate_run["config"]
         )
     elif candidate.name == LLM_QUALIFICATION_CANDIDATE:
         _validate_llm_pair(baseline_run["config"], candidate_run["config"])
+    elif candidate.name == LLM_FEEDBACK_QUALIFICATION_CANDIDATE:
+        _validate_llm_feedback_pair(
+            baseline_run["config"], candidate_run["config"]
+        )
     elif baseline_run["config_hashes"] != candidate_run["config_hashes"]:
         raise ValueError("qualification_shared_config_drift")
     baseline_cases = _case_metrics(baseline_run["metrics"])
@@ -86,6 +101,16 @@ def check_qualification(baseline: Path, candidate: Path) -> dict[str, Any]:
         metric: value["mean_delta"] > 0 and value["ci95"]["low"] > 0
         for metric, value in comparisons.items()
     }
+    stage_gate = (
+        _validate_rrf_soft_stage_metrics(baseline_run, candidate_run)
+        if candidate.name == RRF_SOFT_CANDIDATE
+        else None
+    )
+    efficiency_gate = (
+        _validate_rrf_soft_efficiency(baseline_run, candidate_run)
+        if candidate.name == RRF_SOFT_CANDIDATE
+        else None
+    )
     resource = {
         "baseline": baseline_run["resource_report"],
         "candidate": candidate_run["resource_report"],
@@ -94,7 +119,17 @@ def check_qualification(baseline: Path, candidate: Path) -> dict[str, Any]:
     reranker_audit = candidate_run.get("reranker_audit")
     reranker_passed = reranker_audit is None or reranker_audit.get("status") == "passed"
     llm_audit = candidate_run.get("llm_audit")
-    llm_passed = llm_audit is None or llm_audit.get("status") == "passed"
+    llm_effect_verified = (
+        candidate.name != LLM_FEEDBACK_QUALIFICATION_CANDIDATE
+        or _feedback_live_effect_verified(llm_audit)
+    )
+    llm_passed = (
+        llm_audit is None
+        or (
+            llm_audit.get("status") == "passed"
+            and llm_effect_verified
+        )
+    )
     return {
         "schema_version": "contest-qualification-gate-v1",
         "baseline_run_id": baseline.name,
@@ -107,11 +142,16 @@ def check_qualification(baseline: Path, candidate: Path) -> dict[str, Any]:
         "reranker_audit_passed": reranker_passed,
         "llm_audit": llm_audit,
         "llm_audit_passed": llm_passed,
+        "live_llm_effect_verified": llm_effect_verified,
+        "stage_metric_gate": stage_gate,
+        "efficiency_gate": efficiency_gate,
         "eligible_for_full_1000": (
             any(improvements.values())
             and resource_passed
             and reranker_passed
             and llm_passed
+            and (stage_gate is None or stage_gate["passed"])
+            and (efficiency_gate is None or efficiency_gate["passed"])
         ),
         "internal_metric_scope": "not_official_competition_scorer",
     }
@@ -120,8 +160,12 @@ def check_qualification(baseline: Path, candidate: Path) -> dict[str, Any]:
 def _expected_baseline_for(candidate_run_id: str) -> str:
     if candidate_run_id == SOFT_JUDGEMENT_CANDIDATE:
         return SOFT_JUDGEMENT_BASELINE
+    if candidate_run_id == RRF_SOFT_CANDIDATE:
+        return RRF_SOFT_BASELINE
     if candidate_run_id == LLM_QUALIFICATION_CANDIDATE:
         return LLM_QUALIFICATION_BASELINE
+    if candidate_run_id == LLM_FEEDBACK_QUALIFICATION_CANDIDATE:
+        return LLM_FEEDBACK_QUALIFICATION_BASELINE
     if candidate_run_id == QUALITY_SOFT_CANDIDATE:
         return QUALITY_SOFT_BASELINE
     return EXPECTED_BASELINE
@@ -230,6 +274,132 @@ def _validate_soft_judgement_pair(
         raise ValueError("soft_judgement_delta_not_allowlisted")
 
 
+def _validate_rrf_soft_pair(
+    baseline_config: dict[str, Any], candidate_config: dict[str, Any]
+) -> None:
+    """Allow the fixed hybrid RRF and reviewed soft-Judgement candidate only."""
+
+    comparable_keys = (
+        "dataset", "dataset_split", "dataset_sha256", "case_count", "case_ids",
+        "offset", "limit", "selection_order", "result_policy", "sources",
+        "local_bm25", "local_hybrid", "run_profile", "top_k",
+        "enable_query_evolution", "query_evolution_policy", "query_planning_policy",
+        "ranking_policy", "query_planner_version", "enable_refchain",
+        "enable_semantic_seed_expansion", "current_year", "max_workers", "budgets",
+        "diagnostics", "enable_resource_ledger", "query_adapter_policy",
+        "retrieval_mode", "llm_mode", "data_hashes",
+    )
+    if not _shared_config_matches(baseline_config, candidate_config, comparable_keys):
+        raise ValueError("rrf_soft_shared_config_drift")
+    if baseline_config.get("judgement_policy") != "current_rules":
+        raise ValueError("rrf_soft_baseline_judgement_policy_invalid")
+    if candidate_config.get("judgement_policy") != "current_rules":
+        raise ValueError("rrf_soft_candidate_judgement_policy_invalid")
+
+    expected_fusion = {
+        "method": "reciprocal_rank_fusion",
+        "rrf_k": 60,
+        "bm25_candidate_limit": 60,
+        "semantic_candidate_limit": 60,
+    }
+    for config in (baseline_config, candidate_config):
+        hybrid = dict(config.get("local_hybrid") or {})
+        fusion = hybrid.get("fusion") or {}
+        if not isinstance(fusion, dict) or fusion != expected_fusion:
+            raise ValueError("rrf_soft_fixed_fusion_contract_invalid")
+
+    baseline_judgement = dict(baseline_config.get("judgement_config") or {})
+    candidate_judgement = dict(candidate_config.get("judgement_config") or {})
+    changes = {
+        key: (baseline_judgement.get(key), candidate_judgement.get(key))
+        for key in sorted(set(baseline_judgement) | set(candidate_judgement))
+        if baseline_judgement.get(key) != candidate_judgement.get(key)
+    }
+    if changes != {
+        "config_version": ("current-rules-v1", "soft-current-rules-v1"),
+        "partially_relevant_threshold": (0.45, 0.35),
+    }:
+        raise ValueError("rrf_soft_judgement_delta_not_allowlisted")
+
+
+def _validate_rrf_soft_stage_metrics(
+    baseline_run: dict[str, Any], candidate_run: dict[str, Any]
+) -> dict[str, Any]:
+    """Require the pre-registered recall and false-negative stage improvements."""
+
+    baseline_stage = baseline_run.get("stage_metrics")
+    candidate_stage = candidate_run.get("stage_metrics")
+    if not isinstance(baseline_stage, dict) or not isinstance(candidate_stage, dict):
+        raise ValueError("rrf_soft_stage_metrics_missing")
+    if (
+        int(baseline_stage.get("case_count") or 0) != 200
+        or int(candidate_stage.get("case_count") or 0) != 200
+    ):
+        raise ValueError("rrf_soft_stage_metrics_case_count_invalid")
+    try:
+        baseline_recall = float(baseline_stage["initial_retrieval_recall"])
+        candidate_recall = float(candidate_stage["initial_retrieval_recall"])
+        baseline_fn_rate = float(
+            (baseline_stage.get("judgement") or {})["gold_false_negative_rate"]
+        )
+        candidate_fn_rate = float(
+            (candidate_stage.get("judgement") or {})["gold_false_negative_rate"]
+        )
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError("rrf_soft_stage_metrics_invalid") from exc
+    if not all(
+        0.0 <= value <= 1.0
+        for value in (
+            baseline_recall,
+            candidate_recall,
+            baseline_fn_rate,
+            candidate_fn_rate,
+        )
+    ):
+        raise ValueError("rrf_soft_stage_metrics_out_of_range")
+    candidate_recall_non_regressed = candidate_recall >= baseline_recall
+    false_negative_rate_decreased = candidate_fn_rate < baseline_fn_rate
+    return {
+        "baseline_initial_retrieval_recall": baseline_recall,
+        "candidate_initial_retrieval_recall": candidate_recall,
+        "candidate_recall_non_regressed": candidate_recall_non_regressed,
+        "baseline_gold_false_negative_rate": baseline_fn_rate,
+        "candidate_gold_false_negative_rate": candidate_fn_rate,
+        "gold_false_negative_rate_decreased": false_negative_rate_decreased,
+        "passed": candidate_recall_non_regressed and false_negative_rate_decreased,
+    }
+
+
+def _validate_rrf_soft_efficiency(
+    baseline_run: dict[str, Any], candidate_run: dict[str, Any]
+) -> dict[str, Any]:
+    """Keep the reviewed candidate within its pre-registered latency budget."""
+
+    try:
+        baseline_latency = float(
+            (baseline_run["metrics"].get("benchmark_statistics") or {})[
+                "average_latency_seconds"
+            ]
+        )
+        candidate_latency = float(
+            (candidate_run["metrics"].get("benchmark_statistics") or {})[
+                "average_latency_seconds"
+            ]
+        )
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError("rrf_soft_average_latency_missing") from exc
+    if baseline_latency <= 0.0 or candidate_latency <= 0.0:
+        raise ValueError("rrf_soft_average_latency_invalid")
+    maximum_latency = baseline_latency * RRF_SOFT_MAX_AVERAGE_LATENCY_MULTIPLIER
+    return {
+        "baseline_average_latency_seconds": baseline_latency,
+        "candidate_average_latency_seconds": candidate_latency,
+        "maximum_average_latency_seconds": maximum_latency,
+        "maximum_multiplier": RRF_SOFT_MAX_AVERAGE_LATENCY_MULTIPLIER,
+        "passed": candidate_latency <= maximum_latency,
+    }
+
+
 def _validate_llm_pair(
     baseline_config: dict[str, Any], candidate_config: dict[str, Any]
 ) -> None:
@@ -262,6 +432,70 @@ def _validate_llm_pair(
         raise ValueError("llm_qualification_budget_drift")
     if candidate_calls != 1 or candidate_rounds != 3:
         raise ValueError("llm_qualification_budget_contract_invalid")
+
+
+def _validate_llm_feedback_pair(
+    baseline_config: dict[str, Any], candidate_config: dict[str, Any]
+) -> None:
+    """Allow only the pre-registered post-retrieval feedback delta.
+
+    The candidate preserves the established reranker configuration and initial
+    ``current_rules`` plan. Its single LLM call is reserved for the bounded
+    feedback round, so it cannot be confused with the legacy initial-planning
+    ablation.
+    """
+
+    comparable_keys = (
+        "dataset", "dataset_split", "dataset_sha256", "case_count", "case_ids",
+        "offset", "limit", "selection_order", "result_policy", "sources",
+        "local_bm25", "local_hybrid", "run_profile", "top_k", "ranking_policy",
+        "query_planning_policy", "query_planner_version", "enable_refchain",
+        "enable_semantic_seed_expansion", "current_year", "max_workers",
+        "diagnostics", "enable_resource_ledger", "query_adapter_policy",
+        "retrieval_mode", "data_hashes", "judgement_policy", "judgement_config",
+    )
+    if not _shared_config_matches(baseline_config, candidate_config, comparable_keys):
+        raise ValueError("llm_feedback_qualification_shared_config_drift")
+    if baseline_config.get("query_planning_policy") != "current_rules":
+        raise ValueError("llm_feedback_qualification_baseline_policy_invalid")
+    if candidate_config.get("query_planning_policy") != "current_rules":
+        raise ValueError("llm_feedback_qualification_initial_policy_invalid")
+    if baseline_config.get("enable_query_evolution"):
+        raise ValueError("llm_feedback_qualification_baseline_evolution_invalid")
+    if baseline_config.get("query_evolution_policy") not in {None, "off"}:
+        raise ValueError("llm_feedback_qualification_baseline_evolution_invalid")
+    if not candidate_config.get("enable_query_evolution"):
+        raise ValueError("llm_feedback_qualification_candidate_evolution_missing")
+    if candidate_config.get("query_evolution_policy") != "llm_feedback":
+        raise ValueError("llm_feedback_qualification_candidate_policy_invalid")
+    if candidate_config.get("llm_mode") not in {"live", "record"}:
+        raise ValueError("llm_feedback_qualification_llm_mode_invalid")
+    llm = candidate_config.get("llm") or {}
+    if not isinstance(llm, dict) or not llm.get("feedback_query_evolution"):
+        raise ValueError("llm_feedback_qualification_runtime_config_invalid")
+
+    baseline_budgets = dict(baseline_config.get("budgets") or {})
+    candidate_budgets = dict(candidate_config.get("budgets") or {})
+    candidate_calls = candidate_budgets.pop("max_llm_calls", None)
+    candidate_rounds = candidate_budgets.pop("max_search_rounds", None)
+    baseline_budgets.pop("max_llm_calls", None)
+    baseline_budgets.pop("max_search_rounds", None)
+    if baseline_budgets != candidate_budgets:
+        raise ValueError("llm_feedback_qualification_budget_drift")
+    if candidate_calls != 1 or candidate_rounds != 3:
+        raise ValueError("llm_feedback_qualification_budget_contract_invalid")
+
+
+def _feedback_live_effect_verified(llm_audit: dict[str, Any] | None) -> bool:
+    """Require evidence of at least one successful live feedback attempt."""
+
+    if not isinstance(llm_audit, dict):
+        return False
+    return (
+        bool(llm_audit.get("claimable_live_llm_effect"))
+        and int(llm_audit.get("llm_call_attempted_count") or 0) > 0
+        and int(llm_audit.get("feedback_eligible_count") or 0) > 0
+    )
 
 
 def _shared_config_matches(
@@ -312,6 +546,8 @@ def _load_run(path: Path, expected_run_id: str) -> dict[str, Any]:
     if path.name != expected_run_id:
         raise ValueError("run_id_does_not_match_requested_qualification")
     required = ("config.json", "metrics.json", "resource_ledger.json")
+    if expected_run_id == RRF_SOFT_CANDIDATE:
+        required += ("stage_metrics.json",)
     if any(not (path / name).is_file() for name in required):
         raise ValueError("qualification_required_artifact_missing")
     completed = list((path / ".run_commits" / "generations").glob("generation-*/RUN_COMPLETED"))
@@ -344,9 +580,17 @@ def _load_run(path: Path, expected_run_id: str) -> dict[str, Any]:
         "metrics": metrics,
         "resource_report": resource_report,
     }
+    stage_metrics_path = path / "stage_metrics.json"
+    if stage_metrics_path.is_file():
+        result["stage_metrics"] = json.loads(
+            stage_metrics_path.read_text(encoding="utf-8")
+        )
     if "reranker" in expected_run_id:
         result["reranker_audit"] = _audit_reranker_run(path)
-    if expected_run_id == LLM_QUALIFICATION_CANDIDATE:
+    if expected_run_id in {
+        LLM_QUALIFICATION_CANDIDATE,
+        LLM_FEEDBACK_QUALIFICATION_CANDIDATE,
+    }:
         result["llm_audit"] = audit_run(path, expected_rows=200)
     return result
 

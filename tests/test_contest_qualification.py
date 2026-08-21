@@ -176,6 +176,148 @@ def test_soft_judgement_qualification_rejects_unreviewed_config_delta(
         raise AssertionError("unreviewed soft judgement delta was accepted")
 
 
+def _rrf_soft_run(
+    delta: float, *, recall: float, fn_rate: float, latency: float = 4.0
+) -> dict:
+    run = _run(delta)
+    run["config"].update(
+        {
+            "judgement_policy": "current_rules",
+            "local_hybrid": {
+                "fusion": {
+                    "method": "reciprocal_rank_fusion",
+                    "rrf_k": 60,
+                    "bm25_candidate_limit": 60,
+                    "semantic_candidate_limit": 60,
+                }
+            },
+        }
+    )
+    run["stage_metrics"] = {
+        "case_count": 200,
+        "initial_retrieval_recall": recall,
+        "judgement": {"gold_false_negative_rate": fn_rate},
+    }
+    run["metrics"]["benchmark_statistics"] = {
+        "average_latency_seconds": latency,
+    }
+    run["reranker_audit"] = {"status": "passed"}
+    return run
+
+
+def test_rrf_soft_qualification_requires_stage_metric_improvements(monkeypatch) -> None:
+    baseline = _rrf_soft_run(0.0, recall=0.40, fn_rate=0.30)
+    candidate = _rrf_soft_run(0.1, recall=0.42, fn_rate=0.20)
+    candidate["config"]["judgement_config"] = {
+        "config_version": "soft-current-rules-v1",
+        "partially_relevant_threshold": 0.35,
+    }
+    monkeypatch.setattr(
+        qualification,
+        "_load_run",
+        lambda path, _: (
+            baseline if path.name == qualification.RRF_SOFT_BASELINE else candidate
+        ),
+    )
+
+    report = qualification.check_qualification(
+        Path(qualification.RRF_SOFT_BASELINE),
+        Path(qualification.RRF_SOFT_CANDIDATE),
+    )
+
+    assert report["eligible_for_full_1000"] is True
+    assert report["stage_metric_gate"] == {
+        "baseline_initial_retrieval_recall": 0.40,
+        "candidate_initial_retrieval_recall": 0.42,
+        "candidate_recall_non_regressed": True,
+        "baseline_gold_false_negative_rate": 0.30,
+        "candidate_gold_false_negative_rate": 0.20,
+        "gold_false_negative_rate_decreased": True,
+        "passed": True,
+    }
+    assert report["efficiency_gate"] == {
+        "baseline_average_latency_seconds": 4.0,
+        "candidate_average_latency_seconds": 4.0,
+        "maximum_average_latency_seconds": 4.4,
+        "maximum_multiplier": 1.10,
+        "passed": True,
+    }
+
+
+def test_rrf_soft_qualification_rejects_candidate_recall_regression(monkeypatch) -> None:
+    baseline = _rrf_soft_run(0.0, recall=0.40, fn_rate=0.30)
+    candidate = _rrf_soft_run(0.1, recall=0.39, fn_rate=0.20)
+    candidate["config"]["judgement_config"] = {
+        "config_version": "soft-current-rules-v1",
+        "partially_relevant_threshold": 0.35,
+    }
+    monkeypatch.setattr(
+        qualification,
+        "_load_run",
+        lambda path, _: (
+            baseline if path.name == qualification.RRF_SOFT_BASELINE else candidate
+        ),
+    )
+
+    report = qualification.check_qualification(
+        Path(qualification.RRF_SOFT_BASELINE),
+        Path(qualification.RRF_SOFT_CANDIDATE),
+    )
+
+    assert report["stage_metric_gate"]["candidate_recall_non_regressed"] is False
+    assert report["eligible_for_full_1000"] is False
+
+
+def test_rrf_soft_qualification_rejects_non_decreasing_false_negative_rate(
+    monkeypatch,
+) -> None:
+    baseline = _rrf_soft_run(0.0, recall=0.40, fn_rate=0.30)
+    candidate = _rrf_soft_run(0.1, recall=0.42, fn_rate=0.30)
+    candidate["config"]["judgement_config"] = {
+        "config_version": "soft-current-rules-v1",
+        "partially_relevant_threshold": 0.35,
+    }
+    monkeypatch.setattr(
+        qualification,
+        "_load_run",
+        lambda path, _: (
+            baseline if path.name == qualification.RRF_SOFT_BASELINE else candidate
+        ),
+    )
+
+    report = qualification.check_qualification(
+        Path(qualification.RRF_SOFT_BASELINE),
+        Path(qualification.RRF_SOFT_CANDIDATE),
+    )
+
+    assert report["stage_metric_gate"]["gold_false_negative_rate_decreased"] is False
+    assert report["eligible_for_full_1000"] is False
+
+
+def test_rrf_soft_qualification_rejects_latency_regression(monkeypatch) -> None:
+    baseline = _rrf_soft_run(0.0, recall=0.40, fn_rate=0.30, latency=4.0)
+    candidate = _rrf_soft_run(0.1, recall=0.42, fn_rate=0.20, latency=4.5)
+    candidate["config"]["judgement_config"] = {
+        "config_version": "soft-current-rules-v1",
+        "partially_relevant_threshold": 0.35,
+    }
+    monkeypatch.setattr(
+        qualification,
+        "_load_run",
+        lambda path, _: (
+            baseline if path.name == qualification.RRF_SOFT_BASELINE else candidate
+        ),
+    )
+
+    report = qualification.check_qualification(
+        Path(qualification.RRF_SOFT_BASELINE),
+        Path(qualification.RRF_SOFT_CANDIDATE),
+    )
+
+    assert report["efficiency_gate"]["passed"] is False
+    assert report["eligible_for_full_1000"] is False
+
+
 def test_quality_soft_qualification_allows_only_reviewed_policy_delta(
     monkeypatch,
 ) -> None:
@@ -336,3 +478,116 @@ def test_llm_qualification_rejects_failed_llm_audit(monkeypatch) -> None:
 
     assert report["llm_audit_passed"] is False
     assert report["eligible_for_full_1000"] is False
+
+
+def test_feedback_llm_qualification_requires_live_feedback_evidence(
+    monkeypatch,
+) -> None:
+    assert (
+        qualification._expected_baseline_for(
+            qualification.LLM_FEEDBACK_QUALIFICATION_CANDIDATE
+        )
+        == qualification.LLM_FEEDBACK_QUALIFICATION_BASELINE
+    )
+    baseline = _run(0.0)
+    baseline["config"].update(
+        {
+            "enable_query_evolution": False,
+            "query_evolution_policy": "off",
+            "query_planning_policy": "current_rules",
+            "ranking_policy": "current_rules",
+            "budgets": {"max_llm_calls": 0, "max_search_rounds": 1},
+        }
+    )
+    candidate = _run(0.1)
+    candidate["config"].update(
+        {
+            "enable_query_evolution": True,
+            "query_evolution_policy": "llm_feedback",
+            "query_planning_policy": "current_rules",
+            "ranking_policy": "current_rules",
+            "llm_mode": "record",
+            "llm": {"feedback_query_evolution": True},
+            "budgets": {"max_llm_calls": 1, "max_search_rounds": 3},
+        }
+    )
+    candidate["reranker_audit"] = {"status": "passed"}
+    candidate["llm_audit"] = {
+        "status": "passed",
+        "fallback_count": 0,
+        "claimable_live_llm_effect": True,
+        "llm_call_attempted_count": 125,
+        "feedback_eligible_count": 125,
+    }
+    monkeypatch.setattr(
+        qualification,
+        "_load_run",
+        lambda path, _: (
+            baseline
+            if path.name == qualification.LLM_FEEDBACK_QUALIFICATION_BASELINE
+            else candidate
+        ),
+    )
+
+    report = qualification.check_qualification(
+        Path(qualification.LLM_FEEDBACK_QUALIFICATION_BASELINE),
+        Path(qualification.LLM_FEEDBACK_QUALIFICATION_CANDIDATE),
+    )
+
+    assert report["eligible_for_full_1000"] is True
+    assert report["llm_audit_passed"] is True
+    assert report["live_llm_effect_verified"] is True
+
+
+def test_feedback_llm_qualification_rejects_replay_or_zero_live_calls(
+    monkeypatch,
+) -> None:
+    baseline = _run(0.0)
+    baseline["config"].update(
+        {
+            "enable_query_evolution": False,
+            "query_evolution_policy": "off",
+            "query_planning_policy": "current_rules",
+            "ranking_policy": "current_rules",
+            "budgets": {"max_llm_calls": 0, "max_search_rounds": 1},
+        }
+    )
+    candidate = _run(0.1)
+    candidate["config"].update(
+        {
+            "enable_query_evolution": True,
+            "query_evolution_policy": "llm_feedback",
+            "query_planning_policy": "current_rules",
+            "ranking_policy": "current_rules",
+            "llm_mode": "replay",
+            "llm": {"feedback_query_evolution": True},
+            "budgets": {"max_llm_calls": 1, "max_search_rounds": 3},
+        }
+    )
+    candidate["reranker_audit"] = {"status": "passed"}
+    candidate["llm_audit"] = {
+        "status": "passed",
+        "fallback_count": 0,
+        "claimable_live_llm_effect": False,
+        "llm_call_attempted_count": 0,
+        "feedback_eligible_count": 0,
+    }
+    monkeypatch.setattr(
+        qualification,
+        "_load_run",
+        lambda path, _: (
+            baseline
+            if path.name == qualification.LLM_FEEDBACK_QUALIFICATION_BASELINE
+            else candidate
+        ),
+    )
+
+    try:
+        qualification.check_qualification(
+            Path(qualification.LLM_FEEDBACK_QUALIFICATION_BASELINE),
+            Path(qualification.LLM_FEEDBACK_QUALIFICATION_CANDIDATE),
+        )
+    except ValueError as exc:
+        assert str(exc) == "llm_feedback_qualification_llm_mode_invalid"
+    else:
+        raise AssertionError("replay feedback run was accepted for live qualification")

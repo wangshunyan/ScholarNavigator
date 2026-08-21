@@ -351,7 +351,10 @@ def write_evidence_registry(
     root.mkdir(parents=True, exist_ok=True)
     _write_json(root / "registry.json", registry)
     _write_json(root / "matrix.json", matrix)
-    (root / "summary.md").write_text(summary, encoding="utf-8")
+    # Generated evidence baselines are hash-bound across Windows and Linux.
+    # Keep their line endings stable instead of inheriting the host default.
+    with (root / "summary.md").open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(summary)
 
 
 def check_evidence_registry(
@@ -635,7 +638,8 @@ def _read_json(path: Path) -> dict[str, Any]:
 
 
 def _write_json(path: Path, value: Mapping[str, Any]) -> None:
-    path.write_text(
-        json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False) + "\n",
-        encoding="utf-8",
-    )
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(
+            json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False)
+            + "\n"
+        )

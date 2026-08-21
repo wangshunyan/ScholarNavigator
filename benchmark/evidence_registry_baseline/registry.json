@@ -75,7 +75,7 @@
     ],
     "official_score": false
   },
-  "protocol_sha256": "e20cd7dc59315d47c185bd9a6568d0632b61fa9fbe4aa642d494af9db0a3cb52",
+  "protocol_sha256": "e3a0c03c1d655e599f71384ef177200d9eabfc4602d48e09d2a6d8ca92754624",
   "registry": "experiment_evidence_registry_v1",
   "scan": {
     "excludes": [
@@ -1151,7 +1151,7 @@
       "evidence_sources": [
         {
           "path": "docs/dev_plan.md",
-          "sha256": "7aeee5b302d71132174348bd0656605368687bdc2033ce0a70245c8b6fdbb420"
+          "sha256": "03d01ff940fc78d86a6d710af7f7918b39a443f64f21a65f2d3b15841468cf58"
         }
       ],
       "evidence_status": "evidence_unavailable",
@@ -1290,7 +1290,7 @@
       "evidence_sources": [
         {
           "path": "docs/dev_plan.md",
-          "sha256": "7aeee5b302d71132174348bd0656605368687bdc2033ce0a70245c8b6fdbb420"
+          "sha256": "03d01ff940fc78d86a6d710af7f7918b39a443f64f21a65f2d3b15841468cf58"
         }
       ],
       "evidence_status": "evidence_unavailable",

@@ -392,7 +392,11 @@ def _audit_feedback_run(
             "provider_cache_hit_count": cache_hit_count,
             "failure_classes": dict(sorted(failure_classes.items())),
         },
-        "claimable_live_llm_effect": not reasons and fallbacks == 0,
+        # A feedback run with every case skipped is a valid smoke/replay
+        # transport check, but it cannot establish a live LLM effect.
+        "claimable_live_llm_effect": (
+            not reasons and fallbacks == 0 and attempted > 0
+        ),
         "internal_metric_scope": "not_official_competition_scorer",
     }
 

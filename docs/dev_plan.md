@@ -121,7 +121,7 @@
 - **实际验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_paper_quality.py tests/test_full_text_evidence.py tests/test_dedup.py`，`26 passed`。没有运行质量指标实验，因此不声明 F1、Recall 或官方 scorer 改善。
 - [x] 已完成
 
-### [ ] P2-01-B 默认关闭的质量软评分 policy
+### [x] P2-01-B 质量软评分 policy 的负面结论
 
 - **任务编号**：P2-01-B；**独立提交**：只在 P2-01-A 已完成后，以新 policy 接入 reranker 与 qualification runner。
 - **目标能力**：在不改变 `current_rules` 的前提下，将 P2-01-A 的质量报告作为可审计软排序信号。
@@ -132,7 +132,7 @@
 - **自动化验证方式**：policy 选择、序列化、排序稳定性、缺失风险、配对 bootstrap 和资源账本测试。
 - **失败处理**：质量来源不可用时回退为 unknown，不用默认值伪造风险；资格失败只保留诊断。
 - **外部依赖**：真实撤稿/出版回执、200 条资格集和可用实验环境。
-- **完成条件**：代码、测试和真实资格证据齐全；未通过质量门禁时保持未完成。
+- **完成条件**：代码、测试和真实资格证据齐全；若质量门禁未通过，则将该 policy 以“负面结论、默认关闭”的状态收束，不进入正式成绩，也不阻塞下一优先级任务。
 - **实现说明（2026-08-21）**：新增默认关闭的 `quality_soft_v1` 排名 policy。它只把 P2-01-A 的本地质量报告转为最大 `0.02` 的低权重排序贡献，仅在既有 Judgement 类别内比较；不硬过滤、不改写 `final_score`、检索分数或相关性分数。撤稿与重复风险仍是 `unknown`，贡献固定为零惩罚。每条输出记录 policy、质量分、贡献、配置 SHA-256、原排名及换序原因；runner 的 `config.json` 同步记录固定配置及哈希。`current_rules` 仍为默认且未修改。
 - **自动化验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_paper_quality.py tests/test_reranker.py tests/test_rrf_fusion.py tests/test_ranking_policy_api.py tests/test_benchmark_runner.py tests/test_full_text_evidence.py tests/test_dedup.py tests/test_api_mapper.py`，`87 passed`；随后 `git diff --check` 与 `compileall` 通过。补齐 Linux `scripts/run_contest_benchmark.sh` 的 `dense_reranker_quality` 入口后，相关 Python 回归为 `49 passed`，shell `bash -n` 语法检查通过。
 - **真实资格状态**：新的 200 条资格集已执行并完成；虽然运行、reranker 审计和资源账本均可审计，但没有 F1/Recall 提升证据，因此本任务保持未完成，不能进入正式成绩，也不运行质量策略全量实验。
@@ -151,9 +151,9 @@
 - **回执 Ledger（2026-08-21）**：新增只读 `paper-quality-evidence-ledger-v1` JSONL loader，严格要求规范化稳定论文标识、单行对象、无重复 JSON key、无非有限数和每个 `(paper_identifier, signal_name)` 唯一记录。输出文件 SHA-256 与顺序无关的语义 SHA-256，载入后的回执可直接接入现有质量评估；不联网、不保存来源记录正文，不改变默认排序。该 loader 只准备未来外部回执接入，当前没有独立回执或质量提升证据，P2-01-B 仍未完成。
 - **离线运行接入（2026-08-21）**：benchmark runner 新增 `--quality-evidence-ledger`，且只在显式 `quality_soft_v1` policy 下接受。运行配置仅记录 schema、文件/语义 SHA-256 和记录数，不保存账本路径或来源记录；每条查询把已验证回执传入完整检索链。缺少 policy 或 policy 不匹配时 fail closed。`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_paper_quality.py tests/test_benchmark_runner.py` 为 `40 passed`；P2 组合回归（quality、RRF、SearchService、benchmark、qualification、registry）为 `119 passed`。这只完成外部回执的离线可复现实验接线，仍缺独立回执和通过资格门禁的质量提升，任务保持未完成。
 - **全仓验证状态（2026-08-21）**：按 `AGENTS.md` 执行 `PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q` 得到 `2097 passed, 230 failed, 58 errors`。失败主要是既有 evidence registry 基线未登记 `quality_soft_v1`、历史冻结输入/提交缺失和发布环境门禁漂移；本次 P2 相关专项保持全绿。前端 `npm run lint`、`npm run build`、`compileall` 和 `git diff --check` 通过。未跳过、删除或弱化全仓测试。
-- **外部阻塞**：当前没有独立、可审计的撤稿/重复风险来源回执，因此未把该证据契约接入正式 200 条运行，也未宣称质量收益；获得独立回执后必须使用新 policy 版本和新 RunId 重跑资格门禁。
+- **负面结论（2026-08-21）**：`contest_qual200_dense_reranker_quality_v2` 相对配对 reranker v4 的 F1@20 与 Recall@20 差值均为 `0.0`，固定 bootstrap 95% 区间均为 `[0.0, 0.0]`；两次受限、可审计的 arXiv→Crossref 探测也没有任何明确 `flagged` 回执。结论是当前 `quality_soft_v1` 没有可验证的排序增益，必须保持默认关闭、不得进入正式内部成绩、不得运行其 1000 条全量实验。未来若获得新的独立风险回执，只能以新 policy 版本与新 RunId 重新预注册资格，不能修改或重解释本结论。
 - **运行输入状态（2026-08-21）**：旧服务器保留 `contest_full_dense_reranker_v4` 的 1000 条成功结果和 completed `initial_reranked` 快照。首次受 SHA-256 校验 SSH 流式导出得到 51,319 个规范 `arxiv:` 候选（66,327 个阶段候选、零缺失/非法 ID），服务器原始结果 SHA-256 为 `4f6e1c...fae2`；其报告 RunId 来自本机临时目录，故保留为诊断。修正导出器后，已以新路径重新导出相同候选并显式绑定 `contest_full_dense_reranker_v4`、服务器 config SHA-256 `9b002a...a927`、结果 SHA-256 `4f6e1c...fae2` 与候选文件 SHA-256 `33f745...b975`；报告确认不加载 gold 或查询内容。首次 20 条 arXiv→Crossref 探测为 `resolved=3`、`no_doi=7`、`not_returned=10`、`no_explicit_retraction_relation=3`、`flagged_evidence_count=0`；随后用完整候选池 hash-ranked 的独立 20 条样本探测为 `no_doi=10`、`not_returned=10`、`flagged_evidence_count=0`。两次均未生成 ledger。正式候选范围现已可审计，但仍不构成风险回执、资格提升或正式成绩证据，P2-01-B 保持未完成。
-- [ ] 实现与离线验证完成；真实资格已执行但门禁未通过
+- [x] 负面结论完成：默认关闭；不进入正式成绩或全量实验
 
 ### [x] P2-01-B1 Crossref 明确撤稿回执采集
 
@@ -254,12 +254,29 @@
 
 ## P3：真实评测与指标闭环
 
+### [ ] P3-00 候选召回与软 Judgement 配对资格
+
+- **任务编号**：P3-00；**独立提交**：只新增一条显式、受控的 200 条资格链和机器可执行门禁，不改变 `current_rules` 默认策略、现有 Prompt 或历史运行。
+- **目标能力**：在固定 P0 语料、Faiss、BGE 与 Qwen reranker 上验证“BM25+Dense 候选并集 + 固定 RRF + 软 Judgement”是否同时改善候选覆盖和 Judgement 假阴性。
+- **当前缺口**：历史 `dense_reranker_soft_v2` 已证明软阈值的整体内部 F1/Recall 提升，但它没有作为本轮候选召回/Judgement 因果结论的独立预注册门禁；不能把旧结果改写为此任务证据。
+- **实现范围**：新增配置 `dense_reranker_rrf_soft`、新 RunId `contest_qual200_dense_reranker_rrf_soft_v3` 和资格检查。固定 BM25/Dense 各 60 条候选、RRF `k=60`、reranker 120/8、`top_k=20`，候选仅使用 `judgement_soft_current_rules_v1.json`；gold/qrels 只在运行结束后生成离线 `metrics.json` 与 `stage_metrics.json`。
+- **实现方案**：资格脚本对比 `contest_qual200_reranker_v4_gpu1`，要求配置/数据/索引/查询顺序一致，并读取 `initial_retrieval_recall` 与 `judgement.gold_false_negative_rate`。候选召回不得回退，Judgement 假阴性率必须严格下降；同时 F1@20 或 Recall@20 的 paired bootstrap 95% CI 下界大于零、平均延迟不超过 baseline 的 1.10 倍，且资源与 reranker 审计通过。
+- **验收标准**：恰好 200 条、零失败、零 fallback、完成 generation、同一输入哈希；上述阶段指标、质量指标和资源门禁全通过，才允许使用新的 full RunId。所有 F1/Recall 均为内部工程指标，非赛事官方 scorer。
+- **自动化验证方式**：资格脚本 fixture 覆盖通过、候选召回下降与 Judgement FN 不下降；runner wrapper 覆盖软配置；运行相关 pytest、编译和 diff 检查。真实资格运行需要服务器 GPU、P0/Faiss/BGE/reranker 资产。
+- **失败处理**：任何阶段或质量门禁失败只保留诊断与 `stage_metrics.json`，不启动 1000 条，不调参覆盖既有证据；外部资产不可用时仅提交离线门禁实现并在本记录标注阻塞。
+- **外部依赖**：自动化门禁可离线完成；真实 200 条需固定数据资产与独立 GPU。官方评分仍需赛事平台，不以内部指标替代。
+- **完成条件**：代码、测试、验证记录已提交；真实 qualification 有完整审计产物后才能勾选。
+- **完成说明（2026-08-21）**：新增 `dense_reranker_rrf_soft` 和其专用资格门禁。门禁会 fail closed：缺少 `stage_metrics.json`、候选 Recall 下降、false-negative rate 未严格下降、平均延迟超过 baseline 的 1.10 倍、配置漂移、资源失败或 bootstrap 未支持提升时均不放行。未运行真实 benchmark。
+- **实际验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_evidence_registry.py tests/test_contest_qualification.py tests/test_soft_judgement_runner.py tests/test_audit_contest_llm_run.py tests/test_benchmark_runner.py tests/test_resource_accounting.py` 为 `90 passed`；Python `compileall`、`git diff --check` 与 evidence registry gate（`drift_count=0`）通过。全仓 pytest 为 `2148 passed, 226 failed, 51 errors`，失败为既有历史冻结提交祖先链、`record160` 缺失和发布证据链门禁；未弱化或跳过。
+- [x] 离线资格门禁、wrapper 和回归完成
+- [ ] 真实 200 条资格未开始
+
 ### [ ] P3-01 P0-01 的离线资格与真实运行门禁
 
 - **任务编号**：P3-01；**独立提交**：资格 runner、审计和报告生成可先离线提交，真实运行产物另行提交。
 
 - **目标能力**：在 P0-01 完成后，以不泄漏 gold/qrels 的运行链路评估质量、成本和稳定性。
-- **当前缺口**：LLM 反馈策略尚无 5 条 smoke、200 条资格或配对 bootstrap 证据。
+- **当前缺口**：LLM 反馈策略尚无可进入正式成绩的 5 条 smoke、200 条资格或配对 bootstrap 证据；P2-01-B 已以负面结论收束，不再阻塞本任务。
 - **实现范围**：新 RunId 的 smoke、qualification、审计和报告；不覆盖既有运行。
 - **实现方案**：固定数据/索引/查询顺序，gold/qrels 仅在检索后离线评价；比较 F1@20、Recall@20、MRR、P50/P95、Token、调用、失败和 fallback。
 - **验证方式**：零失败/零 fallback、调用账本、资源账本、配对 bootstrap 和完整产物检查。
@@ -268,8 +285,11 @@
 - **完成条件**：只有满足预注册门禁的完整运行可进入正式内部报告。
 - **验收标准**：5 条 smoke、200 条 qualification 和必要的 1000 条 full 使用新 RunId；零失败/零 fallback、调用账本完整、配对 bootstrap 支持提升、资源与哈希一致后才可写正式内部指标；内部指标标注非赛事官方 scorer。
 - **自动化验证方式**：fake provider/Record-Replay runner、审计脚本、资源账本校验、配对 bootstrap 和完整产物清单测试；真实运行需服务器 GPU 与 Provider 回执。
-- **可用性与阻塞**：runner、审计和统计可离线完成；真实 LLM/API 授权、GPU、固定语料/索引和赛事官方 scorer 是外部依赖，任一缺失只记录阻塞。
-- [ ] 未开始
+- **可用性与阻塞**：本次先完成 fake provider/Record-Replay、审计、资源账本、配对 bootstrap 和产物完整性等离线验证；真实 LLM/API 授权、GPU、固定语料/索引和赛事官方 scorer 是后续外部依赖，任一缺失只记录阻塞。
+- **离线门禁实现（2026-08-21）**：为 P0-01 的后检索反馈闭环新增独立预注册候选 `contest_qual200_dense_reranker_llm_feedback_v20`。资格门禁只允许与 `contest_qual200_reranker_v4_gpu1` 相同的语料、索引、reranker、查询顺序、Judgement 和排序配置；唯一允许差异是 `current_rules` 首轮之后启用 `llm_feedback`。候选必须为 `live` 或 `record` 模式、每查询一次 LLM 调用、最多三轮检索。审计将“所有查询正常跳过反馈”认作 smoke/replay 链路通过，但明确标为不可主张的 LLM 效果；只有至少一次实际反馈调用、零 fallback 和完整账本才可通过 P3 资格门禁。
+- **实际验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_audit_contest_llm_run.py tests/test_contest_qualification.py tests/test_llm_feedback_evolution.py tests/test_llm_feedback_snapshots.py`，`38 passed`；`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_benchmark_runner.py tests/test_resource_accounting.py`，`50 passed`。未启动真实 Provider、GPU 或 benchmark。
+- **失败处理与当前阻塞**：真实 smoke、200 条资格和完整运行仍依赖可用 Provider、GPU、P0/Faiss/BGE/reranker 资产及新 RunId。缺少任一条件或任何 fallback、审计失败、配对 bootstrap 未支持提升时，仅保留诊断，禁止启动 1000 条。
+- [ ] 离线资格链完成；真实 smoke 与 200 条资格未完成
 
 ## P4：文档、依赖和工程一致性
 

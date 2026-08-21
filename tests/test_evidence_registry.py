@@ -138,6 +138,14 @@ def test_two_builds_and_writes_are_byte_identical(tmp_path: Path) -> None:
         assert (first_dir / name).read_bytes() == (second_dir / name).read_bytes()
 
 
+def test_generated_registry_baselines_use_lf_line_endings(tmp_path: Path) -> None:
+    registry, matrix, summary = build_evidence_registry(_manifest())
+    write_evidence_registry(tmp_path, registry, matrix, summary)
+
+    for name in ("registry.json", "matrix.json", "summary.md"):
+        assert b"\r\n" not in (tmp_path / name).read_bytes()
+
+
 @pytest.mark.evidence_registry_regression
 def test_frozen_evidence_registry_gate(tmp_path: Path) -> None:
     manifest = _manifest()

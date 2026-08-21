@@ -25,11 +25,11 @@
   ],
   "implementation": {
     "path": "src/scholar_agent/evaluation/evidence_registry.py",
-    "sha256": "989b27bab4e6d3e3e31c22a8005061f0a8ab1dd7405d2f6ae54349bddf650543"
+    "sha256": "7861ffa620d61983a8dc6b09a03b2c11b86d143de325bd8e5efca3bc5aad17eb"
   },
   "baseline": {
     "registry_path": "benchmark/evidence_registry_baseline/registry.json",
-    "registry_sha256": "773caac62b07f15c7826c2e9c924278c8c12257cd0be438952389b123dd15af0",
+    "registry_sha256": "8749226b8e6f5ca17acb89887154cf2c244ea19bdab38b0f00fd1bf2a15af13a",
     "matrix_path": "benchmark/evidence_registry_baseline/matrix.json",
     "matrix_sha256": "2ff45dbd421de58e90f48cc30b72b08f7c8eb65cf35eba3e99b7e2ba2ef59cd6",
     "summary_path": "benchmark/evidence_registry_baseline/summary.md",
