@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import pytest
+
 from scholar_agent.core.full_text_evidence import build_paragraph_evidence
-from scholar_agent.core.paper_quality import assess_paper_quality
+from scholar_agent.core.identity import paper_identifier_set
+from scholar_agent.core.paper_quality import VerifiedQualityEvidence, assess_paper_quality
 from scholar_agent.core.paper_schemas import Paper, PaperIdentifiers
 
 
@@ -57,3 +60,93 @@ def test_source_case_and_duplicates_do_not_inflate_corroboration() -> None:
 
     assert signal.value == 0.5
     assert signal.detail == "unique_sources:1"
+
+
+def test_verified_risk_evidence_is_opt_in_and_changes_only_known_signal() -> None:
+    paper = Paper(
+        title="Evidence-backed paper",
+        abstract="Abstract",
+        year=2025,
+        identifiers=PaperIdentifiers(doi="10.1/evidence"),
+    )
+    identifier = next(iter(paper_identifier_set(paper)))
+    evidence = [
+        VerifiedQualityEvidence(
+            paper_identifier=identifier,
+            signal_name="retraction_status",
+            state="clear",
+            source="verified_registry",
+            source_record_id="registry-record-1",
+        ),
+        VerifiedQualityEvidence(
+            paper_identifier=identifier,
+            signal_name="duplicate_risk",
+            state="flagged",
+            source="verified_registry",
+            source_record_id="registry-record-2",
+        ),
+    ]
+
+    without = assess_paper_quality(paper)
+    with_evidence = assess_paper_quality(paper, verified_evidence=evidence)
+    signals = {item.name: item for item in with_evidence.signals}
+
+    assert without.external_risk_data_available is False
+    assert with_evidence.external_risk_data_available is True
+    assert with_evidence.quality_scope == "metadata_plus_verified_risk_not_relevance_claim"
+    assert signals["retraction_status"].state == "present"
+    assert signals["retraction_status"].value == 1.0
+    assert signals["duplicate_risk"].state == "missing"
+    assert signals["duplicate_risk"].value == 0.0
+    assert "registry-record-1" not in signals["retraction_status"].detail
+
+
+def test_unmatched_external_evidence_remains_unknown_without_penalty() -> None:
+    paper = Paper(
+        title="No matching evidence",
+        identifiers=PaperIdentifiers(doi="10.1/known"),
+    )
+    evidence = VerifiedQualityEvidence(
+        paper_identifier="doi:10.1/other",
+        signal_name="retraction_status",
+        state="flagged",
+        source="registry",
+        source_record_id="other-record",
+    )
+
+    first = assess_paper_quality(paper)
+    second = assess_paper_quality(paper, verified_evidence=[evidence])
+
+    assert second == first
+    assert all(
+        item.state == "unknown"
+        for item in second.signals
+        if item.name in {"retraction_status", "duplicate_risk"}
+    )
+
+
+def test_conflicting_verified_evidence_fails_closed() -> None:
+    paper = Paper(
+        title="Conflicting evidence",
+        identifiers=PaperIdentifiers(doi="10.1/conflict"),
+    )
+    identifier = next(iter(paper_identifier_set(paper)))
+    evidence = [
+        VerifiedQualityEvidence(
+            paper_identifier=identifier,
+            signal_name="duplicate_risk",
+            state="clear",
+            source="registry_a",
+            source_record_id="a",
+        ),
+        VerifiedQualityEvidence(
+            paper_identifier=identifier,
+            signal_name="duplicate_risk",
+            state="flagged",
+            source="registry_b",
+            source_record_id="b",
+        ),
+    ]
+
+    with pytest.raises(ValueError, match="conflicting_verified_quality_evidence"):
+        assess_paper_quality(paper, verified_evidence=evidence)
