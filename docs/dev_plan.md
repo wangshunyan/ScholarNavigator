@@ -290,7 +290,9 @@
 - **离线门禁实现（2026-08-21）**：为 P0-01 的后检索反馈闭环新增独立预注册候选 `contest_qual200_dense_reranker_llm_feedback_v20`。资格门禁只允许与 `contest_qual200_reranker_v4_gpu1` 相同的语料、索引、reranker、查询顺序、Judgement 和排序配置；唯一允许差异是 `current_rules` 首轮之后启用 `llm_feedback`。候选必须为 `live` 或 `record` 模式、每查询一次 LLM 调用、最多三轮检索。审计将“所有查询正常跳过反馈”认作 smoke/replay 链路通过，但明确标为不可主张的 LLM 效果；只有至少一次实际反馈调用、零 fallback 和完整账本才可通过 P3 资格门禁。
 - **实际验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_audit_contest_llm_run.py tests/test_contest_qualification.py tests/test_llm_feedback_evolution.py tests/test_llm_feedback_snapshots.py`，`38 passed`；`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_benchmark_runner.py tests/test_resource_accounting.py`，`50 passed`。未启动真实 Provider、GPU 或 benchmark。
 - **失败处理与当前阻塞**：真实 smoke、200 条资格和完整运行仍依赖可用 Provider、GPU、P0/Faiss/BGE/reranker 资产及新 RunId。缺少任一条件或任何 fallback、审计失败、配对 bootstrap 未支持提升时，仅保留诊断，禁止启动 1000 条。
-- [ ] 离线资格链完成；真实 smoke 与 200 条资格未完成
+- **状态核验（2026-08-21）**：离线资格链已由 P0-01/P0-02、候选 RunId、审计脚本和上述专项测试完成；真实 smoke/qualification 与 P3-00 同受服务器工作树未清理及 GPU/Provider 资产复核阻塞，未启动新 RunId。
+- [x] 离线资格链完成
+- [ ] 真实 smoke 与 200 条资格未完成
 
 ## P4：文档、依赖和工程一致性
 
