@@ -139,6 +139,7 @@
 - **失败处理记录（2026-08-21）**：首次新 RunId `contest_qual200_dense_reranker_quality_v1` 在零结果时因 Linux wrapper 漏传语义语料配置而退出，错误为 `local_hybrid_config_required`；该 RunId 保留为启动诊断，不计入资格结果。已修复 wrapper 条件并将下一次运行改用全新 RunId。
 - **资格运行状态（2026-08-21）**：`contest_qual200_dense_reranker_quality_v2` 已完成 200/200，生成完整 metrics、stage_metrics、error_analysis、resource_ledger、summary 和 generation `RUN_COMPLETED`；运行使用 `quality_soft_v1`、GPU1、单 worker。尚未把它标记为通过，需用配对的 `contest_qual200_reranker_v4_gpu1` 基线执行资格门禁，确认 F1/Recall 的固定 bootstrap、零失败、reranker 审计和资源账本。
 - **资格门禁结果（2026-08-21）**：使用服务器主目录中已完成的 `contest_qual200_reranker_v4_gpu1` 作基线执行 `scripts/check_contest_qualification.py`。200 条、零失败、reranker 审计和资源账本均通过；但 F1@20 与 Recall@20 的平均成对差值均为 `0.0`，固定 5000 次 bootstrap 的 95% 区间均为 `[0.0, 0.0]`，因此 `eligible_for_full_1000=false`，不运行质量策略全量实验。离线分析显示 v2 没有任何 Top-20 顺序变化；该策略保留为诊断实现，不写入正式成绩。
+- **失败处理补充（2026-08-21）**：对已完成 v2 的候选顺序做 gold-blind 阈值分析：在当前质量信号分布和固定 `quality_weight <= 0.02` 约束下没有可发生的换序；第一个潜在换序约需 `0.024` 权重。该阈值来自结果后的诊断，不能用于事后调参，因此不提高权重、不重跑同一配置、不宣称质量收益。若未来获得独立、可审计的撤稿/重复风险回执，应以新 policy 版本和新 RunId 重新预注册资格。
 - **诊断修正（2026-08-21）**：发现 API 映射层丢弃质量策略诊断字段，已补齐 `quality_policy`、`quality_score`、`quality_contribution`、配置哈希和换序原因的公开结果映射；相关回归共 `76 passed`。这不改变已完成 v2 的失败门禁结论，也不构成质量提升证据。
 - [ ] 实现与离线验证完成；真实资格已执行但门禁未通过
 
