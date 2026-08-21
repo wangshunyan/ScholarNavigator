@@ -91,6 +91,31 @@ def test_judgement_policy_and_config_hash_are_mapped() -> None:
     assert response.judgement_config_hash == "a" * 64
 
 
+def test_quality_soft_diagnostics_are_preserved_in_api_mapping() -> None:
+    paper = _paper("Quality diagnostics")
+    ranked = _ranked(paper, rank=1).model_copy(
+        update={
+            "quality_policy": "quality_soft_v1",
+            "quality_score": 0.75,
+            "quality_contribution": 0.015,
+            "quality_config_hash": "a" * 64,
+            "quality_rank_change_reason": "category_boundary=preserved",
+        }
+    )
+
+    response = map_search_service_output_to_api_result(
+        "quality-map",
+        _output_with_ranked([ranked]),
+    )
+
+    mapped = response.highly_relevant_papers[0]
+    assert mapped.quality_policy == "quality_soft_v1"
+    assert mapped.quality_score == 0.75
+    assert mapped.quality_contribution == 0.015
+    assert mapped.quality_config_hash == "a" * 64
+    assert mapped.quality_rank_change_reason == "category_boundary=preserved"
+
+
 def test_adaptive_skipped_compact_does_not_count_as_logical_or_http_call() -> None:
     output = SearchServiceOutput(
         search_plan=_search_plan("dense retrieval"),

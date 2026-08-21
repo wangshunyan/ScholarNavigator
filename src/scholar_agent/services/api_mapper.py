@@ -231,6 +231,11 @@ def map_ranked_paper(ranked: InternalRankedPaper) -> api.RankedPaper:
         original_rank=ranked.original_rank,
         rrf_top_20_change=ranked.rrf_top_20_change,
         rrf_rank_change_reason=ranked.rrf_rank_change_reason,
+        quality_policy=ranked.quality_policy,
+        quality_score=ranked.quality_score,
+        quality_contribution=ranked.quality_contribution,
+        quality_config_hash=ranked.quality_config_hash,
+        quality_rank_change_reason=ranked.quality_rank_change_reason,
     )
 
 
