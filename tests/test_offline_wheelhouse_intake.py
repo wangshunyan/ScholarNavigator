@@ -11,6 +11,7 @@ from pathlib import Path
 
 import pytest
 
+from scripts import check_offline_wheelhouse as wheelhouse_cli
 from scholar_agent.evaluation import offline_wheelhouse_intake
 from scholar_agent.evaluation.offline_wheelhouse_intake import (
     EXIT_NOT_READY,
@@ -333,6 +334,38 @@ def test_synthetic_dual_venv_install_is_real_but_not_release_qualification() -> 
     assert first["status"] == "synthetic_wheelhouse_qualified"
     assert first["real_wheelhouse_qualified"] is False
     assert [row["passed"] for row in first["venv_results"]] == [True, True]
+
+
+def test_prepare_manifest_can_skip_release_contract(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    wheelhouse, lock, protocol = _wheelhouse(tmp_path / "wheelhouse")
+    protocol_path = tmp_path / "protocol.json"
+    lock_path = tmp_path / "lock.json"
+    manifest_path = tmp_path / "manifest.json"
+    protocol_path.write_text(json.dumps(protocol), encoding="utf-8")
+    lock_path.write_text(json.dumps(lock), encoding="utf-8")
+    monkeypatch.setattr(
+        wheelhouse_cli,
+        "freeze_release_contract",
+        lambda *_: pytest.fail("release contract must not be generated"),
+    )
+
+    assert wheelhouse_cli.main(
+        [
+            "--protocol",
+            str(protocol_path),
+            "--lock",
+            str(lock_path),
+            "--manifest",
+            str(manifest_path),
+            "--wheelhouse",
+            str(wheelhouse),
+            "prepare-manifest",
+            "--skip-release-contract",
+        ]
+    ) == 0
+    assert json.loads(manifest_path.read_text(encoding="utf-8"))["status"] == "wheelhouse_qualified"
 
 
 def test_release_contract_binds_real_wheelhouse_status() -> None:

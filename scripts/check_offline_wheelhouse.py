@@ -47,6 +47,12 @@ def _parser() -> argparse.ArgumentParser:
     for name in ("prepare-manifest", "verify", "install-test", "audit-release"):
         command = commands.add_parser(name)
         command.add_argument("--report")
+        if name == "prepare-manifest":
+            command.add_argument(
+                "--skip-release-contract",
+                action="store_true",
+                help="only write the wheelhouse manifest",
+            )
         if name == "install-test":
             command.add_argument("--synthetic", action="store_true")
     return parser
@@ -82,13 +88,14 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "prepare-manifest":
             report = build_manifest(wheelhouse, lock, protocol)
             write_json(manifest_path, report)
-            release_contract, python_closure = freeze_release_contract(
-                ROOT, protocol, lock, report
-            )
-            write_json(ROOT / protocol["release_contract_output"], release_contract)
-            write_json(
-                ROOT / protocol["release_python_closure_output"], python_closure
-            )
+            if not args.skip_release_contract:
+                release_contract, python_closure = freeze_release_contract(
+                    ROOT, protocol, lock, report
+                )
+                write_json(ROOT / protocol["release_contract_output"], release_contract)
+                write_json(
+                    ROOT / protocol["release_python_closure_output"], python_closure
+                )
         elif args.command == "verify":
             report = verify_manifest(
                 wheelhouse, lock, protocol, _load(manifest_path)
