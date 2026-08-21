@@ -533,6 +533,7 @@ def install_test(
     repository_root: Path,
 ) -> dict[str, Any]:
     wheelhouse = wheelhouse.resolve()
+    repository_root = repository_root.resolve()
     if manifest["violations"]:
         raise WheelhouseError("wheelhouse_manifest_has_violations")
     if manifest["missing_wheels"]:

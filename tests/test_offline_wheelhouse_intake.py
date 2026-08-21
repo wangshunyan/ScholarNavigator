@@ -44,13 +44,17 @@ def test_install_test_resolves_relative_wheelhouse_before_launch(
     wheelhouse = tmp_path / "wheelhouse"
     wheelhouse.mkdir()
     captured: dict[str, Path] = {}
+
+    def fake_profiles(path, *_args, **kwargs):
+        captured["wheelhouse"] = path
+        captured["source_root"] = kwargs["source_root"]
+        return [{"passed": True}]
+
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr(
         offline_wheelhouse_intake,
         "_run_install_profiles",
-        lambda path, *_args, **_kwargs: captured.setdefault("wheelhouse", path) and [
-            {"passed": True}
-        ],
+        fake_profiles,
     )
 
     report = install_test(
@@ -61,6 +65,7 @@ def test_install_test_resolves_relative_wheelhouse_before_launch(
 
     assert report["exit_code"] == 0
     assert captured["wheelhouse"] == wheelhouse.resolve()
+    assert captured["source_root"] == tmp_path.resolve()
 
 
 def _json(path: str) -> dict[str, object]:
