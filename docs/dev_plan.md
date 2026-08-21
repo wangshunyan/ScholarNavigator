@@ -268,6 +268,7 @@
 - **完成条件**：代码、测试、验证记录已提交；真实 qualification 有完整审计产物后才能勾选。
 - **完成说明（2026-08-21）**：新增 `dense_reranker_rrf_soft` 和其专用资格门禁。门禁会 fail closed：缺少 `stage_metrics.json`、候选 Recall 下降、false-negative rate 未严格下降、平均延迟超过 baseline 的 1.10 倍、配置漂移、资源失败或 bootstrap 未支持提升时均不放行。未运行真实 benchmark。
 - **实际验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_evidence_registry.py tests/test_contest_qualification.py tests/test_soft_judgement_runner.py tests/test_audit_contest_llm_run.py tests/test_benchmark_runner.py tests/test_resource_accounting.py` 为 `90 passed`；Python `compileall`、`git diff --check` 与 evidence registry gate（`drift_count=0`）通过。全仓 pytest 为 `2148 passed, 226 failed, 51 errors`，失败为既有历史冻结提交祖先链、`record160` 缺失和发布证据链门禁；未弱化或跳过。
+- **外部执行记录（2026-08-21）**：旧服务器 v14 已自然结束，1000 条结果与 `RUN_COMPLETED` 均存在；其已有 LLM 审计记录 4 次 fallback，继续只作 legacy/diagnostic。旧服务器项目工作树存在已跟踪改动，不能安全执行 `git pull --ff-only` 同步本任务已推送 commit，因此不启动 P3-00 的 smoke 或 200 条资格；待服务器工作树恢复干净且 P0/Faiss/BGE/reranker 资产复核一致后，再从新 RunId 运行。
 - [x] 离线资格门禁、wrapper 和回归完成
 - [ ] 真实 200 条资格未开始
 
