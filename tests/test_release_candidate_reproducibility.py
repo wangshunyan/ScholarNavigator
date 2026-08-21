@@ -5,6 +5,7 @@ import json
 import tarfile
 import zipfile
 from pathlib import Path
+from subprocess import CompletedProcess
 
 import pytest
 
@@ -28,6 +29,7 @@ from scholar_agent.evaluation.release_candidate_reproducibility import (
     summarize_double_build_report,
     verify_output,
 )
+from scholar_agent.evaluation import release_candidate_reproducibility as reproducibility
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -211,6 +213,29 @@ def test_toolchain_or_source_commit_drift_is_not_ready(tmp_path: Path) -> None:
     path.write_text(json.dumps(value), encoding="utf-8")
     with pytest.raises(ReleaseCandidateNotReady, match="source_head"):
         load_contract(path, ROOT)
+
+
+def test_windows_toolchain_uses_explicit_npm_cmd(monkeypatch) -> None:
+    commands: list[list[str]] = []
+
+    monkeypatch.setattr(reproducibility.os, "name", "nt")
+    monkeypatch.setattr(
+        reproducibility.shutil,
+        "which",
+        lambda name: {"node.cmd": None, "node": "C:/tools/node.exe", "npm.cmd": "C:/tools/npm.cmd"}.get(name),
+    )
+
+    def fake_run(command, **_kwargs):
+        commands.append(command)
+        return CompletedProcess(command, 0, "10.8.2\n" if command[0].endswith("npm.cmd") else "v20.17.0\n", "")
+
+    monkeypatch.setattr(reproducibility.subprocess, "run", fake_run)
+
+    summary = reproducibility._toolchain_summary()
+
+    assert commands == [["C:/tools/node.exe", "--version"], ["C:/tools/npm.cmd", "--version"]]
+    assert summary["node"] == "20.17.0"
+    assert summary["npm"] == "10.8.2"
 
 
 def test_double_build_summary_keeps_stable_evidence_only(contract: dict[str, object]) -> None:

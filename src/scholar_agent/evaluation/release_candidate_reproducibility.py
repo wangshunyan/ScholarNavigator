@@ -301,8 +301,8 @@ def _toolchain_summary() -> dict[str, str]:
     import setuptools
     import wheel
 
-    node = subprocess.run(["node", "--version"], check=False, capture_output=True, text=True, timeout=10)
-    npm = subprocess.run(["npm", "--version"], check=False, capture_output=True, text=True, timeout=10)
+    node = _run_tool_version("node")
+    npm = _run_tool_version("npm")
     if node.returncode or npm.returncode:
         raise ReleaseCandidateNotReady("node_toolchain_missing")
     return {
@@ -313,6 +313,25 @@ def _toolchain_summary() -> dict[str, str]:
         "node": node.stdout.strip().removeprefix("v"),
         "npm": npm.stdout.strip(),
     }
+
+
+def _run_tool_version(name: str) -> subprocess.CompletedProcess[str]:
+    """Run a Node tool with Windows' executable extension made explicit."""
+
+    candidates = (f"{name}.cmd", name) if os.name == "nt" else (name,)
+    executable = next(
+        (path for candidate in candidates if (path := shutil.which(candidate))),
+        None,
+    )
+    if executable is None:
+        return subprocess.CompletedProcess([name, "--version"], returncode=127)
+    return subprocess.run(
+        [executable, "--version"],
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
 
 
 def _verify_toolchain(contract: Mapping[str, Any]) -> None:

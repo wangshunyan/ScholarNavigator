@@ -2,6 +2,8 @@
 
 本文件是基于当前 ScholarNavigator 审计结果制定的唯一开发路线。每次只实施优先级最高的一个未完成小任务；每个任务应可独立提交，遵循“目标 → 实现 → 验证 → 失败处理 → 完成条件”。实验结论必须由独立运行产物证明，内部指标不等同赛事官方 scorer。
 
+**自主执行协议**：每轮先复核本文件与工作树，选择最高优先级且不依赖未解除外部条件的未完成任务；完成最小实现、自动化验证和失败分析后如实更新本记录并独立提交。真实 Provider/GPU、官方评分、历史冻结输入和目标平台 wheelhouse 不可用时只记录 blocker，转向下一可执行任务；不得以测试放宽、gold 调参、覆盖运行或伪造产物替代门禁。
+
 ## 当前审计基线
 
 - P0-01 的离线反馈闭环已实现；P0-02 的脱敏快照与回放契约已实现并通过专项回归。
@@ -311,4 +313,9 @@
 - **验收标准**：代码、文档、锁文件、实验清单和允许列表发布包一致；禁止路径与密钥排除校验通过；Linux/Python 3.12 离线安装和历史冻结证据有真实回执；未清零时不创建最终 tag。
 - **自动化验证方式**：registry gate、lock/wheelhouse check、发布包内容扫描、后端全测、前端 lint/build 和 Git 分支/tag 一致性检查。
 - **可用性与阻塞**：文档、扫描和本机校验可离线完成；Linux wheelhouse、历史输入和官方发布要求需要外部环境/证据，不能用占位文件替代。
-- [ ] 未开始
+- **本机实现（2026-08-21）**：修正发布候选工具链检测的 Windows 兼容性：Node/npm 在 Windows 使用解析后的 `npm.cmd`，不再因 Python 子进程无法解析批处理入口而错误报告 `node_toolchain_missing`。该修正不改变发布候选的历史输入、锁协议或 release 资格结论。
+- **实际验证（2026-08-21）**：`tests/test_build_contest_release_package.py tests/test_python_dependency_lock.py tests/test_release_candidate_reproducibility.py` 结果为 `24 passed, 5 failed`；新增 Windows toolchain 回归单独为 `1 passed`。5 个失败均为既有外部条件：锁协议声明 macOS/arm64/Python 3.13（本机为 Windows/AMD64/Python 3.12），发布候选合同固定的 Git commit `a743c59c...` 不在本地对象库且 GitHub 拒绝按对象 ID 获取。未修改测试或合同。
+- **发布包验证（2026-08-21）**：临时构建 source-only 包，`990` 项、`.env`/`outputs/`/`datasets/semantic/`/`legacy/spar_original/`/模型缓存均为 `0` 项。前端 `npm run lint`、`npm run build` 通过。依赖锁 `verify` 与 `offline-install` 均返回 exit `3`，准确报告环境身份不匹配和缺失 wheelhouse，不宣称离线安装完成。
+- **失败处理与当前阻塞**：需要 Linux/x86_64/Python 3.12 的独立 lock、完整 wheelhouse 和隔离 `--no-index` 安装回执；`record160`/发布候选历史 Git 对象需维护者或保留服务器提供。二者未具备前，保持普通审计提交，禁止创建最终 tag。
+- [x] 本机发布包、禁止路径扫描、前端构建和 Windows toolchain 兼容修复完成
+- [ ] Linux 离线 wheelhouse、历史冻结输入与最终发布门禁未完成
