@@ -6,15 +6,15 @@
 
 ## 当前执行状态
 
-- [ ] **进行中：P3-00 full**。`contest_full_dense_reranker_rrf_soft_v3` 已在旧服务器 GPU1 启动；其 200 条资格门禁通过。运行期间只读监控结果数、失败数、committed generation 和 `RUN_COMPLETED`，不得同步代码、修改配置或启动并发 GPU 实验。
-- **完成后的自动顺序**：P3-00 full 完成后，先审计 1000 条产物并更新真实内部结果；随后执行 P3-01 的 5 条 LLM feedback smoke 和 200 条资格。任一质量或审计门禁失败时保留诊断，不启动其 full RunId。
+- [x] **P3-00 full 已完成并审计通过**。`contest_full_dense_reranker_rrf_soft_v3` 在旧服务器 GPU1 自然完成；1000/1000、零失败、零 reranker fallback，`RUN_COMPLETED` 和 reranker 审计均为 passed。内部 F1@20=0.02726023、Recall@20=0.16817491、MRR=0.09833638、平均延迟=4.022s；这些不是赛事官方 scorer 成绩。
+- **下一步**：P3-01 的 5 条 LLM feedback smoke 和 200 条资格。任一质量或审计门禁失败时保留诊断，不启动其 full RunId。
 - **终态 blocker 的边界**：Linux/Python 3.12 离线 wheelhouse 与 `record160` 只阻塞最终 release tag 和全仓历史验收，不阻塞 P3-00、P3-01、离线代码/测试、竞赛材料或普通 GitHub 审计提交。`record160` 不可恢复时必须保留 blocker 记录，但不能把项目状态写为“暂停等待外部条件”。
 
 ## 当前审计基线
 
 - P0-01 的离线反馈闭环已实现；P0-02 的脱敏快照与回放契约已实现并通过专项回归。
 - `contest_qual200_dense_reranker_llm_feedback_v19` 仍是未完成的服务器资格运行；当前只保留为运行中诊断，不把未完成结果写入正式成绩。
-- 当前真实 LLM 资格/完整运行、全文证据链、质量过滤独立证据、Linux 离线依赖和历史冻结证据仍未完成。
+- P3-00 已完成“BM25+Dense union -> fixed RRF -> soft Judgement”的独立 200 条资格和 1000 条审计闭环；P3-01 真实 LLM 资格/完整运行、质量过滤独立提升、Linux 离线依赖和历史冻结证据仍未完成。
 - 可离线完成：代码、fake provider、fixture、Record/Replay、解析器、质量 policy、审计逻辑和报告格式；需要真实 Provider/GPU：LLM smoke/qualification/full；需要外部数据或官方接口：开放全文、撤稿/出版元数据和赛事官方 scorer。
 
 ## P0：LLM 结果反馈驱动搜索闭环
@@ -262,7 +262,7 @@
 
 ## P3：真实评测与指标闭环
 
-### [ ] P3-00 候选召回与软 Judgement 配对资格
+### [x] P3-00 候选召回与软 Judgement 配对资格
 
 - **任务编号**：P3-00；**独立提交**：只新增一条显式、受控的 200 条资格链和机器可执行门禁，不改变 `current_rules` 默认策略、现有 Prompt 或历史运行。
 - **目标能力**：在固定 P0 语料、Faiss、BGE 与 Qwen reranker 上验证“BM25+Dense 候选并集 + 固定 RRF + 软 Judgement”是否同时改善候选覆盖和 Judgement 假阴性。
@@ -273,12 +273,13 @@
 - **自动化验证方式**：资格脚本 fixture 覆盖通过、候选召回下降与 Judgement FN 不下降；runner wrapper 覆盖软配置；运行相关 pytest、编译和 diff 检查。真实资格运行需要服务器 GPU、P0/Faiss/BGE/reranker 资产。
 - **失败处理**：任何阶段或质量门禁失败只保留诊断与 `stage_metrics.json`，不启动 1000 条，不调参覆盖既有证据；外部资产不可用时仅提交离线门禁实现并在本记录标注阻塞。
 - **外部依赖**：自动化门禁可离线完成；真实 200 条需固定数据资产与独立 GPU。官方评分仍需赛事平台，不以内部指标替代。
-- **完成条件**：代码、测试、验证记录已提交；真实 qualification 有完整审计产物后才能勾选。
+- **完成条件**：代码、测试、验证记录已提交；真实 qualification 和独立 1000 条审计产物齐全后才可勾选。
 - **完成说明（2026-08-21）**：新增 `dense_reranker_rrf_soft` 和其专用资格门禁。门禁会 fail closed：缺少 `stage_metrics.json`、候选 Recall 下降、false-negative rate 未严格下降、平均延迟超过 baseline 的 1.10 倍、配置漂移、资源失败或 bootstrap 未支持提升时均不放行。未运行真实 benchmark。
 - **实际验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_evidence_registry.py tests/test_contest_qualification.py tests/test_soft_judgement_runner.py tests/test_audit_contest_llm_run.py tests/test_benchmark_runner.py tests/test_resource_accounting.py` 为 `90 passed`；Python `compileall`、`git diff --check` 与 evidence registry gate（`drift_count=0`）通过。全仓 pytest 为 `2148 passed, 226 failed, 51 errors`，失败为既有历史冻结提交祖先链、`record160` 缺失和发布证据链门禁；未弱化或跳过。
-- **外部执行记录（2026-08-21）**：旧服务器 v14 已自然结束，1000 条结果与 `RUN_COMPLETED` 均存在；其已有 LLM 审计记录 4 次 fallback，继续只作 legacy/diagnostic。服务器工作树已清理并以 `git pull --ff-only` 同步至已验证的 `3e17669`。新 RunId `contest_qual200_dense_reranker_rrf_soft_v3` 已完成 200/200、零失败、零 fallback，提交 generation、资源账本和 200 条 reranker 资格审计均通过。相对 `contest_qual200_reranker_v4_gpu1`，内部 F1@20 从 `0.02227` 升至 `0.02680`，Recall@20 从 `0.13892` 升至 `0.16684`，MRR 从 `0.07028` 升至 `0.07428`；paired-bootstrap 95% CI 下界分别为 `0.00220` 与 `0.01167`。初始候选 Recall 持平 `0.28833`，Judgement gold false-negative rate 从 `0.34906` 降至 `0.19811`，平均延迟 `4.062s` 未超过资格上限 `4.336s`。这些均为内部工程指标，非赛事官方 scorer。资格门禁已允许启动独立 full RunId `contest_full_dense_reranker_rrf_soft_v3`；该 1000 条运行正在服务器 GPU1 自然执行，未完成前不写入正式结果。
+- **外部执行记录（2026-08-21）**：旧服务器 v14 已自然结束，1000 条结果与 `RUN_COMPLETED` 均存在；其已有 LLM 审计记录 4 次 fallback，继续只作 legacy/diagnostic。服务器工作树已清理并以 `git pull --ff-only` 同步至已验证的 `3e17669`。新 RunId `contest_qual200_dense_reranker_rrf_soft_v3` 已完成 200/200、零失败、零 fallback，提交 generation、资源账本和 200 条 reranker 资格审计均通过。相对 `contest_qual200_reranker_v4_gpu1`，内部 F1@20 从 `0.02227` 升至 `0.02680`，Recall@20 从 `0.13892` 升至 `0.16684`，MRR 从 `0.07028` 升至 `0.07428`；paired-bootstrap 95% CI 下界分别为 `0.00220` 与 `0.01167`。初始候选 Recall 持平 `0.28833`，Judgement gold false-negative rate 从 `0.34906` 降至 `0.19811`，平均延迟 `4.062s` 未超过资格上限 `4.336s`。这些均为内部工程指标，非赛事官方 scorer。
+- **全量审计记录（2026-08-21）**：独立 `contest_full_dense_reranker_rrf_soft_v3` 已完成 1000/1000、零失败、零 fallback，具有一个 `RUN_COMPLETED` generation。`scripts/audit_contest_reranker_run.py` 输出 `status=passed`：GPU `cuda:1`、Qwen3 reranker prompt `qwen3-reranker-v1`、候选上限 120、batch 8、P50/P95=0.748/0.896s、吞吐 151.32 candidates/s、峰值显存 5.36 GiB。聚合内部 F1@20=0.02726023、Recall@20=0.16817491、MRR=0.09833638、平均端到端延迟=4.022s；初始候选 Recall=0.296751，Judgement gold false-negative rate=0.167241。`reranker_audit.json` SHA-256 为 `8a82c268...515bac`。该运行可作为 P3-00 正式内部比较，仍不等同赛事官方 scorer。
 - [x] 离线资格门禁、wrapper 和回归完成
-- [x] 真实 200 条资格通过；1000 条独立运行进行中
+- [x] 真实 200 条资格与 1000 条独立运行均通过
 
 ### [ ] P3-01 P0-01 的离线资格与真实运行门禁
 

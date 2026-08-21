@@ -1150,6 +1150,12 @@ Precision@20。本轮合成矩阵不生成真实标签、κ、Precision 或正�
 
 P0 精确 ID 语料和 Faiss 索引变化后，固定 AutoScholarQuery test 前 200 条及其顺序，比较 `contest_qual200_bm25_v1`、`contest_qual200_dense_v1` 和当前有效的 `contest_qual200_reranker_v4_gpu1`。候选必须在 F1@20 或 Recall@20 上严格提升，且配对 query-level bootstrap 95% 区间下界大于 0，baseline/candidate 资源账本均通过，才有资格运行完整 1000 条。
 
+### P3-00 候选召回与 Soft Judgement 闭环
+
+独立预注册的 `contest_qual200_dense_reranker_rrf_soft_v3` 固定 BM25/Dense 各 60 个候选、RRF `k=60`、Qwen3 Reranker 候选上限 120 与 batch 8，并只替换为 `judgement_soft_current_rules_v1.json`。相对 `contest_qual200_reranker_v4_gpu1`，内部 F1@20 为 0.02680 对 0.02227、Recall@20 为 0.16684 对 0.13892、MRR 为 0.07428 对 0.07028；paired bootstrap 95% CI 下界分别为 0.00220 与 0.01167。初始候选 Recall 持平 0.28833，Judgement gold false-negative rate 从 0.34906 降至 0.19811，平均延迟 4.062s 未超过 4.336s 资格上限。因此允许独立的 1000 条 RunId；gold/qrels 仅在检索完成后用于离线评估。
+
+`contest_full_dense_reranker_rrf_soft_v3` 已自然完成 1000/1000，零失败、零 fallback，并具有一个 `RUN_COMPLETED` generation。reranker 审计为 `passed`，记录 GPU `cuda:1`、固定 prompt `qwen3-reranker-v1`、P50/P95 0.748/0.896s、151.32 candidates/s 和 5.36 GiB 峰值显存。内部全量结果为 F1@20=0.02726023、Recall@20=0.16817491、MRR=0.09833638、平均端到端延迟=4.022s；初始候选 Recall=0.296751、Judgement gold false-negative rate=0.167241。上述均是内部工程指标，不等同赛事官方 scorer，也不构成官方比赛排名。
+
 Reranker 候选还必须通过真实推理审计：`local_model_fallback_count` 必须为 0，且结果必须包含正数 batch、候选数、推理成功数、模型指纹、设备、最大长度和固定 prompt 版本。旧 `contest_qual200_reranker_v1` 至 v3 均只保留为失败或性能诊断；当前有效资格为 `contest_qual200_reranker_v4_gpu1`，不得恢复旧目录。
 
 正式四组为规则基线、语义召回、语义召回+Qwen3 Reranker、语义召回+Qwen3 Reranker+`llm_semantic`。LLM 组每条查询最多一次调用、最多两条补充查询、temperature=0、严格 JSON Schema、始终保留原始查询，并记录模型、Prompt 版本、Token、调用次数、延迟、失败和 `current_rules` 回退。Provider 不可用时只报告未完成，不伪造指标。

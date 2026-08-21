@@ -28,8 +28,8 @@
 3. `contest_full_rules_v1`、`contest_full_dense_v1` 和 `contest_full_dense_reranker_v4` 已完成。旧 LLM 全量目录 `contest_full_dense_reranker_llm_v14` 有 1000 条结果和后验诊断账本，但缺少 `RUN_COMPLETED`，并记录 4 次 fallback；它是未完成、不可审计诊断。`contest_qual200_dense_reranker_llm_v15` 只有 10 条结果且缺少 HTTP transport 审计字段；`contest_qual200_dense_reranker_llm_v16` 完成 200 条但有 1 次 temporary-overload fallback，LLM 审计失败且 paired-bootstrap 95% 区间未支持提升。三者均为诊断，不能恢复、不能进入正式成绩，也不得启动其 1000 条完整运行。下一次 P0-01 反馈闭环资格运行固定使用新 RunId `contest_qual200_dense_reranker_llm_feedback_v20`，必须证明至少一次真实反馈调用、零 fallback、审计和 paired bootstrap 通过后才可启动完整组。
 4. 只使用完整成功运行目录中真实生成的 `config.json`、`metrics.json`、`summary.md`、`results.jsonl`、`stage_metrics.json`、`error_analysis.json` 和 `resource_ledger.json` 写实验结果。
 5. 当前提交明确“LLM 接口已实现，但尚无零 fallback、完整审计通过的 1000 条正式 LLM 运行”。不得把诊断、smoke 或未完成的 LLM 功能写成实测创新结果。
-6. `contest_qual200_dense_reranker_soft_v2` 已通过 200 条配对资格门禁；`contest_full_dense_reranker_soft_v2` 已完成 1000/1000、零失败、零 fallback，并通过真实 GPU1 reranker、资源账本与结果完整性审计。其内部 F1/Recall 不等同赛事官方 scorer。
-7. P3-00 的 `contest_qual200_dense_reranker_rrf_soft_v3` 已完成 200 条资格：零失败、零 fallback、资源账本与 reranker 资格审计通过；相对 reranker v4，内部 F1@20 和 Recall@20 的 paired-bootstrap 95% CI 均为严格正，初始候选 Recall 未下降且 Judgement false-negative rate 下降。独立 `contest_full_dense_reranker_rrf_soft_v3` 正在运行；未完成前不得写入正式成绩，也不能以 v2 或 legacy 结果替代。
+6. P3-00 的 `contest_qual200_dense_reranker_rrf_soft_v3` 已通过 200 条配对资格门禁：零失败、零 fallback、资源账本与 reranker 资格审计通过；相对 reranker v4，内部 F1@20 和 Recall@20 的 paired-bootstrap 95% CI 均为严格正，初始候选 Recall 未下降且 Judgement false-negative rate 下降。
+7. `contest_full_dense_reranker_rrf_soft_v3` 已完成 1000/1000、零失败、零 fallback，并通过真实 GPU1 reranker、资源账本、结果完整性和 `RUN_COMPLETED` 审计。内部 F1@20=0.02726023、Recall@20=0.16817491、MRR=0.09833638、平均延迟=4.022s；这些不等同赛事官方 scorer。
 8. 将新主线的 `local_bm25` 与 `local_hybrid` 对比、阶段诊断中的初始候选 Recall、Judgement FN 和平均延迟写入说明书。
 9. 填写团队、学校、指导教师、成员分工、软件著作权/开源许可证等竞赛表单字段，并完成匿名要求检查。
 10. 录制 3 到 5 条交互式演示，确认视频没有 API Key、本地绝对路径或无关个人信息。
