@@ -29,7 +29,7 @@
 4. 只使用完整成功运行目录中真实生成的 `config.json`、`metrics.json`、`summary.md`、`results.jsonl`、`stage_metrics.json`、`error_analysis.json` 和 `resource_ledger.json` 写实验结果。
 5. 当前提交明确“LLM 接口已实现，但尚无零 fallback、完整审计通过的 1000 条正式 LLM 运行”。不得把诊断、smoke 或未完成的 LLM 功能写成实测创新结果。
 6. `contest_qual200_dense_reranker_soft_v2` 已通过 200 条配对资格门禁；`contest_full_dense_reranker_soft_v2` 已完成 1000/1000、零失败、零 fallback，并通过真实 GPU1 reranker、资源账本与结果完整性审计。其内部 F1/Recall 不等同赛事官方 scorer。
-7. P3-00 已预注册独立的 `contest_qual200_dense_reranker_rrf_soft_v3`，用于验证固定 BM25+Dense/RRF 候选池和软 Judgement 的候选 Recall 与 false-negative 改善。它尚未运行，不能以 v2 或任何 legacy 结果替代。
+7. P3-00 的 `contest_qual200_dense_reranker_rrf_soft_v3` 已完成 200 条资格：零失败、零 fallback、资源账本与 reranker 资格审计通过；相对 reranker v4，内部 F1@20 和 Recall@20 的 paired-bootstrap 95% CI 均为严格正，初始候选 Recall 未下降且 Judgement false-negative rate 下降。独立 `contest_full_dense_reranker_rrf_soft_v3` 正在运行；未完成前不得写入正式成绩，也不能以 v2 或 legacy 结果替代。
 8. 将新主线的 `local_bm25` 与 `local_hybrid` 对比、阶段诊断中的初始候选 Recall、Judgement FN 和平均延迟写入说明书。
 9. 填写团队、学校、指导教师、成员分工、软件著作权/开源许可证等竞赛表单字段，并完成匿名要求检查。
 10. 录制 3 到 5 条交互式演示，确认视频没有 API Key、本地绝对路径或无关个人信息。

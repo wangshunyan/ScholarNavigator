@@ -270,9 +270,9 @@
 - **完成条件**：代码、测试、验证记录已提交；真实 qualification 有完整审计产物后才能勾选。
 - **完成说明（2026-08-21）**：新增 `dense_reranker_rrf_soft` 和其专用资格门禁。门禁会 fail closed：缺少 `stage_metrics.json`、候选 Recall 下降、false-negative rate 未严格下降、平均延迟超过 baseline 的 1.10 倍、配置漂移、资源失败或 bootstrap 未支持提升时均不放行。未运行真实 benchmark。
 - **实际验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_evidence_registry.py tests/test_contest_qualification.py tests/test_soft_judgement_runner.py tests/test_audit_contest_llm_run.py tests/test_benchmark_runner.py tests/test_resource_accounting.py` 为 `90 passed`；Python `compileall`、`git diff --check` 与 evidence registry gate（`drift_count=0`）通过。全仓 pytest 为 `2148 passed, 226 failed, 51 errors`，失败为既有历史冻结提交祖先链、`record160` 缺失和发布证据链门禁；未弱化或跳过。
-- **外部执行记录（2026-08-21）**：旧服务器 v14 已自然结束，1000 条结果与 `RUN_COMPLETED` 均存在；其已有 LLM 审计记录 4 次 fallback，继续只作 legacy/diagnostic。复核服务器为 Linux/x86_64/Python 3.12，P0 语料、Faiss/BGE 缓存和 reranker 模型均存在且有 GPU；但项目工作树仍存在已跟踪改动，不能安全执行 `git pull --ff-only` 同步本任务已推送 commit。因此不启动 P3-00 的 smoke 或 200 条资格；待工作树由维护者恢复干净后，再从新 RunId 运行。
+- **外部执行记录（2026-08-21）**：旧服务器 v14 已自然结束，1000 条结果与 `RUN_COMPLETED` 均存在；其已有 LLM 审计记录 4 次 fallback，继续只作 legacy/diagnostic。服务器工作树已清理并以 `git pull --ff-only` 同步至已验证的 `3e17669`。新 RunId `contest_qual200_dense_reranker_rrf_soft_v3` 已完成 200/200、零失败、零 fallback，提交 generation、资源账本和 200 条 reranker 资格审计均通过。相对 `contest_qual200_reranker_v4_gpu1`，内部 F1@20 从 `0.02227` 升至 `0.02680`，Recall@20 从 `0.13892` 升至 `0.16684`，MRR 从 `0.07028` 升至 `0.07428`；paired-bootstrap 95% CI 下界分别为 `0.00220` 与 `0.01167`。初始候选 Recall 持平 `0.28833`，Judgement gold false-negative rate 从 `0.34906` 降至 `0.19811`，平均延迟 `4.062s` 未超过资格上限 `4.336s`。这些均为内部工程指标，非赛事官方 scorer。资格门禁已允许启动独立 full RunId `contest_full_dense_reranker_rrf_soft_v3`；该 1000 条运行正在服务器 GPU1 自然执行，未完成前不写入正式结果。
 - [x] 离线资格门禁、wrapper 和回归完成
-- [ ] 真实 200 条资格未开始
+- [x] 真实 200 条资格通过；1000 条独立运行进行中
 
 ### [ ] P3-01 P0-01 的离线资格与真实运行门禁
 
