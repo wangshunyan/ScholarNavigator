@@ -364,6 +364,7 @@ class SearchService:
         max_workers: int = 4,
         llm_client: Any | None = None,
         llm_planning_runtime: Any | None = None,
+        llm_feedback_runtime: Any | None = None,
         judgement_policy: JudgementPolicy = "current_rules",
         judgement_config: JudgementRuleConfig | None = None,
     ) -> None:
@@ -382,6 +383,7 @@ class SearchService:
         self._llm_client = llm_client
         self._resolved_llm_client: Any | None = None
         self._llm_planning_runtime = llm_planning_runtime
+        self._llm_feedback_runtime = llm_feedback_runtime
         self._judgement_policy = judgement_policy
         self._judgement_config = judgement_config
 
@@ -1014,6 +1016,7 @@ class SearchService:
                         ranked_papers,
                         used_queries,
                         llm_client=llm_client,
+                        runtime=self._llm_feedback_runtime,
                     )
                 else:
                     evolution_record = evolve_queries(

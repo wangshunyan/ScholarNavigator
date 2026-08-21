@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -257,6 +258,8 @@ def _audit_feedback_run(
     http_attempts_total = http_429_total = cache_hit_count = 0
     retry_wait_seconds_total = 0.0
     failure_classes: Counter[str] = Counter()
+    snapshot_mode = str(config.get("llm_mode") or "live")
+    snapshot_metadata_rows = 0
     prompt_versions: set[str] = set()
     models: set[str] = set()
     call_counts: list[int] = []
@@ -270,6 +273,17 @@ def _audit_feedback_run(
         if feedback.get("policy") != "llm_feedback":
             reasons.append("llm_feedback_policy_missing")
         attempted += int(bool(feedback.get("llm_call_attempted")))
+        if snapshot_mode != "live":
+            snapshot_key = str(feedback.get("snapshot_key") or "")
+            snapshot_status = str(feedback.get("snapshot_status") or "")
+            if not re.fullmatch(r"[0-9a-f]{64}", snapshot_key):
+                reasons.append("llm_feedback_snapshot_key_missing")
+            elif snapshot_status not in {"record", "replay"}:
+                reasons.append("llm_feedback_snapshot_status_invalid")
+            else:
+                snapshot_metadata_rows += 1
+            if snapshot_mode == "replay" and feedback.get("llm_call_attempted"):
+                reasons.append("llm_feedback_replay_called_live_provider")
         eligible += int(bool(feedback.get("eligible_for_feedback")))
         fallbacks += int(bool(feedback.get("fallback_used")))
         schema_rejections += int(feedback.get("fallback_reason") == "invalid_schema")
@@ -327,6 +341,8 @@ def _audit_feedback_run(
         reasons.append("original_query_not_retained")
     if transport_metadata_rows != len(rows):
         reasons.append("llm_transport_metadata_missing")
+    if snapshot_mode != "live" and snapshot_metadata_rows != len(rows):
+        reasons.append("llm_feedback_snapshot_metadata_missing")
     if attempted != eligible:
         reasons.append("llm_feedback_call_eligibility_drift")
     if eligible and not prompt_versions:
@@ -360,6 +376,8 @@ def _audit_feedback_run(
         "per_query_call_maximum": max(call_counts, default=0),
         "prompt_versions": sorted(prompt_versions),
         "models": sorted(models),
+        "snapshot_mode": snapshot_mode,
+        "snapshot_metadata_row_count": snapshot_metadata_rows,
         "latency_p50_seconds": p50,
         "latency_p95_seconds": p95,
         "execution_metadata_available_row_count": execution_metadata_rows,

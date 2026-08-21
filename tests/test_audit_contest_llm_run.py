@@ -118,6 +118,56 @@ def test_audit_accepts_feedback_smoke_with_normal_skips(tmp_path: Path) -> None:
     assert report["feedback_skipped_count"] == 5
 
 
+def test_audit_rejects_feedback_replay_without_snapshot_identity(tmp_path: Path) -> None:
+    run = _run(tmp_path, expected_rows=5)
+    config = json.loads((run / "config.json").read_text(encoding="utf-8"))
+    config.update(
+        {
+            "llm_mode": "replay",
+            "enable_query_evolution": True,
+            "query_evolution_policy": "llm_feedback",
+        }
+    )
+    (run / "config.json").write_text(json.dumps(config), encoding="utf-8")
+    rows = [_row(index, calls=0) for index in range(5)]
+    for row in rows:
+        row["stage_diagnostics"] = {
+            "query_evolution": {
+                "llm_feedback": [
+                    {
+                        "policy": "llm_feedback",
+                        "eligible_for_feedback": True,
+                        "llm_call_attempted": False,
+                        "fallback_used": False,
+                        "original_query_retained": True,
+                        "generated_query_count": 0,
+                        "accepted_query_count": 0,
+                        "http_attempts": 0,
+                        "http_429_count": 0,
+                        "retry_after_seconds": [],
+                        "retry_wait_seconds": 0.0,
+                        "provider_failure_class": None,
+                        "provider_cache_hit": False,
+                        "prompt_tokens": 0,
+                        "completion_tokens": 0,
+                        "total_tokens": 0,
+                        "latency_seconds": 0.0,
+                        "schema_version": "1",
+                        "temperature": 0.0,
+                    }
+                ]
+            }
+        }
+    (run / "results.jsonl").write_text(
+        "\n".join(json.dumps(row) for row in rows) + "\n", encoding="utf-8"
+    )
+
+    report = audit_run(run, expected_rows=5)
+
+    assert report["status"] == "failed"
+    assert "llm_feedback_snapshot_key_missing" in report["reasons"]
+
+
 def test_audit_rejects_multiple_calls_or_supplemental_queries(tmp_path: Path) -> None:
     path = _run(tmp_path)
     rows = [_row(index, calls=2 if index == 0 else 1, supplemental=3 if index == 1 else 2) for index in range(1000)]

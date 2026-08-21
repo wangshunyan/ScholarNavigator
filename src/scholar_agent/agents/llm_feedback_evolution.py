@@ -6,6 +6,7 @@ import re
 import time
 from collections import Counter
 from typing import Any
+from urllib.parse import urlparse
 
 from pydantic import ValidationError
 
@@ -19,6 +20,10 @@ from scholar_agent.core.search_schemas import (
     QueryEvolutionRecord,
     RankedPaper,
     SearchPlan,
+)
+from scholar_agent.evaluation.llm_feedback_snapshots import (
+    LLMFeedbackExecution,
+    LLMFeedbackRequest,
 )
 from scholar_agent.llm.provider import get_llm_request_options, get_llm_runtime_config
 from scholar_agent.prompts.loader import (
@@ -51,6 +56,7 @@ def evolve_with_llm_feedback(
     used_queries: set[str],
     *,
     llm_client: Any | None,
+    runtime: Any | None = None,
 ) -> QueryEvolutionRecord:
     """Generate at most one safe feedback query from first-round result evidence.
 
@@ -69,7 +75,7 @@ def evolve_with_llm_feedback(
         diagnostics.skipped_reason = "no_ranked_feedback"
         return _record(gap, diagnostics, "no_ranked_feedback")
     diagnostics.eligible_for_feedback = True
-    if llm_client is None:
+    if llm_client is None and runtime is None:
         diagnostics.fallback_used = True
         diagnostics.fallback_reason = "llm_unconfigured"
         return _record(gap, diagnostics, "llm_unconfigured")
@@ -87,30 +93,50 @@ def evolve_with_llm_feedback(
     diagnostics.schema_version = LLM_FEEDBACK_SCHEMA_VERSION
     diagnostics.temperature = 0.0
     options = get_llm_request_options()
-    before = _token_usage(llm_client)
-    started = time.perf_counter()
+    provider, model, base_url_host = _client_identity(llm_client)
+    identity_provider = getattr(runtime, "identity", None)
+    runtime_identity = identity_provider() if callable(identity_provider) else None
+    if llm_client is None and runtime_identity is not None:
+        provider, model, base_url_host = runtime_identity
+    diagnostics.provider = provider
+    diagnostics.model = model
+    request = LLMFeedbackRequest(
+        provider=provider,
+        model=model,
+        base_url_host=base_url_host,
+        prompt_name=prompt.name,
+        prompt_version=prompt.version,
+        prompt_hash=prompt.content_hash,
+        request_identity=_request_identity(packet),
+        temperature=0,
+        max_tokens=int(options["max_tokens"]),
+        max_supplemental_queries=MAX_FEEDBACK_QUERIES,
+    )
+    messages = render_untrusted_metadata_messages(prompt.name, packet)
+    execution: LLMFeedbackExecution | None = None
     try:
-        diagnostics.llm_call_attempted = True
-        raw = llm_client.chat_json(
-            render_untrusted_metadata_messages(prompt.name, packet),
-            temperature=0,
-            timeout=float(options["timeout_seconds"]),
+        execution = (
+            runtime.execute(
+                request,
+                messages,
+                llm_client,
+                timeout=float(options["timeout_seconds"]),
+            )
+            if runtime is not None
+            else _execute_live(
+                llm_client,
+                messages,
+                timeout=float(options["timeout_seconds"]),
+            )
         )
-        diagnostics.latency_seconds = time.perf_counter() - started
-        _update_usage(diagnostics, before, _token_usage(llm_client))
-        _update_transport(diagnostics, llm_client)
-        output = LLMQueryPlanningOutput.model_validate(raw)
+        _apply_execution(diagnostics, execution)
+        output = LLMQueryPlanningOutput.model_validate(execution.raw_response)
     except ValidationError:
-        diagnostics.latency_seconds = time.perf_counter() - started
-        _update_usage(diagnostics, before, _token_usage(llm_client))
-        _update_transport(diagnostics, llm_client)
         diagnostics.fallback_used = True
         diagnostics.fallback_reason = "invalid_schema"
         return _record(gap, diagnostics, "invalid_schema")
     except Exception as exc:  # Optional feedback must never break search.
-        diagnostics.latency_seconds = time.perf_counter() - started
-        _update_usage(diagnostics, before, _token_usage(llm_client))
-        _update_transport(diagnostics, llm_client)
+        _apply_runtime_failure(diagnostics, runtime)
         reason = _failure_reason(exc)
         diagnostics.fallback_used = True
         diagnostics.fallback_reason = reason
@@ -218,6 +244,94 @@ def _base_diagnostics(client: Any | None, *, candidate_count: int) -> LLMFeedbac
     )
 
 
+def _client_identity(client: Any | None) -> tuple[str, str | None, str | None]:
+    runtime = get_llm_runtime_config()
+    provider = str(getattr(client, "provider", None) or runtime.provider or "disabled")
+    model = str(getattr(client, "model", None)) if getattr(client, "model", None) else runtime.model
+    raw_url = getattr(client, "base_url", None)
+    parsed = urlparse(str(raw_url or ""))
+    return provider, model, parsed.netloc or runtime.base_url_host
+
+
+def _request_identity(packet: dict[str, Any]) -> dict[str, Any]:
+    import hashlib
+    import json
+
+    def digest(value: object) -> str:
+        return hashlib.sha256(
+            json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")
+        ).hexdigest()
+
+    return {
+        "original_query_hash": digest(packet["original_query"]),
+        "constraints_hash": digest(packet["constraints"]),
+        "coverage_gap_hash": digest(packet["coverage_gap"]),
+        "candidate_hashes": [digest(item) for item in packet["candidates"]],
+        "candidate_count": len(packet["candidates"]),
+        "max_supplemental_queries": int(packet["max_supplemental_queries"]),
+    }
+
+
+def _execute_live(
+    client: Any | None,
+    messages: list[dict[str, str]],
+    *,
+    timeout: float,
+) -> LLMFeedbackExecution:
+    if client is None:
+        raise RuntimeError("llm_unconfigured")
+    before = _token_usage(client)
+    started = time.perf_counter()
+    raw = client.chat_json(messages, temperature=0, timeout=timeout)
+    after = _token_usage(client)
+    transport = getattr(client, "last_call_diagnostics", None)
+    if not isinstance(raw, dict):
+        raise ValueError("llm_feedback_invalid_schema")
+    return LLMFeedbackExecution(
+        raw_response=raw,
+        snapshot_status="live",
+        llm_call_attempted=True,
+        prompt_tokens=max(0, after[0] - before[0]),
+        completion_tokens=max(0, after[1] - before[1]),
+        total_tokens=max(0, after[2] - before[2]),
+        recorded_latency_seconds=time.perf_counter() - started,
+        http_attempts=max(0, int(getattr(transport, "http_attempts", 0))),
+        http_429_count=max(0, int(getattr(transport, "http_429_count", 0))),
+        retry_after_seconds=[max(0.0, float(value)) for value in getattr(transport, "retry_after_seconds", ())],
+        retry_wait_seconds=max(0.0, float(getattr(transport, "retry_wait_seconds", 0.0))),
+        provider_failure_class=getattr(transport, "failure_class", None),
+        provider_cache_hit=bool(getattr(transport, "cache_hit", False)),
+    )
+
+
+def _apply_execution(
+    diagnostics: LLMFeedbackDiagnostics,
+    execution: LLMFeedbackExecution,
+) -> None:
+    diagnostics.snapshot_key = execution.snapshot_key
+    diagnostics.snapshot_status = execution.snapshot_status
+    diagnostics.llm_call_attempted = execution.llm_call_attempted
+    diagnostics.replayed = execution.replayed
+    diagnostics.prompt_tokens = execution.prompt_tokens
+    diagnostics.completion_tokens = execution.completion_tokens
+    diagnostics.total_tokens = execution.total_tokens
+    diagnostics.latency_seconds = execution.recorded_latency_seconds
+    diagnostics.http_attempts = execution.http_attempts
+    diagnostics.http_429_count = execution.http_429_count
+    diagnostics.retry_after_seconds = list(execution.retry_after_seconds)
+    diagnostics.retry_wait_seconds = execution.retry_wait_seconds
+    diagnostics.provider_failure_class = execution.provider_failure_class
+    diagnostics.provider_cache_hit = execution.provider_cache_hit
+
+
+def _apply_runtime_failure(diagnostics: LLMFeedbackDiagnostics, runtime: Any | None) -> None:
+    provider = getattr(runtime, "failure_diagnostics", None)
+    values = provider() if callable(provider) else {}
+    for name in ("snapshot_key", "snapshot_status", "llm_call_attempted"):
+        if name in values:
+            setattr(diagnostics, name, values[name])
+
+
 def _validate_query(
     query: str,
     *,
@@ -301,6 +415,8 @@ def _failure_reason(exc: Exception) -> str:
         return "budget_exhausted"
     if "timeout" in text:
         return "llm_timeout"
+    if "snapshot_missing" in text:
+        return "snapshot_missing"
     if "disabled" in text or "unconfigured" in text:
         return "llm_unconfigured"
     return "llm_request_failed"

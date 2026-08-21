@@ -6,6 +6,10 @@ from types import SimpleNamespace
 import pytest
 
 from scholar_agent.agents.llm_feedback_evolution import evolve_with_llm_feedback
+from scholar_agent.evaluation.llm_feedback_snapshots import (
+    LLMFeedbackSnapshotRuntime,
+    LLMFeedbackSnapshotStore,
+)
 from scholar_agent.agents.retriever import RetrievalOutput, SourceStats
 from scholar_agent.connectors import ConnectorDiagnostics
 from scholar_agent.core.paper_schemas import Paper, PaperIdentifiers
@@ -336,3 +340,35 @@ def test_feedback_policy_rejects_multiple_llm_stages() -> None:
             query_planning_policy="llm_semantic",
             enable_synthesis=False,
         )
+
+
+def test_feedback_evolution_replays_without_a_provider(tmp_path) -> None:  # noqa: ANN001
+    store = LLMFeedbackSnapshotStore(tmp_path)
+    first = evolve_with_llm_feedback(
+        _analysis(), _plan(), [_judgement()], [_ranked(_judgement())], {QUERY},
+        llm_client=FakeLLMClient(),
+        runtime=LLMFeedbackSnapshotRuntime(store, mode="record"),
+    )
+    replayed = evolve_with_llm_feedback(
+        _analysis(), _plan(), [_judgement()], [_ranked(_judgement())], {QUERY},
+        llm_client=None,
+        runtime=LLMFeedbackSnapshotRuntime(store, mode="replay"),
+    )
+
+    assert first.generated_queries == replayed.generated_queries
+    assert replayed.llm_feedback is not None
+    assert replayed.llm_feedback.replayed is True
+    assert replayed.llm_feedback.llm_call_attempted is False
+
+
+def test_feedback_evolution_missing_snapshot_is_a_closed_fallback(tmp_path) -> None:  # noqa: ANN001
+    record = evolve_with_llm_feedback(
+        _analysis(), _plan(), [_judgement()], [_ranked(_judgement())], {QUERY},
+        llm_client=None,
+        runtime=LLMFeedbackSnapshotRuntime(LLMFeedbackSnapshotStore(tmp_path), mode="replay"),
+    )
+
+    assert record.generated_queries == []
+    assert record.llm_feedback is not None
+    assert record.llm_feedback.fallback_reason == "snapshot_missing"
+    assert record.llm_feedback.llm_call_attempted is False

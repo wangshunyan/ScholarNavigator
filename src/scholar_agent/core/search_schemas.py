@@ -677,6 +677,9 @@ class LLMFeedbackDiagnostics(BaseModel):
     retry_wait_seconds: float = Field(default=0.0, ge=0.0)
     provider_failure_class: str | None = None
     provider_cache_hit: bool = False
+    snapshot_key: str | None = None
+    snapshot_status: str | None = None
+    replayed: bool = False
 
 
 class EvolvedSubquery(BaseModel):

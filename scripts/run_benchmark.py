@@ -110,6 +110,10 @@ from scholar_agent.evaluation.llm_planning_snapshots import (  # noqa: E402
     LLMPlanningSnapshotRuntime,
     LLMPlanningSnapshotStore,
 )
+from scholar_agent.evaluation.llm_feedback_snapshots import (  # noqa: E402
+    LLMFeedbackSnapshotRuntime,
+    LLMFeedbackSnapshotStore,
+)
 from scholar_agent.evaluation.snapshots.schemas import CONNECTOR_VERSIONS  # noqa: E402
 from scholar_agent.evaluation.snapshots.schemas import QUERY_ADAPTER_VERSION  # noqa: E402
 from scholar_agent.evaluation.snapshots.schemas import SnapshotPlanRound  # noqa: E402
@@ -433,6 +437,40 @@ def _aggregate_llm_planning_costs(rows: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _aggregate_llm_feedback_costs(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    reports = [
+        row.get("llm_feedback_cost_report")
+        for row in rows
+        if isinstance(row.get("llm_feedback_cost_report"), dict)
+    ]
+    numeric_fields = (
+        "snapshot_hits",
+        "snapshot_writes",
+        "live_call_count",
+        "prompt_tokens",
+        "completion_tokens",
+        "total_tokens",
+        "recorded_latency_seconds",
+        "replay_execution_request_count",
+        "replay_execution_retry_count",
+        "replay_execution_network_wait_seconds",
+    )
+    return {
+        "enabled": bool(reports),
+        **{
+            field: sum(float(report.get(field, 0) or 0) for report in reports)
+            for field in numeric_fields
+        },
+        "missing_keys": sorted(
+            {
+                key
+                for report in reports
+                for key in report.get("missing_keys") or []
+            }
+        ),
+    }
+
+
 def _write_snapshot_plan_artifacts(
     options: BenchmarkRunOptions,
     runtime: SnapshotRuntime,
@@ -572,6 +610,7 @@ def run_benchmark(
 
     snapshot_runtime: SnapshotRuntime | None = None
     llm_planning_runtime: LLMPlanningSnapshotRuntime | None = None
+    llm_feedback_runtime: LLMFeedbackSnapshotRuntime | None = None
     if (
         options.query_planning_policy in _LLM_PLANNING_POLICIES
         and options.llm_mode != "live"
@@ -584,6 +623,19 @@ def run_benchmark(
             LLMPlanningSnapshotStore(options.llm_snapshot_dir),
             mode=options.llm_mode,
             group_name=_ablation_group_name(options),
+        )
+    if (
+        options.query_evolution_policy == "llm_feedback"
+        and options.enable_query_evolution
+        and options.llm_mode != "live"
+    ):
+        if service is not None:
+            raise ValueError("LLM snapshot modes require the real SearchService")
+        if options.llm_snapshot_dir is None:
+            raise ValueError("--llm-snapshot-dir is required outside LLM live mode")
+        llm_feedback_runtime = LLMFeedbackSnapshotRuntime(
+            LLMFeedbackSnapshotStore(options.llm_snapshot_dir),
+            mode=options.llm_mode,
         )
     if options.retrieval_mode != "live":
         if service is not None:
@@ -630,6 +682,7 @@ def run_benchmark(
             ),
             max_workers=options.max_workers,
             llm_planning_runtime=llm_planning_runtime,
+            llm_feedback_runtime=llm_feedback_runtime,
             judgement_policy=options.judgement_policy,
             judgement_config=judgement_config,
         )
@@ -637,6 +690,7 @@ def run_benchmark(
         runner = service or SearchService(
             max_workers=options.max_workers,
             llm_planning_runtime=llm_planning_runtime,
+            llm_feedback_runtime=llm_feedback_runtime,
             judgement_policy=options.judgement_policy,
             judgement_config=judgement_config,
         )
@@ -684,6 +738,7 @@ def run_benchmark(
             options,
             snapshot_runtime=snapshot_runtime,
             llm_planning_runtime=llm_planning_runtime,
+            llm_feedback_runtime=llm_feedback_runtime,
             judgement_config=judgement_config,
             resource_ledger_context=resource_context,
         )
@@ -694,6 +749,7 @@ def run_benchmark(
     metrics = _evaluate_rows(ordered_rows, selected, options.result_policy)
     metrics["snapshot_costs"] = _aggregate_snapshot_costs(ordered_rows)
     metrics["llm_planning_costs"] = _aggregate_llm_planning_costs(ordered_rows)
+    metrics["llm_feedback_costs"] = _aggregate_llm_feedback_costs(ordered_rows)
     stage_metrics: dict[str, Any] | None = None
     reports: dict[str, bytes] = {
         "metrics.json": _json_bytes(metrics),
@@ -796,11 +852,14 @@ def _validate_llm_planning_runtime(
         )
     if options.llm_mode == "live":
         return
-    if options.query_evolution_policy == "llm_feedback":
-        raise ValueError("llm_feedback_snapshot_mode_not_supported")
     if options.llm_snapshot_dir is None:
         raise ValueError("--llm-snapshot-dir is required outside LLM live mode")
-    identity = LLMPlanningSnapshotStore(options.llm_snapshot_dir).identity()
+    store = (
+        LLMFeedbackSnapshotStore(options.llm_snapshot_dir)
+        if options.query_evolution_policy == "llm_feedback"
+        else LLMPlanningSnapshotStore(options.llm_snapshot_dir)
+    )
+    identity = store.identity()
     has_config_identity = runtime.provider != "disabled" and bool(runtime.model)
     if options.llm_mode in {"replay", "record-missing"} and identity is None:
         if not has_config_identity:
@@ -1244,6 +1303,7 @@ def _run_case(
     options: BenchmarkRunOptions,
     snapshot_runtime: SnapshotRuntime | None = None,
     llm_planning_runtime: LLMPlanningSnapshotRuntime | None = None,
+    llm_feedback_runtime: LLMFeedbackSnapshotRuntime | None = None,
     judgement_config: JudgementRuleConfig | None = None,
     resource_ledger_context: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
@@ -1257,6 +1317,8 @@ def _run_case(
         snapshot_runtime.begin_case(query.query_id)
     if llm_planning_runtime is not None:
         llm_planning_runtime.begin_case(query.query_id)
+    if llm_feedback_runtime is not None:
+        llm_feedback_runtime.begin_case(query.query_id)
     try:
         judgement_kwargs: dict[str, Any] = {}
         if (
@@ -1327,6 +1389,10 @@ def _run_case(
             row["llm_planning_cost_report"] = (
                 llm_planning_runtime.finish_case().model_dump(mode="json")
             )
+        if llm_feedback_runtime is not None:
+            row["llm_feedback_cost_report"] = (
+                llm_feedback_runtime.finish_case().model_dump(mode="json")
+            )
         return _attach_resource_ledger(
             row,
             resource_observer,
@@ -1351,6 +1417,10 @@ def _run_case(
         if llm_planning_runtime is not None:
             row["llm_planning_cost_report"] = (
                 llm_planning_runtime.finish_case().model_dump(mode="json")
+            )
+        if llm_feedback_runtime is not None:
+            row["llm_feedback_cost_report"] = (
+                llm_feedback_runtime.finish_case().model_dump(mode="json")
             )
         terminal_status = (
             "cancelled" if type(exc).__name__ == "SearchCancelled" else "failed"

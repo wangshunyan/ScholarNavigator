@@ -181,7 +181,7 @@ flowchart TD
 
 候选合并、结构化输出和离线评测共用 `scholar_agent.core.identity`。稳定标识先按 DOI、arXiv、OpenAlex、Semantic Scholar、S2ORC Corpus ID、PubMed 的规范形式比较；没有共同稳定标识时，只有规范标题、年份和共同作者同时满足才允许保守合并，标识冲突不合并。去重函数可返回逐条合并规则与证据；可选字段级血缘观察器还记录每个最终字段的来源候选和既有选择规则，供离线重建门禁使用。
 
-查询演化支持 `off`、`seed_expansion`、`coverage_gap` 和默认关闭的 `llm_feedback`。旧策略保留用于复现实验；产品在开关启用时使用 `coverage_gap`，但 API、前端和 CLI 的开关默认关闭。规则策略只根据查询分析、显式约束、初始候选和规则判断计算 `QueryCoverageGap`，不读取评测答案：结构化方法、数据集、必要词、论文类型或复合主题存在缺口且有可靠 seed 时，最多选 3 个高度/部分相关 seed、生成 2 条保留原主题的短查询。`llm_feedback` 则只向 LLM 提供原始查询、约束、覆盖缺口和最多 3 条首轮已排序候选的最小元数据，并将候选作为非可信数据封装；它固定 temperature=0、最多一次调用和一条补充查询，始终保留原始查询。它不能与其他 LLM 查询规划、查询理解或 Judgement 同时启用；Provider、预算、Schema 或本地质量门失败时不启动第二轮检索。所有补充候选先按重复、排除词、主题和结构化维度做确定性质量门过滤，再进入原有 Judgement 与 Reranker。查询演化仍只执行一轮；RefChain 固定为单层。
+查询演化支持 `off`、`seed_expansion`、`coverage_gap` 和默认关闭的 `llm_feedback`。旧策略保留用于复现实验；产品在开关启用时使用 `coverage_gap`，但 API、前端和 CLI 的开关默认关闭。规则策略只根据查询分析、显式约束、初始候选和规则判断计算 `QueryCoverageGap`，不读取评测答案：结构化方法、数据集、必要词、论文类型或复合主题存在缺口且有可靠 seed 时，最多选 3 个高度/部分相关 seed、生成 2 条保留原主题的短查询。`llm_feedback` 则只向 LLM 提供原始查询、约束、覆盖缺口和最多 3 条首轮已排序候选的最小元数据，并将候选作为非可信数据封装；它固定 temperature=0、最多一次调用和一条补充查询，始终保留原始查询。它不能与其他 LLM 查询规划、查询理解或 Judgement 同时启用；Provider、预算、Schema 或本地质量门失败时不启动第二轮检索。所有补充候选先按重复、排除词、主题和结构化维度做确定性质量门过滤，再进入原有 Judgement 与 Reranker。查询演化仍只执行一轮；RefChain 固定为单层。反馈请求另有独立的脱敏 Record/Replay 快照：只保存 Prompt/模型/参数和原始查询、约束、覆盖缺口及候选包络的哈希身份，不保存这些输入正文；Replay 零网络、零 LLM，缺失快照 fail closed。
 
 ## 执行预算
 
