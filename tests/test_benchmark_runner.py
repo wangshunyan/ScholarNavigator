@@ -228,6 +228,84 @@ def test_quality_ranking_policy_serializes_fixed_config_and_hash(tmp_path: Path)
     assert catalog["unknown_external_risks"] == "no_penalty"
 
 
+def test_quality_evidence_ledger_is_bound_to_quality_benchmark_runs(
+    tmp_path: Path,
+) -> None:
+    dataset = _dataset(tmp_path, count=1)
+    ledger_path = tmp_path / "quality-evidence.jsonl"
+    ledger_path.write_text(
+        json.dumps(
+            {
+                "paper_identifier": "arxiv:2401.00000",
+                "signal_name": "retraction_status",
+                "state": "clear",
+                "source": "verified_registry",
+                "source_record_id": "registry-row-1",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    service = FakeService()
+    options = _options(tmp_path, dataset, run_id="quality-ledger").model_copy(
+        update={
+            "ranking_policy": "quality_soft_v1",
+            "quality_evidence_ledger_path": ledger_path,
+        }
+    )
+
+    result = run_benchmark.run_benchmark(options, service=service)
+    parsed = run_benchmark._parser().parse_args(  # noqa: SLF001
+        [
+            "--dataset",
+            "auto_scholar_query",
+            "--run-id",
+            "quality-ledger-cli",
+            "--ranking-policy",
+            "quality_soft_v1",
+            "--quality-evidence-ledger",
+            "quality-evidence.jsonl",
+        ]
+    )
+
+    identity = result.config["quality_evidence_ledger"]
+    assert identity["schema_version"] == "paper-quality-evidence-ledger-v1"
+    assert identity["record_count"] == 1
+    assert len(identity["file_sha256"]) == 64
+    assert len(identity["semantic_sha256"]) == 64
+    assert "directory" not in identity
+    assert service.kwargs[0]["verified_quality_evidence"][0].source == (
+        "verified_registry"
+    )
+    assert parsed.quality_evidence_ledger == "quality-evidence.jsonl"
+
+
+def test_quality_evidence_ledger_requires_quality_ranking_policy(tmp_path: Path) -> None:
+    dataset = _dataset(tmp_path, count=1)
+    ledger_path = tmp_path / "quality-evidence.jsonl"
+    ledger_path.write_text(
+        json.dumps(
+            {
+                "paper_identifier": "arxiv:2401.00000",
+                "signal_name": "retraction_status",
+                "state": "clear",
+                "source": "verified_registry",
+                "source_record_id": "registry-row-1",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    options = _options(tmp_path, dataset, run_id="invalid-quality-ledger").model_copy(
+        update={"quality_evidence_ledger_path": ledger_path}
+    )
+
+    with pytest.raises(
+        ValueError, match="quality_evidence_ledger_requires_quality_soft_ranking"
+    ):
+        run_benchmark.run_benchmark(options, service=FakeService())
+
+
 def test_query_evolution_policy_is_recorded_and_passed_to_service(
     tmp_path: Path,
 ) -> None:

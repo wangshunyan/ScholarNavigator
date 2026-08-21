@@ -43,6 +43,10 @@ from scholar_agent.connectors import (  # noqa: E402
     resolve_semantic_scholar_paper_ids_detailed,
 )
 from scholar_agent.core.evaluation_schemas import EvalQuery  # noqa: E402
+from scholar_agent.core.paper_quality import (  # noqa: E402
+    VerifiedQualityEvidenceLedger,
+    load_verified_quality_evidence_ledger,
+)
 from scholar_agent.core.search_schemas import (  # noqa: E402
     DEFAULT_SEARCH_SOURCES,
     JudgementPolicy,
@@ -178,6 +182,7 @@ class BenchmarkRunOptions(BaseModel):
     query_evolution_policy: QueryEvolutionPolicy = "coverage_gap"
     query_planning_policy: QueryPlanningPolicy = "current_rules"
     ranking_policy: RankingPolicy = "current_rules"
+    quality_evidence_ledger_path: Path | None = None
     judgement_policy: JudgementPolicy = "current_rules"
     judgement_config_path: Path | None = None
     enable_refchain: bool = False
@@ -570,6 +575,7 @@ def run_benchmark(
 ) -> BenchmarkRunResult:
     _configure_local_sources_for_run(options)
     _validate_llm_planning_runtime(options, service=service)
+    quality_evidence_ledger = _load_quality_evidence_ledger(options)
     source_path = dataset_source_path(options.dataset, options.dataset_path)
     judgement_config = _resolve_options_judgement_config(options)
     all_queries = load_dataset(options.dataset, path=source_path)
@@ -578,7 +584,12 @@ def run_benchmark(
     selected = _select_shard_population(options, population)
     dataset_report = inspect_dataset(options.dataset, path=source_path)
     run_dir = options.output_root.expanduser().resolve() / options.run_id
-    config = _build_config(options, source_path, selected)
+    config = _build_config(
+        options,
+        source_path,
+        selected,
+        quality_evidence_ledger=quality_evidence_ledger,
+    )
     commit_store = BenchmarkRunCommitStore(run_dir)
 
     existing_rows: dict[str, dict[str, Any]] = {}
@@ -745,6 +756,7 @@ def run_benchmark(
             llm_feedback_runtime=llm_feedback_runtime,
             judgement_config=judgement_config,
             resource_ledger_context=resource_context,
+            quality_evidence_ledger=quality_evidence_ledger,
         )
         state = commit_store.commit_record(existing_rows[query.query_id])
         commit_store.materialize_compatibility_view(state)
@@ -881,6 +893,16 @@ def _resolve_options_judgement_config(
     return resolve_judgement_config(options.judgement_policy, explicit)
 
 
+def _load_quality_evidence_ledger(
+    options: BenchmarkRunOptions,
+) -> VerifiedQualityEvidenceLedger | None:
+    if options.quality_evidence_ledger_path is None:
+        return None
+    if options.ranking_policy != QUALITY_SOFT_RANKING_POLICY:
+        raise ValueError("quality_evidence_ledger_requires_quality_soft_ranking")
+    return load_verified_quality_evidence_ledger(options.quality_evidence_ledger_path)
+
+
 def _select_queries(
     queries: list[EvalQuery],
     offset: int,
@@ -919,6 +941,8 @@ def _build_config(
     options: BenchmarkRunOptions,
     source_path: Path,
     selected: list[EvalQuery],
+    *,
+    quality_evidence_ledger: VerifiedQualityEvidenceLedger | None = None,
 ) -> dict[str, Any]:
     llm_runtime = get_llm_runtime_config()
     judgement_config = _resolve_options_judgement_config(options)
@@ -1027,6 +1051,16 @@ def _build_config(
         ),
         "query_planning_policy": options.query_planning_policy,
         "ranking_policy": options.ranking_policy,
+        "quality_evidence_ledger": (
+            {
+                "schema_version": quality_evidence_ledger.schema_version,
+                "file_sha256": quality_evidence_ledger.file_sha256,
+                "semantic_sha256": quality_evidence_ledger.semantic_sha256,
+                "record_count": quality_evidence_ledger.record_count,
+            }
+            if quality_evidence_ledger is not None
+            else None
+        ),
         "query_planner_version": QUERY_PLANNER_VERSION,
         "judgement_policy": options.judgement_policy,
         "judgement_config": judgement_config.model_dump(mode="json"),
@@ -1312,6 +1346,7 @@ def _run_case(
     llm_feedback_runtime: LLMFeedbackSnapshotRuntime | None = None,
     judgement_config: JudgementRuleConfig | None = None,
     resource_ledger_context: Mapping[str, Any] | None = None,
+    quality_evidence_ledger: VerifiedQualityEvidenceLedger | None = None,
 ) -> dict[str, Any]:
     started = time.perf_counter()
     resource_observer = (
@@ -1360,6 +1395,11 @@ def _run_case(
             budget=options.budgets,
             collect_diagnostics=options.diagnostics,
             query_adapter_policy=options.query_adapter_policy,
+            verified_quality_evidence=(
+                quality_evidence_ledger.evidence
+                if quality_evidence_ledger is not None
+                else ()
+            ),
             **judgement_kwargs,
             **resource_kwargs,
         )
@@ -1821,6 +1861,14 @@ def _parser() -> argparse.ArgumentParser:
         choices=["current_rules", "rrf_fusion", "quality_soft_v1"],
         default="current_rules",
     )
+    parser.add_argument(
+        "--quality-evidence-ledger",
+        default=None,
+        help=(
+            "strict paper-quality-evidence-ledger-v1 JSONL; only accepted "
+            "with --ranking-policy quality_soft_v1"
+        ),
+    )
     parser.add_argument("--judgement-config", default=None)
     parser.add_argument("--enable-refchain", action="store_true")
     parser.add_argument("--enable-semantic-seed-expansion", action="store_true")
@@ -2129,6 +2177,11 @@ def main(argv: list[str] | None = None) -> int:
             query_evolution_policy=args.query_evolution_policy,
             query_planning_policy=args.query_planning_policy,
             ranking_policy=args.ranking_policy,
+            quality_evidence_ledger_path=(
+                Path(args.quality_evidence_ledger)
+                if args.quality_evidence_ledger
+                else None
+            ),
             judgement_policy=args.judgement_policy,
             judgement_config_path=(
                 Path(args.judgement_config) if args.judgement_config else None
