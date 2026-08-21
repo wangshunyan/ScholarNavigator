@@ -67,5 +67,6 @@ gold rank 为 `14.36`，中位 rank 为 `8`。因此，软 Judgement 与候选�
    通过，才可启动新的完整 RunId。v2 已满足该门禁，并完成独立的
    `contest_full_dense_reranker_soft_v2`；该运行 1000/1000、零失败、零 fallback，
    但其指标仍是内部工程指标，不等同赛事官方 scorer。
-3. `contest_full_dense_reranker_llm_v14` 已完成诊断审计：虽有 1000 条结果和零失败，
-   但有 4 次 fallback，因此不将 LLM 作为实测提升写入结果，也不作为 v15 的资格依据。
+3. `contest_full_dense_reranker_llm_v14` 有 1000 条结果和后验诊断账本，但缺少
+   `RUN_COMPLETED`，因此是未完成、不可审计诊断；另有 4 次 fallback。它不作为
+   LLM 实测提升或 v15 资格依据。

@@ -21,7 +21,7 @@ P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid`
 .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration reranker -RunId contest_qual200_reranker_v4_gpu1
 ```
 
-运行 `scripts/check_contest_qualification.py` 后，只有门禁通过的候选可进入完整四组。当前 P0/Faiss 主线已完成 `contest_full_rules_v1`、`contest_full_dense_v1` 和 `contest_full_dense_reranker_v4`；`contest_full_dense_reranker_llm_v14` 仅为诊断运行。`contest_qual200_dense_reranker_llm_v15` 在 10 条成功结果后发现结果 schema 未保留必须的传输审计字段，已停止并保留为不合格诊断。修复后的 `contest_qual200_dense_reranker_llm_v16` 已完成 200 条，但出现一次 temporary-overload fallback；LLM 审计失败，且 F1/Recall 的 paired-bootstrap 95% 区间均跨过零，因此同样只保留为诊断，禁止启动 `contest_full_dense_reranker_llm_v16`。后续 LLM 尝试必须使用新的 RunId，从 smoke 和 200 条资格门禁重新开始。每个运行需保存配置、commit、输入哈希、PID、命令、日志、资源账本和 committed generation。新 runner 在 `config.json` 写入 `code.commit` 与脱敏 `execution.process_id/launch_command/log_path`，并固定日志为 `outputs/run_logs/<RunId>.log`；这些会话字段不进入 resume 语义签名。
+运行 `scripts/check_contest_qualification.py` 后，只有门禁通过的候选可进入完整四组。当前 P0/Faiss 主线已完成 `contest_full_rules_v1`、`contest_full_dense_v1` 和 `contest_full_dense_reranker_v4`；`contest_full_dense_reranker_llm_v14` 只有 1000 条结果和后验诊断账本，缺少 `RUN_COMPLETED`，因此仅为未完成、不可审计诊断。`contest_qual200_dense_reranker_llm_v15` 在 10 条成功结果后发现结果 schema 未保留必须的传输审计字段，已停止并保留为不合格诊断。修复后的 `contest_qual200_dense_reranker_llm_v16` 已完成 200 条，但出现一次 temporary-overload fallback；LLM 审计失败，且 F1/Recall 的 paired-bootstrap 95% 区间均跨过零，因此同样只保留为诊断，禁止启动 `contest_full_dense_reranker_llm_v16`。后续 LLM 尝试必须使用新的 RunId，从 smoke 和 200 条资格门禁重新开始。每个运行需保存配置、commit、输入哈希、PID、命令、日志、资源账本和 committed generation。新 runner 在 `config.json` 写入 `code.commit` 与脱敏 `execution.process_id/launch_command/log_path`，并固定日志为 `outputs/run_logs/<RunId>.log`；这些会话字段不进入 resume 语义签名。
 
 `dense_reranker_soft` 是一个独立的候选 policy，仅将 `partially_relevant_threshold` 从
 `0.45` 降至 `0.35`，保留原有硬约束、检索、RRF 和 reranker 参数。它必须先使用
@@ -49,7 +49,7 @@ v3 如因完整序列 logits 的 CPU 传输导致性能不满足实验资源边�
 
 LLM 组必须等待完整 reranker 组核验通过后才启动。它固定使用 `llm_semantic`、当前 Prompt、`temperature=0`、严格 JSON Schema，且每个查询最多一次 LLM 调用、最多两条补充查询并始终保留原始查询。活动 Prompt `llm_query_planning@1.0.1` 为降低无效扩展风险固定生成一条不超过 12 词、逐字保留核心 topic 词的补充查询；runner 将 `--max-llm-calls=1` 作为每条 SearchBudget 的上限，并固定 `--max-search-rounds=3`。
 
-当前 `contest_full_dense_reranker_llm_v14` 是在旧审计字段之前开始的诊断运行，并且已有 fallback；不得作为正式成绩或资格依据。`contest_qual200_dense_reranker_llm_v15` 缺少正式审计字段，`contest_qual200_dense_reranker_llm_v16` 则有一次 temporary-overload fallback 且未通过 paired-bootstrap 门禁；两者都不得恢复或进入正式成绩。下列命令记录 v16 的已执行资格链路；任何后续 LLM 主线必须替换为新的不可复用 RunId：
+当前 `contest_full_dense_reranker_llm_v14` 在旧审计字段之前启动，有 1000 条结果和后验诊断账本但缺少 `RUN_COMPLETED`，且记录了 fallback；它是未完成、不可审计诊断，不得恢复、不得作为正式成绩或资格依据。`contest_qual200_dense_reranker_llm_v15` 缺少正式审计字段，`contest_qual200_dense_reranker_llm_v16` 则有一次 temporary-overload fallback 且未通过 paired-bootstrap 门禁；两者都不得恢复或进入正式成绩。下列命令记录 v16 的已执行资格链路；任何后续 LLM 主线必须替换为新的不可复用 RunId：
 
 ```bash
 ./scripts/run_contest_benchmark.sh --mode smoke --configuration dense_reranker_llm --run-id contest_smoke_dense_reranker_llm_v16

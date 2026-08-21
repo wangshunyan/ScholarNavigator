@@ -58,7 +58,7 @@
 | rules | `contest_full_rules_v1` | 已完成 | 0.01087 | 0.06195 | passed | MRR 0.04071，平均延迟 0.719 s。 |
 | dense | `contest_full_dense_v1` | 已完成 | 0.02155 | 0.13508 | passed | MRR 0.09171，平均延迟 0.968 s。 |
 | dense + reranker | `contest_full_dense_reranker_v4` | 已完成并审计通过 | 0.02442 | 0.15010 | passed | MRR 0.09406，平均延迟 3.909 s；零失败、零 fallback。 |
-| dense + reranker + LLM | `contest_full_dense_reranker_llm_v14` | 已完成诊断审计，不通过正式门禁 | 不得引用 | 不得引用 | 不适用 | 1000 条结果、零失败但有 4 次 fallback；不能作为正式成绩。 |
+| dense + reranker + LLM | `contest_full_dense_reranker_llm_v14` | 未完成、不可审计诊断，不通过正式门禁 | 不得引用 | 不得引用 | 不适用 | 有 1000 条结果和后验诊断账本，但缺少 `RUN_COMPLETED`；另有 4 次 fallback，不能作为正式成绩。 |
 | dense + reranker + LLM | `contest_qual200_dense_reranker_llm_v15` | 未完成诊断，不通过正式门禁 | 不得引用 | 不得引用 | 不适用 | 10 条成功、零 fallback，但结果 schema 丢失 HTTP transport 字段；停止后保留为诊断，不能恢复或引用。 |
 | dense + reranker + LLM | `contest_qual200_dense_reranker_llm_v16` | 已完成诊断，不通过正式门禁 | 不得引用 | 不得引用 | passed | 200 条、零失败但有 1 次 temporary-overload fallback；LLM 审计失败，F1/Recall 的 paired-bootstrap 95% 区间均跨过零。 |
 | dense + reranker + soft Judgement | `contest_qual200_dense_reranker_soft_v2` | 已完成并通过资格门禁 | qualification only | qualification only | passed | 200/200、零失败、零 fallback；GPU1 reranker 审计通过。 |
@@ -86,7 +86,7 @@ LLM 传输层对每个逻辑调用采用固定的有限重试协议：HTTP `429/
 1. 旧 `local_hybrid` 结果仅代表 legacy 标题匹配语料和全矩阵向量实现，不能作为 P0/Faiss 新方案的正式成绩。
 2. 在同一 1000 条内部评测下，Dense 相对 rules 将 F1@20 从 0.01087 提升至 0.02155、Recall@20 从 0.06195 提升至 0.13508；完整 reranker 进一步达到 F1@20=0.02442、Recall@20=0.15010。资源账本和 reranker 审计均通过，但这些仍是内部指标，不等同于赛事官方 scorer。
 3. Reranker 的完整运行使用真实 GPU 推理且零 fallback；代价是平均端到端延迟由 Dense 的 0.968 s 增至 3.909 s。提交材料应同时呈现质量增益和资源代价。
-4. `contest_full_dense_reranker_llm_v14` 是旧审计字段之前启动的诊断运行，且已有 fallback；`contest_qual200_dense_reranker_llm_v15` 因结果 schema 丢失 HTTP transport 审计字段而停止；`contest_qual200_dense_reranker_llm_v16` 虽完成 200 条，但出现 1 次 temporary-overload fallback 且 paired-bootstrap 95% 区间未支持提升。三者都不得写成实测创新结果，且不得启动对应的 LLM 完整运行。
+4. `contest_full_dense_reranker_llm_v14` 有 1000 条结果和后验诊断账本，但缺少 `RUN_COMPLETED`，故不能证明原子完成或作为可审计完整运行；同时记录 4 次 fallback。`contest_qual200_dense_reranker_llm_v15` 因结果 schema 丢失 HTTP transport 审计字段而停止；`contest_qual200_dense_reranker_llm_v16` 虽完成 200 条，但出现 1 次 temporary-overload fallback 且 paired-bootstrap 95% 区间未支持提升。三者都不得写成实测创新结果，且不得启动对应的 LLM 完整运行。
 5. `local_bm25 + arXiv` 的旧完整运行及 `contest_full_local_hybrid_v1` 只保留为可靠性/中断诊断，不得写入正式质量对比或提交结果。
 6. `contest_qual200_dense_reranker_soft_v2` 的 paired-bootstrap 支持质量提升；对应的 `contest_full_dense_reranker_soft_v2` 已完成独立 1000 条运行、完整性检查、资源账本和 reranker 审计。
 7. `contest_full_dense_reranker_soft_v2` 已完成 1000 条并通过完整性、资源账本和 GPU reranker 审计；F1@20=0.02726023、Recall@20=0.16817491、MRR=0.09833638、平均延迟=4.032 s。以上仍为内部工程指标，不等同赛事官方 scorer。

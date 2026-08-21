@@ -25,7 +25,7 @@
 
 1. P0 精确语料和 Faiss 资源报告完成并冻结；旧 `contest_full_local_*` 仅作为 legacy 对照。
 2. P0/Faiss 变更后的 200 条资格门禁已完成；`contest_qual200_reranker_v4_gpu1` 通过零 fallback 和资源审计。
-3. `contest_full_rules_v1`、`contest_full_dense_v1` 和 `contest_full_dense_reranker_v4` 已完成。旧 LLM 全量运行 `contest_full_dense_reranker_llm_v14` 已完成诊断审计：1000 条、零失败但有 4 次 fallback，只能保留为诊断；`contest_qual200_dense_reranker_llm_v15` 只有 10 条结果且缺少 HTTP transport 审计字段；`contest_qual200_dense_reranker_llm_v16` 完成 200 条但有 1 次 temporary-overload fallback，LLM 审计失败且 paired-bootstrap 95% 区间未支持提升。三者均为诊断，不能恢复、不能进入正式成绩，也不得启动其 1000 条完整运行；后续 LLM 尝试必须使用新 RunId 并重新通过 smoke、审计和资格门禁。
+3. `contest_full_rules_v1`、`contest_full_dense_v1` 和 `contest_full_dense_reranker_v4` 已完成。旧 LLM 全量目录 `contest_full_dense_reranker_llm_v14` 有 1000 条结果和后验诊断账本，但缺少 `RUN_COMPLETED`，并记录 4 次 fallback；它是未完成、不可审计诊断。`contest_qual200_dense_reranker_llm_v15` 只有 10 条结果且缺少 HTTP transport 审计字段；`contest_qual200_dense_reranker_llm_v16` 完成 200 条但有 1 次 temporary-overload fallback，LLM 审计失败且 paired-bootstrap 95% 区间未支持提升。三者均为诊断，不能恢复、不能进入正式成绩，也不得启动其 1000 条完整运行；后续 LLM 尝试必须使用新 RunId 并重新通过 smoke、审计和资格门禁。
 4. 只使用完整成功运行目录中真实生成的 `config.json`、`metrics.json`、`summary.md`、`results.jsonl`、`stage_metrics.json`、`error_analysis.json` 和 `resource_ledger.json` 写实验结果。
 5. 当前提交明确“LLM 接口已实现，但尚无零 fallback、完整审计通过的 1000 条正式 LLM 运行”。不得把诊断、smoke 或未完成的 LLM 功能写成实测创新结果。
 6. `contest_qual200_dense_reranker_soft_v2` 已通过 200 条配对资格门禁；`contest_full_dense_reranker_soft_v2` 已完成 1000/1000、零失败、零 fallback，并通过真实 GPU1 reranker、资源账本与结果完整性审计。其内部 F1/Recall 不等同赛事官方 scorer。
