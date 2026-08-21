@@ -25,7 +25,9 @@ from scholar_agent.agents.judgement_config import load_judgement_config  # noqa:
 
 
 SUPPORTED_SOURCES = {"openalex", "arxiv", "semantic_scholar", "pubmed"}
-QUERY_EVOLUTION_POLICIES = {"off", "seed_expansion", "coverage_gap"}
+QUERY_EVOLUTION_POLICIES = {
+    "off", "seed_expansion", "coverage_gap", "llm_feedback"
+}
 QUERY_PLANNING_POLICIES = {
     "current_rules",
     "controlled_relaxation",

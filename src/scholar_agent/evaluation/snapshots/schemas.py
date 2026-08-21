@@ -90,7 +90,7 @@ class SnapshotGroupObservation(BaseModel):
     )
     judgement_config_hash: str | None = None
     query_evolution_policy: Literal[
-        "off", "seed_expansion", "coverage_gap"
+        "off", "seed_expansion", "coverage_gap", "llm_feedback"
     ] | None = None
     retrieval_keys: list[str] = Field(default_factory=list)
     reference_keys: list[str] = Field(default_factory=list)
@@ -127,7 +127,7 @@ class SnapshotPlanEntry(BaseModel):
     origin_subquery: str | None = None
     generated_by: SnapshotGeneratedBy
     query_evolution_policy: Literal[
-        "off", "seed_expansion", "coverage_gap"
+        "off", "seed_expansion", "coverage_gap", "llm_feedback"
     ] | None = None
     query_planning_policy: QueryPlanningPolicy | None = None
     query_planner_version: str | None = None

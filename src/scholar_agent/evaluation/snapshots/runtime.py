@@ -75,7 +75,7 @@ class SnapshotRuntime:
         overwrite_snapshots: bool = False,
         plan_round: int = 1,
         query_evolution_policy: Literal[
-            "off", "seed_expansion", "coverage_gap"
+            "off", "seed_expansion", "coverage_gap", "llm_feedback"
         ] = "off",
         query_planning_policy: QueryPlanningPolicy = "current_rules",
         query_planner_version: str | None = None,
@@ -264,7 +264,7 @@ class SnapshotRuntime:
             "initial_retrieval", "query_evolution", "refchain"
         ] = "initial_retrieval",
         query_evolution_policy: Literal[
-            "off", "seed_expansion", "coverage_gap"
+            "off", "seed_expansion", "coverage_gap", "llm_feedback"
         ] | None = None,
         query_planning_policy: QueryPlanningPolicy | None = None,
         query_planner_version: str | None = None,
@@ -409,7 +409,7 @@ class SnapshotRuntime:
         adapter_policy: QueryAdapterPolicy,
         *,
         query_evolution_policy: Literal[
-            "off", "seed_expansion", "coverage_gap"
+            "off", "seed_expansion", "coverage_gap", "llm_feedback"
         ]
         | None = None,
         query_planning_policy: QueryPlanningPolicy | None = None,
@@ -1076,7 +1076,7 @@ class SnapshotAwareRetriever:
         purpose = str(kwargs.get("query_purpose") or "")
         generated_by = (
             "query_evolution"
-            if purpose.startswith("query_evolution")
+            if purpose.startswith(("query_evolution", "llm_feedback:"))
             else "initial_retrieval"
         )
         stage = (
@@ -1085,7 +1085,9 @@ class SnapshotAwareRetriever:
             else "initial_retrieval"
         )
         query_evolution_policy = (
-            "coverage_gap"
+            "llm_feedback"
+            if purpose.startswith("llm_feedback:")
+            else "coverage_gap"
             if purpose.startswith("query_evolution_coverage_gap")
             else "seed_expansion" if generated_by == "query_evolution" else None
         )

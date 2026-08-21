@@ -28,6 +28,20 @@ def test_api_accepts_supported_query_evolution_policy() -> None:
     assert request.options.query_evolution_policy == "seed_expansion"
 
 
+def test_api_accepts_llm_feedback_query_evolution_policy() -> None:
+    request = SearchRunCreateRequest.model_validate(
+        {
+            "query": "graph retrieval",
+            "options": {
+                "enable_query_evolution": True,
+                "query_evolution_policy": "llm_feedback",
+            },
+        }
+    )
+
+    assert request.options.query_evolution_policy == "llm_feedback"
+
+
 def test_api_rejects_unknown_query_evolution_policy() -> None:
     with pytest.raises(ValidationError):
         SearchRunCreateRequest.model_validate(

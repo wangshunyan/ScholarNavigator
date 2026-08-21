@@ -26,6 +26,7 @@ from scholar_agent.agents.query_evolution import (
     evolve_queries,
     filter_evolved_candidates,
 )
+from scholar_agent.agents.llm_feedback_evolution import evolve_with_llm_feedback
 from scholar_agent.agents.pseudo_relevance_feedback import build_prf_plan
 from scholar_agent.agents.query_understanding import analyze_query
 from scholar_agent.agents.refchain import ReferenceFetcher, expand_refchain
@@ -499,11 +500,28 @@ class SearchService:
             if enable_llm_judgement is None
             else enable_llm_judgement
         )
+        if (
+            enable_query_evolution
+            and query_evolution_policy == "llm_feedback"
+            and (
+                query_planning_policy
+                in {"llm_semantic", "llm_constrained_rewrite"}
+                or use_llm_query_understanding
+                or use_llm_judgement
+            )
+        ):
+            raise ValueError(
+                "llm_feedback requires rule-only initial planning and judgement"
+            )
         resolved_llm_client = self._resolve_llm_client(
             use_llm_query_understanding
             or use_llm_judgement
             or query_planning_policy
             in {"llm_semantic", "llm_constrained_rewrite"}
+            or (
+                enable_query_evolution
+                and query_evolution_policy == "llm_feedback"
+            )
         )
         llm_client = (
             BudgetedLLMClient(resolved_llm_client, runtime)
@@ -988,16 +1006,26 @@ class SearchService:
                 )
                 used_queries = {subquery.query for subquery in search_plan.subqueries}
                 stage_start = time.perf_counter()
-                evolution_record = evolve_queries(
-                    search_plan.query_analysis,
-                    search_plan,
-                    judgements,
-                    ranked_papers,
-                    used_queries,
-                    options=QueryEvolutionOptions(
-                        policy=effective_query_evolution_policy,
-                    ),
-                )
+                if effective_query_evolution_policy == "llm_feedback":
+                    evolution_record = evolve_with_llm_feedback(
+                        search_plan.query_analysis,
+                        search_plan,
+                        judgements,
+                        ranked_papers,
+                        used_queries,
+                        llm_client=llm_client,
+                    )
+                else:
+                    evolution_record = evolve_queries(
+                        search_plan.query_analysis,
+                        search_plan,
+                        judgements,
+                        ranked_papers,
+                        used_queries,
+                        options=QueryEvolutionOptions(
+                            policy=effective_query_evolution_policy,
+                        ),
+                    )
                 evolution_record.round_index = 2
                 query_evolution_records.append(evolution_record)
                 warnings.extend(evolution_record.warnings)
@@ -1074,7 +1102,10 @@ class SearchService:
                         evolved_source_stats,
                         evolved_warnings,
                     ) = _collect_retrieval_outputs(evolved_outputs)
-                    if effective_query_evolution_policy == "coverage_gap":
+                    if effective_query_evolution_policy in {
+                        "coverage_gap",
+                        "llm_feedback",
+                    }:
                         evolved_papers, quality_gate = filter_evolved_candidates(
                             search_plan.query_analysis,
                             initial_deduplicated,

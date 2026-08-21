@@ -38,7 +38,9 @@ ConstraintField = Literal[
     "paper_types",
 ]
 RunProfile = Literal["fast", "balanced", "high_recall", "evaluation"]
-QueryEvolutionPolicy = Literal["off", "seed_expansion", "coverage_gap"]
+QueryEvolutionPolicy = Literal[
+    "off", "seed_expansion", "coverage_gap", "llm_feedback"
+]
 QueryPlanningPolicy = Literal[
     "current_rules",
     "prf_v1",
@@ -645,6 +647,36 @@ class QueryEvolutionQualityGate(BaseModel):
     accepted_source_counts: dict[str, int] = Field(default_factory=dict)
 
 
+class LLMFeedbackDiagnostics(BaseModel):
+    """Auditable metadata for one optional post-retrieval feedback call."""
+
+    prompt_name: str | None = None
+    prompt_version: str | None = None
+    prompt_hash: str | None = None
+    provider: str | None = None
+    model: str | None = None
+    schema_version: str | None = None
+    temperature: float | None = None
+    candidate_count: int = Field(default=0, ge=0, le=3)
+    llm_call_attempted: bool = False
+    fallback_used: bool = False
+    fallback_reason: str | None = None
+    output_valid: bool = False
+    generated_query_count: int = Field(default=0, ge=0, le=1)
+    accepted_query_count: int = Field(default=0, ge=0, le=1)
+    rejection_reasons: dict[str, int] = Field(default_factory=dict)
+    prompt_tokens: int = Field(default=0, ge=0)
+    completion_tokens: int = Field(default=0, ge=0)
+    total_tokens: int = Field(default=0, ge=0)
+    latency_seconds: float = Field(default=0.0, ge=0.0)
+    http_attempts: int = Field(default=0, ge=0)
+    http_429_count: int = Field(default=0, ge=0)
+    retry_after_seconds: list[float] = Field(default_factory=list)
+    retry_wait_seconds: float = Field(default=0.0, ge=0.0)
+    provider_failure_class: str | None = None
+    provider_cache_hit: bool = False
+
+
 class EvolvedSubquery(BaseModel):
     query: str = Field(..., min_length=1)
     source_hints: list[SourceName] = Field(
@@ -672,6 +704,7 @@ class QueryEvolutionRecord(BaseModel):
     seed_count: int = Field(default=0, ge=0)
     seed_paper_titles: list[str] = Field(default_factory=list)
     coverage_gap: QueryCoverageGap | None = None
+    llm_feedback: LLMFeedbackDiagnostics | None = None
     generated_queries: list[EvolvedSubquery] = Field(default_factory=list)
     quality_gate: QueryEvolutionQualityGate = Field(
         default_factory=QueryEvolutionQualityGate

@@ -181,7 +181,7 @@ flowchart TD
 
 候选合并、结构化输出和离线评测共用 `scholar_agent.core.identity`。稳定标识先按 DOI、arXiv、OpenAlex、Semantic Scholar、S2ORC Corpus ID、PubMed 的规范形式比较；没有共同稳定标识时，只有规范标题、年份和共同作者同时满足才允许保守合并，标识冲突不合并。去重函数可返回逐条合并规则与证据；可选字段级血缘观察器还记录每个最终字段的来源候选和既有选择规则，供离线重建门禁使用。
 
-查询演化支持 `off`、`seed_expansion` 和 `coverage_gap`。旧策略保留用于复现实验；产品在开关启用时使用 `coverage_gap`，但 API、前端和 CLI 的开关默认关闭。新策略只根据查询分析、显式约束、初始候选和规则判断计算 `QueryCoverageGap`，不读取评测答案：结构化方法、数据集、必要词、论文类型或复合主题存在缺口且有可靠 seed 时，最多选 3 个高度/部分相关 seed、生成 2 条保留原主题的短查询。补充候选先按重复、排除词、主题和结构化维度做确定性质量门过滤，再进入原有 Judgement 与 Reranker。查询演化仍只执行一轮；RefChain 固定为单层。
+查询演化支持 `off`、`seed_expansion`、`coverage_gap` 和默认关闭的 `llm_feedback`。旧策略保留用于复现实验；产品在开关启用时使用 `coverage_gap`，但 API、前端和 CLI 的开关默认关闭。规则策略只根据查询分析、显式约束、初始候选和规则判断计算 `QueryCoverageGap`，不读取评测答案：结构化方法、数据集、必要词、论文类型或复合主题存在缺口且有可靠 seed 时，最多选 3 个高度/部分相关 seed、生成 2 条保留原主题的短查询。`llm_feedback` 则只向 LLM 提供原始查询、约束、覆盖缺口和最多 3 条首轮已排序候选的最小元数据，并将候选作为非可信数据封装；它固定 temperature=0、最多一次调用和一条补充查询，始终保留原始查询。它不能与其他 LLM 查询规划、查询理解或 Judgement 同时启用；Provider、预算、Schema 或本地质量门失败时不启动第二轮检索。所有补充候选先按重复、排除词、主题和结构化维度做确定性质量门过滤，再进入原有 Judgement 与 Reranker。查询演化仍只执行一轮；RefChain 固定为单层。
 
 ## 执行预算
 
@@ -212,7 +212,7 @@ API 将预算映射为内部 `SearchBudget`，SearchService 使用单次运行�
 
 每个 connector 使用统一诊断结构记录真实 HTTP 请求、实际重试、最终错误、缓存命中、限流等待和总延迟。`request_count` 包含首次请求和真正发出的重试；缓存命中只增加 `cache_hit_count`。SearchService 分开汇总普通检索与 RefChain 请求，`api_call_count` 等于检索请求、引用请求和 LLM 请求之和；逻辑检索调用数单独记录，不再用 `source_stats` 条数估算真实请求。
 
-Benchmark 可在连接器边界启用集中式 Record/Replay：检索按来源、适配后查询、limit、适配策略及代码版本生成稳定键，`local_bm25` 与 `local_hybrid` 的动态 connector version 另绑定上述索引指纹；`coverage_gap` 的演化请求另含策略命名空间；实验性初始规划键另含规划策略与版本，`current_rules` 继续读取旧键。RefChain 按 seed 标识符、limit 及连接器版本生成稳定键。`plan` 模式在绝对离线条件下运行真实 SearchService，先回放已有条目，再按实际初始规划、Query Evolution 查询和 RefChain seed 记录动态依赖；受限采集器串行消费计划，并以规划轮数、请求数、失败数、总时间、单源连续失败和取消信号为停止条件。
+Benchmark 可在连接器边界启用集中式 Record/Replay：检索按来源、适配后查询、limit、适配策略及代码版本生成稳定键，`local_bm25` 与 `local_hybrid` 的动态 connector version 另绑定上述索引指纹；`coverage_gap` 与 `llm_feedback` 的演化请求分别使用策略命名空间；实验性初始规划键另含规划策略与版本，`current_rules` 继续读取旧键。RefChain 按 seed 标识符、limit 及连接器版本生成稳定键。`plan` 模式在绝对离线条件下运行真实 SearchService，先回放已有条目，再按实际初始规划、Query Evolution 查询和 RefChain seed 记录动态依赖；受限采集器串行消费计划，并以规划轮数、请求数、失败数、总时间、单源连续失败和取消信号为停止条件。
 
 Replay 只读取经过 Schema、键和内容哈希校验的规范化响应，缺键直接失败且不回退网络；它不缓存 SearchService、Query Evolution 或 RefChain 的阶段输出，因此四组仍执行各自真实算法路径。结构合法的最终失败条目也属于覆盖，但与成功条目分开计数；`replay-ready` 只表示所有必需键已冻结，不代表上游请求全部成功。回放时记录的 live 延迟只驱动既有预算边界，以免零网络执行改变 adaptive 分支；实际回放延迟仍按本次墙钟时间报告。快照只保存公开论文元数据、警告和连接器诊断，不接触 gold。
 
@@ -220,11 +220,12 @@ PubMed 分别统计 ESearch 与 EFetch；无 ID 时跳过 EFetch。RefChain 的 
 
 ## LLM 使用位置
 
-LLM 默认关闭，当前可选用于三个位置：
+LLM 默认关闭，当前可选用于四个位置：
 
 1. 查询理解：要求返回 JSON，经 Pydantic 校验、来源白名单过滤后生成搜索计划；失败时保留诊断并使用规则结果。
 2. 相关性判断：仅判断已检索候选的标题、摘要、venue 和标识符等元数据；按批次和候选上限调用，失败批次回退规则判断。
 3. 语义查询规划：`llm_semantic` 只接收原始查询、显式约束、规则解析分面、运行档位和数量上限，保留原查询并最多接受两条补充查询。严格 Schema 和确定性校验会拒绝缺失核心主题或必要词、命中排除词、可疑标识符或引用、过长、重复及无关的输出；配置缺失、超时、预算停止、快照缺失或全部被拒绝时回退 `current_rules`，不会中断搜索。
+4. 首轮结果反馈：`llm_feedback` 在规则首轮检索、Judgement 和排序后，只根据受控的覆盖缺口与最多三条候选元数据提出一条补充查询。它使用严格 JSON、一次调用与本地主题/约束校验，不能与其他 LLM 阶段并用；任何失败只记录诊断并保持首轮结果。离线测试仅验证行为契约，不代表质量提升。
 
 竞赛服务器可选使用 `scripts/serve_local_llm_provider.py` 将项目目录内的 Qwen
 instruction model 暴露为 loopback-only OpenAI-compatible `/v1/chat/completions` 服务。
@@ -235,7 +236,7 @@ Provider 中启用 JSON Schema 受约束解码；缺少受约束解码依赖时 
 宽松解析或额外调用。该本地运行时只是 provider 实现，不改变 `llm_semantic` 的 Prompt、
 Schema 校验、原始查询保留、预算或 `current_rules` 回退语义。
 
-三个 active Prompt 均由统一 loader 通过 `importlib.resources` 从 `src/scholar_agent/prompts/` 内的 Markdown 加载，不依赖工作目录。`manifest.json` 记录版本和 active 状态；渲染器以稳定 JSON 替换 `{{payload}}`，并用版本、system 文本和 user 模板计算 SHA-256。Prompt 缺失、为空或无效时不会调用 LLM，而是记录稳定 warning 并继续规则路径。
+四个 active Prompt 均由统一 loader 通过 `importlib.resources` 从 `src/scholar_agent/prompts/` 内的 Markdown 加载，不依赖工作目录。`manifest.json` 记录版本和 active 状态；渲染器以稳定 JSON 替换 `{{payload}}`，并用版本、system 文本和 user 模板计算 SHA-256。Prompt 缺失、为空或无效时不会调用 LLM，而是记录稳定 warning 并继续规则路径。
 
 论文标题、摘要、作者、venue、URL 与来源错误按
 `untrusted_metadata_isolation_v1` 视为外部非可信数据。权威 `Paper`、统一身份与排序输入保持
@@ -257,7 +258,7 @@ fallback、额外 HTTP attempt、Schema 或 item binding 失败都会使候选�
 
 LLM 语义规划具有独立于检索快照的 `live`、`record`、`record-missing` 和 `replay` 模式。稳定键包含 provider 类型、model、Prompt 名称/版本/hash、规范化输入、显式约束、规则分面、运行档位、温度、Token 上限和 Schema 版本，不包含密钥、gold、qrels、候选或完整 Prompt。动态计划先发现并冻结 LLM 规划键；只有该键可回放后才根据真实补充查询发现下游适配检索键，并把 LLM 键记录为依赖。纯 replay 不调用 LLM 或网络。
 
-重排序、查询演化、RefChain 和证据归纳当前均为规则实现。系统不让 LLM 生成候选论文，也不读取论文全文。
+重排序、RefChain 和证据归纳当前均为规则实现；默认查询演化也保持规则路径，`llm_feedback` 是受限、默认关闭的第二轮查询策略。系统不让 LLM 生成候选论文，也不读取论文全文。
 
 ## 显式查询约束
 

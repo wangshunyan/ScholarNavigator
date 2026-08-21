@@ -86,7 +86,7 @@ def retrieval_snapshot_key(
         "source": source.strip().casefold(),
     }
     # 旧 seed_expansion 与初始检索继续使用历史键；新策略单独命名空间化。
-    if query_evolution_policy == "coverage_gap":
+    if query_evolution_policy in {"coverage_gap", "llm_feedback"}:
         payload["query_evolution_policy"] = query_evolution_policy
     # current_rules 保留历史键；候选 planner 使用独立版本化命名空间。
     if query_planning_policy in {

@@ -1705,7 +1705,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--enable-query-evolution", action="store_true")
     parser.add_argument(
         "--query-evolution-policy",
-        choices=["off", "seed_expansion", "coverage_gap"],
+        choices=["off", "seed_expansion", "coverage_gap", "llm_feedback"],
         default="coverage_gap",
     )
     parser.add_argument(
