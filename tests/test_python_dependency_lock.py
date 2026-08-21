@@ -3,9 +3,11 @@ from __future__ import annotations
 import json
 import zipfile
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 from scripts import check_python_dependency_lock as lock_cli
+from scholar_agent.evaluation import python_dependency_lock
 
 from scholar_agent.evaluation.python_dependency_lock import (
     EXIT_NOT_READY,
@@ -62,6 +64,22 @@ def test_environment_and_installed_metadata_are_bound(monkeypatch: pytest.Monkey
     protocol["environment"] = {**protocol["environment"], "python_version": "0.0"}
     with pytest.raises(DependencyLockNotReady, match="environment_identity_mismatch"):
         build_manifest(ROOT, protocol)
+
+
+def test_pip_cache_scan_preserves_explicit_cache_directory(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    captured: dict[str, str] = {}
+
+    def fake_run(*_args, **kwargs):
+        captured.update(kwargs["env"])
+        return SimpleNamespace(returncode=0, stdout=str(tmp_path))
+
+    monkeypatch.setenv("PIP_CACHE_DIR", str(tmp_path))
+    monkeypatch.setattr(python_dependency_lock.subprocess, "run", fake_run)
+
+    assert python_dependency_lock._pip_cache_wheels() == []
+    assert captured["PIP_CACHE_DIR"] == str(tmp_path)
 
 
 def test_tracked_manifest_and_locks_are_deterministic() -> None:

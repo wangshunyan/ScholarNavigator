@@ -135,13 +135,16 @@ def _cycles(graph: Mapping[str, set[str]]) -> list[list[str]]:
 
 
 def _pip_cache_wheels() -> list[Path]:
+    environment = {"LANG": "C", "LC_ALL": "C", "PATH": os.environ.get("PATH", "")}
+    if cache_dir := os.environ.get("PIP_CACHE_DIR"):
+        environment["PIP_CACHE_DIR"] = cache_dir
     completed = subprocess.run(
         [sys.executable, "-m", "pip", "cache", "dir"],
         check=False,
         capture_output=True,
         text=True,
         timeout=30,
-        env={"LANG": "C", "LC_ALL": "C", "PATH": os.environ.get("PATH", "")},
+        env=environment,
     )
     if completed.returncode != 0:
         return []
