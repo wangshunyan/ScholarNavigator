@@ -20,7 +20,13 @@ param(
     [string]$RerankerModel = "datasets\semantic\models\Qwen3-Reranker-0.6B",
 
     [ValidatePattern("^(auto|cpu|cuda(:\d+)?)$")]
-    [string]$RerankerDevice = "auto"
+    [string]$RerankerDevice = "auto",
+
+    [string]$QualityEvidenceLedger = "",
+
+    [string]$QualityEvidenceCandidateIdentifiers = "",
+
+    [string]$QualityEvidenceCandidateReport = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -131,6 +137,22 @@ if ($Configuration -in @("dense_reranker_llm", "dense_reranker_llm_feedback")) {
         "--max-llm-calls", "1",
         "--max-search-rounds", "3"
     )
+}
+
+if (-not [string]::IsNullOrWhiteSpace($QualityEvidenceLedger)) {
+    if ($Configuration -ne "dense_reranker_quality") {
+        throw "QualityEvidenceLedger requires Configuration=dense_reranker_quality"
+    }
+    if ([string]::IsNullOrWhiteSpace($QualityEvidenceCandidateIdentifiers) -or [string]::IsNullOrWhiteSpace($QualityEvidenceCandidateReport)) {
+        throw "QualityEvidenceLedger requires candidate identifiers and report"
+    }
+    $arguments += @(
+        "--quality-evidence-ledger", $QualityEvidenceLedger,
+        "--quality-evidence-candidate-identifiers", $QualityEvidenceCandidateIdentifiers,
+        "--quality-evidence-candidate-report", $QualityEvidenceCandidateReport
+    )
+} elseif (-not [string]::IsNullOrWhiteSpace($QualityEvidenceCandidateIdentifiers) -or -not [string]::IsNullOrWhiteSpace($QualityEvidenceCandidateReport)) {
+    throw "Quality evidence candidate binding requires QualityEvidenceLedger"
 }
 
 if ($Resume) {

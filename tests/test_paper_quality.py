@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 
 import pytest
 
@@ -9,6 +10,7 @@ from scholar_agent.core.identity import paper_identifier_set
 from scholar_agent.core.paper_quality import (
     VerifiedQualityEvidence,
     assess_paper_quality,
+    bind_verified_quality_evidence_to_candidates,
     load_verified_quality_evidence_ledger,
 )
 from scholar_agent.core.paper_schemas import Paper, PaperIdentifiers
@@ -216,3 +218,80 @@ def test_quality_evidence_ledger_rejects_ambiguous_or_invalid_rows(
 
     with pytest.raises(ValueError, match=f"quality_evidence_ledger_{reason}"):
         load_verified_quality_evidence_ledger(path)
+
+
+def test_quality_evidence_binding_requires_exported_candidate_identity(
+    tmp_path,
+) -> None:
+    identifiers = tmp_path / "candidates.txt"
+    identifiers_text = "arxiv:2401.00001\n"
+    identifiers.write_text(identifiers_text, encoding="utf-8")
+    report = tmp_path / "candidates.json"
+    report.write_text(
+        json.dumps(
+            {
+                "schema_version": "quality-evidence-candidate-export-v1",
+                "source_kind": "completed_run_initial_reranked_candidates_only",
+                "gold_or_query_content_loaded": False,
+                "identifiers_sha256": hashlib.sha256(
+                    identifiers.read_bytes()
+                ).hexdigest(),
+                "valid_arxiv_identifier_count": 1,
+            }
+        ),
+        encoding="utf-8",
+    )
+    ledger = tmp_path / "ledger.jsonl"
+    ledger.write_text(
+        json.dumps(
+            {
+                "paper_identifier": "arxiv:2401.00001",
+                "signal_name": "retraction_status",
+                "state": "flagged",
+                "source": "crossref",
+                "source_record_id": "crossref-work:10.1/example",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    loaded, binding = bind_verified_quality_evidence_to_candidates(
+        ledger, identifiers, report
+    )
+
+    assert loaded.record_count == 1
+    assert binding.candidate_identifier_count == 1
+    assert binding.matched_evidence_count == 1
+    assert binding.ledger_semantic_sha256 == loaded.semantic_sha256
+
+    ledger.write_text(
+        ledger.read_text(encoding="utf-8").replace("2401.00001", "2401.00002"),
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="quality_evidence_not_in_exported_candidates"):
+        bind_verified_quality_evidence_to_candidates(ledger, identifiers, report)
+
+
+def test_quality_evidence_binding_rejects_tampered_candidate_report(tmp_path) -> None:
+    identifiers = tmp_path / "candidates.txt"
+    identifiers.write_text("arxiv:2401.00001\n", encoding="utf-8")
+    report = tmp_path / "candidates.json"
+    report.write_text("{}", encoding="utf-8")
+    ledger = tmp_path / "ledger.jsonl"
+    ledger.write_text(
+        json.dumps(
+            {
+                "paper_identifier": "arxiv:2401.00001",
+                "signal_name": "retraction_status",
+                "state": "flagged",
+                "source": "crossref",
+                "source_record_id": "crossref-work:10.1/example",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="quality_evidence_candidate_report_mismatch"):
+        bind_verified_quality_evidence_to_candidates(ledger, identifiers, report)

@@ -44,8 +44,9 @@ from scholar_agent.connectors import (  # noqa: E402
 )
 from scholar_agent.core.evaluation_schemas import EvalQuery  # noqa: E402
 from scholar_agent.core.paper_quality import (  # noqa: E402
+    QualityEvidenceCandidateBinding,
     VerifiedQualityEvidenceLedger,
-    load_verified_quality_evidence_ledger,
+    bind_verified_quality_evidence_to_candidates,
 )
 from scholar_agent.core.search_schemas import (  # noqa: E402
     DEFAULT_SEARCH_SOURCES,
@@ -183,6 +184,8 @@ class BenchmarkRunOptions(BaseModel):
     query_planning_policy: QueryPlanningPolicy = "current_rules"
     ranking_policy: RankingPolicy = "current_rules"
     quality_evidence_ledger_path: Path | None = None
+    quality_evidence_candidate_identifiers_path: Path | None = None
+    quality_evidence_candidate_report_path: Path | None = None
     judgement_policy: JudgementPolicy = "current_rules"
     judgement_config_path: Path | None = None
     enable_refchain: bool = False
@@ -575,7 +578,9 @@ def run_benchmark(
 ) -> BenchmarkRunResult:
     _configure_local_sources_for_run(options)
     _validate_llm_planning_runtime(options, service=service)
-    quality_evidence_ledger = _load_quality_evidence_ledger(options)
+    quality_evidence_ledger, quality_evidence_binding = _load_quality_evidence_ledger(
+        options
+    )
     source_path = dataset_source_path(options.dataset, options.dataset_path)
     judgement_config = _resolve_options_judgement_config(options)
     all_queries = load_dataset(options.dataset, path=source_path)
@@ -589,6 +594,7 @@ def run_benchmark(
         source_path,
         selected,
         quality_evidence_ledger=quality_evidence_ledger,
+        quality_evidence_binding=quality_evidence_binding,
     )
     commit_store = BenchmarkRunCommitStore(run_dir)
 
@@ -895,12 +901,28 @@ def _resolve_options_judgement_config(
 
 def _load_quality_evidence_ledger(
     options: BenchmarkRunOptions,
-) -> VerifiedQualityEvidenceLedger | None:
+) -> tuple[
+    VerifiedQualityEvidenceLedger | None, QualityEvidenceCandidateBinding | None
+]:
     if options.quality_evidence_ledger_path is None:
-        return None
+        if (
+            options.quality_evidence_candidate_identifiers_path is not None
+            or options.quality_evidence_candidate_report_path is not None
+        ):
+            raise ValueError("quality_evidence_candidate_binding_requires_ledger")
+        return None, None
     if options.ranking_policy != QUALITY_SOFT_RANKING_POLICY:
         raise ValueError("quality_evidence_ledger_requires_quality_soft_ranking")
-    return load_verified_quality_evidence_ledger(options.quality_evidence_ledger_path)
+    if (
+        options.quality_evidence_candidate_identifiers_path is None
+        or options.quality_evidence_candidate_report_path is None
+    ):
+        raise ValueError("quality_evidence_candidate_binding_required")
+    return bind_verified_quality_evidence_to_candidates(
+        options.quality_evidence_ledger_path,
+        options.quality_evidence_candidate_identifiers_path,
+        options.quality_evidence_candidate_report_path,
+    )
 
 
 def _select_queries(
@@ -943,6 +965,7 @@ def _build_config(
     selected: list[EvalQuery],
     *,
     quality_evidence_ledger: VerifiedQualityEvidenceLedger | None = None,
+    quality_evidence_binding: QualityEvidenceCandidateBinding | None = None,
 ) -> dict[str, Any]:
     llm_runtime = get_llm_runtime_config()
     judgement_config = _resolve_options_judgement_config(options)
@@ -1059,6 +1082,11 @@ def _build_config(
                 "record_count": quality_evidence_ledger.record_count,
             }
             if quality_evidence_ledger is not None
+            else None
+        ),
+        "quality_evidence_candidate_binding": (
+            quality_evidence_binding.model_dump(mode="json")
+            if quality_evidence_binding is not None
             else None
         ),
         "query_planner_version": QUERY_PLANNER_VERSION,
@@ -1869,6 +1897,16 @@ def _parser() -> argparse.ArgumentParser:
             "with --ranking-policy quality_soft_v1"
         ),
     )
+    parser.add_argument(
+        "--quality-evidence-candidate-identifiers",
+        default=None,
+        help="canonical arxiv: IDs exported from a completed baseline run",
+    )
+    parser.add_argument(
+        "--quality-evidence-candidate-report",
+        default=None,
+        help="matching quality-evidence-candidate-export-v1 report",
+    )
     parser.add_argument("--judgement-config", default=None)
     parser.add_argument("--enable-refchain", action="store_true")
     parser.add_argument("--enable-semantic-seed-expansion", action="store_true")
@@ -2180,6 +2218,16 @@ def main(argv: list[str] | None = None) -> int:
             quality_evidence_ledger_path=(
                 Path(args.quality_evidence_ledger)
                 if args.quality_evidence_ledger
+                else None
+            ),
+            quality_evidence_candidate_identifiers_path=(
+                Path(args.quality_evidence_candidate_identifiers)
+                if args.quality_evidence_candidate_identifiers
+                else None
+            ),
+            quality_evidence_candidate_report_path=(
+                Path(args.quality_evidence_candidate_report)
+                if args.quality_evidence_candidate_report
                 else None
             ),
             judgement_policy=args.judgement_policy,

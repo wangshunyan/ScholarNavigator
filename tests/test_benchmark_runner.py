@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import sys
 from pathlib import Path
 from typing import Any
@@ -247,10 +248,15 @@ def test_quality_evidence_ledger_is_bound_to_quality_benchmark_runs(
         encoding="utf-8",
     )
     service = FakeService()
+    candidate_identifiers, candidate_report = _quality_candidate_binding_files(
+        tmp_path, ["arxiv:2401.00000"]
+    )
     options = _options(tmp_path, dataset, run_id="quality-ledger").model_copy(
         update={
             "ranking_policy": "quality_soft_v1",
             "quality_evidence_ledger_path": ledger_path,
+            "quality_evidence_candidate_identifiers_path": candidate_identifiers,
+            "quality_evidence_candidate_report_path": candidate_report,
         }
     )
 
@@ -265,6 +271,10 @@ def test_quality_evidence_ledger_is_bound_to_quality_benchmark_runs(
             "quality_soft_v1",
             "--quality-evidence-ledger",
             "quality-evidence.jsonl",
+            "--quality-evidence-candidate-identifiers",
+            "candidates.txt",
+            "--quality-evidence-candidate-report",
+            "candidates.json",
         ]
     )
 
@@ -274,10 +284,14 @@ def test_quality_evidence_ledger_is_bound_to_quality_benchmark_runs(
     assert len(identity["file_sha256"]) == 64
     assert len(identity["semantic_sha256"]) == 64
     assert "directory" not in identity
+    binding = result.config["quality_evidence_candidate_binding"]
+    assert binding["candidate_identifier_count"] == 1
+    assert binding["matched_evidence_count"] == 1
     assert service.kwargs[0]["verified_quality_evidence"][0].source == (
         "verified_registry"
     )
     assert parsed.quality_evidence_ledger == "quality-evidence.jsonl"
+    assert parsed.quality_evidence_candidate_identifiers == "candidates.txt"
 
 
 def test_quality_evidence_ledger_requires_quality_ranking_policy(tmp_path: Path) -> None:
@@ -304,6 +318,50 @@ def test_quality_evidence_ledger_requires_quality_ranking_policy(tmp_path: Path)
         ValueError, match="quality_evidence_ledger_requires_quality_soft_ranking"
     ):
         run_benchmark.run_benchmark(options, service=FakeService())
+
+
+def test_quality_evidence_ledger_requires_matching_completed_candidate_export(
+    tmp_path: Path,
+) -> None:
+    dataset = _dataset(tmp_path, count=1)
+    ledger_path = tmp_path / "quality-evidence.jsonl"
+    ledger_path.write_text(
+        json.dumps(
+            {
+                "paper_identifier": "arxiv:2401.00000",
+                "signal_name": "retraction_status",
+                "state": "flagged",
+                "source": "verified_registry",
+                "source_record_id": "registry-row-1",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    options = _options(tmp_path, dataset, run_id="missing-quality-binding").model_copy(
+        update={
+            "ranking_policy": "quality_soft_v1",
+            "quality_evidence_ledger_path": ledger_path,
+        }
+    )
+
+    with pytest.raises(ValueError, match="quality_evidence_candidate_binding_required"):
+        run_benchmark.run_benchmark(options, service=FakeService())
+
+    candidates, report = _quality_candidate_binding_files(
+        tmp_path, ["arxiv:2401.00001"]
+    )
+    with pytest.raises(ValueError, match="quality_evidence_not_in_exported_candidates"):
+        run_benchmark.run_benchmark(
+            options.model_copy(
+                update={
+                    "run_id": "unmatched-quality-binding",
+                    "quality_evidence_candidate_identifiers_path": candidates,
+                    "quality_evidence_candidate_report_path": report,
+                }
+            ),
+            service=FakeService(),
+        )
 
 
 def test_query_evolution_policy_is_recorded_and_passed_to_service(
@@ -971,6 +1029,31 @@ def _options(
 
 def _read_jsonl(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text().splitlines() if line]
+
+
+def _quality_candidate_binding_files(
+    tmp_path: Path,
+    identifiers: list[str],
+) -> tuple[Path, Path]:
+    identifiers_path = tmp_path / f"quality-candidates-{len(identifiers)}.txt"
+    identifier_text = "".join(f"{item}\n" for item in identifiers)
+    identifiers_path.write_text(identifier_text, encoding="utf-8")
+    report_path = tmp_path / f"quality-candidates-{len(identifiers)}.json"
+    report_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "quality-evidence-candidate-export-v1",
+                "source_kind": "completed_run_initial_reranked_candidates_only",
+                "gold_or_query_content_loaded": False,
+                "identifiers_sha256": hashlib.sha256(
+                    identifiers_path.read_bytes()
+                ).hexdigest(),
+                "valid_arxiv_identifier_count": len(identifiers),
+            }
+        ),
+        encoding="utf-8",
+    )
+    return identifiers_path, report_path
 
 
 def test_cli_exposes_neural_reranker_configuration() -> None:

@@ -203,6 +203,22 @@
 - **实际验证（2026-08-21）**：相关质量/导出测试 `32 passed`；compile 与 `git diff --check` 通过。
 - [x] 已完成
 
+### [x] P2-01-B4 外部回执与完成候选的闭合绑定
+
+- **任务编号**：P2-01-B4；**独立提交**：只为 `quality_soft_v1` 增加外部回执到已完成候选导出的不可变绑定，不调整默认策略、权重或历史实验。
+- **目标能力**：使质量风险回执只能作用于其来源可追溯到完成 benchmark 的 `initial_reranked` 候选稳定标识，防止手工或跨运行 ledger 被误接入资格实验。
+- **当前缺口**：B1/B2 可产生严格 ledger，B3 可导出候选标识，但 runner 尚未验证两者的完整性、候选范围和来源哈希是否一致。
+- **实现范围**：新增候选报告/标识/ledger 三件套绑定；runner 与 Windows/Linux wrapper 只在三项齐全且 policy 为 `quality_soft_v1` 时接受；配置只写入 SHA-256 和计数，不记录路径、查询或来源正文。
+- **实现方案**：严格校验候选导出报告 schema、来源种类、`gold_or_query_content_loaded=false`、标识文件 SHA-256 与计数；所有 ledger 回执必须精确落在导出 `arxiv:` 集合内。任一不匹配立即 fail closed。
+- **验收标准**：匹配回执可被完整检索链消费；候选报告/文件/ledger 不匹配、非候选标识或不完整 CLI 参数均被拒绝；无 ledger 时默认行为不变。
+- **自动化验证方式**：质量模型、benchmark runner、wrapper 和排序入口回归覆盖正确绑定、哈希漂移、范围漂移与不完整参数；编译、diff 与 evidence registry gate 验证。
+- **失败处理**：本机仍没有可用于正式 P0/reranker qualification 的已完成候选产物，或没有 `flagged` 外部回执时，不创建占位 ledger、不启动新质量全量运行；P2-01-B 继续保持未完成。
+- **外部依赖**：代码和 fixture 可离线验证；真实使用依赖完整 P0/reranker 成功产物、独立来源回执和新 RunId 的 200 条资格环境。
+- **完成条件**：代码、测试、路线记录与 registry 同步完成；真实风险覆盖和 F1/Recall 资格提升仍由 P2-01-B 的独立门禁决定。
+- **完成说明（2026-08-21）**：新增 `QualityEvidenceCandidateBinding` 与 `bind_verified_quality_evidence_to_candidates`；候选导出报告新增 `identifiers_sha256`。`run_benchmark.py` 和两个 contest wrapper 强制 ledger、候选标识和候选报告三件套完整出现，并将绑定哈希/计数写入运行配置。
+- **实际验证（2026-08-21）**：质量、runner、导出、来源、软排序和 LLM 审计专项为 `76 passed`；Python 编译、Windows wrapper 解析与 `git diff --check` 通过。Linux Bash 运行时不可用：本机 WSL 系统性 `HCS/0x800705aa`，因此只由静态 Python 回归覆盖 wrapper，不宣称本机 Bash 执行验证。
+- [x] 实现与离线验证完成；真实资格仍由 P2-01-B 阻塞
+
 ## P3：真实评测与指标闭环
 
 ### [ ] P3-01 P0-01 的离线资格与真实运行门禁

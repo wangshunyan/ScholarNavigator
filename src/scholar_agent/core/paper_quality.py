@@ -51,15 +51,7 @@ class VerifiedQualityEvidence(BaseModel):
     @field_validator("paper_identifier")
     @classmethod
     def require_canonical_paper_identifier(cls, value: str) -> str:
-        prefix, separator, raw_identifier = value.partition(":")
-        normalizer = _QUALITY_EVIDENCE_PREFIXES.get(prefix)
-        if not separator or normalizer is None:
-            raise ValueError("canonical_paper_identifier_required")
-        normalized = normalizer(raw_identifier)
-        canonical = f"{prefix}:{normalized}" if normalized else None
-        if canonical != value:
-            raise ValueError("canonical_paper_identifier_required")
-        return value
+        return _validate_canonical_paper_identifier(value)
 
 
 class VerifiedQualityEvidenceLedger(BaseModel):
@@ -74,6 +66,22 @@ class VerifiedQualityEvidenceLedger(BaseModel):
     semantic_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     record_count: int = Field(ge=1)
     evidence: tuple[VerifiedQualityEvidence, ...]
+
+
+class QualityEvidenceCandidateBinding(BaseModel):
+    """Immutable identity tying external risk evidence to a completed run."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["quality-evidence-candidate-binding-v1"] = (
+        "quality-evidence-candidate-binding-v1"
+    )
+    candidate_report_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    candidate_identifiers_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    candidate_identifier_count: int = Field(ge=1)
+    ledger_file_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    ledger_semantic_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    matched_evidence_count: int = Field(ge=1)
 
 
 def load_verified_quality_evidence_ledger(
@@ -134,6 +142,76 @@ def load_verified_quality_evidence_ledger(
         record_count=len(evidence),
         evidence=tuple(evidence),
     )
+
+
+def bind_verified_quality_evidence_to_candidates(
+    ledger_path: str | Path,
+    candidate_identifiers_path: str | Path,
+    candidate_report_path: str | Path,
+) -> tuple[VerifiedQualityEvidenceLedger, QualityEvidenceCandidateBinding]:
+    """Fail closed unless every evidence row targets an exported candidate ID."""
+
+    ledger = load_verified_quality_evidence_ledger(ledger_path)
+    identifiers_file = Path(candidate_identifiers_path)
+    report_file = Path(candidate_report_path)
+    try:
+        identifier_bytes = identifiers_file.read_bytes()
+        identifier_text = identifier_bytes.decode("utf-8")
+        report_bytes = report_file.read_bytes()
+        report_value = json.loads(
+            report_bytes.decode("utf-8"),
+            object_pairs_hook=_reject_duplicate_json_keys,
+            parse_constant=_reject_nonfinite_json_number,
+        )
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as exc:
+        raise ValueError("quality_evidence_candidate_binding_unavailable") from exc
+    if not isinstance(report_value, dict):
+        raise ValueError("quality_evidence_candidate_report_object_required")
+    identifiers = _load_exported_candidate_identifiers(identifier_text)
+    expected_sha = _digest_bytes(identifier_bytes)
+    if (
+        report_value.get("schema_version") != "quality-evidence-candidate-export-v1"
+        or report_value.get("source_kind")
+        != "completed_run_initial_reranked_candidates_only"
+        or report_value.get("gold_or_query_content_loaded") is not False
+        or report_value.get("identifiers_sha256") != expected_sha
+        or report_value.get("valid_arxiv_identifier_count") != len(identifiers)
+    ):
+        raise ValueError("quality_evidence_candidate_report_mismatch")
+    unmatched = [item for item in ledger.evidence if item.paper_identifier not in identifiers]
+    if unmatched:
+        raise ValueError("quality_evidence_not_in_exported_candidates")
+    return ledger, QualityEvidenceCandidateBinding(
+        candidate_report_sha256=_digest_bytes(report_bytes),
+        candidate_identifiers_sha256=expected_sha,
+        candidate_identifier_count=len(identifiers),
+        ledger_file_sha256=ledger.file_sha256,
+        ledger_semantic_sha256=ledger.semantic_sha256,
+        matched_evidence_count=len(ledger.evidence),
+    )
+
+
+def _load_exported_candidate_identifiers(text: str) -> frozenset[str]:
+    values = [line.strip() for line in text.splitlines() if line.strip()]
+    if not values or values != sorted(set(values)):
+        raise ValueError("quality_evidence_candidate_identifiers_not_canonical")
+    for value in values:
+        _validate_canonical_paper_identifier(value)
+        if not value.startswith("arxiv:"):
+            raise ValueError("quality_evidence_candidate_arxiv_identifier_required")
+    return frozenset(values)
+
+
+def _validate_canonical_paper_identifier(value: str) -> str:
+    prefix, separator, raw_identifier = value.partition(":")
+    normalizer = _QUALITY_EVIDENCE_PREFIXES.get(prefix)
+    if not separator or normalizer is None:
+        raise ValueError("canonical_paper_identifier_required")
+    normalized = normalizer(raw_identifier)
+    canonical = f"{prefix}:{normalized}" if normalized else None
+    if canonical != value:
+        raise ValueError("canonical_paper_identifier_required")
+    return value
 
 
 class QualitySignal(BaseModel):
@@ -266,6 +344,10 @@ def _known_signal(name: str, value: float, detail: str) -> QualitySignal:
 
 def _digest(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def _digest_bytes(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
 
 
 def _digest_json(value: object) -> str:

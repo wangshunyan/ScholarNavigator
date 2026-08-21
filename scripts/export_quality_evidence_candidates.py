@@ -91,8 +91,13 @@ def write_export(
     identifiers_output.parent.mkdir(parents=True, exist_ok=True)
     report_output.parent.mkdir(parents=True, exist_ok=True)
     identifiers_output.write_text("".join(f"{item}\n" for item in identifiers), encoding="utf-8")
+    report_with_identifier_identity = {
+        **dict(report),
+        "identifiers_sha256": _sha256(identifiers_output),
+    }
     report_output.write_text(
-        json.dumps(dict(report), ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        json.dumps(report_with_identifier_identity, ensure_ascii=False, indent=2, sort_keys=True)
+        + "\n",
         encoding="utf-8",
     )
 

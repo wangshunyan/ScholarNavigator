@@ -10,6 +10,9 @@ RESUME="0"
 RERANKER_MODEL="datasets/semantic/models/Qwen3-Reranker-0.6B"
 RERANKER_DEVICE="auto"
 MAX_WORKERS="1"
+QUALITY_EVIDENCE_LEDGER=""
+QUALITY_EVIDENCE_CANDIDATE_IDENTIFIERS=""
+QUALITY_EVIDENCE_CANDIDATE_REPORT=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -47,6 +50,18 @@ while [[ $# -gt 0 ]]; do
       ;;
     --max-workers)
       MAX_WORKERS="$2"
+      shift 2
+      ;;
+    --quality-evidence-ledger)
+      QUALITY_EVIDENCE_LEDGER="$2"
+      shift 2
+      ;;
+    --quality-evidence-candidate-identifiers)
+      QUALITY_EVIDENCE_CANDIDATE_IDENTIFIERS="$2"
+      shift 2
+      ;;
+    --quality-evidence-candidate-report)
+      QUALITY_EVIDENCE_CANDIDATE_REPORT="$2"
       shift 2
       ;;
     *)
@@ -198,6 +213,25 @@ if [[ "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_rer
   # enforces the competition contract per query, rather than capping the
   # entire 1000-query run at an arbitrary total.
   ARGS+=("--max-llm-calls" "1" "--max-search-rounds" "3")
+fi
+
+if [[ -n "$QUALITY_EVIDENCE_LEDGER" ]]; then
+  if [[ "$CONFIGURATION" != "dense_reranker_quality" ]]; then
+    echo "quality evidence requires dense_reranker_quality" >&2
+    exit 2
+  fi
+  if [[ -z "$QUALITY_EVIDENCE_CANDIDATE_IDENTIFIERS" || -z "$QUALITY_EVIDENCE_CANDIDATE_REPORT" ]]; then
+    echo "quality evidence requires candidate identifiers and report" >&2
+    exit 2
+  fi
+  ARGS+=(
+    "--quality-evidence-ledger" "$QUALITY_EVIDENCE_LEDGER"
+    "--quality-evidence-candidate-identifiers" "$QUALITY_EVIDENCE_CANDIDATE_IDENTIFIERS"
+    "--quality-evidence-candidate-report" "$QUALITY_EVIDENCE_CANDIDATE_REPORT"
+  )
+elif [[ -n "$QUALITY_EVIDENCE_CANDIDATE_IDENTIFIERS" || -n "$QUALITY_EVIDENCE_CANDIDATE_REPORT" ]]; then
+  echo "quality evidence candidate binding requires ledger" >&2
+  exit 2
 fi
 
 if [[ "$RESUME" == "1" ]]; then
