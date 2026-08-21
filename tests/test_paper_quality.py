@@ -1,10 +1,16 @@
 from __future__ import annotations
 
+import json
+
 import pytest
 
 from scholar_agent.core.full_text_evidence import build_paragraph_evidence
 from scholar_agent.core.identity import paper_identifier_set
-from scholar_agent.core.paper_quality import VerifiedQualityEvidence, assess_paper_quality
+from scholar_agent.core.paper_quality import (
+    VerifiedQualityEvidence,
+    assess_paper_quality,
+    load_verified_quality_evidence_ledger,
+)
 from scholar_agent.core.paper_schemas import Paper, PaperIdentifiers
 
 
@@ -150,3 +156,63 @@ def test_conflicting_verified_evidence_fails_closed() -> None:
 
     with pytest.raises(ValueError, match="conflicting_verified_quality_evidence"):
         assess_paper_quality(paper, verified_evidence=evidence)
+
+
+def test_quality_evidence_ledger_is_strict_and_semantically_stable(tmp_path) -> None:
+    first = tmp_path / "first.jsonl"
+    second = tmp_path / "second.jsonl"
+    rows = [
+        {
+            "paper_identifier": "doi:10.1/first",
+            "signal_name": "retraction_status",
+            "state": "clear",
+            "source": "registry_a",
+            "source_record_id": "a-1",
+        },
+        {
+            "paper_identifier": "arxiv:2401.12345",
+            "signal_name": "duplicate_risk",
+            "state": "flagged",
+            "source": "registry_b",
+            "source_record_id": "b-1",
+        },
+    ]
+    first.write_text("\n".join(json.dumps(row) for row in rows) + "\n", encoding="utf-8")
+    second.write_text("\n".join(json.dumps(row) for row in reversed(rows)) + "\n", encoding="utf-8")
+
+    first_ledger = load_verified_quality_evidence_ledger(first)
+    second_ledger = load_verified_quality_evidence_ledger(second)
+
+    assert first_ledger.record_count == 2
+    assert first_ledger.file_sha256 != second_ledger.file_sha256
+    assert first_ledger.semantic_sha256 == second_ledger.semantic_sha256
+    assert first_ledger.evidence[0].paper_identifier == "doi:10.1/first"
+    report = assess_paper_quality(
+        Paper(title="Ledger paper", identifiers=PaperIdentifiers(doi="10.1/first")),
+        verified_evidence=first_ledger.evidence,
+    )
+    retraction = next(
+        signal for signal in report.signals if signal.name == "retraction_status"
+    )
+    assert retraction.value == 1.0
+
+
+@pytest.mark.parametrize(
+    ("contents", "reason"),
+    [
+        ('{"paper_identifier":"doi:https://doi.org/10.1/x","signal_name":"retraction_status","state":"clear","source":"registry","source_record_id":"1"}\n', "schema_invalid"),
+        ('{"paper_identifier":"doi:10.1/x","paper_identifier":"doi:10.1/y","signal_name":"retraction_status","state":"clear","source":"registry","source_record_id":"1"}\n', "invalid_line"),
+        ('{"paper_identifier":"doi:10.1/x","signal_name":"retraction_status","state":"clear","source":"registry","source_record_id":"1"}\n{"paper_identifier":"doi:10.1/x","signal_name":"retraction_status","state":"clear","source":"registry","source_record_id":"2"}\n', "duplicate_signal"),
+        ("\n", "empty"),
+    ],
+)
+def test_quality_evidence_ledger_rejects_ambiguous_or_invalid_rows(
+    tmp_path,
+    contents: str,
+    reason: str,
+) -> None:
+    path = tmp_path / "invalid.jsonl"
+    path.write_text(contents, encoding="utf-8")
+
+    with pytest.raises(ValueError, match=f"quality_evidence_ledger_{reason}"):
+        load_verified_quality_evidence_ledger(path)

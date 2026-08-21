@@ -3,18 +3,35 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from collections.abc import Sequence
+from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
-from scholar_agent.core.identity import paper_identifier_set
+from scholar_agent.core.identity import (
+    normalize_arxiv_id,
+    normalize_doi,
+    normalize_s2orc_corpus_id,
+    normalize_simple_id,
+    paper_identifier_set,
+)
 from scholar_agent.core.paper_schemas import Paper
 
 
 QualitySignalState = Literal["present", "missing", "unknown"]
 QualityRiskSignal = Literal["retraction_status", "duplicate_risk"]
 VerifiedRiskState = Literal["clear", "flagged"]
+QUALITY_EVIDENCE_LEDGER_SCHEMA = "paper-quality-evidence-ledger-v1"
+_QUALITY_EVIDENCE_PREFIXES = {
+    "doi": normalize_doi,
+    "arxiv": normalize_arxiv_id,
+    "openalex": normalize_simple_id,
+    "s2": normalize_simple_id,
+    "s2orc": normalize_s2orc_corpus_id,
+    "pubmed": normalize_simple_id,
+}
 
 
 class VerifiedQualityEvidence(BaseModel):
@@ -30,6 +47,93 @@ class VerifiedQualityEvidence(BaseModel):
     state: VerifiedRiskState
     source: str = Field(min_length=1)
     source_record_id: str = Field(min_length=1)
+
+    @field_validator("paper_identifier")
+    @classmethod
+    def require_canonical_paper_identifier(cls, value: str) -> str:
+        prefix, separator, raw_identifier = value.partition(":")
+        normalizer = _QUALITY_EVIDENCE_PREFIXES.get(prefix)
+        if not separator or normalizer is None:
+            raise ValueError("canonical_paper_identifier_required")
+        normalized = normalizer(raw_identifier)
+        canonical = f"{prefix}:{normalized}" if normalized else None
+        if canonical != value:
+            raise ValueError("canonical_paper_identifier_required")
+        return value
+
+
+class VerifiedQualityEvidenceLedger(BaseModel):
+    """Read-only identity for a strict external quality-evidence JSONL file."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["paper-quality-evidence-ledger-v1"] = (
+        QUALITY_EVIDENCE_LEDGER_SCHEMA
+    )
+    file_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    semantic_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    record_count: int = Field(ge=1)
+    evidence: tuple[VerifiedQualityEvidence, ...]
+
+
+def load_verified_quality_evidence_ledger(
+    path: str | Path,
+) -> VerifiedQualityEvidenceLedger:
+    """Load strict, offline evidence without retaining source-record bodies.
+
+    Each nonempty JSONL row must be one canonical ``VerifiedQualityEvidence``.
+    A ledger has one authoritative row per (paper identifier, risk signal), so
+    conflicting or duplicate sources cannot silently choose a provenance record.
+    """
+
+    source_path = Path(path)
+    try:
+        raw = source_path.read_bytes()
+        text = raw.decode("utf-8")
+    except (OSError, UnicodeError) as exc:
+        raise ValueError("quality_evidence_ledger_unavailable") from exc
+    evidence: list[VerifiedQualityEvidence] = []
+    seen: set[tuple[str, str]] = set()
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        if not line.strip():
+            continue
+        try:
+            value = json.loads(
+                line,
+                object_pairs_hook=_reject_duplicate_json_keys,
+                parse_constant=_reject_nonfinite_json_number,
+            )
+        except (json.JSONDecodeError, ValueError) as exc:
+            raise ValueError(f"quality_evidence_ledger_invalid_line:{line_number}") from exc
+        if not isinstance(value, dict):
+            raise ValueError(f"quality_evidence_ledger_object_required:{line_number}")
+        try:
+            item = VerifiedQualityEvidence.model_validate(value)
+        except ValidationError as exc:
+            raise ValueError(f"quality_evidence_ledger_schema_invalid:{line_number}") from exc
+        key = (item.paper_identifier, item.signal_name)
+        if key in seen:
+            raise ValueError(f"quality_evidence_ledger_duplicate_signal:{line_number}")
+        seen.add(key)
+        evidence.append(item)
+    if not evidence:
+        raise ValueError("quality_evidence_ledger_empty")
+    canonical_records = sorted(
+        (item.model_dump(mode="json") for item in evidence),
+        key=lambda item: (
+            item["paper_identifier"],
+            item["signal_name"],
+            item["source"],
+            item["source_record_id"],
+            item["state"],
+        ),
+    )
+    return VerifiedQualityEvidenceLedger(
+        file_sha256=hashlib.sha256(raw).hexdigest(),
+        semantic_sha256=_digest_json(canonical_records),
+        record_count=len(evidence),
+        evidence=tuple(evidence),
+    )
 
 
 class QualitySignal(BaseModel):
@@ -162,3 +266,30 @@ def _known_signal(name: str, value: float, detail: str) -> QualitySignal:
 
 def _digest(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def _digest_json(value: object) -> str:
+    return hashlib.sha256(
+        json.dumps(
+            value,
+            ensure_ascii=True,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        ).encode("utf-8")
+    ).hexdigest()
+
+
+def _reject_duplicate_json_keys(
+    pairs: list[tuple[str, object]],
+) -> dict[str, object]:
+    value: dict[str, object] = {}
+    for key, child in pairs:
+        if key in value:
+            raise ValueError("duplicate_json_key")
+        value[key] = child
+    return value
+
+
+def _reject_nonfinite_json_number(_value: str) -> object:
+    raise ValueError("nonfinite_json_number")
