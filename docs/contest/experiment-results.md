@@ -61,7 +61,8 @@
 | dense + reranker + LLM | `contest_full_dense_reranker_llm_v14` | 已完成诊断审计，不通过正式门禁 | 不得引用 | 不得引用 | 不适用 | 1000 条结果、零失败但有 4 次 fallback；不能作为正式成绩。 |
 | dense + reranker + LLM | `contest_qual200_dense_reranker_llm_v15` | 未完成诊断，不通过正式门禁 | 不得引用 | 不得引用 | 不适用 | 10 条成功、零 fallback，但结果 schema 丢失 HTTP transport 字段；停止后保留为诊断，不能恢复或引用。 |
 | dense + reranker + LLM | `contest_qual200_dense_reranker_llm_v16` | 已完成诊断，不通过正式门禁 | 不得引用 | 不得引用 | passed | 200 条、零失败但有 1 次 temporary-overload fallback；LLM 审计失败，F1/Recall 的 paired-bootstrap 95% 区间均跨过零。 |
-| dense + reranker + soft Judgement | `contest_qual200_dense_reranker_soft_v2` | 已完成并通过资格门禁 | qualification only | qualification only | passed | 200/200、零失败、零 fallback；GPU1 reranker 审计通过。完整 `contest_full_dense_reranker_soft_v2` 正在运行，未完成前不写入正式成绩。 |
+| dense + reranker + soft Judgement | `contest_qual200_dense_reranker_soft_v2` | 已完成并通过资格门禁 | qualification only | qualification only | passed | 200/200、零失败、零 fallback；GPU1 reranker 审计通过。 |
+| dense + reranker + soft Judgement | `contest_full_dense_reranker_soft_v2` | 已完成并审计通过 | 0.02726 | 0.16817 | passed | MRR 0.09834，平均延迟 4.032 s；1000/1000、零失败、零 fallback，GPU1 reranker 审计通过。内部指标不等同赛事官方 scorer。 |
 
 `contest_qual200_reranker_v4_gpu1` 已完成 200/200、零失败、零 fallback，并通过资源账本和配对 bootstrap 门禁；F1@20 增量为 +0.013747，Recall@20 增量为 +0.078419。完整 reranker 审计确认 1000 条、Qwen3 prompt v1、2048 最大长度、batch=8、候选上限=120、P50/P95 为 0.730/0.839 s、吞吐 156.13 candidates/s、峰值显存约 5.49 GiB。以上内部指标不等同于赛事官方 scorer。
 
@@ -87,11 +88,12 @@ LLM 传输层对每个逻辑调用采用固定的有限重试协议：HTTP `429/
 3. Reranker 的完整运行使用真实 GPU 推理且零 fallback；代价是平均端到端延迟由 Dense 的 0.968 s 增至 3.909 s。提交材料应同时呈现质量增益和资源代价。
 4. `contest_full_dense_reranker_llm_v14` 是旧审计字段之前启动的诊断运行，且已有 fallback；`contest_qual200_dense_reranker_llm_v15` 因结果 schema 丢失 HTTP transport 审计字段而停止；`contest_qual200_dense_reranker_llm_v16` 虽完成 200 条，但出现 1 次 temporary-overload fallback 且 paired-bootstrap 95% 区间未支持提升。三者都不得写成实测创新结果，且不得启动对应的 LLM 完整运行。
 5. `local_bm25 + arXiv` 的旧完整运行及 `contest_full_local_hybrid_v1` 只保留为可靠性/中断诊断，不得写入正式质量对比或提交结果。
-6. `contest_qual200_dense_reranker_soft_v2` 的 paired-bootstrap 支持质量提升，但它只是资格证据；正式结果仍必须等待独立 1000 条运行、完整性检查、资源账本和 reranker 审计通过。
+6. `contest_qual200_dense_reranker_soft_v2` 的 paired-bootstrap 支持质量提升；对应的 `contest_full_dense_reranker_soft_v2` 已完成独立 1000 条运行、完整性检查、资源账本和 reranker 审计。
+7. `contest_full_dense_reranker_soft_v2` 已完成 1000 条并通过完整性、资源账本和 GPU reranker 审计；F1@20=0.02726023、Recall@20=0.16817491、MRR=0.09833638、平均延迟=4.032 s。以上仍为内部工程指标，不等同赛事官方 scorer。
 
 ## 后续正式实验口径
 
-P0/Faiss 语料、索引和 Dense 完整运行已经完成。当前只可引用完整成功的 rules、Dense，以及在完成核验后可引用的 reranker/LLM 运行：
+P0/Faiss 语料、索引和 Dense 完整运行已经完成。当前可引用完整成功且审计通过的 rules、Dense、reranker v4 和 soft Judgement v2；LLM 仍未通过正式门禁：
 
 ```powershell
  .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration rules -RunId contest_qual200_bm25_v1
@@ -105,6 +107,7 @@ P0/Faiss 语料、索引和 Dense 完整运行已经完成。当前只可引用�
  .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration rules -RunId contest_full_rules_v1
  .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration dense -RunId contest_full_dense_v1
  .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration reranker -RunId contest_full_dense_reranker_v4
+ .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration dense_reranker_soft -RunId contest_full_dense_reranker_soft_v2
  .\scripts\run_contest_benchmark.ps1 -Mode smoke -Configuration dense_reranker_llm -RunId contest_smoke_dense_reranker_llm_v16
  .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration dense_reranker_llm -RunId contest_qual200_dense_reranker_llm_v16
  .\scripts\run_contest_benchmark.ps1 -Mode full -Configuration dense_reranker_llm -RunId contest_full_dense_reranker_llm_v16

@@ -34,7 +34,7 @@ v2 已完成 200/200、零失败、零 fallback，并通过资源账本、GPU re
 门禁：F1@20 平均增量 `+0.004531`，95% CI `[+0.002197, +0.007617]`；Recall@20
 平均增量 `+0.027917`，95% CI `[+0.011667, +0.048333]`。这些均为内部工程指标，
 不等同赛事官方 scorer。由此启动的完整运行使用独立 RunId
-`contest_full_dense_reranker_soft_v2`，完成并通过同等完整性、资源与 reranker 审计前不得引用其指标。
+`contest_full_dense_reranker_soft_v2`，现已完成 1000/1000、零失败、零 fallback，并通过同等完整性、资源与 reranker 审计；其 F1@20=0.02726023、Recall@20=0.16817491、MRR=0.09833638、平均延迟 4.032 s。以上仍为内部工程指标，不等同赛事官方 scorer。
 完整运行的阶段一离线瓶颈证据和该候选的边界记录在
 [`stage1-bottleneck-analysis.md`](stage1-bottleneck-analysis.md)。
 
@@ -64,7 +64,7 @@ python scripts/check_contest_qualification.py \
   --output outputs/benchmark_runs/contest_qual200_dense_reranker_llm_v16/qualification_gate.json
 ```
 
-门禁只允许 `current_rules` 到 `llm_semantic` 的查询规划变更，以及每条一次 LLM 调用/三轮检索预算；它会同时验证同一语料、Faiss 索引、reranker、候选上限、查询顺序、`top_k=20`、资源账本、GPU reranker 审计和 200 条完整 LLM 审计。只有 F1@20 或 Recall@20 严格提升且配对 bootstrap 95% 置信区间下界大于零，才允许新的完整 RunId `contest_full_dense_reranker_llm_v16`。
+门禁只允许 `current_rules` 到 `llm_semantic` 的查询规划变更，以及每条一次 LLM 调用/三轮检索预算；它会同时验证同一语料、Faiss 索引、reranker、候选上限、查询顺序、`top_k=20`、资源账本、GPU reranker 审计和 200 条完整 LLM 审计。只有 F1@20 或 Recall@20 严格提升且配对 bootstrap 95% 置信区间下界大于零，才允许新的、不可复用 RunId 进入完整 LLM 实验；v16 已失败，不得恢复或直接扩展。
 
 完整运行结束后必须执行：
 

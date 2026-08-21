@@ -64,7 +64,8 @@ gold rank 为 `14.36`，中位 rank 为 `8`。因此，软 Judgement 与候选�
    仅保留为诊断。受控重试必须使用 `contest_qual200_dense_reranker_soft_v2` 并固定
    reranker 到 `cuda:1`，与 `contest_qual200_reranker_v4_gpu1` 做同一 200 条查询的配对门禁。只有 F1@20 或
    Recall@20 严格提升、bootstrap 95% 区间支持、零失败、零 fallback 和资源账本
-   通过，才可启动新的完整 RunId。v2 已满足该门禁，并启动独立的
-   `contest_full_dense_reranker_soft_v2`；完整运行结果尚未可用于任何结论。
+   通过，才可启动新的完整 RunId。v2 已满足该门禁，并完成独立的
+   `contest_full_dense_reranker_soft_v2`；该运行 1000/1000、零失败、零 fallback，
+   但其指标仍是内部工程指标，不等同赛事官方 scorer。
 3. `contest_full_dense_reranker_llm_v14` 已完成诊断审计：虽有 1000 条结果和零失败，
    但有 4 次 fallback，因此不将 LLM 作为实测提升写入结果，也不作为 v15 的资格依据。

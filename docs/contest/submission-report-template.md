@@ -66,7 +66,7 @@ flowchart LR
 | Dense | `contest_full_dense_v1` | 0.02155 | 0.01225 | 0.13508 | 0.09171 | 0.0 | 0.0 | 0.968 s | 1.000 |
 | Dense + reranker | `contest_full_dense_reranker_v4` | 0.02442 | 0.01390 | 0.15010 | 0.09406 | 0.0 | 0.0 | 3.909 s | 1.000 |
 
-阶段诊断显示，reranker v4 的初始候选 Recall 为 0.29675，Judgement 后 Recall 为 0.19454，最终 Recall@20 为 0.15010。已检索 gold 中有 197 个在 Judgement 阶段被过滤、105 个在 Top-20 外，故软 Judgement 作为独立、默认关闭的受控候选进行资格验证。`contest_qual200_dense_reranker_soft_v2` 已通过 200 条配对资格门禁；其完整 1000 条运行未完成前不得在此表添加任何 soft Judgement 指标。
+阶段诊断显示，reranker v4 的初始候选 Recall 为 0.29675，Judgement 后 Recall 为 0.19454，最终 Recall@20 为 0.15010。已检索 gold 中有 197 个在 Judgement 阶段被过滤、105 个在 Top-20 外，故软 Judgement 作为独立、默认关闭的受控候选进行资格验证。`contest_qual200_dense_reranker_soft_v2` 已通过 200 条配对资格门禁，`contest_full_dense_reranker_soft_v2` 已完成并审计通过：F1@20=0.02726、Recall@20=0.16817、MRR=0.09834、平均延迟 4.032 s。以上内部指标不等同赛事官方 scorer。
 
 ## 创新点与边界
 
@@ -75,7 +75,7 @@ flowchart LR
 - 结果级证据链、引用图与导出，支持科研人员复核推荐理由。
 - Qwen3-Reranker-0.6B 使用固定官方判定模板、2048 token 上限、batch=8 与显式 GPU 隔离；soft Judgement 仅改变一个预先声明的阈值并通过配对 bootstrap 决策。
 
-当前限制：旧 `local_hybrid` 标题匹配语料只能作为 legacy 对照；LLM v5-v16 均为诊断，尚无零 fallback、完整审计通过的 1000 条 LLM 结果。soft Judgement 完整运行尚未完成，不能提前声明质量提升。Linux/Python 3.12 离线 wheelhouse 验证与 `record160` 历史冻结证据仍是最终 release tag 的阻塞项。
+当前限制：旧 `local_hybrid` 标题匹配语料只能作为 legacy 对照；LLM v5-v16 均为诊断，尚无零 fallback、完整审计通过的 1000 条 LLM 结果。soft Judgement 已完成内部 1000 条验证，但不代表赛事官方 scorer。Linux/Python 3.12 离线 wheelhouse 验证与 `record160` 历史冻结证据仍是最终 release tag 的阻塞项。
 
 ## 演示与复现
 
