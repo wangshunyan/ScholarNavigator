@@ -16,7 +16,9 @@ if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
 from scholar_agent.core.quality_evidence_sources import (  # noqa: E402
+    ArxivCrossrefRetractionCollection,
     CrossrefRetractionCollection,
+    collect_arxiv_crossref_retraction_evidence,
     collect_crossref_retraction_evidence,
 )
 
@@ -36,7 +38,7 @@ def load_paper_identifiers(path: Path) -> list[str]:
 
 
 def write_collection_outputs(
-    collection: CrossrefRetractionCollection,
+    collection: CrossrefRetractionCollection | ArxivCrossrefRetractionCollection,
     *,
     input_file_sha256: str,
     identifier_count: int,
@@ -53,7 +55,11 @@ def write_collection_outputs(
     report = {
         "schema_version": "crossref-retraction-evidence-report-v1",
         "status": status,
-        "source": "crossref",
+        "source": (
+            "arxiv_then_crossref"
+            if isinstance(collection, ArxivCrossrefRetractionCollection)
+            else "crossref"
+        ),
         "input_file_sha256": input_file_sha256,
         "input_identifier_count": identifier_count,
         "flagged_evidence_count": len(collection.evidence),
@@ -84,7 +90,13 @@ def main(argv: Sequence[str] | None = None) -> int:
         "--paper-identifiers",
         required=True,
         type=Path,
-        help="UTF-8 text file with one canonical doi:<normalized-doi> per line",
+        help="UTF-8 text file with one canonical doi: or arxiv: identifier per line",
+    )
+    parser.add_argument(
+        "--identifier-kind",
+        choices=("doi", "arxiv"),
+        required=True,
+        help="arxiv mode resolves exact source metadata before optional Crossref lookup",
     )
     parser.add_argument("--ledger-output", required=True, type=Path)
     parser.add_argument("--report-output", required=True, type=Path)
@@ -92,9 +104,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     identifiers = load_paper_identifiers(args.paper_identifiers)
-    collection = collect_crossref_retraction_evidence(
-        identifiers,
-        timeout_seconds=args.timeout_seconds,
+    collection = (
+        collect_crossref_retraction_evidence(
+            identifiers,
+            timeout_seconds=args.timeout_seconds,
+        )
+        if args.identifier_kind == "doi"
+        else collect_arxiv_crossref_retraction_evidence(
+            identifiers,
+            timeout_seconds=args.timeout_seconds,
+        )
     )
     wrote_ledger = write_collection_outputs(
         collection,

@@ -170,6 +170,23 @@
 - **实际验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_quality_evidence_sources.py tests/test_paper_quality.py tests/test_benchmark_runner.py`，`50 passed`；`compileall`、CLI help 与 `git diff --check` 通过。未调用 Crossref，不产生真实 ledger 或质量指标。
 - [x] 已完成
 
+### [x] P2-01-B2 P0 arXiv 标识的受限 DOI 解析与风险探测
+
+- **任务编号**：P2-01-B2；**独立提交**：仅扩展 B1 的外部回执输入适配，不修改 P0 语料、索引、默认排序或任何实验结果。
+- **目标能力**：对 P0 语料已有的精确 `arxiv:` 标识，从公开 arXiv 元数据提取明确 DOI 后再查询 Crossref，并把任何风险回执绑定回原始 `arxiv:` 身份。
+- **当前缺口**：正式 P0 语料只保留 arXiv ID；直接以 `10.48550/arXiv.*` 探测 Crossref 无法覆盖已出版 DOI，且原始本机 metadata CSV 无可用稳定 arXiv ID，不能离线关联。
+- **实现范围**：新增最多 20 条的 exact-ID arXiv Atom 解析、1 MiB 响应上限、严格 media type/ID 规范化、可选 Crossref 查询与 CLI `--identifier-kind arxiv`；不使用标题匹配、不读取 gold/qrels、不保存响应正文、不产生 `clear`。
+- **实现方案**：arXiv 只接受请求集合中的精确 ID，返回缺 DOI、未返回、HTTP/网络/格式错误均保持 `unknown`；只有 arXiv 明确给出 DOI 才查 Crossref。明确撤稿关系生成的 ledger 行始终使用原 `arxiv:` ID，避免将检索语料或身份语义改成 DOI。
+- **验收标准**：最多一个 arXiv metadata 请求且最多 20 个规范 ID；明确 DOI 风险仅映射到同一 arXiv ID；缺 DOI、来源异常和无关系不生成 ledger；CLI 报告标记 `arxiv_then_crossref` 来源链。
+- **自动化验证方式**：mock Atom + Crossref fixture 覆盖 DOI 解析、风险映射、缺 DOI、网络失败、格式/输入/批量拒绝和 CLI provenance；P2 回归、compile 与 diff 检查。
+- **失败处理**：无 DOI、无明确风险或来源不可用只记录聚合终态；不改变质量分、不开启 `quality_soft_v1`、不运行质量资格实验。
+- **外部依赖**：真实探测需要公开 arXiv 与 Crossref 网络；实现和 fixture 离线。输入必须来自 P0 非评测语料，不接受 `AutoScholarQuery`/gold/qrels 路径。
+- **完成条件**：exact-ID 解析、CLI、测试与真实小规模来源诊断均有记录；P2-01-B 的独立风险覆盖和质量提升仍需新资格运行证明。
+- **完成说明（2026-08-21）**：新增 `collect_arxiv_crossref_retraction_evidence`，受限为单次最多 20 个规范 arXiv ID。解析得到的 DOI 只作为 Crossref lookup key；正式 ledger 仍以 `arxiv:` ID 绑定。CLI 现在要求显式 `--identifier-kind doi|arxiv`，报告不保存任何远端正文。
+- **实际来源诊断（2026-08-21）**：从 P0 本地语料按 arXiv ID 顺序选取 5 条非评测论文进行两次一致的只读探测。每次均为 `arxiv:resolved=2`、`arxiv:no_doi=3`、`crossref:no_explicit_retraction_relation=2`、`flagged_evidence_count=0`；因此未生成 ledger、未改变质量分，也没有使用 gold/qrels、标题关联或正式指标。
+- **实际验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_quality_evidence_sources.py tests/test_paper_quality.py tests/test_benchmark_runner.py`，`58 passed`；`compileall`、CLI help 和 `git diff --check` 通过。
+- [x] 已完成
+
 ## P3：真实评测与指标闭环
 
 ### [ ] P3-01 P0-01 的离线资格与真实运行门禁
