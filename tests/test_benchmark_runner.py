@@ -540,8 +540,9 @@ def test_config_records_llm_prompt_budget_and_code_metadata(tmp_path: Path) -> N
     assert config["llm"]["llm_enabled"] is False
     assert config["llm"]["requested"] is False
     assert {item["name"] for item in config["prompts"]} == {
-        "llm_constrained_rewrite",
-        "llm_relevance_adjudicator_v1_1",
+            "llm_constrained_rewrite",
+            "llm_feedback_evolution",
+            "llm_relevance_adjudicator_v1_1",
         "llm_relevance_judge_v1_1",
         "judge_backend_qualification_v1",
         "llm_query_planning",

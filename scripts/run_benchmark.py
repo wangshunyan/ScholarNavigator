@@ -770,15 +770,24 @@ def run_benchmark(
     )
 
 
+def _uses_runtime_llm(options: BenchmarkRunOptions) -> bool:
+    return (
+        options.enable_llm_query_understanding
+        or options.enable_llm_judgement
+        or options.query_planning_policy in _LLM_PLANNING_POLICIES
+        or (
+            options.enable_query_evolution
+            and options.query_evolution_policy == "llm_feedback"
+        )
+    )
+
+
 def _validate_llm_planning_runtime(
     options: BenchmarkRunOptions,
     *,
     service: Any | None,
 ) -> None:
-    if (
-        options.query_planning_policy not in _LLM_PLANNING_POLICIES
-        or service is not None
-    ):
+    if not _uses_runtime_llm(options) or service is not None:
         return
     runtime = get_llm_runtime_config()
     if options.llm_mode in {"live", "record"} and not runtime.available:
@@ -787,6 +796,8 @@ def _validate_llm_planning_runtime(
         )
     if options.llm_mode == "live":
         return
+    if options.query_evolution_policy == "llm_feedback":
+        raise ValueError("llm_feedback_snapshot_mode_not_supported")
     if options.llm_snapshot_dir is None:
         raise ValueError("--llm-snapshot-dir is required outside LLM live mode")
     identity = LLMPlanningSnapshotStore(options.llm_snapshot_dir).identity()
@@ -848,11 +859,7 @@ def _build_config(
 ) -> dict[str, Any]:
     llm_runtime = get_llm_runtime_config()
     judgement_config = _resolve_options_judgement_config(options)
-    requested_llm = (
-        options.enable_llm_query_understanding
-        or options.enable_llm_judgement
-        or options.query_planning_policy in _LLM_PLANNING_POLICIES
-    )
+    requested_llm = _uses_runtime_llm(options)
     local_bm25 = None
     if "local_bm25" in options.sources:
         metadata = local_bm25_metadata()
@@ -1003,6 +1010,10 @@ def _build_config(
             ),
             "constrained_query_rewrite": (
                 options.query_planning_policy == "llm_constrained_rewrite"
+            ),
+            "feedback_query_evolution": (
+                options.enable_query_evolution
+                and options.query_evolution_policy == "llm_feedback"
             ),
             "provider": llm_runtime.provider,
             "model": llm_runtime.model,
