@@ -75,7 +75,7 @@ if ! [[ "$RERANKER_DEVICE" =~ ^(auto|cpu|cuda(:[0-9]+)?)$ ]]; then
 fi
 
 case "$CONFIGURATION" in
-  local|hybrid|hybrid_deep_rrf|network_hybrid|rules|dense|reranker|dense_reranker_soft|dense_reranker_llm|dense_reranker_llm_feedback) ;;
+  local|hybrid|hybrid_deep_rrf|network_hybrid|rules|dense|reranker|dense_reranker_soft|dense_reranker_quality|dense_reranker_llm|dense_reranker_llm_feedback) ;;
   *)
     echo "configuration must be a supported contest configuration" >&2
     exit 2
@@ -108,12 +108,12 @@ RUN_PROFILE="evaluation"
 if [[ "$MODE" != "full" ]]; then
   RUN_PROFILE="fast"
 fi
-if [[ "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_reranker_llm_feedback" ]]; then
+if [[ "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_quality" || "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_reranker_llm_feedback" ]]; then
   RUN_PROFILE="high_recall"
 fi
 
 SOURCES="local_bm25"
-if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_reranker_llm_feedback" ]]; then
+if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_quality" || "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_reranker_llm_feedback" ]]; then
   SOURCES="local_hybrid"
 elif [[ "$CONFIGURATION" == "network_hybrid" ]]; then
   SOURCES="local_bm25,arxiv"
@@ -122,6 +122,8 @@ fi
 RANKING_POLICY="current_rules"
 if [[ "$CONFIGURATION" == "hybrid_deep_rrf" ]]; then
   RANKING_POLICY="rrf_fusion"
+elif [[ "$CONFIGURATION" == "dense_reranker_quality" ]]; then
+  RANKING_POLICY="quality_soft_v1"
 fi
 
 ARGS=(
@@ -151,7 +153,7 @@ if [[ "$CONFIGURATION" == "dense_reranker_soft" ]]; then
   ARGS+=("--judgement-config" "benchmark/judgement_soft_current_rules_v1.json")
 fi
 
-if [[ "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_reranker_llm_feedback" ]]; then
+if [[ "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_quality" || "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_reranker_llm_feedback" ]]; then
   ARGS+=("--max-candidate-papers" "300")
 fi
 
@@ -178,7 +180,7 @@ if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" || "
   )
 fi
 
-if [[ "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_reranker_llm_feedback" ]]; then
+if [[ "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_quality" || "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_reranker_llm_feedback" ]]; then
   ARGS+=(
     "--local-hybrid-reranker-model" "$RERANKER_MODEL"
     "--local-hybrid-reranker-candidate-limit" "120"
