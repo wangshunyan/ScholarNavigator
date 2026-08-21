@@ -10,7 +10,7 @@ import re
 import sys
 from collections.abc import Iterable, Mapping, Sequence
 from pathlib import Path
-from typing import Any
+from typing import Any, BinaryIO
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,26 +26,41 @@ _STRICT_ARXIV_ID_RE = re.compile(
 )
 
 
-def export_arxiv_candidate_identifiers(run_dir: Path) -> tuple[list[str], dict[str, Any]]:
+def export_arxiv_candidate_identifiers(
+    run_dir: Path,
+    *,
+    results_stream: BinaryIO | None = None,
+    expected_results_sha256: str | None = None,
+) -> tuple[list[str], dict[str, Any]]:
     """Read only completed candidate snapshots; never load evaluation gold data."""
 
     root = run_dir.expanduser().resolve()
     config_path = root / "config.json"
     results_path = root / "results.jsonl"
-    if not config_path.is_file() or not results_path.is_file():
+    if not config_path.is_file() or (results_stream is None and not results_path.is_file()):
         raise ValueError("benchmark_run_artifacts_required")
     config = _read_object(config_path)
-    rows = list(_read_jsonl(results_path))
-    if not rows:
-        raise ValueError("benchmark_results_empty")
-    if any(row.get("status") != "succeeded" for row in rows):
-        raise ValueError("benchmark_results_must_be_successful")
+    if results_stream is None:
+        rows = _read_jsonl(results_path)
+        results_sha256 = _sha256(results_path)
+        results_transport = "local_file"
+    else:
+        if not _is_sha256(expected_results_sha256):
+            raise ValueError("streamed_results_sha256_required")
+        stream_digest = hashlib.sha256()
+        rows = _read_jsonl_stream(results_stream, stream_digest)
+        results_sha256 = None
+        results_transport = "stdin_verified_stream"
 
     identifiers: set[str] = set()
+    successful_case_count = 0
     candidate_count = 0
     skipped_without_arxiv_id = 0
     invalid_arxiv_id_count = 0
     for row in rows:
+        if row.get("status") != "succeeded":
+            raise ValueError("benchmark_results_must_be_successful")
+        successful_case_count += 1
         snapshot = _stage_snapshot(row, _STAGE)
         for candidate in _mapping_list(snapshot.get("candidates")):
             candidate_count += 1
@@ -58,6 +73,12 @@ def export_arxiv_candidate_identifiers(run_dir: Path) -> tuple[list[str], dict[s
                 invalid_arxiv_id_count += 1
                 continue
             identifiers.add(f"arxiv:{normalized}")
+    if successful_case_count == 0:
+        raise ValueError("benchmark_results_empty")
+    if results_stream is not None:
+        results_sha256 = stream_digest.hexdigest()
+        if results_sha256 != expected_results_sha256:
+            raise ValueError("streamed_results_sha256_mismatch")
     if not identifiers:
         raise ValueError("benchmark_candidates_without_valid_arxiv_id")
     report = {
@@ -65,8 +86,9 @@ def export_arxiv_candidate_identifiers(run_dir: Path) -> tuple[list[str], dict[s
         "source_kind": "completed_run_initial_reranked_candidates_only",
         "run_id": str(config.get("run_id") or root.name),
         "config_sha256": _sha256(config_path),
-        "results_sha256": _sha256(results_path),
-        "successful_case_count": len(rows),
+        "results_sha256": results_sha256,
+        "results_transport": results_transport,
+        "successful_case_count": successful_case_count,
         "stage": _STAGE,
         "stage_candidate_count": candidate_count,
         "valid_arxiv_identifier_count": len(identifiers),
@@ -138,6 +160,27 @@ def _read_jsonl(path: Path) -> Iterable[Mapping[str, Any]]:
         yield value
 
 
+def _read_jsonl_stream(
+    stream: BinaryIO,
+    digest: Any,
+) -> Iterable[Mapping[str, Any]]:
+    for number, raw_line in enumerate(stream, start=1):
+        digest.update(raw_line)
+        try:
+            line = raw_line.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise ValueError(f"benchmark_results_invalid_utf8_line:{number}") from exc
+        if not line.strip():
+            continue
+        try:
+            value = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"benchmark_results_invalid_line:{number}") from exc
+        if not isinstance(value, dict):
+            raise ValueError(f"benchmark_results_object_required:{number}")
+        yield value
+
+
 def _mapping_list(value: object) -> list[Mapping[str, Any]]:
     return [item for item in value if isinstance(item, Mapping)] if isinstance(value, list) else []
 
@@ -154,14 +197,37 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _is_sha256(value: str | None) -> bool:
+    return isinstance(value, str) and bool(re.fullmatch(r"[0-9a-f]{64}", value))
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", required=True, type=Path)
+    parser.add_argument(
+        "--results-stdin",
+        action="store_true",
+        help="read raw results.jsonl bytes from stdin without writing them locally",
+    )
+    parser.add_argument(
+        "--expected-results-sha256",
+        default=None,
+        help="required SHA-256 for --results-stdin",
+    )
     parser.add_argument("--identifiers-output", required=True, type=Path)
     parser.add_argument("--report-output", required=True, type=Path)
     args = parser.parse_args(argv)
     try:
-        identifiers, report = export_arxiv_candidate_identifiers(args.run)
+        if args.results_stdin:
+            identifiers, report = export_arxiv_candidate_identifiers(
+                args.run,
+                results_stream=sys.stdin.buffer,
+                expected_results_sha256=args.expected_results_sha256,
+            )
+        elif args.expected_results_sha256 is not None:
+            raise ValueError("expected_results_sha256_requires_stdin")
+        else:
+            identifiers, report = export_arxiv_candidate_identifiers(args.run)
         write_export(
             identifiers,
             report,

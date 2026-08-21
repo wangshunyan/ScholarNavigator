@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import io
 import json
 from pathlib import Path
 
@@ -60,6 +62,44 @@ def test_export_rejects_incomplete_or_failed_runs(tmp_path: Path) -> None:
         export_arxiv_candidate_identifiers(_run(tmp_path / "failed", status="failed"))
     with pytest.raises(ValueError, match="completed_initial_reranked_snapshot_required"):
         export_arxiv_candidate_identifiers(_run(tmp_path / "wrong-stage", stage="initial_judged"))
+
+
+def test_exports_verified_results_stream_without_local_results_file(tmp_path: Path) -> None:
+    run = _run(tmp_path)
+    payload = (run / "results.jsonl").read_bytes()
+    (run / "results.jsonl").unlink()
+
+    identifiers, report = export_arxiv_candidate_identifiers(
+        run,
+        results_stream=io.BytesIO(payload),
+        expected_results_sha256=hashlib.sha256(payload).hexdigest(),
+    )
+
+    assert identifiers == ["arxiv:2401.00001", "arxiv:2401.00002"]
+    assert report["results_sha256"] == hashlib.sha256(payload).hexdigest()
+    assert report["results_transport"] == "stdin_verified_stream"
+    assert report["successful_case_count"] == 1
+
+
+def test_verified_results_stream_rejects_hash_mismatch_or_failed_rows(tmp_path: Path) -> None:
+    run = _run(tmp_path)
+    payload = (run / "results.jsonl").read_bytes()
+
+    with pytest.raises(ValueError, match="streamed_results_sha256_mismatch"):
+        export_arxiv_candidate_identifiers(
+            run,
+            results_stream=io.BytesIO(payload),
+            expected_results_sha256="0" * 64,
+        )
+
+    failed = _run(tmp_path / "failed-stream", status="failed")
+    failed_payload = (failed / "results.jsonl").read_bytes()
+    with pytest.raises(ValueError, match="benchmark_results_must_be_successful"):
+        export_arxiv_candidate_identifiers(
+            failed,
+            results_stream=io.BytesIO(failed_payload),
+            expected_results_sha256=hashlib.sha256(failed_payload).hexdigest(),
+        )
 
 
 def test_writer_and_cli_do_not_overwrite_existing_outputs(tmp_path: Path) -> None:

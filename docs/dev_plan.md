@@ -220,6 +220,22 @@
 - **实际验证（2026-08-21）**：质量、runner、导出、来源、软排序和 LLM 审计专项为 `76 passed`；Python 编译、Windows wrapper 解析与 `git diff --check` 通过。Linux Bash 运行时不可用：本机 WSL 系统性 `HCS/0x800705aa`，因此只由静态 Python 回归覆盖 wrapper，不宣称本机 Bash 执行验证。
 - [x] 实现与离线验证完成；真实资格仍由 P2-01-B 阻塞
 
+### [x] P2-01-B5 已验证结果流的无落盘候选导出
+
+- **任务编号**：P2-01-B5；**独立提交**：只扩展 B3 导出器的输入运输方式，不改变导出字段、质量策略、服务器代码或既有运行。
+- **目标能力**：从完整 benchmark 的受核验 `results.jsonl` 字节流提取候选 arXiv ID，而不在本机保存可能含查询内容的大型原始结果文件。
+- **当前缺口**：正式 reranker v4 结果约 1 GiB，服务器历史分叉阻止 `git pull --ff-only` 后运行 B3；直接回收原始文件既不必要，也扩大查询内容副本范围。
+- **实现范围**：为现有导出器新增显式 `--results-stdin` 与必填 `--expected-results-sha256`；逐行解析、增量计算 SHA-256，只写原有无正文 ID 清单及 compact report。
+- **实现方案**：stdin 模式不要求本地 `results.jsonl`，但必须保留本地 `config.json`；任何非 64 位 SHA、流哈希不匹配、空流、失败 case、非法 JSON 或缺少 `initial_reranked` 都 fail closed，且在输入流完全通过哈希校验前不产生输出。
+- **验收标准**：受核验流与本地文件生成同一规范 ID；report 明确 `stdin_verified_stream`；哈希漂移和失败行均拒绝；默认文件模式兼容。
+- **自动化验证方式**：fixture 覆盖无本地结果文件的成功流、哈希漂移、失败行、既有文件模式和输出覆盖保护；运行导出/质量/runner 回归、编译与 diff 检查。
+- **失败处理**：无法获得服务器给出的原始文件 SHA-256，或传输中断时不写 ID/报告，不创建 ledger 或质量实验；重新从只读源流开始。
+- **外部依赖**：实现与 fixture 完全离线；真实导出需要完成 P0/reranker run、服务器只读 SSH 与可核验的原始结果字节流。
+- **完成条件**：代码、测试与本记录提交；导出成功只提供候选范围，不代表已有外部风险回执或质量提升。
+- **完成说明（2026-08-21）**：`export_quality_evidence_candidates.py` 现在可在本机从 SSH 管道读取原始结果流，逐行处理并验证服务器预先报告的 SHA-256；它不会写入原始 results 内容，也不在服务器创建脚本、工作树或输出。
+- **实际验证（2026-08-21）**：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q tests/test_export_quality_evidence_candidates.py tests/test_paper_quality.py tests/test_benchmark_runner.py`，`48 passed`；`compileall` 与 `git diff --check` 通过。真实 v4 导出及独立风险探测仍待已测试提交推送后执行。
+- [x] 实现与离线验证完成；真实候选导出和 P2-01-B 门禁仍未完成
+
 ## P3：真实评测与指标闭环
 
 ### [ ] P3-01 P0-01 的离线资格与真实运行门禁
