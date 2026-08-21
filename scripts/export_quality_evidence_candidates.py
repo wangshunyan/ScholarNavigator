@@ -31,6 +31,7 @@ def export_arxiv_candidate_identifiers(
     *,
     results_stream: BinaryIO | None = None,
     expected_results_sha256: str | None = None,
+    source_run_id: str | None = None,
 ) -> tuple[list[str], dict[str, Any]]:
     """Read only completed candidate snapshots; never load evaluation gold data."""
 
@@ -41,16 +42,22 @@ def export_arxiv_candidate_identifiers(
         raise ValueError("benchmark_run_artifacts_required")
     config = _read_object(config_path)
     if results_stream is None:
+        if source_run_id is not None:
+            raise ValueError("source_run_id_requires_stdin")
         rows = _read_jsonl(results_path)
         results_sha256 = _sha256(results_path)
         results_transport = "local_file"
+        run_id = str(config.get("run_id") or root.name)
     else:
         if not _is_sha256(expected_results_sha256):
             raise ValueError("streamed_results_sha256_required")
+        if not _is_run_id(source_run_id):
+            raise ValueError("streamed_source_run_id_required")
         stream_digest = hashlib.sha256()
         rows = _read_jsonl_stream(results_stream, stream_digest)
         results_sha256 = None
         results_transport = "stdin_verified_stream"
+        run_id = source_run_id
 
     identifiers: set[str] = set()
     successful_case_count = 0
@@ -84,7 +91,7 @@ def export_arxiv_candidate_identifiers(
     report = {
         "schema_version": "quality-evidence-candidate-export-v1",
         "source_kind": "completed_run_initial_reranked_candidates_only",
-        "run_id": str(config.get("run_id") or root.name),
+        "run_id": run_id,
         "config_sha256": _sha256(config_path),
         "results_sha256": results_sha256,
         "results_transport": results_transport,
@@ -201,6 +208,12 @@ def _is_sha256(value: str | None) -> bool:
     return isinstance(value, str) and bool(re.fullmatch(r"[0-9a-f]{64}", value))
 
 
+def _is_run_id(value: str | None) -> bool:
+    return isinstance(value, str) and bool(
+        re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", value)
+    )
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", required=True, type=Path)
@@ -214,6 +227,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         default=None,
         help="required SHA-256 for --results-stdin",
     )
+    parser.add_argument(
+        "--source-run-id",
+        default=None,
+        help="required completed benchmark RunId for --results-stdin",
+    )
     parser.add_argument("--identifiers-output", required=True, type=Path)
     parser.add_argument("--report-output", required=True, type=Path)
     args = parser.parse_args(argv)
@@ -223,9 +241,10 @@ def main(argv: Sequence[str] | None = None) -> int:
                 args.run,
                 results_stream=sys.stdin.buffer,
                 expected_results_sha256=args.expected_results_sha256,
+                source_run_id=args.source_run_id,
             )
-        elif args.expected_results_sha256 is not None:
-            raise ValueError("expected_results_sha256_requires_stdin")
+        elif args.expected_results_sha256 is not None or args.source_run_id is not None:
+            raise ValueError("streamed_results_arguments_require_stdin")
         else:
             identifiers, report = export_arxiv_candidate_identifiers(args.run)
         write_export(

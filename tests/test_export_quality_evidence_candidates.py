@@ -73,9 +73,11 @@ def test_exports_verified_results_stream_without_local_results_file(tmp_path: Pa
         run,
         results_stream=io.BytesIO(payload),
         expected_results_sha256=hashlib.sha256(payload).hexdigest(),
+        source_run_id="contest_full_dense_reranker_v4",
     )
 
     assert identifiers == ["arxiv:2401.00001", "arxiv:2401.00002"]
+    assert report["run_id"] == "contest_full_dense_reranker_v4"
     assert report["results_sha256"] == hashlib.sha256(payload).hexdigest()
     assert report["results_transport"] == "stdin_verified_stream"
     assert report["successful_case_count"] == 1
@@ -90,6 +92,7 @@ def test_verified_results_stream_rejects_hash_mismatch_or_failed_rows(tmp_path: 
             run,
             results_stream=io.BytesIO(payload),
             expected_results_sha256="0" * 64,
+            source_run_id="contest_full_dense_reranker_v4",
         )
 
     failed = _run(tmp_path / "failed-stream", status="failed")
@@ -99,6 +102,28 @@ def test_verified_results_stream_rejects_hash_mismatch_or_failed_rows(tmp_path: 
             failed,
             results_stream=io.BytesIO(failed_payload),
             expected_results_sha256=hashlib.sha256(failed_payload).hexdigest(),
+            source_run_id="contest_full_dense_reranker_v4",
+        )
+
+
+def test_verified_results_stream_requires_canonical_source_run_id(tmp_path: Path) -> None:
+    run = _run(tmp_path)
+    payload = (run / "results.jsonl").read_bytes()
+    digest = hashlib.sha256(payload).hexdigest()
+
+    with pytest.raises(ValueError, match="streamed_source_run_id_required"):
+        export_arxiv_candidate_identifiers(
+            run,
+            results_stream=io.BytesIO(payload),
+            expected_results_sha256=digest,
+        )
+
+    with pytest.raises(ValueError, match="streamed_source_run_id_required"):
+        export_arxiv_candidate_identifiers(
+            run,
+            results_stream=io.BytesIO(payload),
+            expected_results_sha256=digest,
+            source_run_id="../not-a-run-id",
         )
 
 
