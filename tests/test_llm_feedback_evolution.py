@@ -205,23 +205,28 @@ def test_feedback_preserves_core_topic_and_explicit_must_have_terms() -> None:
 
 
 @pytest.mark.parametrize(
-    ("response", "reason"),
+    ("response", "reason", "fallback"),
     [
-        (_response(QUERY), "all_queries_rejected"),
-        (_response("quantum optics photon entanglement"), "all_queries_rejected"),
-        ({"unexpected": True}, "invalid_schema"),
+        (_response(QUERY), "all_queries_rejected", False),
+        (_response("quantum optics photon entanglement"), "all_queries_rejected", False),
+        ({"unexpected": True}, "invalid_schema", True),
     ],
 )
 def test_feedback_rejects_invalid_or_duplicate_queries(
     response: object,
     reason: str,
+    fallback: bool,
 ) -> None:
     record = _record(FakeLLMClient(response))
 
     assert record.generated_queries == []
     assert record.llm_feedback is not None
-    assert record.llm_feedback.skipped_reason == reason
-    assert record.llm_feedback.fallback_used is False
+    if fallback:
+        assert record.llm_feedback.fallback_reason == reason
+        assert record.llm_feedback.fallback_used is True
+    else:
+        assert record.llm_feedback.skipped_reason == reason
+        assert record.llm_feedback.fallback_used is False
 
 
 def test_feedback_provider_failure_does_not_create_second_round_query() -> None:
