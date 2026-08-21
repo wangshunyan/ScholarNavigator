@@ -63,13 +63,12 @@ def evolve_with_llm_feedback(
     packet = _feedback_packet(query_analysis, gap, ranked_papers)
     diagnostics = _base_diagnostics(llm_client, candidate_count=len(packet["candidates"]))
     if not gap.needs_evolution:
-        diagnostics.fallback_used = True
-        diagnostics.fallback_reason = "coverage_sufficient"
+        diagnostics.skipped_reason = "coverage_sufficient"
         return _record(gap, diagnostics, "coverage_sufficient")
     if not packet["candidates"]:
-        diagnostics.fallback_used = True
-        diagnostics.fallback_reason = "no_ranked_feedback"
+        diagnostics.skipped_reason = "no_ranked_feedback"
         return _record(gap, diagnostics, "no_ranked_feedback")
+    diagnostics.eligible_for_feedback = True
     if llm_client is None:
         diagnostics.fallback_used = True
         diagnostics.fallback_reason = "llm_unconfigured"

@@ -659,6 +659,8 @@ class LLMFeedbackDiagnostics(BaseModel):
     temperature: float | None = None
     candidate_count: int = Field(default=0, ge=0, le=3)
     llm_call_attempted: bool = False
+    eligible_for_feedback: bool = False
+    skipped_reason: str | None = None
     fallback_used: bool = False
     fallback_reason: str | None = None
     output_valid: bool = False

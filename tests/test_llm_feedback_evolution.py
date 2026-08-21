@@ -231,6 +231,30 @@ def test_feedback_provider_failure_does_not_create_second_round_query() -> None:
     assert record.llm_feedback.fallback_reason == "llm_timeout"
 
 
+def test_coverage_sufficient_is_a_normal_skip_not_a_provider_fallback() -> None:
+    analysis = _analysis()
+    paper = _paper(
+        "Message Passing Graph Neural Networks for Molecular Property Prediction"
+    )
+    judgement = _judgement(paper)
+    client = FakeLLMClient()
+
+    record = evolve_with_llm_feedback(
+        analysis,
+        _plan(),
+        [judgement],
+        [_ranked(judgement)],
+        {QUERY},
+        llm_client=client,
+    )
+
+    assert client.calls == []
+    assert record.llm_feedback is not None
+    assert record.llm_feedback.eligible_for_feedback is False
+    assert record.llm_feedback.skipped_reason == "coverage_sufficient"
+    assert record.llm_feedback.fallback_used is False
+
+
 def _retrieval(query: str, **kwargs: object) -> RetrievalOutput:  # noqa: ARG001
     if query == FEEDBACK_QUERY:
         paper = _paper(
