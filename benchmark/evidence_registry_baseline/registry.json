@@ -1151,7 +1151,7 @@
       "evidence_sources": [
         {
           "path": "docs/dev_plan.md",
-          "sha256": "f8d3e31452cd20b4245ad1322eec4216cebefd23d34a3cb8ad9b605f4a46fc21"
+          "sha256": "3b7cc8df4104f3a1461a521883b9ad5779dfbaddc12e50f89af932c9b065b0d0"
         }
       ],
       "evidence_status": "evidence_unavailable",
@@ -1290,7 +1290,7 @@
       "evidence_sources": [
         {
           "path": "docs/dev_plan.md",
-          "sha256": "f8d3e31452cd20b4245ad1322eec4216cebefd23d34a3cb8ad9b605f4a46fc21"
+          "sha256": "3b7cc8df4104f3a1461a521883b9ad5779dfbaddc12e50f89af932c9b065b0d0"
         }
       ],
       "evidence_status": "evidence_unavailable",
