@@ -79,6 +79,7 @@
 - **增量验证（2026-08-22）**：后续全量回归在 `1579 passed / 153 skipped` 暴露缺失的 query-gold leakage 历史 replay；测试现在对缺失/冻结代码哈希漂移显式跳过，生产回归仍报告 `repository_input_missing` 或 `input_or_protocol_drift`，不使用替代 baseline。
 - **增量验证（2026-08-22）**：最新回归在 `1588 passed / 154 skipped` 暴露同一缺失 replay 被 query-independence gate 引用；生产回归新增 `repository_input_missing` 结构化结果，相关历史 fixture 显式跳过，不伪造 cluster 统计。
 - **增量验证（2026-08-22）**：最新回归在 `1625 passed / 156 skipped` 暴露查询规划测试在 Windows 默认 GBK 下读取 UTF-8 输出；补充显式 UTF-8 解码，避免把编码环境误报为产品失败。
+- **增量验证（2026-08-22）**：查询规划专项最终 `9 passed`；补齐所有 UTF-8 输出断言并推送提交 `9749261`。全量回归此前继续发现的均为同类历史证据/Windows 编码分层问题，未改变生产算法或评测口径。
 
 ### P0-03 发布包与文档状态一致
 
