@@ -78,6 +78,7 @@
 - **增量验证（2026-08-22）**：全量回归在 `1492 passed / 151 skipped` 暴露冻结 Python 3.12 依赖锁与当前 Windows/Python 3.13 环境不一致；依赖该冻结环境的 manifest 测试现在显式跳过，生产 `build_manifest/verify_manifest` 仍返回 `environment_identity_mismatch`，不修改冻结锁。
 - **增量验证（2026-08-22）**：后续全量回归在 `1579 passed / 153 skipped` 暴露缺失的 query-gold leakage 历史 replay；测试现在对缺失/冻结代码哈希漂移显式跳过，生产回归仍报告 `repository_input_missing` 或 `input_or_protocol_drift`，不使用替代 baseline。
 - **增量验证（2026-08-22）**：最新回归在 `1588 passed / 154 skipped` 暴露同一缺失 replay 被 query-independence gate 引用；生产回归新增 `repository_input_missing` 结构化结果，相关历史 fixture 显式跳过，不伪造 cluster 统计。
+- **增量验证（2026-08-22）**：最新回归在 `1625 passed / 156 skipped` 暴露查询规划测试在 Windows 默认 GBK 下读取 UTF-8 输出；补充显式 UTF-8 解码，避免把编码环境误报为产品失败。
 
 ### P0-03 发布包与文档状态一致
 

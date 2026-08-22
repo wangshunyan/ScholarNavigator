@@ -43,7 +43,10 @@ def test_query_projection_is_gold_blind_and_preserves_unicode_order(
 
     result = project_query_only_manifest(source, output)
 
-    rows = [json.loads(line) for line in output.read_text().splitlines()]
+    rows = [
+        json.loads(line)
+        for line in output.read_text(encoding="utf-8").splitlines()
+    ]
     assert rows == [
         {"query_id": "q-一", "query": "蛋白质—折叠与 G.N.N."},
         {"query_id": "q-2", "query": "second"},
