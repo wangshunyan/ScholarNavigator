@@ -14,6 +14,7 @@ import copy
 import hashlib
 import json
 import os
+import shutil
 from collections.abc import Mapping, Sequence
 from pathlib import Path, PurePosixPath
 from typing import Any, Literal
@@ -783,12 +784,31 @@ def acquire_shard_writer(
 
 def observe_current_volume(root: Path, role: Literal["primary", "backup"]) -> VolumeProfile:
     try:
-        stats = os.statvfs(root)
         device = os.stat(root).st_dev
+        statvfs = getattr(os, "statvfs", None)
+        if callable(statvfs):
+            stats = statvfs(root)
+            block_size = int(stats.f_frsize)
+            available_bytes = int(stats.f_bavail) * block_size
+            available_inodes: int | Literal["not_available"] = (
+                int(stats.f_favail) if stats.f_favail >= 0 else NOT_AVAILABLE
+            )
+            filesystem_token: object = getattr(stats, "f_fsid", NOT_AVAILABLE)
+            name_max: object = getattr(stats, "f_namemax", NOT_AVAILABLE)
+        else:
+            # Windows has no portable free-inode equivalent.  Use the
+            # documented free-byte API and retain an explicit unknown inode
+            # observation so readiness remains fail-closed.
+            usage = shutil.disk_usage(root)
+            block_size = 0
+            available_bytes = int(usage.free)
+            available_inodes = NOT_AVAILABLE
+            filesystem_token = NOT_AVAILABLE
+            name_max = NOT_AVAILABLE
     except OSError as exc:
         raise MultiVolumeStorageNotReady("volume_observation_unavailable") from exc
     fs_identity = stable_hash(
-        {"device": device, "filesystem_id": getattr(stats, "f_fsid", 0)}
+        {"device": device, "filesystem_id": filesystem_token}
     )
     return VolumeProfile(
         volume_identity=stable_hash({"role": role, "filesystem": fs_identity}),
@@ -796,16 +816,14 @@ def observe_current_volume(root: Path, role: Literal["primary", "backup"]) -> Vo
         mount_identity=stable_hash(
             {
                 "filesystem": fs_identity,
-                "block_size": stats.f_frsize,
-                "name_max": stats.f_namemax,
+                "block_size": block_size,
+                "name_max": name_max,
             }
         ),
         failure_domain_identity=NOT_AVAILABLE,
         role=role,
-        available_bytes=stats.f_bavail * stats.f_frsize,
-        available_inodes=(
-            stats.f_favail if stats.f_favail >= 0 else NOT_AVAILABLE
-        ),
+        available_bytes=available_bytes,
+        available_inodes=available_inodes,
         filesystem_quota_bytes=NOT_AVAILABLE,
         max_concurrent_writers=NOT_AVAILABLE,
         online=True,

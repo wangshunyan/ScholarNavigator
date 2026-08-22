@@ -19,6 +19,7 @@ from scholar_agent.evaluation.full1000_launch_control import (
     build_authorization,
     build_preparation,
     load_protocol,
+    preflight_source_commit,
     simulate_operations,
     validate_authorization,
     validate_authorization_context,
@@ -33,7 +34,10 @@ SCRIPT = ROOT / "scripts/check_full1000_launch_control.py"
 
 @pytest.fixture
 def protocol() -> dict[str, object]:
-    return load_protocol(PROTOCOL_PATH)
+    value = load_protocol(PROTOCOL_PATH)
+    if preflight_source_commit(ROOT, value)["status"] != "ready":
+        pytest.skip("frozen launch-control source commit unavailable; strict gate remains blocked")
+    return value
 
 
 def _prepared(
@@ -218,6 +222,9 @@ def test_direct_runner_without_seal_is_not_authoritative(
 
 
 def test_cli_simulation_double_run_is_identical() -> None:
+    value = load_protocol(PROTOCOL_PATH)
+    if preflight_source_commit(ROOT, value)["status"] != "ready":
+        pytest.skip("frozen launch-control source commit unavailable")
     command = [sys.executable, str(SCRIPT), "simulate-operations"]
     first = subprocess.run(command, cwd=ROOT, capture_output=True, check=False)
     second = subprocess.run(command, cwd=ROOT, capture_output=True, check=False)

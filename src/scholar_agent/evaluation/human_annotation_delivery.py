@@ -138,7 +138,7 @@ def prepare_delivery(protocol: Mapping[str, Any], *, repository_root: Path, outp
         raise DeliveryViolation("output_directory_not_empty")
     output.mkdir(parents=True, exist_ok=True)
     items, _, _ = _population(protocol, repository_root)
-    rubric = json.loads((repository_root / "benchmark/lexical_normalization_record160_precision_annotation/public/annotation_schema.json").read_text())
+    rubric = json.loads((repository_root / "benchmark/lexical_normalization_record160_precision_annotation/public/annotation_schema.json").read_text(encoding="utf-8"))
     mapping: dict[str, Any] = {"schema_version": "1", "contract": CONTRACT, "items": []}
     side_summaries = []
     for spec in protocol["annotators"]:
@@ -186,7 +186,7 @@ def _walk_keys(value: Any) -> set[str]:
 
 
 def verify_delivery(protocol: Mapping[str, Any], package_root: Path) -> dict[str, Any]:
-    bundle = json.loads((package_root / "bundle.json").read_text())
+    bundle = json.loads((package_root / "bundle.json").read_text(encoding="utf-8"))
     assets = _asset_hashes(package_root)
     if assets != bundle.get("assets") or len(assets) != bundle.get("asset_count"):
         raise DeliveryViolation("asset_manifest_mismatch")
@@ -195,16 +195,16 @@ def verify_delivery(protocol: Mapping[str, Any], package_root: Path) -> dict[str
     aliases: dict[str, set[str]] = {}
     for spec in protocol["annotators"]:
         side = spec["side"]; base = package_root / f"annotator-{side}"
-        package = json.loads((base / "package.json").read_text()); rows = json.loads((base / "items.json").read_text())
+        package = json.loads((base / "package.json").read_text(encoding="utf-8")); rows = json.loads((base / "items.json").read_text(encoding="utf-8"))
         if len(rows) != 471 or any(set(r) != set(PUBLIC_FIELDS) for r in rows): raise DeliveryViolation("public_population_or_schema_invalid")
         if _walk_keys(rows) & FORBIDDEN_PUBLIC_KEYS: raise DeliveryViolation("public_field_leak")
         if stable_hash(rows) != package.get("items_sha256"): raise DeliveryViolation("public_items_hash_mismatch")
         aliases[side] = {r["alias"] for r in rows}
         if len(aliases[side]) != 471: raise DeliveryViolation("public_alias_duplicate")
-        text = (base / "app.js").read_text() + (base / "index.html").read_text()
+        text = (base / "app.js").read_text(encoding="utf-8") + (base / "index.html").read_text(encoding="utf-8")
         if re.search(r"\b(innerHTML|eval\s*\(|document\.write\s*\()", text): raise DeliveryViolation("unsafe_static_interface")
     if aliases["A"] & aliases["B"]: raise DeliveryViolation("cross_annotator_alias_linkable")
-    mapping = json.loads((package_root / "operator/mapping.json").read_text())
+    mapping = json.loads((package_root / "operator/mapping.json").read_text(encoding="utf-8"))
     if len(mapping.get("items", [])) != 942 or stable_hash(mapping["items"]) != mapping.get("mapping_sha256"): raise DeliveryViolation("operator_mapping_invalid")
     return {"schema_version": "1", "contract": CONTRACT, "state": "delivery_ready", "exit_code": 0, "item_count_per_annotator": 471, "bundle_sha256": bundle["bundle_sha256"], "statistics": None, "execution": protocol["execution"]}
 
@@ -220,14 +220,14 @@ def _safe_notes(value: str | None, maximum: int) -> None:
 
 
 def load_submission(path: Path, *, package_root: Path, side: str, protocol: Mapping[str, Any]) -> DeliverySubmission:
-    try: sub = DeliverySubmission.model_validate_json(path.read_text())
+    try: sub = DeliverySubmission.model_validate_json(path.read_text(encoding="utf-8"))
     except (OSError, ValidationError) as exc: raise DeliveryViolation("submission_schema_invalid") from exc
-    package = json.loads((package_root / f"annotator-{side}/package.json").read_text())
+    package = json.loads((package_root / f"annotator-{side}/package.json").read_text(encoding="utf-8"))
     if sub.contract != CONTRACT or sub.schema_version != "1" or sub.side != side or sub.annotator_id != package["annotator_id"] or sub.package_id != package["package_id"] or sub.package_sha256 != package["package_sha256"]: raise DeliveryViolation("submission_package_or_annotator_mismatch")
     if not sub.locked: raise DeliveryViolation("submission_not_locked")
     if sub.labels_sha256 != submission_hash(sub.model_dump(mode="json")): raise DeliveryViolation("submission_lock_hash_mismatch")
     aliases = [x.alias for x in sub.labels]
-    expected = {x["alias"] for x in json.loads((package_root / f"annotator-{side}/items.json").read_text())}
+    expected = {x["alias"] for x in json.loads((package_root / f"annotator-{side}/items.json").read_text(encoding="utf-8"))}
     if len(aliases) != len(set(aliases)): raise DeliveryViolation("duplicate_alias")
     if set(aliases) != expected: raise DeliveryViolation("missing_or_cross_package_alias")
     for row in sub.labels:
@@ -239,7 +239,7 @@ def load_submission(path: Path, *, package_root: Path, side: str, protocol: Mapp
 def ingest(protocol: Mapping[str, Any], *, package_root: Path, annotator_a: Path, annotator_b: Path, output: Path | None = None) -> dict[str, Any]:
     verify_delivery(protocol, package_root)
     submissions = {s: load_submission(p, package_root=package_root, side=s, protocol=protocol) for s, p in (("A", annotator_a), ("B", annotator_b))}
-    mapping = json.loads((package_root / "operator/mapping.json").read_text())
+    mapping = json.loads((package_root / "operator/mapping.json").read_text(encoding="utf-8"))
     lookup = {(x["side"], x["alias"]): x for x in mapping["items"]}
     recovered: dict[str, dict[str, list[dict[str, Any]]]] = {"A": {"current": [], "prior": []}, "B": {"current": [], "prior": []}}
     for side, sub in submissions.items():
@@ -255,8 +255,8 @@ def ingest(protocol: Mapping[str, Any], *, package_root: Path, annotator_a: Path
 
 
 def _make_submission(package_root: Path, side: str, labels: list[str], path: Path) -> None:
-    package = json.loads((package_root / f"annotator-{side}/package.json").read_text())
-    rows = json.loads((package_root / f"annotator-{side}/items.json").read_text())
+    package = json.loads((package_root / f"annotator-{side}/package.json").read_text(encoding="utf-8"))
+    rows = json.loads((package_root / f"annotator-{side}/items.json").read_text(encoding="utf-8"))
     payload = {"schema_version": "1", "contract": CONTRACT, "package_id": package["package_id"], "package_sha256": package["package_sha256"], "annotator_id": package["annotator_id"], "side": side, "locked": True, "labels": [{"alias": row["alias"], "label": labels[i % len(labels)], "notes": ""} for i, row in enumerate(rows)]}
     payload["labels_sha256"] = submission_hash(payload); write_json(path, payload)
 

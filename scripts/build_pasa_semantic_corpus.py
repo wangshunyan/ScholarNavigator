@@ -35,6 +35,9 @@ _ABSTRACT_FIELDS = ("abstract", "summary", "summaries", "paper_abstract")
 _CATEGORY_FIELDS = ("categories", "category", "terms", "subjects")
 _AUTHOR_FIELDS = ("authors", "author", "authors_parsed")
 _UPDATE_DATE_FIELDS = ("update_date", "updated", "last_updated")
+_YEAR_FIELDS = ("year", "published", "publication_date", "update_date")
+_VENUE_FIELDS = ("venue", "journal_ref", "journal-ref", "journal")
+_DOI_FIELDS = ("doi", "DOI")
 
 
 @dataclass
@@ -51,6 +54,9 @@ class BuildReport:
     metadata_missing_abstract_rows: int
     metadata_missing_categories_rows: int
     metadata_missing_authors_rows: int
+    metadata_missing_year_rows: int
+    metadata_missing_venue_rows: int
+    metadata_missing_doi_rows: int
     duplicate_metadata_rows: int
     conflicting_metadata_ids: int
     pasa_rows: int
@@ -61,6 +67,9 @@ class BuildReport:
     output_abstract_rows: int
     output_category_rows: int
     output_author_rows: int
+    output_year_rows: int
+    output_venue_rows: int
+    output_doi_rows: int
     field_completeness: dict[str, float]
     coverage: float
     output_sha256: str
@@ -85,6 +94,9 @@ def build_semantic_corpus(
         missing_abstract_rows,
         missing_categories_rows,
         missing_authors_rows,
+        missing_year_rows,
+        missing_venue_rows,
+        missing_doi_rows,
     ) = (
         _read_metadata(metadata_path)
     )
@@ -122,6 +134,12 @@ def build_semantic_corpus(
             category_counts.update(metadata["categories"])
         if metadata["authors"]:
             row["authors"] = metadata["authors"]
+        if metadata["year"] is not None:
+            row["year"] = metadata["year"]
+        if metadata["venue"]:
+            row["venue"] = metadata["venue"]
+        if metadata["doi"]:
+            row["doi"] = metadata["doi"]
         rows[arxiv_id] = row
 
     if not rows:
@@ -145,6 +163,9 @@ def build_semantic_corpus(
         metadata_missing_abstract_rows=missing_abstract_rows,
         metadata_missing_categories_rows=missing_categories_rows,
         metadata_missing_authors_rows=missing_authors_rows,
+        metadata_missing_year_rows=missing_year_rows,
+        metadata_missing_venue_rows=missing_venue_rows,
+        metadata_missing_doi_rows=missing_doi_rows,
         duplicate_metadata_rows=duplicate_metadata_rows,
         conflicting_metadata_ids=len(conflicting_ids),
         pasa_rows=len(pasa),
@@ -155,6 +176,9 @@ def build_semantic_corpus(
         output_abstract_rows=sum(bool(row["abstract"]) for row in rows.values()),
         output_category_rows=sum(bool(row.get("categories")) for row in rows.values()),
         output_author_rows=sum(bool(row.get("authors")) for row in rows.values()),
+        output_year_rows=sum(row.get("year") is not None for row in rows.values()),
+        output_venue_rows=sum(bool(row.get("venue")) for row in rows.values()),
+        output_doi_rows=sum(bool(row.get("doi")) for row in rows.values()),
         field_completeness={
             "title": 1.0 if rows else 0.0,
             "abstract": (
@@ -169,6 +193,21 @@ def build_semantic_corpus(
             ),
             "authors": (
                 sum(bool(row.get("authors")) for row in rows.values()) / len(rows)
+                if rows
+                else 0.0
+            ),
+            "year": (
+                sum(row.get("year") is not None for row in rows.values()) / len(rows)
+                if rows
+                else 0.0
+            ),
+            "venue": (
+                sum(bool(row.get("venue")) for row in rows.values()) / len(rows)
+                if rows
+                else 0.0
+            ),
+            "doi": (
+                sum(bool(row.get("doi")) for row in rows.values()) / len(rows)
                 if rows
                 else 0.0
             ),
@@ -224,7 +263,7 @@ def _read_pasa_index(path: Path) -> dict[str, str]:
 
 def _read_metadata(
     path: Path,
-) -> tuple[list[dict[str, Any]], int, int, int, int, int, int]:
+) -> tuple[list[dict[str, Any]], int, int, int, int, int, int, int, int, int]:
     rows: list[dict[str, Any]] = []
     input_rows = 0
     missing_id_rows = 0
@@ -232,6 +271,9 @@ def _read_metadata(
     missing_abstract_rows = 0
     missing_categories_rows = 0
     missing_authors_rows = 0
+    missing_year_rows = 0
+    missing_venue_rows = 0
+    missing_doi_rows = 0
     for payload in _iter_source_records(path):
         input_rows += 1
         arxiv_id = normalize_arxiv_id(_first_field(payload, _ID_FIELDS))
@@ -242,11 +284,17 @@ def _read_metadata(
         title = _clean_text(_first_field(payload, _TITLE_FIELDS))
         categories = _parse_list(_first_field(payload, _CATEGORY_FIELDS))
         authors = _parse_list(_first_field(payload, _AUTHOR_FIELDS))
+        year = _parse_year(_first_field(payload, _YEAR_FIELDS))
+        venue = _clean_text(_first_field(payload, _VENUE_FIELDS))
+        doi = _clean_doi(_first_field(payload, _DOI_FIELDS))
         missing_title_rows += not bool(title)
         if not abstract:
             missing_abstract_rows += 1
         missing_categories_rows += not bool(categories)
         missing_authors_rows += not bool(authors)
+        missing_year_rows += year is None
+        missing_venue_rows += not bool(venue)
+        missing_doi_rows += not bool(doi)
         if not abstract:
             continue
         rows.append(
@@ -256,6 +304,9 @@ def _read_metadata(
                 "abstract": abstract,
                 "categories": categories,
                 "authors": authors,
+                "year": year,
+                "venue": venue,
+                "doi": doi,
                 "update_date": _clean_text(
                     _first_field(payload, _UPDATE_DATE_FIELDS)
                 ),
@@ -273,7 +324,27 @@ def _read_metadata(
         missing_abstract_rows,
         missing_categories_rows,
         missing_authors_rows,
+        missing_year_rows,
+        missing_venue_rows,
+        missing_doi_rows,
     )
+
+
+def _parse_year(value: Any) -> int | None:
+    if value is None:
+        return None
+    match = re.search(r"(?:19|20)\d{2}", str(value))
+    if match is None:
+        return None
+    year = int(match.group(0))
+    return year if 1900 <= year <= 2100 else None
+
+
+def _clean_doi(value: Any) -> str:
+    text = _clean_text(value)
+    text = re.sub(r"^https?://doi.org/", "", text, flags=re.I)
+    text = re.sub(r"^doi:\s*", "", text, flags=re.I)
+    return text.strip()
 
 
 def _resolve_metadata_conflict(

@@ -17,6 +17,7 @@ for import_root in (ROOT, ROOT / "src"):
 from scholar_agent.evaluation.evidence_registry import (  # noqa: E402
     build_evidence_registry,
     check_evidence_registry,
+    preflight_evidence_registry_inputs,
     write_evidence_registry,
 )
 
@@ -24,13 +25,18 @@ from scholar_agent.evaluation.evidence_registry import (  # noqa: E402
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Build or gate tracked strategy evidence.")
     commands = parser.add_subparsers(dest="command", required=True)
-    for command_name in ("generate", "check"):
+    for command_name in ("preflight", "generate", "check"):
         command = commands.add_parser(command_name)
         command.add_argument(
             "--manifest", default="benchmark/evidence_registry_manifest.json"
         )
-        command.add_argument("--output", required=True)
+        if command_name != "preflight":
+            command.add_argument("--output", required=True)
     args = parser.parse_args(argv)
+    if args.command == "preflight":
+        report = preflight_evidence_registry_inputs(args.manifest)
+        print(json.dumps(report, ensure_ascii=False, sort_keys=True))
+        return 0 if report["status"] == "ready" else 2
     if args.command == "generate":
         manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
         values = build_evidence_registry(manifest)

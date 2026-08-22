@@ -23,6 +23,7 @@ from scholar_agent.evaluation.evidence_transparency_log import (
     consistency_proof,
     inclusion_proof,
     load_protocol,
+    preflight_transparency_sources,
     read_json,
     simulate_matrix,
     verify_checkpoint,
@@ -78,6 +79,8 @@ def _parser() -> argparse.ArgumentParser:
     build.add_argument("--output", type=Path)
     build.add_argument("--checkpoint-output", type=Path)
 
+    sub.add_parser("preflight")
+
     append = sub.add_parser("append-dry-run")
     append.add_argument("--log", type=Path, required=True)
     append.add_argument("--record", type=Path, required=True)
@@ -106,6 +109,9 @@ def _parser() -> argparse.ArgumentParser:
 
 
 def _run(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
+    if args.command == "preflight":
+        report = preflight_transparency_sources(args.protocol, repository_root=ROOT)
+        return report, EXIT_READY if report["status"] == "ready" else EXIT_VIOLATION
     protocol = load_protocol(args.protocol)
     if args.command == "build-log":
         log, checkpoint = build_current(ROOT, protocol)

@@ -11,7 +11,7 @@ import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from threading import RLock
-from typing import Any
+from typing import Any, Mapping
 
 import numpy as np
 
@@ -61,6 +61,9 @@ _ACTIVE_INDEX: "_SemanticIndex | None" = None
 _ACTIVE_MODEL: Any | None = None
 _ACTIVE_MODEL_PATH: Path | None = None
 _ACTIVE_RERANKER: NeuralReranker | None = None
+_ARXIV_ID_PATTERN = re.compile(
+    r"^(?:[a-z][a-z0-9.-]+/\d{7}|\d{4,5}\.\d{4,5})$", re.I
+)
 
 
 @dataclass(frozen=True)
@@ -115,6 +118,7 @@ class LocalHybridIndexMetadata:
     exact_query_seconds: float
     cache_hit: bool
     index_load_seconds: float
+    field_completeness: dict[str, float] | None = None
 
 
 @dataclass(frozen=True)
@@ -369,6 +373,13 @@ def build_local_hybrid_index(
         "connector_version": LOCAL_HYBRID_CONNECTOR_VERSION,
         "semantic_corpus_size_bytes": corpus_size,
         "abstract_document_count": sum(bool(str(row.get("abstract") or "").strip()) for row in rows),
+        "field_completeness": {
+            field: sum(
+                bool(row.get(field)) if field != "year" else row.get(field) is not None
+                for row in rows
+            ) / len(rows)
+            for field in ("title", "abstract", "authors", "year", "venue", "doi")
+        },
         "embedding_dimension": embedding_dimension,
         "model_path": str(normalized.model_path),
         "index_fingerprint": index_fingerprint,
@@ -658,12 +669,44 @@ def _paper_from_semantic_row(
     sources: list[str],
 ) -> Paper:
     arxiv_id = _string_value(row.get("arxiv_id") or row.get("_id"))
+    year = row.get("year")
+    try:
+        year = int(year) if year is not None else None
+    except (TypeError, ValueError):
+        year = None
+    if year is not None and not 1800 <= year <= 2200:
+        year = None
+    doi = _string_value(row.get("doi"))
+    if doi:
+        doi = (
+            doi.removeprefix("https://doi.org/")
+            .removeprefix("http://doi.org/")
+            .removeprefix("doi:")
+            .strip()
+            or None
+        )
     return Paper(
         title=_string_value(row.get("title")) or "",
         abstract=_string_value(row.get("abstract")) or "",
-        identifiers=PaperIdentifiers(arxiv_id=arxiv_id),
+        authors=_authors_from_row(row.get("authors")),
+        year=year,
+        venue=_string_value(row.get("venue")),
+        identifiers=PaperIdentifiers(arxiv_id=arxiv_id, doi=doi),
         sources=sources,
     )
+
+
+def _authors_from_row(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    authors: list[str] = []
+    for item in value:
+        if isinstance(item, Mapping):
+            item = item.get("name") or item.get("full_name") or item.get("author")
+        text = _string_value(item)
+        if text and text not in authors:
+            authors.append(text)
+    return authors
 
 
 def _normalize_config(config: LocalHybridConfig) -> LocalHybridConfig:
@@ -756,6 +799,11 @@ def _metadata_from_payload(
             ann_query_seconds=float(payload["ann_query_seconds"]),
             exact_query_seconds=float(payload["exact_query_seconds"]),
             cache_hit=cache_hit,
+            field_completeness=(
+                dict(payload.get("field_completeness"))
+                if isinstance(payload.get("field_completeness"), Mapping)
+                else None
+            ),
             index_load_seconds=0.0,
         )
     except (KeyError, TypeError, ValueError) as exc:
@@ -831,6 +879,7 @@ def _current_rss_bytes() -> int:
 
 def _read_semantic_rows(path: Path) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
+    seen_ids: set[str] = set()
     with path.open(encoding="utf-8") as handle:
         for line_number, line in enumerate(handle, start=1):
             if not line.strip():
@@ -840,8 +889,28 @@ def _read_semantic_rows(path: Path) -> list[dict[str, Any]]:
                 raise ValueError(f"local_hybrid_invalid_row:{line_number}")
             if not _string_value(payload.get("title")):
                 raise ValueError(f"local_hybrid_missing_title:{line_number}")
+            raw_id = _string_value(payload.get("arxiv_id") or payload.get("_id"))
+            arxiv_id = _normalize_arxiv_id(raw_id)
+            if arxiv_id is None:
+                raise ValueError(f"local_hybrid_missing_stable_arxiv_id:{line_number}")
+            if arxiv_id in seen_ids:
+                raise ValueError(f"local_hybrid_duplicate_arxiv_id:{arxiv_id}")
+            payload["arxiv_id"] = arxiv_id
+            payload["_id"] = arxiv_id
+            seen_ids.add(arxiv_id)
             rows.append(payload)
     return rows
+
+
+def _normalize_arxiv_id(value: str | None) -> str | None:
+    if value is None:
+        return None
+    text = value.strip()
+    text = re.sub(r"^https?://arxiv\.org/(?:abs|pdf)/", "", text, flags=re.I)
+    text = re.sub(r"^arxiv:\s*", "", text, flags=re.I)
+    text = text.removesuffix(".pdf").strip().casefold()
+    text = re.sub(r"v\d+$", "", text)
+    return text if _ARXIV_ID_PATTERN.fullmatch(text) else None
 
 
 def _load_model_from_path(path: Path) -> Any:

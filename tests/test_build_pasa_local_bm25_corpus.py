@@ -85,6 +85,33 @@ def test_convert_zip_member_with_external_ids(tmp_path: Path) -> None:
     assert persisted_report["output_sha256"] == report.output_sha256
 
 
+def test_convert_preserves_optional_ranking_metadata(tmp_path: Path) -> None:
+    source = tmp_path / "records.json"
+    source.write_text(
+        json.dumps(
+            [
+                {
+                    "id": "source-1",
+                    "title": "Metadata paper",
+                    "abstract": "An abstract",
+                    "arxiv_id": "2501.00003v2",
+                    "authors": [["Ada", "Lovelace"], ["Alan", "Turing"]],
+                    "published": "2024-05-01",
+                    "journal_ref": "Journal of Reproducible Search",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+    output = tmp_path / "local.jsonl"
+    convert_corpus(source, output, identity="arxiv_id")
+    row = json.loads(output.read_text(encoding="utf-8"))
+    assert row["arxiv_id"] == "2501.00003v2"
+    assert row["authors"] == ["Ada Lovelace", "Alan Turing"]
+    assert row["year"] == 2024
+    assert row["venue"] == "Journal of Reproducible Search"
+
+
 def test_convert_official_pasa_title_index_to_arxiv_identity_corpus(
     tmp_path: Path,
 ) -> None:

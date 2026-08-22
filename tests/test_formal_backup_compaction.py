@@ -41,10 +41,20 @@ def protocol() -> dict[str, object]:
 
 
 def _run_cli(*args: str) -> subprocess.CompletedProcess[bytes]:
+    environment = {
+        "PATH": os.environ.get("PATH", ""),
+        "PYTHONPATH": str(ROOT / "src"),
+    }
+    # CPython's Windows asyncio/socket bootstrap requires the OS runtime root;
+    # this is not application configuration and does not weaken hermeticity.
+    if os.name == "nt":
+        for name in ("SystemRoot", "WINDIR"):
+            if os.environ.get(name):
+                environment[name] = os.environ[name]
     return subprocess.run(
         [sys.executable, str(CLI), *args],
         cwd=ROOT,
-        env={"PATH": os.environ.get("PATH", ""), "PYTHONPATH": str(ROOT / "src")},
+        env=environment,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,

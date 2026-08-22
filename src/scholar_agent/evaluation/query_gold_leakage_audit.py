@@ -269,6 +269,15 @@ def check_query_gold_leakage_regression(
                 "observed": str(exc),
             }
         )
+    except OSError as exc:
+        drifts.append(
+            {
+                "kind": "repository_input_missing",
+                "path": "$",
+                "expected": "frozen audit baseline artifacts",
+                "observed": exc.__class__.__name__,
+            }
+        )
     report = {
         "schema_version": SCHEMA_VERSION,
         "gate": GATE_NAME,

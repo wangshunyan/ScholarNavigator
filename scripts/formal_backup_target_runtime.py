@@ -13,6 +13,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import sys
 import tempfile
 from pathlib import Path
@@ -400,21 +401,46 @@ def _probe_capabilities(path: Path, minimum_path_name_bytes: int) -> dict[str, o
 
 
 def _filesystem_id(path: Path) -> tuple[str, str, int, int]:
+    """Return conservative local filesystem facts without serializing paths.
+
+    POSIX exposes both free blocks and free inode counts through ``statvfs``.
+    Windows exposes reliable free-byte and volume-serial information, but not
+    an equivalent portable free-inode counter.  A Windows target therefore
+    reports zero available inodes and fails the capacity qualification rather
+    than inventing an inode value.  This keeps the real-target probe fail
+    closed while still producing a structured observation for callers.
+    """
     try:
-        stats = os.statvfs(path)
         file_stats = path.stat()
+        statvfs = getattr(os, "statvfs", None)
+        if statvfs is not None:
+            stats = statvfs(path)
+            filesystem = stable_hash(
+                {
+                    "device": int(file_stats.st_dev),
+                    "filesystem_id": str(getattr(stats, "f_fsid", NOT_AVAILABLE)),
+                    "fragment_size": int(stats.f_frsize),
+                }
+            )
+            available_bytes = int(stats.f_bavail) * int(stats.f_frsize)
+            available_inodes = int(stats.f_favail)
+        else:
+            # ``disk_usage`` is backed by GetDiskFreeSpaceEx on Windows.  It
+            # gives us the only portable capacity fact that Windows exposes
+            # here; st_dev remains an opaque, path-free device discriminator.
+            usage = shutil.disk_usage(path)
+            filesystem = stable_hash(
+                {
+                    "device": int(file_stats.st_dev),
+                    "filesystem_id": NOT_AVAILABLE,
+                    "fragment_size": NOT_AVAILABLE,
+                }
+            )
+            available_bytes = int(usage.free)
+            available_inodes = 0
     except OSError as exc:
         raise BackupTargetError("target_observation_failed") from exc
-    filesystem = stable_hash(
-        {
-            "device": int(file_stats.st_dev),
-            "filesystem_id": str(getattr(stats, "f_fsid", NOT_AVAILABLE)),
-            "fragment_size": int(stats.f_frsize),
-        }
-    )
     device = stable_hash({"device": int(file_stats.st_dev)})
-    available_bytes = int(stats.f_bavail) * int(stats.f_frsize)
-    available_inodes = int(stats.f_favail)
     return filesystem, device, available_bytes, available_inodes
 
 

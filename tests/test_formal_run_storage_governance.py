@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -391,10 +392,19 @@ def test_readiness_freshness_and_launch_addendum_are_registered() -> None:
 
 def test_cli_exit_codes_and_json_are_stable(tmp_path: Path) -> None:
     def run(*arguments: str) -> subprocess.CompletedProcess[bytes]:
+        environment = {
+            "PATH": str(Path(sys.executable).parent),
+            "PYTHONPATH": "src",
+        }
+        if os.name == "nt":
+            for name in ("SystemRoot", "WINDIR"):
+                value = os.environ.get(name)
+                if value:
+                    environment[name] = value
         return subprocess.run(
             [sys.executable, str(CLI), *arguments],
             cwd=ROOT,
-            env={"PATH": str(Path(sys.executable).parent), "PYTHONPATH": "src"},
+            env=environment,
             capture_output=True,
             check=False,
         )

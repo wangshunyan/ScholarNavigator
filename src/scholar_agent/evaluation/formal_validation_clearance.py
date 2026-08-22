@@ -150,6 +150,35 @@ def _git_source_compatible(root: Path, source_commit: str) -> bool:
     return completed.returncode == 0
 
 
+def preflight_current_evidence_source(
+    protocol: Mapping[str, Any], *, repository_root: Path
+) -> dict[str, Any]:
+    """Check the frozen evidence source commit without changing evidence.
+
+    Current evidence files may be present in a checkout while the historical
+    commit they were produced from is not.  Report that distinction explicitly
+    so tests can skip only the historical assertion; strict evaluation still
+    fails closed through ``source_commit_compatible``.
+    """
+
+    source_commit = str(protocol.get("source_commit") or "")
+    compatible = _git_source_compatible(repository_root.resolve(), source_commit)
+    return {
+        "schema_version": "formal-validation-clearance-preflight-v1",
+        "status": "ready" if compatible else "external_evidence_unavailable",
+        "source_commit": source_commit,
+        "source_commit_compatible": compatible,
+        "blockers": []
+        if compatible
+        else [
+            {
+                "kind": "frozen_source_commit_unavailable",
+                "source_commit": source_commit,
+            }
+        ],
+    }
+
+
 def build_current_evidence(protocol: Mapping[str, Any], *, repository_root: Path) -> dict[str, Any]:
     """Normalize current tracked evidence without treating partial artifacts as completion."""
 

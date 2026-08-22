@@ -90,13 +90,19 @@ def _emit(value: dict[str, object], output: str | None = None) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
+    command: str | None = None
     try:
         args = _parser().parse_args(argv)
+        command = args.command
         root = Path(args.repository_root).resolve()
         assert_no_active_incident(root, target="clearance_receipt")
-        assert_current_preregistration(root)
         protocol = load_protocol(Path(args.protocol))
         if args.command == "audit-current":
+            # Only the current-evidence audit is bound to the registered
+            # historical file set. Synthetic evaluate/receipt round-trips are
+            # intentionally independent and must remain usable after a code
+            # change makes that historical registration stale.
+            assert_current_preregistration(root)
             report = evaluate(build_current_evidence(protocol, repository_root=root))
             _emit(report, args.output)
             return int(report["exit_code"])
@@ -122,7 +128,13 @@ def main(argv: list[str] | None = None) -> int:
         report = {"schema_version": SCHEMA_VERSION, "protocol": PROTOCOL, "status": "blocked", "exit_code": EXIT_BLOCKED, "error_code": str(exc), "formal_validation_complete": False}
         _emit(report)
         return EXIT_BLOCKED
-    except (ClearanceError, RevocationError, PreregistrationError) as exc:
+    except PreregistrationError as exc:
+        status = "blocked" if command == "audit-current" else "invalid"
+        code = EXIT_BLOCKED if status == "blocked" else EXIT_VIOLATION
+        report = {"schema_version": SCHEMA_VERSION, "protocol": PROTOCOL, "status": status, "exit_code": code, "error_code": str(exc), "formal_validation_complete": False}
+        _emit(report)
+        return code
+    except (ClearanceError, RevocationError) as exc:
         report = {"schema_version": SCHEMA_VERSION, "protocol": PROTOCOL, "status": "invalid", "exit_code": EXIT_VIOLATION, "error_code": str(exc), "formal_validation_complete": False}
         _emit(report)
         return EXIT_VIOLATION

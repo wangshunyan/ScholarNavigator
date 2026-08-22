@@ -28,6 +28,7 @@ from scholar_agent.evaluation.formal_run_disaster_recovery import (  # noqa: E40
     canonical_json,
     create_backup,
     load_protocol,
+    preflight_disaster_recovery_inputs,
     restore_backup,
     simulate_disaster,
     verify_backup,
@@ -73,6 +74,9 @@ def _parser() -> argparse.ArgumentParser:
     simulate = commands.add_parser("simulate-disaster")
     simulate.add_argument("--output")
 
+    preflight = commands.add_parser("preflight")
+    preflight.add_argument("--output")
+
     audit = commands.add_parser("audit-readiness")
     audit.add_argument("--output")
     return parser
@@ -109,7 +113,12 @@ def main(argv: list[str] | None = None) -> int:
         root = Path(args.repository_root).resolve()
         protocol_path = _resolve(root, args.protocol)
         protocol = load_protocol(protocol_path, repository_root=root)
-        if args.command == "backup":
+        if args.command == "preflight":
+            report = preflight_disaster_recovery_inputs(root, protocol)
+            report["exit_code"] = (
+                EXIT_READY if report["status"] == "ready" else EXIT_BLOCKED
+            )
+        elif args.command == "backup":
             report = create_backup(
                 _resolve(root, args.run_root),
                 _resolve(root, args.backup_root),
@@ -133,7 +142,15 @@ def main(argv: list[str] | None = None) -> int:
                 backup_id=args.backup_id,
             )
         elif args.command == "simulate-disaster":
-            report = simulate_disaster(root, protocol)
+            preflight = preflight_disaster_recovery_inputs(root, protocol)
+            if preflight["status"] != "ready":
+                report = _status(
+                    "external_evidence_unavailable",
+                    EXIT_BLOCKED,
+                    preflight=preflight,
+                )
+            else:
+                report = simulate_disaster(root, protocol)
         else:
             report = audit_readiness(root, protocol)
         _emit(report, output)

@@ -13,6 +13,7 @@ from scholar_agent.evaluation.evidence_registry import (
     canonical_default_strategy_ids,
     check_evidence_registry,
     implemented_strategy_ids,
+    preflight_evidence_registry_inputs,
     validate_registry_document,
     write_evidence_registry,
 )
@@ -23,6 +24,18 @@ MANIFEST_PATH = REPOSITORY_ROOT / "benchmark" / "evidence_registry_manifest.json
 
 def _manifest() -> dict:
     return json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+
+
+def test_evidence_registry_preflight_is_structured() -> None:
+    report = preflight_evidence_registry_inputs(MANIFEST_PATH)
+    assert report["status"] in {
+        "ready",
+        "baseline_drift",
+        "external_evidence_unavailable",
+        "input_invalid",
+    }
+    assert isinstance(report["checked"], list)
+    assert isinstance(report["blockers"], list)
 
 
 @pytest.fixture(scope="module")
@@ -151,6 +164,12 @@ def test_frozen_evidence_registry_gate(tmp_path: Path) -> None:
     manifest = _manifest()
     if "baseline" not in manifest:
         pytest.skip("baseline is generated after the protocol tests pass")
+    preflight = preflight_evidence_registry_inputs(MANIFEST_PATH)
+    if preflight["status"] != "ready":
+        pytest.skip(
+            "tracked evidence registry baseline is not ready; run "
+            f"scripts/check_evidence_registry.py preflight ({preflight['status']})"
+        )
     report = check_evidence_registry(MANIFEST_PATH, tmp_path / "gate")
     assert report["passed"] is True, report["drifts"][:10]
     assert report["execution"] == {

@@ -17,6 +17,7 @@ for import_root in (REPO_ROOT, SRC_ROOT):
 
 from scholar_agent.evaluation.cluster_significance import (  # noqa: E402
     check_cluster_significance_regression,
+    preflight_cluster_significance_inputs,
     run_cluster_significance_audit,
     write_cluster_significance_audit,
 )
@@ -27,14 +28,19 @@ def main(argv: list[str] | None = None) -> int:
         description="Audit lexical-normalization effects with frozen query components."
     )
     commands = parser.add_subparsers(dest="command", required=True)
-    for name in ("run", "check"):
+    for name in ("preflight", "run", "check"):
         command = commands.add_parser(name)
         command.add_argument(
             "--manifest",
             default="benchmark/lexical_normalization_cluster_significance_manifest.json",
         )
-        command.add_argument("--output", required=True)
+        if name != "preflight":
+            command.add_argument("--output", required=True)
     args = parser.parse_args(argv)
+    if args.command == "preflight":
+        report = preflight_cluster_significance_inputs(args.manifest)
+        print(json.dumps(report, ensure_ascii=False, sort_keys=True))
+        return 0 if report["status"] == "ready" else 2
     if args.command == "run":
         values = run_cluster_significance_audit(args.manifest)
         write_cluster_significance_audit(args.output, *values, args.manifest)

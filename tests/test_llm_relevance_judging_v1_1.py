@@ -33,6 +33,13 @@ INCOMPLETE_EVIDENCE = (
 ITEM_PATTERN = re.compile(r'"item_id":"(item:[0-9a-f]{64})"')
 
 
+@pytest.fixture(autouse=True)
+def _historical_llm_inputs_available() -> None:
+    required = ROOT / "outputs/benchmark_runs/lexical_normalization_record160_813cf3a_r5/case_comparison.jsonl"
+    if not required.is_file():
+        pytest.skip("historical LLM relevance replay evidence unavailable")
+
+
 class SingleItemFakeLLM:
     base_url = "https://offline.invalid/v1"
     model = "offline-fake-model"

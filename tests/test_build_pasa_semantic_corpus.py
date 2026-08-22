@@ -107,6 +107,37 @@ def test_identical_duplicate_metadata_is_deduplicated(tmp_path: Path) -> None:
     assert report.output_rows == 1
 
 
+def test_build_preserves_optional_ranking_metadata(tmp_path: Path) -> None:
+    pasa = tmp_path / "pasa.json"
+    pasa.write_text(json.dumps({"2501.00001": "Paper"}), encoding="utf-8")
+    metadata = tmp_path / "metadata.jsonl"
+    _write_jsonl(
+        metadata,
+        [
+            {
+                "id": "2501.00001",
+                "abstract": "Abstract",
+                "published": "2024-03-01",
+                "journal-ref": "Example Conference",
+                "doi": "https://doi.org/10.1234/example",
+            }
+        ],
+    )
+
+    report = build_semantic_corpus(metadata, pasa, tmp_path / "output.jsonl")
+    row = json.loads((tmp_path / "output.jsonl").read_text(encoding="utf-8"))
+
+    assert row["year"] == 2024
+    assert row["venue"] == "Example Conference"
+    assert row["doi"] == "10.1234/example"
+    assert report.output_year_rows == 1
+    assert report.output_venue_rows == 1
+    assert report.output_doi_rows == 1
+    assert report.field_completeness["year"] == 1.0
+    assert report.field_completeness["venue"] == 1.0
+    assert report.field_completeness["doi"] == 1.0
+
+
 def test_conflicting_duplicate_metadata_fails(tmp_path: Path) -> None:
     pasa = tmp_path / "pasa.json"
     pasa.write_text(json.dumps({"2501.00001": "Paper"}), encoding="utf-8")

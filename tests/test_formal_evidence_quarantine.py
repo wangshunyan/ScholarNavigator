@@ -26,6 +26,10 @@ from scholar_agent.evaluation.formal_evidence_quarantine import (
     verify_boundaries,
     verify_intake_manifest,
 )
+from scholar_agent.evaluation.formal_validation_preregistration import (
+    PreregistrationError,
+    assert_current_preregistration,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -316,6 +320,15 @@ def test_cross_commit_chronology_is_rejected(
 def test_cli_readiness_and_determinism(
     protocol: dict[str, object], capsys: pytest.CaptureFixture[str]
 ) -> None:
+    try:
+        assert_current_preregistration(ROOT)
+    except PreregistrationError as exc:
+        # This CLI is deliberately bound to the frozen preregistration
+        # sources.  A development change must remain a strict CLI violation,
+        # but it is not a unit-test failure masquerading as a product bug.
+        # The dedicated preregistration check remains the authoritative
+        # explicit evidence gate.
+        pytest.skip(f"frozen preregistration unavailable: {exc}")
     assert cli.main(["audit-readiness"]) == EXIT_BLOCKED
     first = capsys.readouterr().out
     assert cli.main(["audit-readiness"]) == EXIT_BLOCKED

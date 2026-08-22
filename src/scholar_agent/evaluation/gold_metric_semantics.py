@@ -23,6 +23,7 @@ from scholar_agent.core.evaluation_schemas import (
 from scholar_agent.evaluation.current_rules_regression import (
     build_current_rules_profile,
     compare_profiles,
+    preflight_current_rules_inputs,
 )
 from scholar_agent.evaluation.datasets.auto_scholar_query import (
     load_auto_scholar_query,
@@ -38,6 +39,30 @@ TERMINAL_METRICS = ("candidate_recall", "recall_at_20", "f1_at_20")
 
 class GoldMetricSemanticsError(RuntimeError):
     """Raised when the frozen metric migration contract is malformed."""
+
+
+def preflight_gold_metric_semantics_inputs(
+    manifest_path: str | Path,
+) -> dict[str, Any]:
+    """Report availability of the frozen metric/replay inputs read-only."""
+
+    path = Path(manifest_path).expanduser().resolve()
+    try:
+        manifest = _read_json(path)
+        current = manifest["inputs"]["current_rules_manifest_path"]
+    except (OSError, UnicodeError, json.JSONDecodeError, KeyError, TypeError):
+        return {
+            "schema_version": "gold-metric-semantics-preflight-v1",
+            "status": "invalid_manifest",
+            "blockers": [{"kind": "manifest_unreadable"}],
+        }
+    report = preflight_current_rules_inputs(current)
+    return {
+        "schema_version": "gold-metric-semantics-preflight-v1",
+        "status": "ready" if report["status"] == "ready" else report["status"],
+        "current_rules_preflight": report,
+        "blockers": report.get("blockers", []),
+    }
 
 
 def build_full_gold_denominator_audit(

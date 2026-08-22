@@ -83,6 +83,8 @@ def test_pip_cache_scan_preserves_explicit_cache_directory(
 
 
 def test_tracked_manifest_and_locks_are_deterministic() -> None:
+    if _protocol().get("environment") != python_dependency_lock._environment():
+        pytest.skip("external_evidence_unavailable: frozen dependency-lock environment")
     manifest = _manifest()
     report = verify_manifest(ROOT, _protocol(), manifest)
     assert report["lock_qualified"] is True
@@ -100,6 +102,8 @@ def test_tracked_manifest_and_locks_are_deterministic() -> None:
 
 
 def test_manifest_drift_and_development_leak_are_rejected() -> None:
+    if _protocol().get("environment") != python_dependency_lock._environment():
+        pytest.skip("external_evidence_unavailable: frozen dependency-lock environment")
     manifest = _manifest()
     drifted = json.loads(json.dumps(manifest))
     drifted["packages"][0]["version"] = "999"

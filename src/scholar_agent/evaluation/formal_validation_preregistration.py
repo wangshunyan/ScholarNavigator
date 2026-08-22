@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import subprocess
 from collections.abc import Mapping, Sequence
 from pathlib import Path, PurePosixPath
@@ -349,6 +350,30 @@ def _git_ancestor(root: Path, older: str, newer: str) -> bool:
         timeout=10,
     )
     return completed.returncode == 0
+
+
+def preflight_registered_source(
+    protocol: Mapping[str, Any], *, repository_root: Path
+) -> dict[str, Any]:
+    """Report frozen source-commit availability without fetching or mutating."""
+
+    source_commit = str(protocol.get("source_commit") or "")
+    completed = subprocess.run(
+        ["git", "cat-file", "-e", f"{source_commit}^{{commit}}"],
+        cwd=repository_root.resolve(),
+        check=False,
+        capture_output=True,
+        timeout=10,
+        env={**os.environ, "LANG": "C", "LC_ALL": "C"},
+    )
+    ready = completed.returncode == 0
+    return {
+        "schema_version": "formal-validation-preregistration-preflight-v1",
+        "status": "ready" if ready else "external_evidence_unavailable",
+        "source_commit": source_commit,
+        "object_present": ready,
+        "blockers": [] if ready else [{"kind": "frozen_source_commit_missing"}],
+    }
 
 
 def evaluate_timeline(events: Sequence[Mapping[str, Any]]) -> dict[str, Any]:

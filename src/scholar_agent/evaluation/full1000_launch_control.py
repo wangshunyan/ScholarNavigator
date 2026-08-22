@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import re
 import subprocess
 import tempfile
@@ -187,6 +188,28 @@ def _git_is_ancestor(root: Path, ancestor: str, descendant: str) -> bool:
         env={"LANG": "C", "LC_ALL": "C", "PATH": "/usr/bin:/bin:/usr/local/bin"},
     )
     return completed.returncode == 0
+
+
+def preflight_source_commit(root: Path, protocol: Mapping[str, Any]) -> dict[str, Any]:
+    """Read-only availability check for the frozen launch-control commit."""
+
+    source_commit = str(protocol.get("source_commit") or "")
+    completed = subprocess.run(
+        ["git", "cat-file", "-e", f"{source_commit}^{{commit}}"],
+        cwd=root.resolve(),
+        check=False,
+        capture_output=True,
+        timeout=10,
+        env={**os.environ, "LANG": "C", "LC_ALL": "C"},
+    )
+    ready = completed.returncode == 0
+    return {
+        "schema_version": "full1000-launch-control-preflight-v1",
+        "status": "ready" if ready else "external_evidence_unavailable",
+        "source_commit": source_commit,
+        "object_present": ready,
+        "blockers": [] if ready else [{"kind": "frozen_source_commit_missing"}],
+    }
 
 
 def _validate_bound_inputs(root: Path, protocol: Mapping[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:

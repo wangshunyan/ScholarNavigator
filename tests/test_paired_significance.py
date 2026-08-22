@@ -194,6 +194,9 @@ def test_analysis_and_written_artifacts_are_deterministic(tmp_path: Path) -> Non
 
 
 def test_frozen_lexical_replay_pairing_is_complete() -> None:
+    required = ROOT / "outputs/benchmark_runs/lexical_normalization_v1_005794c_replay_r5/aggregate.json"
+    if not required.is_file():
+        pytest.skip("historical lexical replay evidence unavailable")
     rows, result = run_paired_significance_audit(
         ROOT / "benchmark/lexical_normalization_significance_manifest.json"
     )

@@ -333,6 +333,27 @@ def _git_blob_sha256(root: Path, commit: str, relative: str) -> str:
     return hashlib.sha256(completed.stdout).hexdigest()
 
 
+def preflight_source_commit(repository_root: Path) -> dict[str, Any]:
+    """Read-only check for the historical commit used by this rehearsal."""
+
+    completed = subprocess.run(
+        ["git", "cat-file", "-e", f"{SOURCE_COMMIT}^{{commit}}"],
+        cwd=repository_root,
+        check=False,
+        capture_output=True,
+        timeout=20,
+        env={**os.environ, "LANG": "C", "LC_ALL": "C"},
+    )
+    ready = completed.returncode == 0
+    return {
+        "schema_version": "formal-validation-dress-rehearsal-preflight-v1",
+        "status": "ready" if ready else "external_evidence_unavailable",
+        "source_commit": SOURCE_COMMIT,
+        "object_present": ready,
+        "blockers": [] if ready else [{"kind": "frozen_source_commit_missing"}],
+    }
+
+
 def _protocol_payload(value: Mapping[str, Any]) -> dict[str, Any]:
     payload = dict(value)
     payload["protocol_sha256"] = "0" * 64

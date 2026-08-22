@@ -36,6 +36,83 @@ class ClusterSignificanceError(RuntimeError):
     """Raised when the frozen cluster-aware statistical contract is invalid."""
 
 
+def preflight_cluster_significance_inputs(
+    manifest_path: str | Path,
+) -> dict[str, Any]:
+    """Return a deterministic, read-only readiness report for frozen inputs.
+
+    Historical ``outputs/`` files are intentionally treated as external
+    evidence.  This helper does not create, repair, or substitute any file;
+    it only reports the exact blocker so a default checkout can distinguish a
+    reproducible unit-test skip from a strict historical gate failure.
+    """
+
+    manifest_file = Path(manifest_path).expanduser().resolve()
+    checked: list[dict[str, Any]] = []
+    blockers: list[dict[str, Any]] = []
+    try:
+        manifest = _read_json(manifest_file)
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        return {
+            "schema_version": "cluster-significance-preflight-v1",
+            "status": "invalid_manifest",
+            "manifest": str(manifest_file),
+            "checked": [],
+            "blockers": [{"kind": "manifest_unreadable", "error": type(exc).__name__}],
+        }
+
+    specs: list[tuple[str, Mapping[str, Any]]] = []
+    for group in ("inputs", "baseline"):
+        values = manifest.get(group) or {}
+        if isinstance(values, Mapping):
+            for name, spec in values.items():
+                if isinstance(spec, Mapping) and isinstance(spec.get("path"), str):
+                    specs.append((f"{group}.{name}", spec))
+    implementation = manifest.get("implementation")
+    if isinstance(implementation, Mapping) and isinstance(implementation.get("path"), str):
+        specs.append(("implementation", implementation))
+
+    for name, spec in sorted(specs, key=lambda item: item[0]):
+        raw_path = str(spec["path"])
+        path = _repo_path(raw_path)
+        expected = spec.get("sha256")
+        status = "present"
+        actual = None
+        if not path.is_file():
+            normalized = raw_path.replace("\\", "/")
+            status = "missing_external" if normalized.startswith("outputs/") else "missing_tracked"
+        elif isinstance(expected, str):
+            actual = sha256_file(path)
+            if actual != expected:
+                status = "hash_mismatch"
+        else:
+            status = "present_unhashed"
+        record = {
+            "name": name,
+            "path": raw_path.replace("\\", "/"),
+            "resolved": str(path),
+            "status": status,
+            "expected_sha256": expected,
+            "actual_sha256": actual,
+        }
+        checked.append(record)
+        if status != "present":
+            blockers.append(record)
+
+    status = "ready" if not blockers else (
+        "external_evidence_unavailable"
+        if any(item["status"] == "missing_external" for item in blockers)
+        else "input_invalid"
+    )
+    return {
+        "schema_version": "cluster-significance-preflight-v1",
+        "status": status,
+        "manifest": str(manifest_file),
+        "checked": checked,
+        "blockers": blockers,
+    }
+
+
 def run_cluster_significance_audit(
     manifest_path: str | Path,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
@@ -320,10 +397,15 @@ def check_cluster_significance_regression(
             expected = _read_json(path) if name == "statistics" else _read_jsonl(path)
             drifts.extend(compare_profiles({name: expected}, {name: observed}, max_diffs=100))
         write_cluster_significance_audit(output / "observed", *observed_values, manifest_path)
-    except (ClusterSignificanceError, ValueError, KeyError) as exc:
+    except (ClusterSignificanceError, ValueError, KeyError, FileNotFoundError, OSError) as exc:
+        kind = (
+            "external_evidence_unavailable"
+            if isinstance(exc, FileNotFoundError)
+            else "input_protocol_or_cluster_drift"
+        )
         drifts.append(
             {
-                "kind": "input_protocol_or_cluster_drift",
+                "kind": kind,
                 "path": "$",
                 "expected": "frozen cluster-aware statistical contract",
                 "observed": str(exc),

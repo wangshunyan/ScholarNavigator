@@ -17,6 +17,7 @@ from scholar_agent.evaluation.release_candidate_reproducibility import (
     build_frontend,
     canonical_json,
     materialize_source,
+    preflight_source_commit,
     sha256_bytes,
     stable_digest,
 )
@@ -157,6 +158,8 @@ def test_evidence_rejects_protocol_drift_and_is_byte_deterministic(
 def test_real_cross_parent_empty_cache_build_is_byte_identical(
     tmp_path: Path, contract: dict[str, object]
 ) -> None:
+    if preflight_source_commit(ROOT, contract)["status"] != "ready":
+        pytest.skip("frozen frontend source commit unavailable; strict release gate remains blocked")
     outputs = []
     for name in ("first", "different-parent/second"):
         profile = tmp_path / name

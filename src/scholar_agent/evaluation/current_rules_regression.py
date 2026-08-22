@@ -66,6 +66,98 @@ class RegressionGateError(RuntimeError):
     """Raised for malformed gate configuration, not for ordinary drift."""
 
 
+def preflight_current_rules_inputs(manifest_path: str | Path) -> dict[str, Any]:
+    """Report frozen-input readiness without rebuilding or mutating anything."""
+
+    manifest_file = Path(manifest_path).expanduser().resolve()
+    try:
+        manifest = _read_json(manifest_file)
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        return {
+            "schema_version": "current-rules-preflight-v1",
+            "status": "invalid_manifest",
+            "blockers": [{"kind": "manifest_unreadable", "error": type(exc).__name__}],
+        }
+
+    specs: list[tuple[str, str]] = [
+        (
+            "baseline_profile",
+            str((manifest.get("baseline_profile") or {}).get("path", "")),
+        )
+    ]
+    for dataset in manifest.get("datasets") or []:
+        label = str(dataset.get("label", "unknown"))
+        for key in ("run_dir", "snapshot_dir", "crosswalk_path"):
+            value = dataset.get(key)
+            if isinstance(value, str):
+                specs.append((f"datasets.{label}.{key}", value))
+        run_dir = dataset.get("run_dir")
+        if isinstance(run_dir, str):
+            specs.extend(
+                [
+                    (
+                        f"datasets.{label}.config",
+                        f"{run_dir.rstrip('/')}/config.json",
+                    ),
+                    (
+                        f"datasets.{label}.results",
+                        f"{run_dir.rstrip('/')}/results.jsonl",
+                    ),
+                ]
+            )
+            config_path = _repo_path(f"{run_dir.rstrip('/')}/config.json")
+            if config_path.is_file():
+                try:
+                    config = _read_json(config_path)
+                except (OSError, UnicodeError, json.JSONDecodeError):
+                    config = {}
+                source = config.get("dataset_source_path")
+                if isinstance(source, str):
+                    specs.append((f"datasets.{label}.dataset_source", source))
+        for key in (
+            "config_sha256",
+            "dataset_sha256",
+            "results_sha256",
+            "snapshot_tree_sha256",
+            "crosswalk_sha256",
+        ):
+            if key in (dataset.get("frozen_hashes") or {}):
+                # The directory itself is checked below; its hash contract is
+                # intentionally not recomputed by this lightweight preflight.
+                continue
+
+    checked: list[dict[str, Any]] = []
+    blockers: list[dict[str, Any]] = []
+    for name, raw in specs:
+        if not raw:
+            continue
+        path = _repo_path(raw)
+        status = "present" if path.exists() else (
+            "missing_external"
+            if raw.replace("\\", "/").startswith("outputs/")
+            else "missing_tracked"
+        )
+        item = {
+            "name": name,
+            "path": raw.replace("\\", "/"),
+            "resolved": str(path),
+            "status": status,
+        }
+        checked.append(item)
+        if status != "present":
+            blockers.append(item)
+    return {
+        "schema_version": "current-rules-preflight-v1",
+        "status": "ready" if not blockers else (
+            "external_evidence_unavailable"
+            if any(item["status"] == "missing_external" for item in blockers)
+            else "input_invalid"
+        ),
+        "checked": checked,
+        "blockers": blockers,
+    }
+
+
 def check_current_rules_regression(
     manifest_path: str | Path,
 ) -> tuple[dict[str, Any], dict[str, Any]]:

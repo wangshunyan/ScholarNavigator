@@ -110,6 +110,9 @@ def _run_cli(*args: str, cwd: Path = ROOT) -> subprocess.CompletedProcess[bytes]
         "PATH": os.environ.get("PATH", ""),
         "PYTHONPATH": str(ROOT / "src"),
     }
+    for key in ("SystemRoot", "WINDIR"):
+        if os.environ.get(key):
+            environment[key] = os.environ[key]
     return subprocess.run(
         [sys.executable, str(CLI), *args],
         cwd=cwd,

@@ -18,6 +18,7 @@ from scholar_agent.evaluation.formal_validation_preregistration import (
     evaluate_amendment,
     evaluate_timeline,
     load_protocol,
+    preflight_registered_source,
     synthetic_amendment_matrix,
     verify_seal,
 )
@@ -28,8 +29,14 @@ PROTOCOL_PATH = ROOT / "benchmark/formal_validation_preregistration_v1_protocol.
 CLI = ROOT / "scripts/check_formal_validation_preregistration.py"
 
 
+def _require_historical_source(protocol: dict[str, object]) -> None:
+    if preflight_registered_source(protocol, repository_root=ROOT)["status"] != "ready":
+        pytest.skip("frozen preregistration source commit unavailable; strict seal remains blocked")
+
+
 def test_current_protocol_seal_is_deterministic_and_closed() -> None:
     protocol = load_protocol(PROTOCOL_PATH)
+    _require_historical_source(protocol)
     first = build_seal(protocol, repository_root=ROOT)
     second = build_seal(protocol, repository_root=ROOT)
     assert canonical_json(first) == canonical_json(second)
@@ -46,6 +53,7 @@ def test_current_protocol_seal_is_deterministic_and_closed() -> None:
 
 def test_seal_or_registered_dependency_tamper_is_rejected() -> None:
     protocol = load_protocol(PROTOCOL_PATH)
+    _require_historical_source(protocol)
     seal = build_seal(protocol, repository_root=ROOT)
     tampered = copy.deepcopy(seal)
     tampered["allowed_outputs"].append("unregistered.json")
@@ -131,6 +139,7 @@ def test_pre_evidence_amendment_and_proven_nonsemantic_erratum() -> None:
 
 def test_synthetic_matrix_and_real_readiness_keep_three_blockers() -> None:
     protocol = load_protocol(PROTOCOL_PATH)
+    _require_historical_source(protocol)
     seal = build_seal(protocol, repository_root=ROOT)
     matrix = synthetic_amendment_matrix()
     assert matrix["scenario_count"] == 7
@@ -144,6 +153,7 @@ def test_synthetic_matrix_and_real_readiness_keep_three_blockers() -> None:
 
 
 def test_cli_build_verify_simulate_and_audit_are_stable(tmp_path: Path) -> None:
+    _require_historical_source(load_protocol(PROTOCOL_PATH))
     seal = tmp_path / "seal.json"
     build = subprocess.run(
         [sys.executable, str(CLI), "build", "--output", str(seal)],

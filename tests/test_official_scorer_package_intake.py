@@ -342,7 +342,9 @@ def test_kit_contains_no_sensitive_or_machine_specific_material(
     raw = kit.read_bytes()
     assert b".env" not in raw
     assert str(ROOT).encode() not in raw
-    assert os.environ.get("HOME", "").encode() not in raw
+    home = os.environ.get("HOME")
+    if home:
+        assert home.encode() not in raw
     template = package_template(
         build_contract(protocol, challenge=sha256_bytes(b"privacy"))
     )

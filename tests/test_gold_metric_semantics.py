@@ -10,6 +10,7 @@ from scholar_agent.evaluation.gold_metric_semantics import (
     GoldMetricSemanticsError,
     build_full_gold_denominator_audit,
     check_gold_metric_semantics_regression,
+    preflight_gold_metric_semantics_inputs,
     compare_frozen_metric_profiles,
 )
 
@@ -79,6 +80,13 @@ def test_profile_comparison_reports_only_metric_changes() -> None:
 
 @pytest.mark.metric_semantics_regression
 def test_real_metric_semantics_regression_gate(tmp_path: Path) -> None:
+    preflight = preflight_gold_metric_semantics_inputs(
+        Path("benchmark/gold_metric_semantics_manifest.json")
+    )
+    if preflight["status"] != "ready":
+        pytest.skip(
+            "frozen metric/replay inputs unavailable; strict regression gate remains fail-closed"
+        )
     report = check_gold_metric_semantics_regression(
         Path("benchmark/gold_metric_semantics_manifest.json"),
         tmp_path / "gate",

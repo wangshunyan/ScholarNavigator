@@ -20,6 +20,7 @@ from scholar_agent.evaluation.formal_validation_clearance import (
     evaluate,
     issue_receipt,
     load_protocol,
+    preflight_current_evidence_source,
     stable_hash,
     verify_receipt,
     write_json,
@@ -43,6 +44,12 @@ def _rehash(value: dict[str, object]) -> dict[str, object]:
 
 
 def test_current_evidence_preserves_all_three_blockers(protocol: dict[str, object]) -> None:
+    preflight = preflight_current_evidence_source(protocol, repository_root=ROOT)
+    if preflight["status"] != "ready":
+        pytest.skip(
+            "frozen clearance evidence source commit unavailable; strict audit "
+            "must remain blocked"
+        )
     evidence = build_current_evidence(protocol, repository_root=ROOT)
     report = evaluate(evidence)
     assert report["status"] == "partially_satisfied"

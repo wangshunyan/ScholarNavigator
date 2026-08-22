@@ -56,6 +56,28 @@ class ReleaseCandidateNotReady(ReleaseCandidateError):
     """A declared offline dependency or source input is unavailable."""
 
 
+def preflight_source_commit(root: Path, contract: Mapping[str, Any]) -> dict[str, Any]:
+    """Check the release contract's frozen Git source without fetching it."""
+
+    source_commit = str(contract.get("source_commit") or "")
+    completed = subprocess.run(
+        ["git", "cat-file", "-e", f"{source_commit}^{{commit}}"],
+        cwd=root.resolve(),
+        check=False,
+        capture_output=True,
+        timeout=20,
+        env={**os.environ, "LANG": "C", "LC_ALL": "C"},
+    )
+    ready = completed.returncode == 0
+    return {
+        "schema_version": "release-candidate-source-preflight-v1",
+        "status": "ready" if ready else "external_evidence_unavailable",
+        "source_commit": source_commit,
+        "object_present": ready,
+        "blockers": [] if ready else [{"kind": "frozen_source_commit_missing"}],
+    }
+
+
 def canonical_json(value: Any) -> bytes:
     return (json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False) + "\n").encode("utf-8")
 

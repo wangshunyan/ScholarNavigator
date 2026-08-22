@@ -101,10 +101,18 @@ def _observation(
 
 
 def _run_cli(*args: str) -> subprocess.CompletedProcess[bytes]:
+    environment = {
+        "PATH": os.environ.get("PATH", ""),
+        "PYTHONPATH": str(ROOT / "src"),
+    }
+    if os.name == "nt":
+        for name in ("SystemRoot", "WINDIR"):
+            if os.environ.get(name):
+                environment[name] = os.environ[name]
     return subprocess.run(
         [sys.executable, str(CLI), *args],
         cwd=ROOT,
-        env={"PATH": os.environ.get("PATH", ""), "PYTHONPATH": str(ROOT / "src")},
+        env=environment,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
@@ -177,7 +185,10 @@ def test_missing_and_symlink_paths_fail_closed(
     real.mkdir()
     target = (tmp_path / "missing").resolve()
     if kind == "symlink":
-        target.symlink_to(real, target_is_directory=True)
+        try:
+            target.symlink_to(real, target_is_directory=True)
+        except OSError as exc:
+            pytest.skip(f"symlink privilege unavailable: {exc}")
     with pytest.raises(
         BackupTargetRegistrationError,
         match="registered_path_unavailable" if kind == "missing" else "registered_path_alias_or_symlink",
@@ -325,6 +336,12 @@ def test_live_probe_cleans_temporary_files_and_never_serializes_path(
     except BackupTargetRegistrationError as exc:
         if str(exc) == "probe_capacity_insufficient":
             pytest.skip("test host does not meet the frozen minimum slot capacity")
+        if str(exc) == "probe_capability_failed":
+            # This is a real host limitation (for example Windows lacks the
+            # POSIX advisory-lock/directory-fsync primitives required by the
+            # frozen contract), not a positive qualification result.
+            assert set(target.iterdir()) == before
+            pytest.skip("test host lacks a required backup-target capability")
         raise
     assert set(target.iterdir()) == before
     assert str(target) not in canonical_json(manifest).decode()
@@ -336,7 +353,12 @@ def test_profile_matrix_and_report_are_byte_deterministic(
 ) -> None:
     first = simulate_profiles(protocol, repository_root=ROOT)
     second = simulate_profiles(protocol, repository_root=ROOT)
-    assert first["exit_code"] == EXIT_READY
+    if first["symlink_validation_complete"]:
+        assert first["exit_code"] == EXIT_READY
+    else:
+        assert first["exit_code"] == EXIT_NOT_READY
+        assert first["status"] == "simulation_incomplete"
+        assert first["scenarios"]["symlink"] == "symlink_capability_unavailable"
     assert first["scenario_count"] == 12
     assert canonical_json(first) == canonical_json(second)
 
@@ -349,7 +371,12 @@ def test_cli_readiness_simulation_and_private_path_redaction(
     assert readiness.stderr == b""
     assert json.loads(readiness.stdout)["registered_candidate_count"] == 0
     simulation = _run_cli("simulate-profiles")
-    assert simulation.returncode == EXIT_READY
+    expected_simulation_code = (
+        EXIT_READY
+        if simulate_profiles(protocol, repository_root=ROOT)["symlink_validation_complete"]
+        else EXIT_NOT_READY
+    )
+    assert simulation.returncode == expected_simulation_code
     assert simulation.stderr == b""
     target = (tmp_path / "missing-private-target").resolve()
     private_path = tmp_path / "private.json"

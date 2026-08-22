@@ -60,6 +60,10 @@ FIELD_ALIASES: dict[str, tuple[str, ...]] = {
     ),
     "openalex_id": ("openalex_id", "openalex", "openalexId"),
     "pubmed_id": ("pubmed_id", "pmid", "pubmed", "pubmedId"),
+    "authors": ("authors", "author", "authors_parsed", "author_names"),
+    "year": ("year", "published", "publication_date", "update_date"),
+    "venue": ("venue", "journal_ref", "journal-ref", "journal", "container_title"),
+    "doi": ("doi", "DOI", "external_ids.DOI", "externalids.DOI"),
 }
 
 
@@ -171,7 +175,7 @@ def normalize_record(
     if document_id is None:
         return None, f"missing_identity:{identity}"
     abstract = _first_field(payload, FIELD_ALIASES["abstract"]) or ""
-    row = {
+    row: dict[str, Any] = {
         "_id": document_id,
         "title": title,
         "abstract": abstract,
@@ -180,6 +184,18 @@ def normalize_record(
         if value:
             row[name] = value
     row.setdefault(identity, document_id)
+    authors = _parse_list(_first_raw_field(payload, FIELD_ALIASES["authors"]))
+    if authors:
+        row["authors"] = authors
+    year = _parse_year(_first_raw_field(payload, FIELD_ALIASES["year"]))
+    if year is not None:
+        row["year"] = year
+    venue = _string_value(_first_raw_field(payload, FIELD_ALIASES["venue"]))
+    if venue:
+        row["venue"] = venue
+    doi = _clean_doi(_first_raw_field(payload, FIELD_ALIASES["doi"]))
+    if doi:
+        row["doi"] = doi
     return row, None
 
 
@@ -273,11 +289,15 @@ def _iter_records_from_text(
 
 
 def _first_field(payload: Mapping[str, Any], paths: tuple[str, ...]) -> str | None:
+    value = _first_raw_field(payload, paths)
+    return _string_value(value)
+
+
+def _first_raw_field(payload: Mapping[str, Any], paths: tuple[str, ...]) -> Any:
     for path in paths:
         value = _lookup_path(payload, path)
-        normalized = _string_value(value)
-        if normalized is not None:
-            return normalized
+        if value not in (None, "", [], {}):
+            return value
     return None
 
 
@@ -311,6 +331,53 @@ def _string_value(value: Any) -> str | None:
         return None
     normalized = str(value).strip()
     return normalized or None
+
+
+def _parse_list(value: Any) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, str):
+        raw = value.strip()
+        if not raw:
+            return []
+        try:
+            decoded = json.loads(raw)
+        except json.JSONDecodeError:
+            decoded = None
+        value = decoded if isinstance(decoded, list) else raw.strip("[]").split(",")
+    if not isinstance(value, (list, tuple, set)):
+        value = [value]
+    result: list[str] = []
+    for item in value:
+        if isinstance(item, (list, tuple)):
+            item = " ".join(str(part) for part in item)
+        normalized = _string_value(item)
+        if normalized:
+            result.append(normalized.strip("'\""))
+    return list(dict.fromkeys(item for item in result if item))
+
+
+def _parse_year(value: Any) -> int | None:
+    if value is None:
+        return None
+    import re
+
+    match = re.search(r"(?:19|20)\d{2}", str(value))
+    if match is None:
+        return None
+    year = int(match.group(0))
+    return year if 1900 <= year <= 2100 else None
+
+
+def _clean_doi(value: Any) -> str | None:
+    normalized = _string_value(value)
+    if not normalized:
+        return None
+    import re
+
+    normalized = re.sub(r"^https?://doi\.org/", "", normalized, flags=re.I)
+    normalized = re.sub(r"^doi:\s*", "", normalized, flags=re.I)
+    return normalized.strip() or None
 
 
 def _parser() -> argparse.ArgumentParser:

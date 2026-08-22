@@ -9,16 +9,26 @@ operator are used only while probing and are never serialized.
 from __future__ import annotations
 
 import argparse
-import fcntl
 import hashlib
 import json
 import os
 import platform
 import re
+import shutil
 import sys
 import tempfile
 import unicodedata
 from pathlib import Path
+
+try:  # POSIX only; the portable kit must still import on Windows.
+    import fcntl
+except ImportError:  # pragma: no cover - exercised by the Windows kit path.
+    fcntl = None  # type: ignore[assignment]
+
+try:  # Windows only; unavailable platforms remain explicitly unqualified.
+    import msvcrt
+except ImportError:  # pragma: no cover - exercised by POSIX kit path.
+    msvcrt = None  # type: ignore[assignment]
 
 
 PROTOCOL = "portable_execution_site_attestation_v1"
@@ -55,6 +65,40 @@ class UsageError(SiteError):
 class Parser(argparse.ArgumentParser):
     def error(self, message: str) -> None:
         raise UsageError("invalid_arguments")
+
+
+def _verify_advisory_lock(first: object, second: object) -> bool:
+    """Verify non-blocking contention without assuming a POSIX runtime.
+
+    The probe never treats an unavailable platform primitive as a successful
+    lock.  Windows uses the standard-library ``msvcrt`` byte-range lock; POSIX
+    uses ``flock``.  Both handles address the first byte of the same nonempty
+    file, so a second non-blocking exclusive attempt must be rejected.
+    """
+    first.seek(0)
+    second.seek(0)
+    if fcntl is not None:
+        fcntl.flock(first.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        try:
+            try:
+                fcntl.flock(second.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError:
+                return True
+            return False
+        finally:
+            fcntl.flock(first.fileno(), fcntl.LOCK_UN)
+    if msvcrt is not None:
+        msvcrt.locking(first.fileno(), msvcrt.LK_NBLCK, 1)
+        try:
+            try:
+                msvcrt.locking(second.fileno(), msvcrt.LK_NBLCK, 1)
+            except OSError:
+                return True
+            return False
+        finally:
+            first.seek(0)
+            msvcrt.locking(first.fileno(), msvcrt.LK_UNLCK, 1)
+    return False
 
 
 def canonical_bytes(value: object) -> bytes:
@@ -117,11 +161,16 @@ def write_object(path: Path, value: dict[str, object]) -> None:
             handle.flush()
             os.fsync(handle.fileno())
         os.replace(temporary, path)
-        directory = os.open(path.parent, os.O_RDONLY)
-        try:
-            os.fsync(directory)
-        finally:
-            os.close(directory)
+        # Windows does not provide a directory file descriptor suitable for
+        # ``fsync``.  The file itself is durable; directory-sync capability is
+        # separately measured and remains false on platforms that cannot
+        # perform this operation.
+        if os.name == "posix":
+            directory = os.open(path.parent, os.O_RDONLY)
+            try:
+                os.fsync(directory)
+            finally:
+                os.close(directory)
     except OSError as exc:
         raise SiteError("output_write_failed") from exc
 
@@ -285,6 +334,32 @@ def _parse_volume_rows(values: list[str]) -> dict[str, Path]:
     return rows
 
 
+def _volume_stats(path: Path) -> dict[str, int | str]:
+    """Return the small statvfs-like view needed by the portable probe.
+
+    ``os.statvfs`` is POSIX-only.  On Windows we can still observe free bytes,
+    but inode and filesystem-name limits are not portable; those fields remain
+    explicitly unavailable so qualification fails closed instead of crashing.
+    """
+    if hasattr(os, "statvfs"):
+        stats = os.statvfs(path)  # type: ignore[attr-defined]
+        return {
+            "f_fsid": int(getattr(stats, "f_fsid", 0)),
+            "f_frsize": int(stats.f_frsize),
+            "f_bavail": int(stats.f_bavail),
+            "f_favail": int(stats.f_favail),
+            "f_namemax": int(stats.f_namemax),
+        }
+    usage = shutil.disk_usage(path)
+    return {
+        "f_fsid": NOT_AVAILABLE,
+        "f_frsize": 1,
+        "f_bavail": int(usage.free),
+        "f_favail": -1,
+        "f_namemax": -1,
+    }
+
+
 def _site_evidence(
     path: Path | None, contract: dict[str, object]
 ) -> tuple[dict[str, dict[str, object]], str]:
@@ -348,23 +423,26 @@ def _probe_capabilities(path: Path, writer_count: int) -> dict[str, object]:
             results["atomic_replace"] = _capability_result(
                 target.read_bytes() == b"new", "atomic_replace_verified"
             )
-            directory = os.open(root, os.O_RDONLY)
-            try:
-                os.fsync(directory)
-            finally:
-                os.close(directory)
+            directory_synced = False
+            if os.name == "posix":
+                directory = os.open(root, os.O_RDONLY)
+                try:
+                    os.fsync(directory)
+                    directory_synced = True
+                finally:
+                    os.close(directory)
             results["directory_fsync"] = _capability_result(
-                True, "directory_fsync_verified"
+                directory_synced,
+                (
+                    "directory_fsync_verified"
+                    if directory_synced
+                    else "directory_fsync_unavailable"
+                ),
             )
             first = (root / "lock").open("a+b")
             second = (root / "lock").open("a+b")
             try:
-                fcntl.flock(first.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-                rejected = False
-                try:
-                    fcntl.flock(second.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-                except BlockingIOError:
-                    rejected = True
+                rejected = _verify_advisory_lock(first, second)
                 results["advisory_lock"] = _capability_result(
                     rejected, "lock_contention_verified"
                 )
@@ -425,26 +503,28 @@ def _probe_volume(
     if not path.is_dir():
         raise SiteError("volume_path_unavailable")
     try:
-        stats = os.statvfs(path)
+        stats = _volume_stats(path)
         file_stats = path.stat()
     except OSError as exc:
         raise SiteError("volume_observation_failed") from exc
     filesystem_identity = stable_hash(
         {
             "device": int(file_stats.st_dev),
-            "filesystem_id": str(getattr(stats, "f_fsid", NOT_AVAILABLE)),
-            "fragment_size": int(stats.f_frsize),
+            "filesystem_id": str(stats["f_fsid"]),
+            "fragment_size": int(stats["f_frsize"]),
         }
     )
     mount_identity = stable_hash(
         {
             "filesystem_identity": filesystem_identity,
-            "name_max": int(stats.f_namemax),
+            "name_max": int(stats["f_namemax"]),
         }
     )
-    available_bytes = int(stats.f_bavail) * int(stats.f_frsize)
+    available_bytes = int(stats["f_bavail"]) * int(stats["f_frsize"])
     available_inodes: object = (
-        int(stats.f_favail) if int(stats.f_favail) >= 0 else NOT_AVAILABLE
+        int(stats["f_favail"])
+        if int(stats["f_favail"]) >= 0
+        else NOT_AVAILABLE
     )
     quota: object = (
         evidence["filesystem_quota_bytes"] if evidence else NOT_AVAILABLE

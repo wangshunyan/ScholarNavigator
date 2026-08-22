@@ -21,7 +21,7 @@ P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid`
 .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration reranker -RunId contest_qual200_reranker_v4_gpu1
 ```
 
-运行 `scripts/check_contest_qualification.py` 后，只有门禁通过的候选可进入完整四组。当前 P0/Faiss 主线已完成 `contest_full_rules_v1`、`contest_full_dense_v1` 和 `contest_full_dense_reranker_v4`；`contest_full_dense_reranker_llm_v14` 只有 1000 条结果和后验诊断账本，缺少 `RUN_COMPLETED`，因此仅为未完成、不可审计诊断。`contest_qual200_dense_reranker_llm_v15` 在 10 条成功结果后发现结果 schema 未保留必须的传输审计字段，已停止并保留为不合格诊断。修复后的 `contest_qual200_dense_reranker_llm_v16` 已完成 200 条，但出现一次 temporary-overload fallback；LLM 审计失败，且 F1/Recall 的 paired-bootstrap 95% 区间均跨过零，因此同样只保留为诊断，禁止启动 `contest_full_dense_reranker_llm_v16`。后续 LLM 尝试必须使用新的 RunId，从 smoke 和 200 条资格门禁重新开始。每个运行需保存配置、commit、输入哈希、PID、命令、日志、资源账本和 committed generation。新 runner 在 `config.json` 写入 `code.commit` 与脱敏 `execution.process_id/launch_command/log_path`，并固定日志为 `outputs/run_logs/<RunId>.log`；这些会话字段不进入 resume 语义签名。
+运行 `scripts/check_contest_qualification.py` 后，只有门禁通过的候选可进入完整四组。当前 checkout 中历史文档列出的 P0/Faiss、Dense、Reranker 和 LLM 完整 RunId 不在可读取证据链，不能视为已完成成绩。后续必须使用新 RunId，从 smoke 和 200 条资格门禁重新开始；每个运行保存配置、commit、输入/索引哈希、日志、资源账本和 committed generation。Provider/GPU 不可用时只记录 blocker，不伪造指标。
 
 `dense_reranker_soft` 是一个独立的候选 policy，仅将 `partially_relevant_threshold` 从
 `0.45` 降至 `0.35`，保留原有硬约束、检索、RRF 和 reranker 参数。它必须先使用
@@ -30,11 +30,7 @@ P0/Faiss 版本的正式主线先固定 200 条资格实验，旧 `local/hybrid`
 与常驻本地 Provider 争用 GPU0，出现 reranker fallback 后停止，作为失败诊断保留；v2
 固定 `--reranker-device cuda:1`，其余检索与 Judgement 参数不变。门禁会拒绝任何除该受审
 delta 与物理 GPU 选择外的检索、数据、预算或 Judgement 配置漂移；通过前不得将其写入正式成绩或启动完整运行。
-v2 已完成 200/200、零失败、零 fallback，并通过资源账本、GPU reranker 审计和 paired-bootstrap
-门禁：F1@20 平均增量 `+0.004531`，95% CI `[+0.002197, +0.007617]`；Recall@20
-平均增量 `+0.027917`，95% CI `[+0.011667, +0.048333]`。这些均为内部工程指标，
-不等同赛事官方 scorer。由此启动的完整运行使用独立 RunId
-`contest_full_dense_reranker_soft_v2`，现已完成 1000/1000、零失败、零 fallback，并通过同等完整性、资源与 reranker 审计；其 F1@20=0.02726023、Recall@20=0.16817491、MRR=0.09833638、平均延迟 4.032 s。以上仍为内部工程指标，不等同赛事官方 scorer。
+历史 v2 资格和完整运行数字当前无法由本 checkout 的可读取 RunId 核验，暂不引用。只有新一轮成对资格和完整审计通过后才能填写内部工程指标；它们也不等同赛事官方 scorer。
 完整运行的阶段一离线瓶颈证据和该候选的边界记录在
 [`stage1-bottleneck-analysis.md`](stage1-bottleneck-analysis.md)。
 

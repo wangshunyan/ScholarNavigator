@@ -20,6 +20,7 @@ from scholar_agent.evaluation.evidence_transparency_log import (
     finalize_record,
     inclusion_proof,
     load_protocol,
+    preflight_transparency_sources,
     parse_json_bytes,
     simulate_matrix,
     synthetic_record,
@@ -37,6 +38,13 @@ SCRIPT = ROOT / "scripts/check_evidence_transparency.py"
 
 def _protocol() -> dict[str, object]:
     return load_protocol(PROTOCOL)
+
+
+def test_transparency_source_preflight_is_structured() -> None:
+    report = preflight_transparency_sources(PROTOCOL, repository_root=ROOT)
+    assert report["status"] in {"ready", "source_blob_unavailable", "invalid_protocol"}
+    assert isinstance(report["checked"], list)
+    assert isinstance(report["blockers"], list)
 
 
 def _base_log() -> dict[str, object]:
@@ -91,6 +99,12 @@ def _run(*arguments: str) -> subprocess.CompletedProcess[str]:
 
 
 def test_current_candidate_is_deterministic_and_not_public() -> None:
+    preflight = preflight_transparency_sources(PROTOCOL, repository_root=ROOT)
+    if preflight["status"] != "ready":
+        pytest.skip(
+            "immutable source commit unavailable; run check_evidence_transparency.py "
+            f"preflight ({preflight['status']})"
+        )
     first = build_current(ROOT, _protocol())
     second = build_current(ROOT, _protocol())
     assert first == second
@@ -276,6 +290,12 @@ def test_synthetic_matrix_covers_release_and_attack_paths() -> None:
 
 
 def test_cli_build_verify_proofs_and_real_readiness(tmp_path: Path) -> None:
+    preflight = preflight_transparency_sources(PROTOCOL, repository_root=ROOT)
+    if preflight["status"] != "ready":
+        pytest.skip(
+            "immutable source commit unavailable; run check_evidence_transparency.py "
+            f"preflight ({preflight['status']})"
+        )
     log = tmp_path / "log.json"
     checkpoint = tmp_path / "checkpoint.json"
     built = _run(

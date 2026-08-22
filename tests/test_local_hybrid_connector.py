@@ -67,6 +67,41 @@ def test_local_hybrid_rrf_is_deterministic_for_equal_scores() -> None:
     ]
 
 
+def test_semantic_row_preserves_extended_metadata() -> None:
+    paper = local_hybrid_module._paper_from_semantic_row(
+        {
+            "_id": "2401.00001",
+            "title": "Metadata paper",
+            "abstract": "Abstract",
+            "authors": [{"name": "Alice"}, "Bob", {"full_name": "Alice"}],
+            "year": "2024",
+            "venue": "NeurIPS",
+            "doi": "https://doi.org/10.1234/example",
+        },
+        sources=["local_semantic"],
+    )
+    assert paper.authors == ["Alice", "Bob"]
+    assert paper.year == 2024
+    assert paper.venue == "NeurIPS"
+    assert paper.identifiers.doi == "10.1234/example"
+
+
+def test_semantic_corpus_requires_unique_stable_arxiv_ids(tmp_path: Path) -> None:
+    missing = tmp_path / "missing.jsonl"
+    missing.write_text('{"title":"No identity","abstract":"A"}\n', encoding="utf-8")
+    with pytest.raises(ValueError, match="missing_stable_arxiv_id"):
+        local_hybrid_module._read_semantic_rows(missing)
+
+    duplicate = tmp_path / "duplicate.jsonl"
+    duplicate.write_text(
+        '{"_id":"2501.00001","title":"A"}\n'
+        '{"_id":"arxiv:2501.00001v2","title":"B"}\n',
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="duplicate_arxiv_id"):
+        local_hybrid_module._read_semantic_rows(duplicate)
+
+
 class _FakeEncoder:
     def get_sentence_embedding_dimension(self) -> int:
         return 3
@@ -140,6 +175,14 @@ def test_build_persists_faiss_and_reports_recall(tmp_path: Path, monkeypatch) ->
     assert persisted["schema_version"] == "2"
     assert persisted["index_type"] == "hnsw_ip"
     assert persisted["recall_query_count"] == 5
+    assert persisted["field_completeness"] == {
+        "title": 1.0,
+        "abstract": 1.0,
+        "authors": 0.0,
+        "year": 0.0,
+        "venue": 0.0,
+        "doi": 0.0,
+    }
     assert 0.0 <= persisted["ann_recall_at_k"] <= 1.0
     assert metadata.index_fingerprint == persisted["index_fingerprint"]
 

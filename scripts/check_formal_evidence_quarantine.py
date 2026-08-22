@@ -87,11 +87,14 @@ def main(argv: list[str] | None = None) -> int:
     try:
         args = _parser().parse_args(argv)
         root = Path(args.repository_root).resolve()
-        assert_current_preregistration(root)
         protocol = load_protocol(Path(args.protocol))
         if args.command == "verify-boundaries":
             report = verify_boundaries(root, protocol)
         elif args.command == "audit-readiness":
+            # Readiness is a claim about the frozen preregistered workflow,
+            # but syntax/schema checks and isolated boundary checks must
+            # remain actionable when that historical binding has drifted.
+            assert_current_preregistration(root)
             report = current_readiness(root, protocol)
         elif args.command == "intake-dry-run":
             manifest = build_intake_manifest(

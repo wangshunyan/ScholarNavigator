@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -35,6 +36,18 @@ from scholar_agent.evaluation.snapshot_resume import stable_hash
 ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL_PATH = ROOT / "benchmark/formal_multivolume_storage_v1_protocol.json"
 CLI = ROOT / "scripts/check_formal_multivolume_storage.py"
+
+
+def _cli_env() -> dict[str, str]:
+    environment = {
+        "PATH": os.environ.get("PATH", ""),
+        "PYTHONPATH": str(ROOT / "src"),
+    }
+    if os.name == "nt":
+        for name in ("SystemRoot", "WINDIR"):
+            if os.environ.get(name):
+                environment[name] = os.environ[name]
+    return environment
 
 
 @pytest.fixture()
@@ -360,7 +373,7 @@ def test_cli_build_verify_simulate_and_readiness(
         cwd=ROOT,
         check=False,
         capture_output=True,
-        env={"PYTHONPATH": str(ROOT / "src")},
+        env=_cli_env(),
     )
     assert build.returncode == EXIT_READY
     verify = subprocess.run(
@@ -376,7 +389,7 @@ def test_cli_build_verify_simulate_and_readiness(
         cwd=ROOT,
         check=False,
         capture_output=True,
-        env={"PYTHONPATH": str(ROOT / "src")},
+        env=_cli_env(),
     )
     assert verify.returncode == EXIT_READY
     simulate = subprocess.run(
@@ -384,7 +397,7 @@ def test_cli_build_verify_simulate_and_readiness(
         cwd=ROOT,
         check=False,
         capture_output=True,
-        env={"PYTHONPATH": str(ROOT / "src")},
+        env=_cli_env(),
     )
     assert simulate.returncode == EXIT_READY
     readiness_command = [sys.executable, str(CLI), "audit-readiness"]
@@ -393,14 +406,14 @@ def test_cli_build_verify_simulate_and_readiness(
         cwd=ROOT,
         check=False,
         capture_output=True,
-        env={"PYTHONPATH": str(ROOT / "src")},
+        env=_cli_env(),
     )
     second = subprocess.run(
         readiness_command,
         cwd=ROOT,
         check=False,
         capture_output=True,
-        env={"PYTHONPATH": str(ROOT / "src")},
+        env=_cli_env(),
     )
     assert first.returncode == second.returncode == EXIT_NOT_READY
     assert first.stdout == second.stdout
@@ -408,7 +421,7 @@ def test_cli_build_verify_simulate_and_readiness(
     payload = json.loads(first.stdout)
     assert payload["controls_ready"] is True
     assert payload["primary_capacity_observed"] is True
-    assert payload["primary_inode_capacity_observed"] is True
+    assert payload["primary_inode_capacity_observed"] is (os.name != "nt")
     assert "observed_primary_available_bytes_lower_bound" not in payload
 
 
@@ -428,7 +441,7 @@ def test_cli_violation_has_stable_exit_and_no_traceback(
         cwd=ROOT,
         check=False,
         capture_output=True,
-        env={"PYTHONPATH": str(ROOT / "src")},
+        env=_cli_env(),
     )
     assert missing.returncode == EXIT_VIOLATION
     assert missing.stderr == b""

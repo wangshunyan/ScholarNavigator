@@ -9,6 +9,7 @@ from scholar_agent.evaluation.cluster_significance import (
     analyze_cluster_queries,
     check_cluster_significance_regression,
     cluster_metric_statistics,
+    preflight_cluster_significance_inputs,
     prepare_cluster_query_rows,
     run_cluster_significance_audit,
     write_cluster_significance_audit,
@@ -210,6 +211,12 @@ def test_written_artifacts_are_byte_deterministic(tmp_path: Path) -> None:
 
 @pytest.mark.cluster_significance_regression
 def test_frozen_cluster_significance_gate(tmp_path: Path) -> None:
+    preflight = preflight_cluster_significance_inputs(MANIFEST)
+    if preflight["status"] != "ready":
+        pytest.skip(
+            "historical frozen evidence unavailable; run scripts/audit_cluster_significance.py "
+            f"preflight for details ({preflight['status']})"
+        )
     report = check_cluster_significance_regression(MANIFEST, tmp_path / "gate")
     assert report["passed"] is True
     assert report["drift_count"] == 0

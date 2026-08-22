@@ -622,8 +622,25 @@ def simulate_profiles(protocol: Mapping[str, Any], *, repository_root: Path) -> 
         missing = copy.deepcopy(base)
         missing["targets"][0]["path"] = str(root / "missing")
         symlink = root / "symlink"
-        symlink.symlink_to(paths[0], target_is_directory=True)
-        linked = registry([symlink])
+        try:
+            symlink.symlink_to(paths[0], target_is_directory=True)
+        except OSError:
+            # Windows installations without Developer Mode or the relevant
+            # privilege cannot create a real link.  Do not manufacture an
+            # alias result: retain the missing capability in the matrix so a
+            # release check cannot mistake this host for a covered probe.
+            symlink_result = "symlink_capability_unavailable"
+        else:
+            linked = registry([symlink])
+            symlink_result = expected_error(
+                lambda: build_registration_manifest(
+                    protocol,
+                    linked,
+                    repository_root=repository_root,
+                    observer=observer,
+                    synthetic_only=True,
+                )
+            )
         revoked = registry([paths[0]], ["backup-target-0"])
 
         low_capacity = lambda alias, path: _synthetic_observation(
@@ -659,11 +676,7 @@ def simulate_profiles(protocol: Mapping[str, Any], *, repository_root: Path) -> 
                     protocol, missing, repository_root=repository_root, observer=observer, synthetic_only=True
                 )
             ),
-            "symlink": expected_error(
-                lambda: build_registration_manifest(
-                    protocol, linked, repository_root=repository_root, observer=observer, synthetic_only=True
-                )
-            ),
+            "symlink": symlink_result,
             "duplicate_path": expected_error(
                 lambda: load_private_registration_from_value(duplicate, protocol=protocol)
             ),
@@ -703,7 +716,7 @@ def simulate_profiles(protocol: Mapping[str, Any], *, repository_root: Path) -> 
             )["status"],
             "target_replacement": "registration_manifest_probe_drift",
         }
-    passed = scenarios == {
+    expected_scenarios = {
         "valid_registration": "registered_candidates_ready",
         "quota_unknown": NOT_AVAILABLE,
         "missing_path": "registered_path_unavailable",
@@ -717,13 +730,37 @@ def simulate_profiles(protocol: Mapping[str, Any], *, repository_root: Path) -> 
         "revoked": "no_real_registered_candidates",
         "target_replacement": "registration_manifest_probe_drift",
     }
+    # A privilege-free Windows host cannot exercise the symlink rejection
+    # branch.  Treat this as incomplete validation, never as a positive
+    # qualification result.
+    symlink_covered = scenarios["symlink"] != "symlink_capability_unavailable"
+    passed = scenarios == expected_scenarios and symlink_covered
     return {
         "protocol": PROTOCOL,
         "schema_version": SCHEMA_VERSION,
-        "status": "registered_candidates_ready" if passed else "simulation_failed",
-        "exit_code": EXIT_READY if passed else EXIT_VIOLATION,
+        "status": (
+            "registered_candidates_ready"
+            if passed
+            else "simulation_incomplete"
+            if not symlink_covered
+            else "simulation_failed"
+        ),
+        "exit_code": (
+            EXIT_READY
+            if passed
+            else EXIT_NOT_READY
+            if not symlink_covered
+            else EXIT_VIOLATION
+        ),
         "scenario_count": len(scenarios),
-        "passed_scenario_count": len(scenarios) if passed else 0,
+        "passed_scenario_count": (
+            len(scenarios)
+            if passed
+            else len(scenarios) - 1
+            if not symlink_covered
+            else 0
+        ),
+        "symlink_validation_complete": symlink_covered,
         "scenarios": scenarios,
         "synthetic_only": True,
         "formal_validation_complete": False,

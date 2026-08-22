@@ -54,10 +54,18 @@ def contract(protocol: dict[str, object]) -> dict[str, object]:
 
 
 def _run_cli(*args: str, cwd: Path = ROOT) -> subprocess.CompletedProcess[bytes]:
+    environment = {
+        "PATH": os.environ.get("PATH", ""),
+        "PYTHONPATH": str(ROOT / "src"),
+    }
+    if os.name == "nt":
+        for name in ("SystemRoot", "WINDIR"):
+            if os.environ.get(name):
+                environment[name] = os.environ[name]
     return subprocess.run(
         [sys.executable, str(CLI), *args],
         cwd=cwd,
-        env={"PATH": os.environ.get("PATH", ""), "PYTHONPATH": str(ROOT / "src")},
+        env=environment,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,

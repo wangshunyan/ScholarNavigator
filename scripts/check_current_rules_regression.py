@@ -11,6 +11,7 @@ from scholar_agent.evaluation.current_rules_regression import (
     BASELINE_APPROVAL_TOKEN,
     build_baseline_proposal,
     check_current_rules_regression,
+    preflight_current_rules_inputs,
     write_baseline_proposal,
     write_gate_artifacts,
 )
@@ -24,6 +25,9 @@ def main() -> None:
         description="Read-only current_rules regression gate over frozen Replay."
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
+    preflight = subparsers.add_parser("preflight", help="check frozen input readiness without replay")
+    preflight.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
+
     check = subparsers.add_parser("check", help="run the read-only regression gate")
     check.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     check.add_argument("--output-dir", type=Path, required=True)
@@ -38,6 +42,12 @@ def main() -> None:
     proposal.add_argument("--reason", required=True)
 
     args = parser.parse_args()
+    if args.command == "preflight":
+        import json
+
+        report = preflight_current_rules_inputs(args.manifest)
+        print(json.dumps(report, ensure_ascii=False, sort_keys=True))
+        raise SystemExit(0 if report["status"] == "ready" else 2)
     if args.command == "propose-baseline":
         proposed, audit = build_baseline_proposal(
             args.manifest,

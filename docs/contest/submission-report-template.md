@@ -43,7 +43,7 @@ flowchart LR
 
 ## 数据集与评测
 
-主评测使用 PaSa/AutoScholarQuery。仓库中的公开文件包含 1000 条查询和 2403 个 arXiv gold 标识。PaSa 官方 `id2paper.json` 已转换为 569,432 篇本地标题语料；正式语义语料由 Cornell/arXiv 官方元数据按规范化 arXiv ID 精确关联得到同规模 title+abstract 语料。关联不使用标题匹配，也不使用 `AutoScholarQuery_test.jsonl`、gold 或 qrels 构建索引。旧 31,136 条标题匹配摘要子集仅保留为 legacy 证据，不进入正式成绩。
+主评测使用 PaSa/AutoScholarQuery。当前可审计证据显示 PaSa 标题库为 569,432 条、arXiv ID 唯一；语义语料为 31,136 条、title/abstract 完整，但 authors/year/venue/DOI 尚未补齐。正式语义索引和完整 P0/Faiss 成绩尚未形成可读取产物，因此本模板中的正式结果必须保持待填写。任何索引关联不得使用标题匹配、AutoScholarQuery gold 或 qrels。
 
 指标：F1@20、Precision@20、Recall@20、MRR、nDCG、成功率、API 调用数、Token、延迟和失败率。
 
@@ -56,17 +56,17 @@ flowchart LR
 
 完整实验命令与恢复方式见 `docs/contest/experiment-protocol.md`。
 
-## 已完成的内部工程证据
+## 当前可填写的内部工程证据
 
-下表只列出已完成、可追溯的 P0/Faiss 1000 条内部运行。内部 F1/Recall 不等同赛事官方 scorer，也不代表隐藏测试集、官方排名或获奖结果。
+当前 checkout 中没有可核验的 P0/Faiss 1000 条完整运行目录。只有在运行目录、代码指纹、输入/索引哈希和资源账本均可读取后，才能填写下表；内部 F1/Recall 不等同赛事官方 scorer。
 
 | 配置 | 运行目录 | F1@20 | P@20 | R@20 | MRR | 平均 API | 平均 Token | 平均延迟 | 成功率 |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| rules | `contest_full_rules_v1` | 0.01087 | 0.00620 | 0.06195 | 0.04071 | 0.0 | 0.0 | 0.719 s | 1.000 |
-| Dense | `contest_full_dense_v1` | 0.02155 | 0.01225 | 0.13508 | 0.09171 | 0.0 | 0.0 | 0.968 s | 1.000 |
-| Dense + reranker | `contest_full_dense_reranker_v4` | 0.02442 | 0.01390 | 0.15010 | 0.09406 | 0.0 | 0.0 | 3.909 s | 1.000 |
+| rules | 待当前代码重新运行 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 |
+| Dense | 待当前代码重新运行 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 |
+| Dense + reranker | 待当前代码重新运行 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 |
 
-阶段诊断显示，reranker v4 的初始候选 Recall 为 0.29675，Judgement 后 Recall 为 0.19454，最终 Recall@20 为 0.15010。已检索 gold 中有 197 个在 Judgement 阶段被过滤、105 个在 Top-20 外，故软 Judgement 作为独立、默认关闭的受控候选进行资格验证。`contest_qual200_dense_reranker_soft_v2` 已通过 200 条配对资格门禁，`contest_full_dense_reranker_soft_v2` 已完成并审计通过：F1@20=0.02726、Recall@20=0.16817、MRR=0.09834、平均延迟 4.032 s。以上内部指标不等同赛事官方 scorer。
+历史文档中的 reranker/soft-Judgement 阶段数字当前无法由本 checkout 的完整 RunId 核验，暂不引用；需重新完成同一 200 条资格与 1000 条成对实验后再填写。
 
 ## 创新点与边界
 

@@ -377,6 +377,66 @@ def _git_head(root: Path) -> str:
     return completed.stdout.strip()
 
 
+def _git_commit_available(root: Path, commit: str) -> bool:
+    """Return whether a frozen source commit is present in the local object DB.
+
+    Disaster-recovery protocols bind their synthetic rehearsal to the exact
+    source commit used when the protocol was sealed.  A fresh checkout may not
+    contain that historical object (for example when the protocol was created
+    on another machine).  Treat that as unavailable external evidence instead
+    of silently weakening the commit binding.
+    """
+
+    environment = dict(os.environ)
+    environment.update({"LANG": "C", "LC_ALL": "C"})
+    completed = subprocess.run(
+        ["git", "cat-file", "-e", f"{commit}^{{commit}}"],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=10,
+        env=environment,
+    )
+    return completed.returncode == 0
+
+
+def preflight_disaster_recovery_inputs(
+    repository_root: Path, protocol: Mapping[str, Any]
+) -> dict[str, Any]:
+    """Report whether the frozen protocol's source commit is locally usable.
+
+    This is deliberately read-only.  It does not fetch commits, alter the
+    protocol hash, or substitute the current checkout for the frozen source.
+    """
+
+    source_commit = str(protocol.get("source_commit") or "")
+    checked = {
+        "source_commit": source_commit,
+        "repository_root": str(repository_root.resolve()),
+        "object_present": _git_commit_available(repository_root, source_commit),
+    }
+    if checked["object_present"]:
+        return {
+            "schema_version": "formal-run-disaster-recovery-preflight-v1",
+            "status": "ready",
+            "checked": checked,
+            "blockers": [],
+        }
+    return {
+        "schema_version": "formal-run-disaster-recovery-preflight-v1",
+        "status": "external_evidence_unavailable",
+        "checked": checked,
+        "blockers": [
+            {
+                "kind": "frozen_source_commit_missing",
+                "source_commit": source_commit,
+                "reason": "protocol source commit is not present in the local Git object database",
+            }
+        ],
+    }
+
+
 def _object_path(backup_root: Path, digest: str) -> Path:
     return backup_root / OBJECTS_DIRECTORY / digest[:2] / digest
 

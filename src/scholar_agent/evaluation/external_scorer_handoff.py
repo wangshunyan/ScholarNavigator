@@ -337,15 +337,26 @@ def _synthetic_output_schema() -> dict[str, Any]:
 
 
 def _worker_environment(home: Path, temp: Path) -> dict[str, str]:
-    return {
+    environment = {
         "HOME": str(home),
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8",
-        "PATH": "/usr/bin:/bin",
+        "PATH": "/usr/bin:/bin" if os.name != "nt" else os.environ.get("PATH", ""),
         "PYTHONDONTWRITEBYTECODE": "1",
         "PYTHONHASHSEED": "0",
         "TMPDIR": str(temp),
+        "TMP": str(temp),
+        "TEMP": str(temp),
     }
+    # CPython on Windows needs the system root to initialize asyncio and the
+    # socket provider.  These values identify the OS runtime only; no user
+    # secrets or application configuration are inherited.
+    if os.name == "nt":
+        for name in ("SystemRoot", "WINDIR"):
+            value = os.environ.get(name)
+            if value:
+                environment[name] = value
+    return environment
 
 
 def run_scorer(

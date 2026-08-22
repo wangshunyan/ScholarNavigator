@@ -120,6 +120,58 @@ class TransparencyNotReady(TransparencyError):
     """Controls are valid while no public release checkpoint exists."""
 
 
+def preflight_transparency_sources(
+    protocol_path: str | Path,
+    *,
+    repository_root: Path | None = None,
+) -> dict[str, Any]:
+    """Check the immutable Git source binding without constructing a log."""
+
+    root = (repository_root or Path(__file__).resolve().parents[3]).resolve()
+    path = Path(protocol_path).expanduser().resolve()
+    try:
+        protocol = load_protocol(path)
+    except (OSError, UnicodeError, json.JSONDecodeError, TransparencyError) as exc:
+        return {
+            "schema_version": "evidence-transparency-preflight-v1",
+            "status": "invalid_protocol",
+            "checked": [],
+            "blockers": [{"kind": "protocol_invalid", "error": str(exc)}],
+        }
+
+    checked: list[dict[str, Any]] = []
+    blockers: list[dict[str, Any]] = []
+    commit = str(protocol["source_commit"])
+    commit_check = subprocess.run(
+        ["git", "cat-file", "-e", f"{commit}^{{commit}}"],
+        cwd=root,
+        check=False,
+        capture_output=True,
+    )
+    commit_status = "present" if commit_check.returncode == 0 else "missing_tracked"
+    commit_item = {"name": "source_commit", "path": commit, "status": commit_status}
+    checked.append(commit_item)
+    if commit_status != "present":
+        blockers.append(commit_item)
+
+    for role, relative in sorted(protocol["sources"].items()):
+        item = {"name": role, "path": str(relative), "status": "present"}
+        try:
+            _git_blob(root, commit, str(relative))
+        except TransparencyError as exc:
+            item["status"] = "missing_external" if str(relative).startswith("outputs/") else "missing_tracked"
+            item["error"] = str(exc)
+            blockers.append(item)
+        checked.append(item)
+
+    return {
+        "schema_version": "evidence-transparency-preflight-v1",
+        "status": "ready" if not blockers else "source_blob_unavailable",
+        "checked": checked,
+        "blockers": blockers,
+    }
+
+
 def canonical_json(value: Any) -> bytes:
     return (
         json.dumps(

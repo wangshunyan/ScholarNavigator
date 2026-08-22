@@ -67,6 +67,98 @@ class EvidenceRegistryError(RuntimeError):
     """Raised when the tracked registry contract is invalid."""
 
 
+def preflight_evidence_registry_inputs(
+    manifest_path: str | Path,
+) -> dict[str, Any]:
+    """Check registry/baseline/source readiness without rebuilding the registry."""
+
+    manifest_file = Path(manifest_path).expanduser().resolve()
+    try:
+        manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        return {
+            "schema_version": "evidence-registry-preflight-v1",
+            "status": "invalid_manifest",
+            "checked": [],
+            "blockers": [{"kind": "manifest_unreadable", "error": type(exc).__name__}],
+        }
+
+    checked: list[dict[str, Any]] = []
+    blockers: list[dict[str, Any]] = []
+
+    def check_file(name: str, raw_path: str, expected: str | None) -> None:
+        path = _repo_path(raw_path)
+        if not path.is_file():
+            status = (
+                "missing_external"
+                if raw_path.replace("\\", "/").startswith("outputs/")
+                else "missing_tracked"
+            )
+            actual = None
+        else:
+            actual = sha256_file(path)
+            status = "present" if expected is None or actual == expected else "hash_mismatch"
+        item = {
+            "name": name,
+            "path": raw_path.replace("\\", "/"),
+            "resolved": str(path),
+            "expected_sha256": expected,
+            "actual_sha256": actual,
+            "status": status,
+        }
+        checked.append(item)
+        if status != "present":
+            blockers.append(item)
+
+    try:
+        _validate_manifest_shape(manifest)
+    except (EvidenceRegistryError, KeyError, TypeError) as exc:
+        blockers.append({"name": "manifest", "kind": "manifest_invalid", "error": str(exc)})
+
+    implementation = manifest.get("implementation") or {}
+    if isinstance(implementation, Mapping) and isinstance(implementation.get("path"), str):
+        check_file("implementation", implementation["path"], implementation.get("sha256"))
+
+    baseline = manifest.get("baseline") or {}
+    if isinstance(baseline, Mapping):
+        for name in ("registry", "matrix", "summary"):
+            spec = baseline.get(f"{name}_path")
+            if isinstance(spec, str):
+                check_file(f"baseline.{name}", spec, baseline.get(f"{name}_sha256"))
+
+    # Baseline registry source hashes are checked directly so a changed
+    # tracked document is reported as baseline drift without executing the
+    # full SearchService/evidence scan.
+    baseline_registry_path = _repo_path(str(baseline.get("registry_path", "")))
+    if baseline_registry_path.is_file():
+        try:
+            baseline_registry = json.loads(baseline_registry_path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            baseline_registry = {}
+        for index, strategy in enumerate(baseline_registry.get("strategies") or []):
+            for source_index, source in enumerate(strategy.get("evidence_sources") or []):
+                if isinstance(source, Mapping) and isinstance(source.get("path"), str):
+                    check_file(
+                        f"baseline.registry.strategies[{index}].evidence_sources[{source_index}]",
+                        source["path"],
+                        source.get("sha256"),
+                    )
+
+    status = "ready" if not blockers else (
+        "external_evidence_unavailable"
+        if any(item.get("status") == "missing_external" for item in blockers)
+        else "baseline_drift"
+        if any(item.get("status") == "hash_mismatch" for item in blockers)
+        else "input_invalid"
+    )
+    return {
+        "schema_version": "evidence-registry-preflight-v1",
+        "status": status,
+        "checked": checked,
+        "blockers": blockers,
+    }
+
+
 def implemented_strategy_ids() -> tuple[str, ...]:
     """Enumerate every named, selectable strategy in the frozen registry scope."""
 

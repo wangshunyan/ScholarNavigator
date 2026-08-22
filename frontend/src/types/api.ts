@@ -175,6 +175,18 @@ export interface ConnectorDiagnostics {
   cache_hit_count: number;
   rate_limit_wait_seconds: number;
   latency_seconds: number;
+  local_model_latency_seconds: number;
+  local_model_batch_count: number;
+  local_model_fallback_count: number;
+  local_model_fingerprint?: string | null;
+  local_model_prompt_version?: string | null;
+  local_model_device?: string | null;
+  local_model_max_length?: number | null;
+  local_model_candidate_count: number;
+  local_model_inference_success_count: number;
+  local_model_batch_size?: number | null;
+  local_model_candidate_limit?: number | null;
+  local_model_peak_vram_bytes: number;
 }
 
 export interface SearchRunStatusResponse {
@@ -206,6 +218,23 @@ export interface PaperUrls {
   pdf?: string | null;
 }
 
+export interface FullTextParagraphEvidence {
+  evidence_id: string;
+  paragraph_index: number;
+  text: string;
+  text_sha256: string;
+  start_char: number;
+  end_char: number;
+}
+
+export interface FullTextEvidenceDocument {
+  schema_version: string;
+  source_url: string;
+  license_id: string;
+  content_sha256: string;
+  paragraphs: FullTextParagraphEvidence[];
+}
+
 export interface Paper {
   title: string;
   authors: string[];
@@ -215,6 +244,7 @@ export interface Paper {
   identifiers: PaperIdentifiers;
   urls: PaperUrls;
   sources: string[];
+  full_text_evidence: FullTextEvidenceDocument[];
 }
 
 export interface EvidenceItem {

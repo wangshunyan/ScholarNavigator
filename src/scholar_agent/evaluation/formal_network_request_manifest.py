@@ -528,6 +528,8 @@ def _historical_snapshot_keys(
     results_path = run_dir / "results.jsonl"
     config_path = run_dir / "config.json"
     snapshot_dir = repository_root / str(frozen["snapshot_dir"])
+    if not results_path.is_file() or not config_path.is_file() or not snapshot_dir.is_dir():
+        raise NetworkRequestManifestNotReady("historical_snapshot_inputs_unavailable")
     if (
         sha256_file(results_path) != frozen["record_results_sha256"]
         or sha256_file(config_path) != frozen["config_sha256"]

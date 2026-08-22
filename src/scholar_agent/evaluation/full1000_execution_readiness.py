@@ -124,6 +124,42 @@ def _hashes(root: Path, paths: Sequence[str]) -> dict[str, str]:
     return values
 
 
+def preflight_frozen_inputs(
+    root: Path, protocol: Mapping[str, Any]
+) -> dict[str, Any]:
+    """Report frozen Full1000 input availability without rebuilding a plan."""
+
+    checked: list[dict[str, Any]] = []
+    blockers: list[dict[str, Any]] = []
+    for relative, expected in sorted(protocol.get("input_hashes", {}).items()):
+        path = root / str(relative)
+        actual = sha256_file(path) if path.is_file() else None
+        status = "present" if actual == expected else (
+            "missing_external"
+            if str(relative).replace("\\", "/").startswith("outputs/")
+            else "hash_mismatch" if actual is not None else "missing_tracked"
+        )
+        item = {
+            "path": str(relative).replace("\\", "/"),
+            "expected_sha256": expected,
+            "actual_sha256": actual,
+            "status": status,
+        }
+        checked.append(item)
+        if status != "present":
+            blockers.append(item)
+    return {
+        "schema_version": "full1000-input-preflight-v1",
+        "status": "ready" if not blockers else (
+            "external_evidence_unavailable"
+            if any(item["status"] == "missing_external" for item in blockers)
+            else "input_invalid"
+        ),
+        "checked": checked,
+        "blockers": blockers,
+    }
+
+
 def _query_population(root: Path, protocol: Mapping[str, Any]) -> dict[str, Any]:
     relative = str(protocol["inputs"]["query_input"])
     rows = _read_jsonl(root / relative)

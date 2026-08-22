@@ -24,6 +24,7 @@ from scholar_agent.evaluation.formal_run_disaster_recovery import (
     canonical_json,
     create_backup,
     load_protocol,
+    preflight_disaster_recovery_inputs,
     restore_backup,
     simulate_disaster,
     verify_backup,
@@ -44,6 +45,12 @@ def protocol() -> dict[str, object]:
 def completed_simulations(
     protocol: dict[str, object],
 ) -> tuple[dict[str, object], dict[str, object]]:
+    preflight = preflight_disaster_recovery_inputs(ROOT, protocol)
+    if preflight["status"] != "ready":
+        pytest.skip(
+            "frozen disaster-recovery source commit unavailable; run "
+            "scripts/check_formal_run_recovery.py preflight for details"
+        )
     return simulate_disaster(ROOT, protocol), simulate_disaster(ROOT, protocol)
 
 
@@ -51,6 +58,12 @@ def completed_simulations(
 def partial_backup(
     tmp_path: Path, protocol: dict[str, object]
 ) -> tuple[Path, Path, dict[str, object]]:
+    preflight = preflight_disaster_recovery_inputs(ROOT, protocol)
+    if preflight["status"] != "ready":
+        pytest.skip(
+            "frozen disaster-recovery source commit unavailable; run "
+            "scripts/check_formal_run_recovery.py preflight for details"
+        )
     run_root = tmp_path / "run"
     backup_root = tmp_path / "offsite"
     (
@@ -99,6 +112,16 @@ def test_protocol_binds_full1000_authority(protocol: dict[str, object]) -> None:
     }
     assert protocol["activation"]["real_run_started"] is False
     assert protocol["activation"]["real_backup_created"] is False
+
+
+def test_source_commit_preflight_is_structured_and_read_only(
+    protocol: dict[str, object],
+) -> None:
+    report = preflight_disaster_recovery_inputs(ROOT, protocol)
+    assert report["status"] in {"ready", "external_evidence_unavailable"}
+    assert report["checked"]["source_commit"] == protocol["source_commit"]
+    if report["status"] != "ready":
+        assert report["blockers"][0]["kind"] == "frozen_source_commit_missing"
 
 
 def test_full_disaster_simulation_is_equivalent_and_byte_deterministic(

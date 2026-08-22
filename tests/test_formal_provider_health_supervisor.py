@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -30,6 +31,15 @@ PROTOCOL_PATH = (
     ROOT / "benchmark/formal_provider_health_supervisor_v1_protocol.json"
 )
 CLI = ROOT / "scripts/check_formal_provider_health.py"
+
+
+def _cli_env() -> dict[str, str]:
+    environment = {"PATH": str(Path(sys.executable).parent), "PYTHONPATH": "src"}
+    if os.name == "nt":
+        for name in ("SystemRoot", "WINDIR"):
+            if os.environ.get(name):
+                environment[name] = os.environ[name]
+    return environment
 
 
 @pytest.fixture()
@@ -340,7 +350,7 @@ def test_cli_commands_and_real_readiness_are_stable() -> None:
         return subprocess.run(
             [sys.executable, str(CLI), *arguments],
             cwd=ROOT,
-            env={"PATH": str(Path(sys.executable).parent), "PYTHONPATH": "src"},
+            env=_cli_env(),
             capture_output=True,
             check=False,
         )
@@ -376,7 +386,7 @@ def test_cli_malformed_resume_evidence_has_no_traceback(tmp_path: Path) -> None:
             str(malformed),
         ],
         cwd=ROOT,
-        env={"PATH": str(Path(sys.executable).parent), "PYTHONPATH": "src"},
+        env=_cli_env(),
         capture_output=True,
         check=False,
     )

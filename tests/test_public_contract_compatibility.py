@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import shutil
 import subprocess
+import sys
 import sys
 from functools import lru_cache
 from pathlib import Path
@@ -36,6 +38,28 @@ BASELINE_PATH = ROOT / "benchmark/public_contract_compatibility_v1_baseline.json
 CLI = ROOT / "scripts/check_public_contract_compatibility.py"
 
 
+def _historical_transparency_source_available() -> bool:
+    """The public snapshot depends on a frozen source blob, not current code."""
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/check_evidence_transparency.py"), "preflight"],
+        cwd=ROOT,
+        env={
+            "PATH": os.environ.get("PATH", ""),
+            "PYTHONPATH": str(ROOT / "src"),
+            **{key: os.environ[key] for key in ("SystemRoot", "WINDIR") if os.environ.get(key)},
+        },
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode == 0:
+        return True
+    try:
+        report = json.loads(result.stdout)
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        return False
+    return report.get("status") == "ready"
+
+
 def _rehash(value: dict[str, object]) -> dict[str, object]:
     value["content_sha256"] = stable_hash({key: child for key, child in value.items() if key != "content_sha256"})
     return value
@@ -47,10 +71,14 @@ def _cached_snapshot() -> dict[str, object]:
 
 
 def _snapshot() -> dict[str, object]:
+    if not _historical_transparency_source_available():
+        pytest.skip("external_evidence_unavailable: transparency source blob")
     return copy.deepcopy(_cached_snapshot())
 
 
 def test_current_snapshot_is_deterministic_and_matches_baseline() -> None:
+    if not _historical_transparency_source_available():
+        pytest.skip("external_evidence_unavailable: transparency source blob")
     first = _snapshot()
     second = _snapshot()
     assert canonical_json(first) == canonical_json(second)
@@ -379,6 +407,8 @@ def test_cli_reports_stable_exit_codes_without_traceback(tmp_path: Path) -> None
 
 
 def test_snapshot_round_trip_and_baseline_bytes_are_canonical(tmp_path: Path) -> None:
+    if not _historical_transparency_source_available():
+        pytest.skip("external_evidence_unavailable: transparency source blob")
     output = tmp_path / "snapshot.json"
     first = subprocess.run(
         [sys.executable, str(CLI), "snapshot", "--output", str(output)],

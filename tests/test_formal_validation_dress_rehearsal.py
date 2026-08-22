@@ -19,6 +19,7 @@ from scholar_agent.evaluation.formal_validation_dress_rehearsal import (
     build_handoff_checklist,
     canonical_json,
     load_protocol,
+    preflight_source_commit,
     read_json,
     simulate_failures,
     stable_hash,
@@ -36,6 +37,11 @@ CLI = ROOT / "scripts/check_formal_validation_dress_rehearsal.py"
 
 @pytest.fixture(scope="module")
 def protocol() -> dict[str, object]:
+    preflight = preflight_source_commit(ROOT)
+    if preflight["status"] != "ready":
+        pytest.skip(
+            "frozen dress-rehearsal source commit unavailable; strict audit remains blocked"
+        )
     return load_protocol(PROTOCOL_PATH, repository_root=ROOT)
 
 
@@ -156,6 +162,8 @@ def test_real_readiness_remains_blocked(
 
 
 def test_cli_verify_failure_matrix_and_readiness_are_stable() -> None:
+    if preflight_source_commit(ROOT)["status"] != "ready":
+        pytest.skip("frozen dress-rehearsal source commit unavailable")
     commands = (
         (["verify"], 0, "rehearsal_completed"),
         (["simulate-failure"], 0, "rehearsal_completed"),

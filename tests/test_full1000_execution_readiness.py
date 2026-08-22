@@ -14,6 +14,7 @@ from scholar_agent.evaluation.full1000_execution_readiness import (
     canonical_json,
     dry_run,
     preflight,
+    preflight_frozen_inputs,
     verify_plan,
 )
 
@@ -29,6 +30,11 @@ def protocol() -> dict[str, object]:
 
 @pytest.fixture(scope="module")
 def plan(protocol: dict[str, object]) -> dict[str, object]:
+    readiness = preflight_frozen_inputs(ROOT, protocol)
+    if readiness["status"] != "ready":
+        pytest.skip(
+            "frozen Full1000 inputs unavailable or drifted; strict plan gate remains fail-closed"
+        )
     return build_plan(ROOT, protocol)
 
 

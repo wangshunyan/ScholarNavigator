@@ -331,6 +331,9 @@ def _run_cli_once(path: Path, arguments: list[str], root: Path) -> tuple[int, by
         "PYTHONDONTWRITEBYTECODE": "1",
         "PYTHONPATH": str(root / "src"),
     }
+    for key in ("SystemRoot", "WINDIR"):
+        if os.environ.get(key):
+            environment[key] = os.environ[key]
     try:
         completed = subprocess.run(
             [sys.executable, str(path), *arguments],

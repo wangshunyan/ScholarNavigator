@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -306,10 +307,19 @@ def test_protocol_drift_is_rejected(
 
 def test_cli_commands_are_deterministic_and_real_readiness_is_blocked() -> None:
     def run(*arguments: str) -> subprocess.CompletedProcess[bytes]:
+        environment = {
+            "PATH": str(Path(sys.executable).parent),
+            "PYTHONPATH": "src",
+        }
+        if os.name == "nt":
+            for name in ("SystemRoot", "WINDIR"):
+                value = os.environ.get(name)
+                if value:
+                    environment[name] = value
         return subprocess.run(
             [sys.executable, str(CLI), *arguments],
             cwd=ROOT,
-            env={"PATH": str(Path(sys.executable).parent), "PYTHONPATH": "src"},
+            env=environment,
             capture_output=True,
             check=False,
         )
@@ -341,7 +351,17 @@ def test_cli_malformed_protocol_is_exit_two_without_traceback(
             "verify-policy",
         ],
         cwd=ROOT,
-        env={"PATH": str(Path(sys.executable).parent), "PYTHONPATH": "src"},
+        env={
+            "PATH": str(Path(sys.executable).parent),
+            "PYTHONPATH": "src",
+            **(
+                {
+                    name: os.environ[name]
+                    for name in ("SystemRoot", "WINDIR")
+                    if os.name == "nt" and os.environ.get(name)
+                }
+            ),
+        },
         capture_output=True,
         check=False,
     )
