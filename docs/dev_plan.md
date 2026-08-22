@@ -80,6 +80,8 @@
 - **增量验证（2026-08-22）**：最新回归在 `1588 passed / 154 skipped` 暴露同一缺失 replay 被 query-independence gate 引用；生产回归新增 `repository_input_missing` 结构化结果，相关历史 fixture 显式跳过，不伪造 cluster 统计。
 - **增量验证（2026-08-22）**：最新回归在 `1625 passed / 156 skipped` 暴露查询规划测试在 Windows 默认 GBK 下读取 UTF-8 输出；补充显式 UTF-8 解码，避免把编码环境误报为产品失败。
 - **增量验证（2026-08-22）**：查询规划专项最终 `9 passed`；补齐所有 UTF-8 输出断言并推送提交 `9749261`。全量回归此前继续发现的均为同类历史证据/Windows 编码分层问题，未改变生产算法或评测口径。
+- **增量验证（2026-08-22）**：P0-03 发布 smoke 已完成：source-only 包全新目录 `compileall` 通过，`/api/v1/health` 返回 200；从当前 Git HEAD 归档到全新目录后，API health 返回 200，使用 GitHub 可获得的 `datasets/local_bm25/pasa_papers.jsonl` 进行离线 BM25 检索返回 5 条结果（网络 0）。前端 lint/build 已通过。原始大型索引、semantic 语料和正式评测仍不随 Git 发布。
+- **增量验证（2026-08-22）**：同一 Git clone smoke 的 `/api/v1/runtime/config` 返回 200，明确报告 LLM `provider_disabled`、local connectors 未配置和真实 API connector 能力；没有把未配置 Provider 或本地索引写成已就绪。P0-03 仍待完整依赖安装和结构化导出步骤验证后再勾选。
 
 ### P0-03 发布包与文档状态一致
 
