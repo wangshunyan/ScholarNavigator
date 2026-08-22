@@ -53,7 +53,7 @@ def test_query_projection_is_gold_blind_and_preserves_unicode_order(
     ]
     assert result["gold_fields_accessed"] is False
     assert "answer" not in output.read_text(encoding="utf-8")
-    assert "secret-id" not in output.read_text()
+    assert "secret-id" not in output.read_text(encoding="utf-8")
     with pytest.raises(QueryPlanningAuditError, match="already exists"):
         project_query_only_manifest(source, output)
 
