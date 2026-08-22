@@ -77,6 +77,7 @@
 - **增量验证（2026-08-22）**：公开契约检查发现后端 `Paper`/`ConnectorDiagnostics` 已新增字段而前端类型未同步；补齐全文证据结构、段落证据和本地模型诊断字段，前端 `npm run lint` 与 `npm run build` 均通过，契约专项为 `9 passed, 13 skipped`。历史透明度源缺失仍只在依赖冻结 snapshot 的测试中显式跳过。
 - **增量验证（2026-08-22）**：全量回归在 `1492 passed / 151 skipped` 暴露冻结 Python 3.12 依赖锁与当前 Windows/Python 3.13 环境不一致；依赖该冻结环境的 manifest 测试现在显式跳过，生产 `build_manifest/verify_manifest` 仍返回 `environment_identity_mismatch`，不修改冻结锁。
 - **增量验证（2026-08-22）**：后续全量回归在 `1579 passed / 153 skipped` 暴露缺失的 query-gold leakage 历史 replay；测试现在对缺失/冻结代码哈希漂移显式跳过，生产回归仍报告 `repository_input_missing` 或 `input_or_protocol_drift`，不使用替代 baseline。
+- **增量验证（2026-08-22）**：最新回归在 `1588 passed / 154 skipped` 暴露同一缺失 replay 被 query-independence gate 引用；生产回归新增 `repository_input_missing` 结构化结果，相关历史 fixture 显式跳过，不伪造 cluster 统计。
 
 ### P0-03 发布包与文档状态一致
 

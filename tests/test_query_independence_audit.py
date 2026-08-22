@@ -190,6 +190,8 @@ def test_regression_gate_detects_data_or_threshold_drift(
 
 
 def test_regression_gate_detects_cluster_assignment_drift(tmp_path: Path) -> None:
+    if not (ROOT / "outputs/benchmark_runs/lexical_normalization_v1_005794c_replay_r5/case_comparison.jsonl").exists():
+        pytest.skip("external_evidence_unavailable: frozen independence replay")
     manifest = json.loads(
         (ROOT / "benchmark/autoscholar_query_independence_manifest.json").read_text(
             encoding="utf-8"
@@ -225,6 +227,8 @@ def test_regression_gate_detects_cluster_assignment_drift(tmp_path: Path) -> Non
 
 @pytest.mark.query_independence_regression
 def test_frozen_query_independence_gate(tmp_path: Path) -> None:
+    if not (ROOT / "outputs/benchmark_runs/lexical_normalization_v1_005794c_replay_r5/case_comparison.jsonl").exists():
+        pytest.skip("external_evidence_unavailable: frozen independence replay")
     report = check_query_independence_regression(
         ROOT / "benchmark/autoscholar_query_independence_manifest.json",
         tmp_path / "gate",
