@@ -46,6 +46,35 @@ from scholar_agent.services.search_service import (  # noqa: E402
 client = TestClient(app)
 
 
+def test_explicit_unconfigured_local_source_fails_before_queueing(
+    monkeypatch,
+) -> None:
+    for name in (
+        "SCHOLAR_AGENT_LOCAL_BM25_CORPUS",
+        "SCHOLAR_AGENT_LOCAL_HYBRID_SEMANTIC_CORPUS",
+        "SCHOLAR_AGENT_LOCAL_HYBRID_MODEL",
+    ):
+        monkeypatch.delenv(name, raising=False)
+
+    def unexpected_executor():
+        raise AssertionError("unconfigured local source must not queue a run")
+
+    monkeypatch.setattr(
+        "scholar_agent.app.api.routes._real_search_executor",
+        unexpected_executor,
+    )
+    response = client.post(
+        "/api/v1/real/search/runs",
+        json={
+            "query": "graph retrieval papers",
+            "source_preferences": ["local_bm25"],
+        },
+    )
+
+    assert response.status_code == 409
+    assert response.json()["detail"] == "local_bm25_not_configured"
+
+
 def test_real_search_run_is_created_before_background_result_is_ready(
     monkeypatch,
 ) -> None:

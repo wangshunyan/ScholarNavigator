@@ -42,8 +42,14 @@ from ...core.search_schemas import (
     SearchBudget,
     TimeRange,
 )
-from ...core.local_bm25_env import configure_local_bm25_from_env
-from ...core.local_hybrid_env import configure_local_hybrid_from_env
+from ...core.local_bm25_env import (
+    configure_local_bm25_from_env,
+    local_bm25_config_from_env,
+)
+from ...core.local_hybrid_env import (
+    configure_local_hybrid_from_env,
+    local_hybrid_config_from_env,
+)
 from ...llm.provider import get_llm_runtime_config
 from ...services.api_mapper import map_search_service_output_to_api_result
 from ...services.search_service import (
@@ -463,6 +469,8 @@ def create_real_search_run(request: SearchRunCreateRequest) -> SearchRunCreateRe
     if not request.query.strip():
         raise HTTPException(status_code=400, detail="query must not be empty")
 
+    _validate_explicit_local_source_configuration(request.source_preferences)
+
     _cleanup_real_runs()
     run_id = f"run_real_{uuid4().hex[:12]}"
     timestamp = _now()
@@ -498,6 +506,37 @@ def create_real_search_run(request: SearchRunCreateRequest) -> SearchRunCreateRe
         created_at=timestamp,
         links=_real_links(run_id),
     )
+
+
+def _validate_explicit_local_source_configuration(
+    sources: list[str] | None,
+) -> None:
+    """Fail fast for explicitly requested local sources with no usable config.
+
+    This is a read-only environment check. Index construction remains in the
+    background worker when configuration exists, so normal startup latency and
+    the existing asynchronous API contract are unchanged.
+    """
+
+    if not sources:
+        return
+    checks = {
+        "local_bm25": lambda: local_bm25_config_from_env(),
+        "local_hybrid": lambda: local_hybrid_config_from_env(),
+    }
+    for source in (item for item in sources if item in checks):
+        try:
+            config = checks[source]()
+        except (OSError, ValueError, RuntimeError) as exc:
+            raise HTTPException(
+                status_code=409,
+                detail=f"{source}_configuration_unavailable:{type(exc).__name__}",
+            ) from exc
+        if config is None:
+            raise HTTPException(
+                status_code=409,
+                detail=f"{source}_not_configured",
+            )
 
 
 @router.get(
