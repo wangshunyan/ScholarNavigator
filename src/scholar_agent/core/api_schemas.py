@@ -197,6 +197,7 @@ class SearchRunStatusResponse(BaseModel):
     current_stage: str
     progress: RunProgress
     cost_report: CostReport
+    error_message: str | None = None
     created_at: datetime
     updated_at: datetime
 

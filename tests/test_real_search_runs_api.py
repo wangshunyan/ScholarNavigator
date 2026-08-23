@@ -370,6 +370,7 @@ def test_real_search_failed_run_records_error_and_failed_status(monkeypatch) -> 
 
     status_body = _wait_for_status(run_id, "failed")
     assert status_body["current_stage"] == "failed"
+    assert status_body["error_message"] == "service exploded"
 
     result_response = client.get(f"/api/v1/real/search/runs/{run_id}/result")
     assert result_response.status_code == 500

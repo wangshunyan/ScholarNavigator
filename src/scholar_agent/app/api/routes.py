@@ -911,6 +911,7 @@ def _real_status_response(run: RealRun) -> SearchRunStatusResponse:
         current_stage=run.current_stage,
         progress=run.progress.model_copy(deep=True),
         cost_report=run.cost_report.model_copy(deep=True),
+        error_message=run.error_message,
         created_at=run.created_at,
         updated_at=run.updated_at,
     )

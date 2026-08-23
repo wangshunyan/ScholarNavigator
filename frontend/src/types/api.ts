@@ -200,6 +200,7 @@ export interface SearchRunStatusResponse {
     judged_paper_count: number;
   };
   cost_report: CostReport;
+  error_message?: string | null;
   created_at: string;
   updated_at: string;
 }
