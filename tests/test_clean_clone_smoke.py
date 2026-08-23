@@ -11,6 +11,9 @@ def test_clean_clone_smoke_exports_structured_offline_result() -> None:
     assert report["status"] == "ready"
     assert report["network_request_count"] == 0
     assert report["dotenv_read"] is False
+    assert report["template_env"]["status"] == "ready"
+    assert report["template_env"]["local_bm25"]["available"] is True
+    assert report["template_env"]["llm"]["provider"] == "disabled"
     assert report["dependency_inputs"] == {
         "requirements_txt": True,
         "frontend_package_json": True,

@@ -72,6 +72,35 @@ print(json.dumps({'health': health.json(), 'runtime_config': config.json()}, ens
     return json.loads(result.stdout)
 
 
+def _template_env_smoke(root: Path) -> dict[str, Any]:
+    """Verify the documented ``.env.example`` path in a fresh subprocess."""
+
+    template = root / ".env.example"
+    if not template.is_file():
+        raise RuntimeError("env_example_missing")
+    env_file = root / ".env"
+    env_file.write_text(template.read_text(encoding="utf-8"), encoding="utf-8")
+    try:
+        payload = _health_and_config(root)
+    finally:
+        env_file.unlink(missing_ok=True)
+
+    connectors = {
+        item["name"]: item for item in payload["runtime_config"]["connectors"]
+    }
+    local_bm25 = connectors.get("local_bm25")
+    llm = payload["runtime_config"].get("llm", {})
+    if not local_bm25 or not local_bm25.get("available"):
+        raise RuntimeError("env_example_local_bm25_not_available")
+    if llm.get("available") or llm.get("provider") != "disabled":
+        raise RuntimeError("env_example_llm_must_remain_disabled")
+    return {
+        "status": "ready",
+        "local_bm25": local_bm25,
+        "llm": llm,
+    }
+
+
 def _bm25_smoke(root: Path) -> dict[str, Any]:
     corpus = root / "datasets/local_bm25/pasa_papers.jsonl"
     if not corpus.exists():
@@ -160,6 +189,7 @@ def run_smoke(repository_root: Path, *, keep_directory: bool = False) -> dict[st
         if compile_result.returncode != 0:
             raise RuntimeError("compileall_failed")
         api = _health_and_config(extracted)
+        template_env = _template_env_smoke(extracted)
         bm25 = _bm25_smoke(extracted)
         dependency_inputs = {
             "requirements_txt": (extracted / "requirements.txt").is_file(),
@@ -174,6 +204,7 @@ def run_smoke(repository_root: Path, *, keep_directory: bool = False) -> dict[st
             "exit_code": EXIT_READY,
             "package": package,
             "api": api,
+            "template_env": template_env,
             "local_bm25": bm25,
             "dependency_inputs": dependency_inputs,
             "network_request_count": 0,
