@@ -764,6 +764,22 @@ def _run_ssh(
         "LC_ALL": "C",
         "PATH": os.environ.get("PATH", ""),
     }
+    # Windows OpenSSH may need the system root to locate its runtime DLLs.
+    # Keep the subprocess environment minimal while preserving those two
+    # platform runtime hints; no credentials or provider settings are passed.
+    for key in (
+        "SystemRoot",
+        "WINDIR",
+        "USERPROFILE",
+        "HOMEDRIVE",
+        "HOMEPATH",
+        "TEMP",
+        "TMP",
+        "PROGRAMDATA",
+    ):
+        value = os.environ.get(key)
+        if value:
+            env[key] = value
     try:
         return subprocess.run(
             command,
@@ -1228,7 +1244,9 @@ def simulate_matrix() -> dict[str, Any]:
         else:
             raise AuthenticityError("test_key_impersonation_accepted")
 
-        if old_private.stat().st_mode & 0o777 != 0o600:
+        # POSIX exposes the private-key mode bits directly.  Windows OpenSSH
+        # enforces ACLs instead, and ``st_mode`` is not an equivalent audit signal.
+        if os.name != "nt" and old_private.stat().st_mode & 0o777 != 0o600:
             raise AuthenticityError("private_key_permissions_invalid")
         passed("private_key_isolation", "operator_key_not_serialized")
 

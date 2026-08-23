@@ -118,6 +118,19 @@ def _run(
         "PATH": os.environ.get("PATH", ""),
         "PYTHONPATH": str(ROOT / "src"),
     }
+    for key in (
+        "SystemRoot",
+        "WINDIR",
+        "PROGRAMDATA",
+        "USERPROFILE",
+        "HOMEDRIVE",
+        "HOMEPATH",
+        "TEMP",
+        "TMP",
+    ):
+        value = os.environ.get(key)
+        if value:
+            env[key] = value
     return subprocess.run(
         [sys.executable, str(SCRIPT), *arguments],
         cwd=cwd,
@@ -471,7 +484,8 @@ def test_cli_generation_does_not_echo_private_key_or_secret_material(
     assert result.stderr == ""
     assert str(key_dir) not in result.stdout
     assert "PRIVATE KEY" not in result.stdout
-    assert (key_dir / "operator-test-key").stat().st_mode & 0o777 == 0o600
+    if os.name != "nt":
+        assert (key_dir / "operator-test-key").stat().st_mode & 0o777 == 0o600
     assert json.loads(result.stdout)["test_only"] is True
 
 
