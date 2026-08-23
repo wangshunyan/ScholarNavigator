@@ -25,14 +25,14 @@
 
 | 配置 | RunId | Recall@20 | F1@20 | MRR | 平均延迟（秒） |
 | --- | --- | ---: | ---: | ---: | ---: |
-| BM25 baseline | `contest_qual200_local_highrecall_pair_05759c1` | 0.0684 | 0.00982 | 0.0335 | 1.189 |
-| BM25 + Dense RRF | `contest_qual200_hybrid_deep_rrf_current_05759c1` | 0.1098 | 0.0167 | 0.0712 | 1.193 |
+| BM25 baseline | `contest_qual200_local_clean_e7f2b72` | 0.0684 | 0.00982 | 0.0335 | 1.189 |
+| BM25 + Dense RRF | `contest_qual200_hybrid_clean_e7f2b72_retry` | 0.1098 | 0.0167 | 0.0712 | 1.168 |
 
 同一查询级别 bootstrap（5,000 次，seed `20260818`）得到 ΔRecall@20=`0.0413`，95% CI `[0.0140, 0.0718]`；ΔF1@20=`0.00687`，95% CI `[0.00301, 0.01111]`。两组成功率均为 1.0，运行代码指纹一致。完整 JSONL/资源账本仍只在本地 `outputs/benchmark_runs/`，不会提交 GitHub。
 
 后续 qualification 命令已固定在两种脚本中统一使用 `high_recall` 和 300 候选预算；可用 `scripts/analyze_paired_benchmark_runs.py` 重新生成上述成对 JSON 报告。
 
-这只是 legacy title+abstract 语料上的内部诊断，不是干净提交的正式资格门禁，也不是赛事官方成绩：作者、年份、期刊和 DOI 完整度仍为 0，故 P1-01 未完成；不能据此启动 1000 条正式运行或宣称 Dense/RRF 已获资格。正式资格应在干净提交上重跑。
+这组结果已绑定干净提交且两组各有 200 条完整查询，但仍只是 legacy title+abstract 语料上的内部资格诊断，不是赛事官方成绩：作者、年份、期刊和 DOI 完整度为 0，故 P1-01 未完成；不能据此启动 1000 条正式运行或宣称已通过赛事资格。
 
 ## 正式实验门槛
 

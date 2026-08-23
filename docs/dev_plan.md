@@ -17,6 +17,9 @@
 
 ## 最新增量（2026-08-23）
 
+- [x] 在干净提交 `e7f2b72` 上完成同一前 200 条查询、相同 `high_recall`/300 候选预算的 BM25 与 Hybrid 配对运行：`contest_qual200_local_clean_e7f2b72` vs `contest_qual200_hybrid_clean_e7f2b72_retry`。两组 `code.dirty=false`、query 完整 200 条、失败日志为空且 runtime hash 一致；Hybrid ΔRecall@20=`0.04134`（95% CI `[0.01400,0.07179]`），ΔF1@20=`0.00687`（95% CI `[0.00301,0.01111]`）。输入仍是 legacy title+abstract 语料，authors/year/venue/doi 完整度为 0；因此这是当前 clean commit 的内部资格诊断，不是官方成绩，P1-01 未完成，不能自动启动 1000 条正式运行。
+- [x] 新增 `docs/sync-and-release.md`，明确服务器实验结果位置、脱敏 bundle 边界、本地/GitHub 一致性判定和队友复现范围；不上传 `outputs/`、模型、索引、`.env` 或 SSH 凭据。
+
 - [x] Benchmark CLI 的本地 BM25/Hybrid 语料身份改为显式必填：选择本地来源时必须同时提供 `--local-bm25-document-id-identity` 及对应字段映射（如 `arxiv_id` + `--local-bm25-arxiv-id-field arxiv_id`）。缺失时 fail-closed，避免使用默认 `s2orc_corpus_id` 导致评测运行成功但 gold 匹配静默全零。新增 3 个回归测试；专项 `tests/test_benchmark_runner.py` 为 `33 passed`。
 - [x] 用正确 arXiv 身份配置重跑 5 条离线 BM25 smoke：RunId `local_bm25_smoke_identity_guard_a2c65d2`，Recall@20 `0.20`、F1@5 `0.067`、MRR `0.20`、成功率 `1.0`；该结果仅为本地 smoke，不作为正式比赛成绩。运行绑定当前工作树（dirty）及语料/索引哈希，产物留在被忽略的 `outputs/`。
 - [x] 修复当前 Windows 本地 Hybrid 的两个可复现阻塞：旧 schema 语义索引若 corpus/model/shape/prefix 完全一致则复用已有 embedding 矩阵并只重建 ANN；Faiss 索引通过 Python Unicode-safe 序列化读写，避免中文工作路径下 `index.partial.faiss` 无法创建。新增迁移与中文路径回归测试，`tests/test_local_hybrid_connector.py` 为 `11 passed`；当前索引重建报告 ANN Recall@10=`0.998`。

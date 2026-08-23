@@ -10,7 +10,7 @@
 - PaSa 官方标题库已转换为 `datasets/local_bm25/pasa_papers.jsonl`，共 569,432 篇并保留 `arxiv_id`。
 - 已构建 SQLite FTS5 本地 BM25 索引；`.env` 已配置本地语料，运行时配置可识别 `local_bm25`。
 - 旧的 31,136 条公开 arXiv 摘要标题匹配语料和对应向量索引已标记为 legacy，不作为新方案正式依据。
-- P0 精确 arXiv ID 语料契约和 Faiss 构建器已实现；当前 checkout 已重建本地语义索引并通过 ANN Recall@10=`0.998` 的索引构建报告，但正式元数据字段仍缺失，且干净提交上的 200 条资格运行仍待重跑。
+- P0 精确 arXiv ID 语料契约和 Faiss 构建器已实现；当前 checkout 已重建本地语义索引并通过 ANN Recall@10=`0.998` 的索引构建报告。干净提交上的 200 条 BM25/Hybrid 配对诊断已完成，但正式元数据字段仍缺失，不能视为赛事资格通过。
 - 已接入旧版 `local_hybrid`：BM25 与摘要向量各取候选，RRF 融合后进入原有去重、判断、排序和结构化输出链路；P0/Faiss 版本需要重新验证。
 - 本地 BM25 已增加自然语言查询填充词过滤，避免礼貌语和泛化词主导标题检索；相关测试已通过。
 - 已提供 `scripts/check_local_hybrid_search.py`，可重复检查索引加载、摘要返回、BM25/semantic 来源和前 5 条 gold 命中。
@@ -24,7 +24,7 @@
 ## 提交前必须完成
 
 1. P0 精确语料和 Faiss 资源报告完成并冻结；旧 `contest_full_local_*` 仅作为 legacy 对照。
-2. P0/Faiss 变更后的 200 条资格诊断已有 dirty 工作树上的成对产物；正式资格仍必须在干净提交、完整元数据输入上重跑并通过门禁，完成前不得启动或宣称 1000 条候选成绩。
+2. P0/Faiss 变更后的 200 条资格诊断已在 `e7f2b72` 干净工作树完成成对产物；正式资格仍必须使用完整元数据输入并通过门禁，完成前不得启动或宣称 1000 条候选成绩。
 3. 文档曾列出的 `contest_full_rules_v1`、`contest_full_dense_v1`、`contest_full_dense_reranker_v4` 等完整 RunId 当前不在本机可读取证据链；旧 LLM 目录也不能恢复或引用。后续必须用新 RunId，从 smoke/200 条资格重新开始。
 4. 只使用完整成功运行目录中真实生成的 `config.json`、`metrics.json`、`summary.md`、`results.jsonl`、`stage_metrics.json`、`error_analysis.json` 和 `resource_ledger.json` 写实验结果。
 5. 当前提交明确“LLM 接口已实现，但尚无零 fallback、完整审计通过的 1000 条正式 LLM 运行”。不得把诊断、smoke 或未完成的 LLM 功能写成实测创新结果。
