@@ -118,6 +118,31 @@ def test_named_benchmark_and_method_phrases_are_structured() -> None:
     assert "HotpotQA" in plan.query_analysis.constraints.datasets
 
 
+def test_english_relation_words_do_not_become_required_topics() -> None:
+    plan = analyze_query(
+        "Find papers after 2022 that use retrieval-augmented generation for "
+        "multi-hop question answering and report results on HotpotQA.",
+        current_year=2026,
+    )
+
+    terms = {term.casefold() for term in plan.query_analysis.constraints.must_include_terms}
+    assert not terms.intersection({"that", "use", "uses", "report", "reports", "result", "results"})
+    assert "multi-hop" in terms
+    assert "question" in terms
+    assert "answering" in terms
+
+
+def test_keyword_tokens_are_punctuation_free() -> None:
+    plan = analyze_query(
+        "Find papers on retrieval-based methods and full-context inference.",
+        current_year=2026,
+    )
+
+    terms = plan.query_analysis.constraints.must_include_terms
+    assert "inference." not in terms
+    assert "inference" in terms
+
+
 def test_named_camelcase_dataset_is_structured() -> None:
     plan = analyze_query(
         "Graph neural network papers that evaluate on MoleculeNet",

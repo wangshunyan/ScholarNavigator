@@ -202,10 +202,22 @@ STOPWORDS = {
     "studies",
     "survey",
     "the",
+    "that",
     "to",
+    "use",
+    "uses",
     "using",
     "which",
     "with",
+    "report",
+    "reports",
+    "result",
+    "results",
+    "evaluate",
+    "evaluated",
+    "evaluates",
+    "exclude",
+    "excluding",
 }
 
 CHINESE_KEYWORD_MAP: tuple[tuple[str, tuple[str, ...]], ...] = (
@@ -768,7 +780,7 @@ def _canonical_token(token: str) -> str:
     upper_tokens = {"llm", "rag", "nlp", "cv", "ai"}
     if token.casefold() in upper_tokens:
         return token.upper()
-    return token.strip()
+    return token.strip(".,;:!?()[]{}\"'")
 
 
 def _select_sources(query: str, domain: ResearchDomain) -> tuple[list[str], list[str]]:
