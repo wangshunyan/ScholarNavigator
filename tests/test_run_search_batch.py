@@ -255,6 +255,8 @@ def test_batch_cli_loads_repo_env_file(tmp_path: Path, monkeypatch) -> None:
         [{"case_id": "case_001", "query": "LLM reranking"}],
     )
     output_path = tmp_path / "results.jsonl"
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path = tmp_path / "manifest.json"
 
     def fake_load_env_file(path) -> bool:  # noqa: ANN001
         loaded_paths.append(Path(path))
@@ -786,6 +788,7 @@ def test_fail_fast_returns_nonzero_after_first_failed_row(
         ],
     )
     output_path = tmp_path / "results.jsonl"
+    manifest_path = tmp_path / "manifest.json"
 
     monkeypatch.setattr(
         run_search_batch,
@@ -794,7 +797,10 @@ def test_fail_fast_returns_nonzero_after_first_failed_row(
     )
 
     code = run_search_batch.main(
-        ["--input", str(input_path), "--output", str(output_path), "--fail-fast"]
+        [
+            "--input", str(input_path), "--output", str(output_path),
+            "--fail-fast", "--manifest", str(manifest_path),
+        ]
     )
 
     rows = _read_jsonl(output_path)
@@ -802,7 +808,11 @@ def test_fail_fast_returns_nonzero_after_first_failed_row(
     assert len(rows) == 1
     assert rows[0]["case_id"] == "bad"
     assert rows[0]["status"] == "failed"
-    assert (output_path.parent / "manifest.json").exists() is False
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assert manifest["case_count"] == 2
+    assert manifest["executed_case_count"] == 1
+    assert manifest["partial"] is True
+    assert manifest["failed_count"] == 1
 
 
 def test_empty_query_outputs_failed_row_by_default(

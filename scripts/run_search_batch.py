@@ -275,6 +275,8 @@ def _write_batch_manifest(
         "source_preferences": list(default_sources or []),
         "local_preflight_errors": dict(sorted(local_preflight_errors.items())),
         "case_count": len(cases),
+        "executed_case_count": len(rows),
+        "partial": len(rows) < len(cases),
         "case_summaries": [_manifest_case_summary(row) for row in rows],
         "succeeded_count": sum(row.get("status") == "succeeded" for row in rows),
         "failed_count": sum(row.get("status") == "failed" for row in rows),
