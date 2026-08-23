@@ -46,7 +46,7 @@ def verify_package(package: Path, *, expected_commit: str | None = None) -> dict
                     raise ReleaseVerificationError(f"forbidden_zip_member:{name}")
                 if any(name.startswith(prefix) for prefix in FORBIDDEN_PREFIXES):
                     raise ReleaseVerificationError(f"forbidden_zip_member:{name}")
-                if name != MANIFEST_NAME and not name.startswith("tests/"):
+                if name != MANIFEST_NAME:
                     suffix = path.suffix.lower()
                     if suffix in {".md", ".json", ".jsonl", ".txt", ".yaml", ".yml"}:
                         decoded = archive.read(name).decode("utf-8", errors="replace")

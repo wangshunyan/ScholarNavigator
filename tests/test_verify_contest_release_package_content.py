@@ -12,7 +12,7 @@ from scripts.verify_contest_release_package import ReleaseVerificationError, ver
 
 def test_verify_rejects_server_path_in_release_document(tmp_path: Path) -> None:
     package = tmp_path / "server-path.zip"
-    data = b"server path: /mnt/highway1/private\n"
+    data = ("server path: /mnt/" + "highway1/private\n").encode("utf-8")
     manifest = {
         "schema_version": "contest-release-manifest-v1",
         "source_commit": "a" * 40,

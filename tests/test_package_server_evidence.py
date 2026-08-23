@@ -13,7 +13,7 @@ def _write_run(root: Path, *, complete: bool = True) -> Path:
     run = root / "contest_qual200_dense_v1"
     run.mkdir(parents=True)
     (run / "config.json").write_text(
-        json.dumps({"dataset_source_path": "/mnt/highway1/wang/data.jsonl", "code": {"commit": "abc"}}),
+        json.dumps({"dataset_source_path": "/home/example/data.jsonl", "code": {"commit": "abc"}}),
         encoding="utf-8",
     )
     (run / "metrics.json").write_text(json.dumps({"aggregate": {"f1": 0.1}}), encoding="utf-8")
@@ -37,7 +37,7 @@ def test_bundle_redacts_absolute_paths_and_keeps_hashes(tmp_path: Path) -> None:
     with zipfile.ZipFile(bundle) as archive:
         config = archive.read("run/config.json").decode("utf-8")
         manifest = json.loads(archive.read("manifest.json"))
-    assert "/mnt/highway1" not in config
+    assert "/home/example" not in config
     assert "<redacted-path>" in config
     config_row = next(item for item in manifest["run"]["files"] if item["path"] == "config.json")
     assert config_row["source_sha256"] != config_row["exported_sha256"]
