@@ -4,6 +4,14 @@
 
 执行循环：读取本计划 → 选择最高优先级且可执行的未完成项 → 修改代码/测试 → 运行针对性验证 → 自我审查 → 更新本计划。任何检索、排序、Query Evolution、Reranker、LLM 或全文改动都必须有可复现的成对实验；没有收益不得默认启用。gold/qrels 只能在检索完成后的离线 evaluator 中使用，不能进入在线查询、索引、Prompt 或 connector。
 
+## 当前权威快照（2026-08-23，优先于下方历史增量记录）
+
+- 当前代码提交：`b8ca436ddf4b155d887f1840b3a90f02f41bd5a3`；本地 `main` 与 `origin/main` 一致，工作树干净。
+- 最近专项验证：local BM25/Hybrid/API `31 passed`；前端 `npm run lint` 与 `npm run build` 通过；clean-clone smoke `status=ready`，health/config=200、离线 BM25 5 条、网络请求 0、LLM disabled。
+- 当前公开语料仍不满足正式元数据门禁：BM25 569,432 条仅 title 完整；semantic 31,136 条 title/abstract 完整，authors/year/venue/doi 缺失。两者均结构有效但 `required_fields_complete=false`，不得启动正式资格评测。
+- 当前未导入服务器 evidence bundle；Git 同步不能证明服务器实验数据与本地一致。服务器只能通过 `scripts/package_server_evidence.py` 导出脱敏证据后再审计，原始运行、模型、索引和凭据不上传 GitHub。
+- 下方带日期的条目是历史增量证据，除非与本快照或当前可读取产物复核一致，不得作为当前状态引用。
+
 ## 当前审计快照（2026-08-23）
 
 - [x] 已确认仓库包含多源检索、SQLite BM25、Dense/Faiss、Qwen3 Reranker、查询规划/演化、RefChain、LLM feedback、质量信号、全文证据模型、FastAPI/Next.js 和竞赛评测脚本。
