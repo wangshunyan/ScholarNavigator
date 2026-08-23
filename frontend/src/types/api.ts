@@ -51,6 +51,11 @@ export interface RuntimeConfigResponse {
     available: boolean;
     requires_key: boolean;
     reason?: string | null;
+    details?: {
+      field_completeness?: Record<string, number> | null;
+      metadata_quality_scope?: string;
+      [key: string]: unknown;
+    } | null;
   }>;
   limits: {
     max_top_k: number;

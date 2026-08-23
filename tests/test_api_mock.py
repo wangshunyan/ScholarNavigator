@@ -102,6 +102,10 @@ def test_runtime_config_shows_local_bm25_from_env(
     assert connectors["local_bm25"]["available"] is True
     assert connectors["local_bm25"]["requires_key"] is False
     assert connectors["local_bm25"]["reason"] == "configured_from_env:1_documents"
+    assert connectors["local_bm25"]["details"] == {
+        "field_completeness": None,
+        "metadata_quality_scope": "diagnostic_only",
+    }
 
     monkeypatch.delenv("SCHOLAR_AGENT_LOCAL_BM25_CORPUS", raising=False)
     client.get("/api/v1/runtime/config")

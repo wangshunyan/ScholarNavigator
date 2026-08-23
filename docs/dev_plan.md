@@ -33,6 +33,8 @@
 
 - [x] 增加公开 API schema 回归：`tests/test_api_mock.py` 现在验证 `SearchRunStatusResponse.error_message` 在 OpenAPI 中保持可选 `string|null`，与真实失败状态路由和前端类型一致；专项 `21 passed, 1 warning`。这只加固失败降级演示契约，不改变检索排序。
 
+- [x] local BM25 运行时配置现在展示索引构建时统计的 `title/abstract/authors/year/venue/doi` 字段完整度，并标注 `metadata_quality_scope=diagnostic_only`；缓存 schema 升级到 v4，旧索引自动重建，未生成索引时明确返回未知值。该能力只提升数据可信度与演示可解释性，不补齐或推断真实元数据，也不改变 BM25 排序；专项 `31 passed`。
+
 - [x] 修复前端失败轮询实际未使用 `status.error_message` 的缺口：失败运行现在优先展示状态接口提供的真实原因，仅在字段为空时回退请求结果接口；`frontend` 的 lint/build 均通过。该改动提升失败降级可解释性，不改变检索排序。
 
 - [x] 在当前提交 `0c752c7` 重新运行 source-only clean-clone smoke：`status=ready`，health/config 均为 200，离线 BM25 返回 5 条，网络请求为 0，`dotenv_read=false`，发布包 1,016 个成员；确认前端失败处理修复未破坏队友从 GitHub 获取源码后的离线运行闭环。

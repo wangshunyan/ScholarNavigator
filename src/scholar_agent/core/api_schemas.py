@@ -61,6 +61,7 @@ class ConnectorRuntimeConfig(BaseModel):
     available: bool
     requires_key: bool
     reason: str | None = None
+    details: dict[str, Any] | None = None
 
 
 class RuntimeLimits(BaseModel):

@@ -103,6 +103,14 @@ def test_local_bm25_builds_deterministically_and_preserves_identity(
 
     assert metadata is not None
     assert metadata.document_count == 3
+    assert metadata.field_completeness == {
+        "title": 1.0,
+        "abstract": 2 / 3,
+        "authors": 1 / 3,
+        "year": 1 / 3,
+        "venue": 1 / 3,
+        "doi": 1 / 3,
+    }
     assert [paper.model_dump(mode="json") for paper in first.papers] == [
         paper.model_dump(mode="json") for paper in second.papers
     ]
@@ -179,6 +187,7 @@ def test_local_bm25_cache_hit_and_corpus_change_invalidate_fingerprint(
     assert first is not None and second is not None
     assert first.fingerprint == second.fingerprint
     assert second.cache_hit is True
+    assert second.field_completeness == first.field_completeness
 
     changed = [*_rows(), {"_id": "4", "title": "new paper", "text": "new"}]
     _write_jsonl(corpus, changed)

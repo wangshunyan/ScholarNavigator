@@ -393,6 +393,10 @@ def _local_bm25_runtime_config() -> ConnectorRuntimeConfig:
         available=True,
         requires_key=False,
         reason=f"configured_from_env:{metadata.document_count}_documents",
+        details={
+            "field_completeness": metadata.field_completeness,
+            "metadata_quality_scope": "diagnostic_only",
+        },
     )
 
 

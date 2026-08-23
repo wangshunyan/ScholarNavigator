@@ -22,7 +22,7 @@ from scholar_agent.retrieval.query_adapter import ACADEMIC_QUERY_STOPWORDS
 
 
 LOCAL_BM25_CONNECTOR_VERSION = "local-bm25-v4"
-LOCAL_BM25_CACHE_SCHEMA_VERSION = "3"
+LOCAL_BM25_CACHE_SCHEMA_VERSION = "4"
 LOCAL_BM25_TOKENIZER_VERSION = "unicode-word-casefold-v1"
 LOCAL_BM25_QUERY_TOKENIZER_VERSION = "academic-stopword-filter-v1"
 LOCAL_BM25_ENGINE = "sqlite-fts5-bm25-v1"
@@ -33,6 +33,7 @@ DEFAULT_EPSILON = 0.25
 _SQLITE_TABLE = "papers"
 _SQLITE_META_TABLE = "local_bm25_metadata"
 _IDENTIFIER_COLUMNS = tuple(PaperIdentifiers.model_fields)
+_COMPLETENESS_FIELDS = ("title", "abstract", "authors", "year", "venue", "doi")
 
 IdentityField = Literal[
     "doi",
@@ -84,6 +85,7 @@ class LocalBM25IndexMetadata:
     cache_path: str
     cache_hit: bool
     index_load_seconds: float
+    field_completeness: dict[str, float] | None = None
 
 
 @dataclass(frozen=True)
@@ -91,6 +93,7 @@ class _LocalBM25Index:
     fingerprint: str
     database_path: Path
     document_count: int
+    field_completeness: dict[str, float]
 
 
 _CONFIG_LOCK = RLock()
@@ -149,6 +152,7 @@ def configure_local_bm25(
             cache_path=str(cache_path),
             cache_hit=False,
             index_load_seconds=0.0,
+            field_completeness=None,
         )
         if build_index:
             _ACTIVE_INDEX, _ACTIVE_METADATA = _load_or_build_index(
@@ -168,6 +172,7 @@ def configure_local_bm25(
                     cache_path=str(cache_path),
                     cache_hit=True,
                     index_load_seconds=0.0,
+                    field_completeness=dict(cached.field_completeness),
                 )
             except (OSError, sqlite3.Error, ValueError):
                 pass
@@ -337,6 +342,7 @@ def _load_or_build_index(
         cache_path=str(cache_path),
         cache_hit=cache_hit,
         index_load_seconds=time.perf_counter() - started,
+        field_completeness=dict(index.field_completeness),
     )
     return index, metadata
 
@@ -356,6 +362,19 @@ def _open_index(cache_path: Path, fingerprint: str) -> _LocalBM25Index:
         ):
             raise ValueError("local_bm25_cache_incompatible")
         document_count = int(metadata["document_count"])
+        try:
+            field_completeness = json.loads(metadata["field_completeness"])
+        except (KeyError, json.JSONDecodeError, TypeError):
+            raise ValueError("local_bm25_cache_missing_field_completeness")
+        if (
+            not isinstance(field_completeness, dict)
+            or set(field_completeness) != set(_COMPLETENESS_FIELDS)
+            or any(
+                not isinstance(value, (int, float)) or not 0 <= float(value) <= 1
+                for value in field_completeness.values()
+            )
+        ):
+            raise ValueError("local_bm25_cache_invalid_field_completeness")
         actual_count = int(
             connection.execute(f"SELECT count(*) FROM {_SQLITE_TABLE}").fetchone()[0]
         )
@@ -365,6 +384,9 @@ def _open_index(cache_path: Path, fingerprint: str) -> _LocalBM25Index:
         fingerprint=fingerprint,
         database_path=cache_path,
         document_count=document_count,
+        field_completeness={
+            key: float(value) for key, value in field_completeness.items()
+        },
     )
 
 
@@ -390,6 +412,7 @@ def _build_index(
             connection.execute("PRAGMA temp_store=FILE")
             _create_schema(connection)
             seen: set[str] = set()
+            completeness_counts = {key: 0 for key in _COMPLETENESS_FIELDS}
             with connection:
                 with config.corpus_path.open(encoding="utf-8") as handle:
                     for line_number, line in enumerate(handle, start=1):
@@ -427,6 +450,14 @@ def _build_index(
                             _validate_duplicate_row(connection, values)
                             continue
                         seen.add(document_id)
+                        completeness_counts["title"] += int(bool(title))
+                        completeness_counts["abstract"] += int(bool(abstract))
+                        completeness_counts["authors"] += int(
+                            json.loads(authors_json) != []
+                        )
+                        completeness_counts["year"] += int(year is not None)
+                        completeness_counts["venue"] += int(venue is not None)
+                        completeness_counts["doi"] += int(identifiers.doi is not None)
                         placeholders = ",".join("?" for _ in values)
                         columns = (
                             "document_id,title,abstract,"
@@ -456,6 +487,22 @@ def _build_index(
                 connection.execute(
                     f"INSERT INTO {_SQLITE_META_TABLE} (key, value) VALUES (?, ?)",
                     ("document_count", str(len(seen))),
+                )
+                field_completeness = {
+                    key: completeness_counts[key] / len(seen)
+                    for key in _COMPLETENESS_FIELDS
+                }
+                connection.execute(
+                    f"INSERT INTO {_SQLITE_META_TABLE} (key, value) VALUES (?, ?)",
+                    (
+                        "field_completeness",
+                        json.dumps(
+                            field_completeness,
+                            ensure_ascii=False,
+                            sort_keys=True,
+                            separators=(",", ":"),
+                        ),
+                    ),
                 )
                 connection.execute(f"INSERT INTO {_SQLITE_TABLE}({_SQLITE_TABLE}) VALUES('optimize')")
             connection.execute("PRAGMA optimize")
