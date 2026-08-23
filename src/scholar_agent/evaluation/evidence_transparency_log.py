@@ -148,11 +148,47 @@ def preflight_transparency_sources(
         check=False,
         capture_output=True,
     )
-    commit_status = "present" if commit_check.returncode == 0 else "missing_tracked"
-    commit_item = {"name": "source_commit", "path": commit, "status": commit_status}
+    object_present = commit_check.returncode == 0
+    head_check = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    observed_head = head_check.stdout.strip() if head_check.returncode == 0 else None
+    ancestor = False
+    if object_present and observed_head:
+        ancestor = subprocess.run(
+            ["git", "merge-base", "--is-ancestor", commit, observed_head],
+            cwd=root,
+            check=False,
+            capture_output=True,
+        ).returncode == 0
+    commit_status = (
+        "present"
+        if object_present and ancestor
+        else "not_ancestor"
+        if object_present
+        else "missing_tracked"
+    )
+    commit_item = {
+        "name": "source_commit",
+        "path": commit,
+        "status": commit_status,
+        "observed_head": observed_head,
+    }
     checked.append(commit_item)
     if commit_status != "present":
         blockers.append(commit_item)
+
+    if commit_status != "present":
+        return {
+            "schema_version": "evidence-transparency-preflight-v1",
+            "status": "source_blob_unavailable",
+            "checked": checked,
+            "blockers": blockers,
+        }
 
     for role, relative in sorted(protocol["sources"].items()):
         item = {"name": role, "path": str(relative), "status": "present"}
