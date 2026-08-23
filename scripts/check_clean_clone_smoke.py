@@ -265,12 +265,14 @@ print(json.dumps({
 
 def run_smoke(repository_root: Path, *, keep_directory: bool = False) -> dict[str, Any]:
     from scripts.build_contest_release_package import build_package
+    from scripts.verify_contest_release_package import verify_package
 
     source = repository_root.resolve()
     with tempfile.TemporaryDirectory(prefix="scholar-clean-clone-") as temporary:
         staging = Path(temporary)
         archive = staging / "release.zip"
         package = build_package(source, archive)
+        package_verification = verify_package(archive, expected_commit=package.get("source_commit"))
         extracted = staging / "checkout"
         extracted.mkdir()
         with zipfile.ZipFile(archive) as handle:
@@ -300,6 +302,7 @@ def run_smoke(repository_root: Path, *, keep_directory: bool = False) -> dict[st
             "status": "ready",
             "exit_code": EXIT_READY,
             "package": package,
+            "package_verification": package_verification,
             "api": api,
             "template_env": template_env,
             "local_bm25": bm25,

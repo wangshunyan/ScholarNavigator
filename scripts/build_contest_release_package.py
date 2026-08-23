@@ -153,6 +153,7 @@ def build_package(root: Path, output: Path) -> dict[str, object]:
         "internal_metric_scope": "not_official_competition_scorer",
         "manifest_name": MANIFEST_NAME,
         "manifest_sha256": hashlib.sha256(manifest_bytes).hexdigest(),
+        "source_commit": manifest["source_commit"],
         "archive_bytes": archive_bytes,
         "max_archive_bytes": MAX_RELEASE_BYTES,
     }
