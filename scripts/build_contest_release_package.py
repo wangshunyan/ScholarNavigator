@@ -38,7 +38,10 @@ def _included(path: str) -> bool:
         return False
     if any(normalized.startswith(prefix) for prefix in EXCLUDED_PREFIXES):
         return False
-    if normalized.startswith("datasets/") and not normalized.endswith(".md"):
+    # Keep the small/local BM25 title corpus so a fresh release can run an
+    # offline retrieval smoke.  Semantic corpora, models and raw datasets
+    # remain external assets and are never bundled.
+    if normalized.startswith("datasets/") and normalized != "datasets/local_bm25/pasa_papers.jsonl" and not normalized.endswith(".md"):
         return False
     if normalized.startswith("benchmark/") and (
         "evidence_registry_baseline/" in normalized
