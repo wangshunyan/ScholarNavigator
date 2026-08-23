@@ -41,6 +41,7 @@
 - [x] Full1000 launch-control preflight 现在检查冻结提交是否为当前 checkout 祖先；历史协议分叉时返回 `external_evidence_unavailable` 并跳过仅依赖冻结运行的模拟，严格 `build_preparation` 仍拒绝 `source_commit_not_ancestor`。专项 `14 skipped`（当前冻结输入不可用）。
 - [x] evidence transparency preflight 现在检查冻结提交是否为当前 checkout 祖先；历史对象存在但已分叉时返回 `source_blob_unavailable`，避免公共契约快照误进入严格构建。透明度/公共契约专项 `19 passed, 15 skipped`。
 - [x] 当前 checkout 在上述 preflight 修复后完成完整后端回归：`2294 passed, 184 skipped, 2 warnings`（约 13 分 11 秒）。跳过项均有历史外部证据、冻结提交分叉或平台权限边界；没有修改冻结哈希、伪造指标或将跳过项写成赛事资格通过。
+- [x] 前端检索源选择现在与 `/api/v1/runtime/config` 能力联动：未配置的 local BM25/Hybrid 选项置灰并说明依赖，运行时发现已选本地源不可用时自动回退到推荐组合；不改变检索排序或默认在线路径。前端 lint/build 通过。
 
 - [x] 修复前端失败轮询实际未使用 `status.error_message` 的缺口：失败运行现在优先展示状态接口提供的真实原因，仅在字段为空时回退请求结果接口；`frontend` 的 lint/build 均通过。该改动提升失败降级可解释性，不改变检索排序。
 

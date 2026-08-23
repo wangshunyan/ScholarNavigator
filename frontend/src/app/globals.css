@@ -1304,6 +1304,19 @@ button:disabled {
   outline-offset: 3px;
 }
 
+.source-fancy--unavailable,
+.source-fancy--unavailable:hover {
+  cursor: not-allowed;
+  opacity: 0.48;
+  background: var(--surface);
+  color: var(--source-fancy-ink);
+  transform: none;
+}
+
+.source-fancy--unavailable .source-fancy__text {
+  color: var(--source-fancy-ink);
+}
+
 .run-profile-radio-inputs {
   --run-profile-label-width: 112px;
   --run-profile-round: 0;

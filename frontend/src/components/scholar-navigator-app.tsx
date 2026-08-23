@@ -258,6 +258,13 @@ export function ScholarNavigatorApp() {
         const config = await getRuntimeConfig();
         if (!cancelled) {
           setRuntimeConfig(config);
+          setSourceMode((current) => {
+            if (sourceModeAvailable(current, config)) {
+              return current;
+            }
+            setFormError("所选本地检索源当前未配置，已切换到推荐组合。");
+            return "recommended";
+          });
           setBackendError(null);
         }
       } catch (error) {
@@ -479,6 +486,7 @@ export function ScholarNavigatorApp() {
             enableQueryEvolution={enableQueryEvolution}
             enableLlmQueryUnderstanding={enableLlmQueryUnderstanding}
             enableLlmJudgement={enableLlmJudgement}
+            runtimeConfig={runtimeConfig}
             isSubmitting={isSubmitting}
             formError={formError}
             onQueryChange={setQuery}
@@ -593,6 +601,29 @@ function sourcePreferencesForMode(sourceMode: SourceMode): string[] {
     return ["openalex"];
   }
   return ["openalex", "arxiv", "semantic_scholar", "pubmed"];
+}
+
+function sourceModeRequiredConnector(sourceMode: SourceMode): string | null {
+  if (sourceMode === "local_bm25" || sourceMode === "hybrid_local") {
+    return "local_bm25";
+  }
+  if (sourceMode === "local_hybrid") {
+    return "local_hybrid";
+  }
+  return null;
+}
+
+function sourceModeAvailable(
+  sourceMode: SourceMode,
+  runtimeConfig: RuntimeConfigResponse,
+): boolean {
+  const required = sourceModeRequiredConnector(sourceMode);
+  if (!required) {
+    return true;
+  }
+  return runtimeConfig.connectors.some(
+    (connector) => connector.name === required && connector.available,
+  );
 }
 
 function sleep(ms: number): Promise<void> {
@@ -926,6 +957,7 @@ function SearchWorkbench({
   onQueryEvolutionChange,
   onLlmQueryUnderstandingChange,
   onLlmJudgementChange,
+  runtimeConfig,
   onSearch,
 }: {
   query: string;
@@ -948,6 +980,7 @@ function SearchWorkbench({
   onQueryEvolutionChange: (value: boolean) => void;
   onLlmQueryUnderstandingChange: (value: boolean) => void;
   onLlmJudgementChange: (value: boolean) => void;
+  runtimeConfig: RuntimeConfigResponse | null;
   onSearch: () => void;
 }) {
   const [hoveredRunProfileIndex, setHoveredRunProfileIndex] = useState<number | null>(null);
@@ -1011,16 +1044,27 @@ function SearchWorkbench({
             <div role="radiogroup" aria-label="选择检索数据源" className="source-fancy-row">
               {SOURCE_MODE_ORDER.map((mode) => {
                 const selected = sourceMode === mode;
+                const available = !runtimeConfig || sourceModeAvailable(mode, runtimeConfig);
+                const unavailableReason =
+                  mode === "local_hybrid"
+                    ? "需要已配置的本地语义索引"
+                    : mode === "local_bm25" || mode === "hybrid_local"
+                      ? "需要已配置的本地 BM25 语料"
+                      : "";
                 return (
                   <button
                     key={mode}
                     type="button"
                     role="radio"
                     aria-checked={selected}
-                    onClick={() => onSourceModeChange(mode)}
-                    title={SOURCE_MODE_DESCRIPTIONS[mode]}
-                    data-tooltip={SOURCE_MODE_DESCRIPTIONS[mode]}
-                    className={`source-fancy ${selected ? "source-fancy--selected" : ""}`}
+                    onClick={() => {
+                      if (available) onSourceModeChange(mode);
+                    }}
+                    disabled={!available}
+                    aria-disabled={!available}
+                    title={available ? SOURCE_MODE_DESCRIPTIONS[mode] : unavailableReason}
+                    data-tooltip={available ? SOURCE_MODE_DESCRIPTIONS[mode] : unavailableReason}
+                    className={`source-fancy ${selected ? "source-fancy--selected" : ""} ${!available ? "source-fancy--unavailable" : ""}`}
                   >
                     <span className="source-fancy__top-key" aria-hidden="true" />
                     <span className="source-fancy__text">
