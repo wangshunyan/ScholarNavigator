@@ -5,7 +5,7 @@
 ## 环境要求
 
 - Python 3.11 或以上
-- Node.js 20 或以上
+- Node.js 20.19+（或 22.13+）
 
 ## 安装依赖
 
@@ -13,6 +13,9 @@
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+
+# 运行测试、clean-clone smoke 或开发审计时额外安装
+pip install -r requirements-dev.txt
 
 cd frontend
 npm install
