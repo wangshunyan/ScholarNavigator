@@ -881,6 +881,24 @@ def _profile_environment(
         "MKL_NUM_THREADS": str(profile.get("thread_count") or "1"),
         "NUMEXPR_NUM_THREADS": str(profile.get("thread_count") or "1"),
     }
+    # Keep the hermetic profile small, but preserve platform runtime hints
+    # required to start an isolated Python/OpenSSH process on Windows.  These
+    # values are launcher metadata, not business configuration and are not
+    # added to the audited allowed-environment contract.
+    for key in (
+        "PATH",
+        "SystemRoot",
+        "WINDIR",
+        "PROGRAMDATA",
+        "USERPROFILE",
+        "HOMEDRIVE",
+        "HOMEPATH",
+        "TEMP",
+        "TMP",
+    ):
+        value = _ORIGINAL_ENVIRON.get(key)
+        if value:
+            values[key] = value
     return values
 
 
