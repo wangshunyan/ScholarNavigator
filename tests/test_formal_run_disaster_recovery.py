@@ -121,7 +121,10 @@ def test_source_commit_preflight_is_structured_and_read_only(
     assert report["status"] in {"ready", "external_evidence_unavailable"}
     assert report["checked"]["source_commit"] == protocol["source_commit"]
     if report["status"] != "ready":
-        assert report["blockers"][0]["kind"] == "frozen_source_commit_missing"
+        assert report["blockers"][0]["kind"] in {
+            "frozen_source_commit_missing",
+            "frozen_source_commit_not_ancestor",
+        }
 
 
 def test_full_disaster_simulation_is_equivalent_and_byte_deterministic(

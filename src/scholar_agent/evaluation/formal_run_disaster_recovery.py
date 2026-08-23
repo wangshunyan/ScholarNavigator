@@ -401,6 +401,23 @@ def _git_commit_available(root: Path, commit: str) -> bool:
     return completed.returncode == 0
 
 
+def _git_commit_is_ancestor(root: Path, ancestor: str, descendant: str) -> bool:
+    """Check the launch-control ancestry binding without changing Git state."""
+
+    environment = dict(os.environ)
+    environment.update({"LANG": "C", "LC_ALL": "C"})
+    completed = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", ancestor, descendant],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=10,
+        env=environment,
+    )
+    return completed.returncode == 0
+
+
 def preflight_disaster_recovery_inputs(
     repository_root: Path, protocol: Mapping[str, Any]
 ) -> dict[str, Any]:
@@ -411,29 +428,46 @@ def preflight_disaster_recovery_inputs(
     """
 
     source_commit = str(protocol.get("source_commit") or "")
+    object_present = _git_commit_available(repository_root, source_commit)
+    observed_head = _git_head(repository_root) if object_present else None
+    ancestor_of_head = (
+        _git_commit_is_ancestor(repository_root, source_commit, observed_head)
+        if observed_head
+        else False
+    )
     checked = {
         "source_commit": source_commit,
         "repository_root": str(repository_root.resolve()),
-        "object_present": _git_commit_available(repository_root, source_commit),
+        "object_present": object_present,
+        "observed_head": observed_head,
+        "ancestor_of_head": ancestor_of_head,
     }
-    if checked["object_present"]:
+    if object_present and ancestor_of_head:
         return {
             "schema_version": "formal-run-disaster-recovery-preflight-v1",
             "status": "ready",
             "checked": checked,
             "blockers": [],
         }
+    blocker = (
+        {
+            "kind": "frozen_source_commit_missing",
+            "source_commit": source_commit,
+            "reason": "protocol source commit is not present in the local Git object database",
+        }
+        if not object_present
+        else {
+            "kind": "frozen_source_commit_not_ancestor",
+            "source_commit": source_commit,
+            "observed_head": observed_head,
+            "reason": "protocol source commit is present but is not an ancestor of the current checkout",
+        }
+    )
     return {
         "schema_version": "formal-run-disaster-recovery-preflight-v1",
         "status": "external_evidence_unavailable",
         "checked": checked,
-        "blockers": [
-            {
-                "kind": "frozen_source_commit_missing",
-                "source_commit": source_commit,
-                "reason": "protocol source commit is not present in the local Git object database",
-            }
-        ],
+        "blockers": [blocker],
     }
 
 
