@@ -106,7 +106,7 @@
 - **依赖**：P0-02；不要求历史 `record160` 或官方 scorer 可用。
 - **增量验证（2026-08-22）**：审阅并修正 `docs/contest/submission-checklist.md`、`submission-report-template.md`、`experiment-protocol.md` 中无法由当前 checkout 核验的 P0/Faiss、Dense/Reranker/RRF 完整运行数字；改为待重新运行/不可审计状态，并保留内部指标与官方成绩边界。`technical_report.md`、`architecture.md`、`experiment-results.md` 未发现同类具体 RunId 数字残留。该次记录是在全新依赖安装前，现由后续验收补充。
 - **增量验证（2026-08-22）**：构建 source-only release audit 包 `outputs/release-audit-20260822.zip`，共 995 个成员；检查确认无 `.env`、`outputs/`、`datasets/semantic/`、服务器 IP 或本地绝对路径，构建器标记 `internal_metric_scope=not_official_competition_scorer`。当时尚未完成实际依赖安装，现已由全新 clone 验收补齐。
-- **完成判定（2026-08-23）**：从 GitHub `main` 的当前 HEAD `71cac00` 全新浅克隆后，在全新 Python 3.12 虚拟环境安装 `requirements.txt` 与 `requirements-dev.txt`，前端执行 `npm ci`；`check_clean_clone_smoke.py` 返回 `status=ready`，API health/config 均返回 200，离线 BM25 返回 5 条且网络请求为 0，发布包成员数 1008；`npm run lint` 与 `npm run build` 均通过。该验收证明 source-only 项目的干净环境可复现，不代表语义模型、GPU Reranker、LLM Provider 或官方 scorer 已就绪。
+- **完成判定（2026-08-23）**：从 GitHub `main` 的代码 commit `7d632a7` 全新浅克隆后，在全新 Python 3.12 虚拟环境安装 `requirements.txt` 与 `requirements-dev.txt`，前端执行 `npm ci`；`check_clean_clone_smoke.py` 返回 `status=ready`，API health/config 均返回 200，离线 BM25 返回 5 条且网络请求为 0，发布包成员数 1008；`npm run lint` 与 `npm run build` 均通过。该验收证明 source-only 项目的干净环境可复现，不代表语义模型、GPU Reranker、LLM Provider 或官方 scorer 已就绪。
 
 ## P1：最终效果（召回/F1 → 质量过滤 → 全文证据）
 
