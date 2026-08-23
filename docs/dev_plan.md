@@ -41,6 +41,8 @@
 
 - [x] 以 `.env.example` 作为 `SCHOLAR_AGENT_ENV_FILE` 完成一次真实 FastAPI local-BM25 端到端 smoke：runtime config 报告 `configured_from_env:569432_documents`，HTTP 201 创建运行，终态 `succeeded`，结果 HTTP 200 返回 2 篇，API/LLM 调用均为 0。首次索引加载可能超过 10 秒，受控轮询已确认最终成功；该结果仅验证演示链路，不是比赛成绩。
 
+- [x] 当前最终核对：本地 `HEAD` 与 `origin/main` 均为 `a4b47ff`、工作树干净；环境模板、真实搜索 API、OpenAPI 错误契约专项合计 `30 passed, 1 warning`。这只证明当前源码发布闭环，不改变 P1 正式元数据/GPU/全文/LLM 外部阻塞。
+
 - [x] 在干净提交 `e7f2b72` 上完成同一前 200 条查询、相同 `high_recall`/300 候选预算的 BM25 与 Hybrid 配对运行：`contest_qual200_local_clean_e7f2b72` vs `contest_qual200_hybrid_clean_e7f2b72_retry`。两组 `code.dirty=false`、query 完整 200 条、失败日志为空且 runtime hash 一致；Hybrid ΔRecall@20=`0.04134`（95% CI `[0.01400,0.07179]`），ΔF1@20=`0.00687`（95% CI `[0.00301,0.01111]`）。输入仍是 legacy title+abstract 语料，authors/year/venue/doi 完整度为 0；因此这是当前 clean commit 的内部资格诊断，不是官方成绩，P1-01 未完成，不能自动启动 1000 条正式运行。
 - [x] 新增 `docs/sync-and-release.md`，明确服务器实验结果位置、脱敏 bundle 边界、本地/GitHub 一致性判定和队友复现范围；不上传 `outputs/`、模型、索引、`.env` 或 SSH 凭据。
 - [x] P1-01 增加 `scripts/merge_paper_metadata.py`：离线合并合法外部 JSONL 元数据，按稳定 arXiv ID 精确关联，只填充缺失字段；冲突、重复 ID、非法年份/身份和未匹配记录均可审计，默认不覆盖已有值。专项测试 `tests/test_merge_paper_metadata.py` 为 `3 passed`；当前真实语料仍未因该工具而虚构完整度。
