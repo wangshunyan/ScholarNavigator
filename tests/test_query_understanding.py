@@ -55,6 +55,31 @@ def test_year_range_parses_start_and_end_year() -> None:
     assert time_range.end_year == 2024
 
 
+def test_chinese_after_year_and_domain_terms_are_parsed() -> None:
+    plan = analyze_query(
+        "找 2021 年以后关于扩散模型用于医学图像分割的论文，要求结果里说明数据集和评价指标。",
+        current_year=2026,
+    )
+
+    time_range = plan.query_analysis.constraints.time_range
+    assert time_range is not None
+    assert time_range.start_year == 2022
+    assert time_range.end_year is None
+    assert "diffusion model" in plan.query_analysis.constraints.must_include_terms
+    assert "medical imaging" in plan.query_analysis.constraints.must_include_terms
+    assert "segmentation" in plan.query_analysis.constraints.must_include_terms
+    assert "evaluation metrics" in plan.query_analysis.constraints.must_include_terms
+
+
+def test_chinese_since_year_is_inclusive() -> None:
+    plan = analyze_query("2020 年以来的医学图像分割论文", current_year=2026)
+
+    time_range = plan.query_analysis.constraints.time_range
+    assert time_range is not None
+    assert time_range.start_year == 2020
+    assert time_range.end_year is None
+
+
 def test_chinese_recent_three_years_uses_current_year() -> None:
     plan = analyze_query("近三年 LLM reranking 论文", current_year=2026)
 

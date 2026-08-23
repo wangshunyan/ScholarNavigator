@@ -218,6 +218,12 @@ CHINESE_KEYWORD_MAP: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("深度学习", ("deep learning",)),
     ("多模态", ("multimodal",)),
     ("医学", ("biomedical",)),
+    ("医学图像", ("medical imaging", "medical image")),
+    ("图像分割", ("image segmentation", "segmentation")),
+    ("分割", ("segmentation",)),
+    ("扩散模型", ("diffusion model", "diffusion models")),
+    ("评价指标", ("evaluation metrics", "evaluation")),
+    ("指标", ("evaluation metrics",)),
     ("生物", ("biomedical",)),
     ("蛋白", ("protein",)),
     ("基因", ("gene",)),
@@ -545,6 +551,31 @@ def _parse_time_range(query: str, current_year: int) -> TimeRange | None:
         start_year = int(range_match.group(1))
         end_year = int(range_match.group(2))
         return TimeRange(start_year=start_year, end_year=end_year, label="explicit_range")
+
+    # Chinese natural-language bounds are common in the competition demo
+    # queries.  “2021 年以后/之后” has the same exclusive semantics as the
+    # English “after 2021”; “以来/起” is inclusive like “since 2021”.
+    chinese_after_match = re.search(
+        r"((?:19|20)\d{2})\s*年\s*(?:以后|之后)",
+        lowered,
+    )
+    if chinese_after_match:
+        return TimeRange(
+            start_year=int(chinese_after_match.group(1)) + 1,
+            end_year=None,
+            label="after",
+        )
+
+    chinese_since_match = re.search(
+        r"((?:19|20)\d{2})\s*年\s*(?:以来|起)",
+        lowered,
+    )
+    if chinese_since_match:
+        return TimeRange(
+            start_year=int(chinese_since_match.group(1)),
+            end_year=None,
+            label="since",
+        )
 
     from_to_match = re.search(
         r"from\s+((?:19|20)\d{2})\s+(?:to|through|until)\s+((?:19|20)\d{2})",

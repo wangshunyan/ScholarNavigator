@@ -12,6 +12,7 @@
 - 当前未导入服务器 evidence bundle；Git 同步不能证明服务器实验数据与本地一致。服务器只能通过 `scripts/package_server_evidence.py` 导出脱敏证据后再审计，原始运行、模型、索引和凭据不上传 GitHub。
 - 本轮补充 `scripts/import_server_evidence.py`：本地导入端只接受 `server_evidence_bundle_v1`，校验成员、导出大小/SHA-256、必要文件和敏感文本后写入被忽略的 `outputs/imported_server_evidence/`；专项导入/篡改回归 `4 passed`。当前仍没有实际用户服务器 bundle，因此服务器实验一致性尚未得到证据证明。
 - 本轮只读审计 `datasets/semantic/` 中的本地压缩包：`arxiv_data.csv.zip`（SHA-256=`8169c3ad…cff640a`）仅含 `titles/summaries/terms`，没有稳定 ID 或正式排序元数据；`arxiv_paper_abstracts.zip`（SHA-256=`d906a415…384157`）缺少 ZIP 中央目录，属于不完整副本。审计记录见 `docs/contest/local-data-audit-20260823.md`；两者均不进入正式语料或 GitHub 发布包。
+- 本轮从当前真实 demo 批量运行发现中文查询“2021 年以后关于扩散模型用于医学图像分割”未解析中文年份边界和关键术语，导致标题型语料演示退化为泛化数据集结果。已在规则 Query Understanding 中增加“以后/之后/以来/起”年份解析及扩散模型、医学图像、图像分割、评价指标的保守中英映射；`tests/test_query_understanding.py` `42 passed`，同一 5 条 demo 批量运行仍为零网络/零 LLM，demo_03 从 0 条可见结果恢复为 5 条。该改动只改善可解释的查询理解，不改变默认 LLM 或线上来源策略。
 - 下方带日期的条目是历史增量证据，除非与本快照或当前可读取产物复核一致，不得作为当前状态引用。
 - 本轮修复批量 CLI 来源白名单与生产 schema 不一致的问题：`scripts/run_search_batch.py --sources local_bm25/local_hybrid` 现在可用于离线复现，并在配置缺失时保留 fail-closed 行为；专项 `22 passed`。该改动不改变排序策略或默认在线来源。
 - 补充 `docs/contest/demo-queries.jsonl`，提供与人工演示查询一致的前 5 条无 gold 批量输入；README 的批量离线命令现在指向真实存在、可从 GitHub 获取的文件。
