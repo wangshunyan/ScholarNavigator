@@ -2181,6 +2181,41 @@ function PaperCard({ paper }: { paper: RankedPaper }) {
         </p>
       </details>
 
+      <details className="mt-3 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3">
+        <summary className="cursor-pointer text-sm font-bold text-[var(--foreground)]">
+          排序依据
+        </summary>
+        <p className="mt-3 text-sm leading-6 text-[var(--muted-strong)]">
+          {paper.ranking_reason || "当前结果未提供排序说明。"}
+        </p>
+        {paper.matched_constraints.length ? (
+          <div className="mt-3 flex flex-wrap gap-2">
+            {paper.matched_constraints.map((constraint) => (
+              <Badge key={constraint}>{constraint}</Badge>
+            ))}
+          </div>
+        ) : null}
+      </details>
+
+      {paper.quality_policy ? (
+        <div className="mt-3 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3 text-sm">
+          <div className="mb-2 flex flex-wrap items-center gap-2">
+            <p className="font-semibold">质量信号</p>
+            <Badge>{paper.quality_policy}</Badge>
+            {paper.quality_score != null ? (
+              <Badge>质量分 {formatScore(paper.quality_score)}</Badge>
+            ) : null}
+            {paper.quality_contribution != null ? (
+              <Badge>贡献 {paper.quality_contribution.toFixed(4)}</Badge>
+            ) : null}
+          </div>
+          <p className="text-[var(--muted)]">
+            {paper.quality_rank_change_reason ||
+              "质量信号仅作受限、可解释的辅助，不代表相关性或撤稿结论。"}
+          </p>
+        </div>
+      ) : null}
+
       {paper.evidence.length ? (
         <div className="mt-4 space-y-2">
           <p className="text-sm font-semibold">证据</p>
