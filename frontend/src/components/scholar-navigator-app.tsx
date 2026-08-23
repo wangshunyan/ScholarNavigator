@@ -466,6 +466,7 @@ export function ScholarNavigatorApp() {
         />
 
         {backendError ? <BackendWarning message={backendError} /> : null}
+        {runtimeConfig ? <RuntimeReadiness config={runtimeConfig} /> : null}
 
         <div className="grid gap-6 xl:grid-cols-[minmax(500px,5.5fr)_minmax(0,4.5fr)]">
           <SearchWorkbench
@@ -817,6 +818,90 @@ function BackendWarning({ message }: { message: string }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function RuntimeReadiness({ config }: { config: RuntimeConfigResponse }) {
+  const localBm25 = config.connectors.find((connector) => connector.name === "local_bm25");
+  const completeness = localBm25?.details?.field_completeness ?? null;
+  const completenessLabels: Record<string, string> = {
+    title: "标题",
+    abstract: "摘要",
+    authors: "作者",
+    year: "年份",
+    venue: "期刊/会议",
+    doi: "DOI",
+  };
+  const availableSources = config.connectors.filter(
+    (connector) => connector.available && !connector.name.startsWith("local_"),
+  ).length;
+
+  return (
+    <section
+      aria-label="运行能力与数据质量"
+      className="rounded-lg border-2 border-[color-mix(in_srgb,var(--foreground)_32%,var(--border))] bg-[var(--surface-raised)] p-4"
+    >
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="flex items-center gap-2 text-sm font-black text-[var(--foreground)]">
+            <Activity className="h-4 w-4" aria-hidden="true" />
+            运行能力与数据质量
+          </h2>
+          <p className="mt-1 text-xs text-[var(--muted)]">
+            实时展示当前环境；诊断信息不会改变检索排序。
+          </p>
+        </div>
+        <span className="text-xs font-bold text-[var(--muted-strong)]">
+          {availableSources} 个在线检索源可用
+        </span>
+      </div>
+
+      <div className="mt-3 grid gap-3 md:grid-cols-2">
+        <div className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-3">
+          <p className="flex items-center gap-2 text-xs font-black text-[var(--foreground)]">
+            <Database className="h-4 w-4" aria-hidden="true" />本地 BM25
+          </p>
+          <p className="mt-1 text-xs text-[var(--muted)]">
+            {localBm25?.available
+              ? localBm25.reason ?? "已配置"
+              : "未配置；可使用在线检索源"}
+          </p>
+          {completeness ? (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {Object.entries(completenessLabels).map(([field, label]) => {
+                const value = completeness[field];
+                return (
+                  <span
+                    key={field}
+                    className="rounded border border-[var(--border)] px-1.5 py-0.5 text-[11px] text-[var(--muted-strong)]"
+                  >
+                    {label} {typeof value === "number" ? `${Math.round(value * 100)}%` : "未知"}
+                  </span>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="mt-2 text-[11px] text-[var(--muted)]">
+              字段完整度将在首次建立本地索引后显示。
+            </p>
+          )}
+        </div>
+
+        <div className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-3">
+          <p className="flex items-center gap-2 text-xs font-black text-[var(--foreground)]">
+            <Brain className="h-4 w-4" aria-hidden="true" />LLM 增强
+          </p>
+          <p className="mt-1 text-xs text-[var(--muted)]">
+            {config.llm.available
+              ? `Provider：${config.llm.provider}${config.llm.model ? ` · ${config.llm.model}` : ""}`
+              : "当前关闭；失败时保留规则检索结果"}
+          </p>
+          <p className="mt-2 text-[11px] text-[var(--muted)]">
+            {config.llm.available ? "是否启用由本次运行配置决定。" : "不会读取或展示任何凭据。"}
+          </p>
+        </div>
+      </div>
+    </section>
   );
 }
 
