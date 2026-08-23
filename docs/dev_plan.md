@@ -23,7 +23,9 @@
 
 ## 最新增量（2026-08-23）
 
-- [x] 当前发布提交 `e92c9c4` 已与 GitHub `origin/main` 完全一致；只读远程核对确认本地 `HEAD == origin/main`，并修复了本地损坏的 `origin/contest-release` 跟踪引用（不改动任何源码分支）。API/发布专项 `23 passed, 1 warning`；重新构建 source-only 包共 1,016 个成员，clean-clone smoke 返回 `status=ready`、health/config=200、离线 BM25 5 条、网络请求 0、`dotenv_read=false`。该验收证明 GitHub 可下载源代码闭环，不包含服务器实验结果。
+- [x] 当前发布提交 `f67f1e4` 已与 GitHub `origin/main` 完全一致；只读远程核对确认本地 `HEAD == origin/main`，并修复了本地损坏的 `origin/contest-release` 跟踪引用（不改动任何源码分支）。API/发布专项 `23 passed, 1 warning`；重新构建 source-only 包共 1,016 个成员，clean-clone smoke 返回 `status=ready`、health/config=200、离线 BM25 5 条、网络请求 0、`dotenv_read=false`。该验收证明 GitHub 可下载源代码闭环，不包含服务器实验结果。
+
+- [x] 在当前干净提交 `f67f1e4` 上完成同一前 5 条 AutoScholarQuery、同一 BM25 语料/身份/预算的规则查询演化 paired experiment：`paired_local_bm25_qe_baseline100_e92c9c4` vs `paired_local_bm25_qe_coverage_gap_e92c9c4`。两组 runtime code hash 与输入一致，Recall@20/F1@5/10/20 的 Δ 均为 `0.00000`，bootstrap 95% CI 均为 `[0, 0]`；查询演化没有可观测收益，因此不启用默认策略。该结果仅是 5 条内部离线诊断，不是官方成绩，正式资格仍需合格元数据和完整查询集。
 
 - [x] 在干净提交 `e7f2b72` 上完成同一前 200 条查询、相同 `high_recall`/300 候选预算的 BM25 与 Hybrid 配对运行：`contest_qual200_local_clean_e7f2b72` vs `contest_qual200_hybrid_clean_e7f2b72_retry`。两组 `code.dirty=false`、query 完整 200 条、失败日志为空且 runtime hash 一致；Hybrid ΔRecall@20=`0.04134`（95% CI `[0.01400,0.07179]`），ΔF1@20=`0.00687`（95% CI `[0.00301,0.01111]`）。输入仍是 legacy title+abstract 语料，authors/year/venue/doi 完整度为 0；因此这是当前 clean commit 的内部资格诊断，不是官方成绩，P1-01 未完成，不能自动启动 1000 条正式运行。
 - [x] 新增 `docs/sync-and-release.md`，明确服务器实验结果位置、脱敏 bundle 边界、本地/GitHub 一致性判定和队友复现范围；不上传 `outputs/`、模型、索引、`.env` 或 SSH 凭据。
