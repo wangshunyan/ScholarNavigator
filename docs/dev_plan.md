@@ -224,6 +224,7 @@
 - **增量核对（2026-08-23）**：赛事公告公开附件明确源码 ZIP 上限 200 MB、说明书 300 页、视频 5 分钟/200 MB，截止 2026-09-01 23:59。当前 Git 跟踪文件约 273 MB，其中随包标题型 BM25 语料约 92 MB；实际 source-only ZIP 为约 37 MB，已低于上限，但构建器仍新增 200 MB 硬门禁，避免后续资产变更静默超限。
 - **增量验证（2026-08-23）**：新增 `scripts/verify_contest_release_package.py`，clean-clone smoke 现在自动验证 ZIP 成员路径、manifest、源 commit、文件数量和每个成员 SHA-256；篡改成员专项会 fail-closed，发布验证专项 `6 passed`。这完成发布包完整性子目标，但 P2-02 仍依赖最终正式评测和官方提交材料。
 - **最终验证（2026-08-23，提交 `6ef3aae`）**：发布验证/构建/clean-clone 专项 `7 passed`；clean-clone smoke 为 `status=ready`，source-only ZIP `36,933,278` bytes、1,019 个源文件，manifest 与 ZIP 成员哈希全部通过，health/config=200，离线 BM25 5 条，网络请求 0，LLM disabled。P2-02 的发布完整性子目标完成，但正式评测和最终提交材料仍未完成。
+- **增量安全修复（2026-08-23）**：发布验证器独立拒绝 `.env`、密钥、`outputs/`、语义模型/索引和 legacy 源码路径，即使 ZIP 内 manifest 自洽也不放行；专项 `3 passed`。这避免验证器只证明完整性而漏掉发布边界。
 
 ### P2-03 参赛材料一致性审查
 

@@ -12,6 +12,9 @@ from pathlib import Path, PurePosixPath
 from scripts.build_contest_release_package import MANIFEST_NAME, MAX_RELEASE_BYTES
 
 
+FORBIDDEN_PREFIXES = ("outputs/", "datasets/semantic/", "legacy/spar_original/")
+
+
 class ReleaseVerificationError(ValueError):
     pass
 
@@ -38,6 +41,10 @@ def verify_package(package: Path, *, expected_commit: str | None = None) -> dict
                 path = PurePosixPath(name)
                 if path.is_absolute() or ".." in path.parts or "\\" in name:
                     raise ReleaseVerificationError(f"unsafe_zip_member:{name}")
+                if name == ".env" or name.endswith(".env") or name.lower().endswith((".pem", ".key")):
+                    raise ReleaseVerificationError(f"forbidden_zip_member:{name}")
+                if any(name.startswith(prefix) for prefix in FORBIDDEN_PREFIXES):
+                    raise ReleaseVerificationError(f"forbidden_zip_member:{name}")
             try:
                 manifest = json.loads(archive.read(MANIFEST_NAME).decode("utf-8"))
             except (UnicodeDecodeError, json.JSONDecodeError) as exc:

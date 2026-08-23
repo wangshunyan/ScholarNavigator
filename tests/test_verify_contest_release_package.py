@@ -45,3 +45,18 @@ def test_verify_rejects_tampered_member(tmp_path: Path) -> None:
             target.writestr(info, data)
     with pytest.raises(ReleaseVerificationError, match="member_hash_mismatch"):
         verify_package(tampered)
+
+
+def test_verify_rejects_forbidden_member_even_with_valid_manifest(tmp_path: Path) -> None:
+    package = tmp_path / "unsafe.zip"
+    manifest = {
+        "schema_version": "contest-release-manifest-v1",
+        "source_commit": "a" * 40,
+        "file_count": 1,
+        "files": [{"path": ".env", "bytes": 4, "sha256": __import__("hashlib").sha256(b"KEY=1").hexdigest()}],
+    }
+    with zipfile.ZipFile(package, "w") as archive:
+        archive.writestr(".env", b"KEY=1")
+        archive.writestr("release-manifest.json", json.dumps(manifest))
+    with pytest.raises(ReleaseVerificationError, match="forbidden_zip_member"):
+        verify_package(package)
