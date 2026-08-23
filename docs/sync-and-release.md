@@ -29,7 +29,9 @@
     PYTHONPATH=src python scripts/check_sync_state.py
 
 只有输出 `status: ready` 且 `github_in_sync: true` 时，才表示当前源代码已
-与 GitHub 的 `origin/main` 对齐；这不代表服务器实验结果已经同步。
+与 GitHub 的 `origin/main` 对齐；这不代表服务器实验结果已经同步。若出现
+`tracked_output_paths`，它们是历史上已公开的轻量报告，建议下一次整理为
+`docs/` 下的公开摘要或从 Git 索引移除；原始实验输出不应继续提交。
 
 将 bundle 放入 outputs/server_evidence/ 后，解压并核对其中的 manifest.json、文件哈希、提交和完成标记；如需重新生成或验证原始运行目录，使用同一个 package_server_evidence.py。bundle 本身不应提交 Git。
 

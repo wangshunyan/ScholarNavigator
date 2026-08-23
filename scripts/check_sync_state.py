@@ -37,10 +37,10 @@ def audit(root: Path) -> dict[str, object]:
     except RuntimeError:
         origin = None
     tracked = _git(root, "ls-files").splitlines()
+    tracked_output = [path for path in tracked if path.startswith("outputs/")]
     forbidden = [
         path for path in tracked
         if path == ".env"
-        or path.startswith("outputs/")
         or path.startswith("datasets/semantic/")
         or path.lower().endswith((".pem", ".key"))
     ]
@@ -53,6 +53,8 @@ def audit(root: Path) -> dict[str, object]:
         "working_tree_clean": not status,
         "dirty_paths": status,
         "forbidden_tracked_paths": forbidden,
+        "tracked_output_paths": tracked_output,
+        "publication_warnings": (["tracked_outputs_are_legacy_public_reports"] if tracked_output else []),
         "server_contacted": False,
         "notes": [
             "Server experiments require a redacted evidence bundle and are never inferred from Git status.",
