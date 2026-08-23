@@ -22,9 +22,14 @@ from scholar_agent.services.api_mapper import (  # noqa: E402
 from scholar_agent.core.env_loader import load_project_env  # noqa: E402
 from scholar_agent.services.search_service import SearchService  # noqa: E402
 from scholar_agent.agents.judgement_config import load_judgement_config  # noqa: E402
+from scholar_agent.core.search_schemas import SUPPORTED_SEARCH_SOURCES  # noqa: E402
 
 
-SUPPORTED_SOURCES = {"openalex", "arxiv", "semantic_scholar", "pubmed"}
+# Keep the batch CLI in lockstep with the production retriever.  In particular,
+# local BM25/Hybrid are valid offline sources and must be usable in a judge
+# demo or a reproducible local batch, while their connectors still fail closed
+# when their environment/assets are missing.
+SUPPORTED_SOURCES = set(SUPPORTED_SEARCH_SOURCES)
 QUERY_EVOLUTION_POLICIES = {
     "off", "seed_expansion", "coverage_gap", "llm_feedback"
 }

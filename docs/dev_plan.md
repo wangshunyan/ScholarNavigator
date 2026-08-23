@@ -12,6 +12,8 @@
 - 当前未导入服务器 evidence bundle；Git 同步不能证明服务器实验数据与本地一致。服务器只能通过 `scripts/package_server_evidence.py` 导出脱敏证据后再审计，原始运行、模型、索引和凭据不上传 GitHub。
 - 本轮补充 `scripts/import_server_evidence.py`：本地导入端只接受 `server_evidence_bundle_v1`，校验成员、导出大小/SHA-256、必要文件和敏感文本后写入被忽略的 `outputs/imported_server_evidence/`；专项导入/篡改回归 `4 passed`。当前仍没有实际用户服务器 bundle，因此服务器实验一致性尚未得到证据证明。
 - 下方带日期的条目是历史增量证据，除非与本快照或当前可读取产物复核一致，不得作为当前状态引用。
+- 本轮修复批量 CLI 来源白名单与生产 schema 不一致的问题：`scripts/run_search_batch.py --sources local_bm25/local_hybrid` 现在可用于离线复现，并在配置缺失时保留 fail-closed 行为；专项 `21 passed`。该改动不改变排序策略或默认在线来源。
+- 补充 `docs/contest/demo-queries.jsonl`，提供与人工演示查询一致的前 5 条无 gold 批量输入；README 的批量离线命令现在指向真实存在、可从 GitHub 获取的文件。
 
 ## 当前审计快照（2026-08-23）
 

@@ -320,6 +320,38 @@ def test_cli_sources_are_used_as_default(tmp_path: Path, monkeypatch) -> None:
     assert captured[0]["sources_override"] == ["arxiv", "pubmed"]
 
 
+def test_cli_accepts_local_bm25_as_an_offline_source(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    captured: list[dict[str, Any]] = []
+    input_path = _write_jsonl(
+        tmp_path / "queries.jsonl",
+        [{"case_id": "offline", "query": "scientific retrieval"}],
+    )
+    output_path = tmp_path / "results.jsonl"
+    monkeypatch.setattr(
+        run_search_batch,
+        "SearchService",
+        _fake_service_class(captured=captured),
+    )
+
+    code = run_search_batch.main(
+        [
+            "--input",
+            str(input_path),
+            "--output",
+            str(output_path),
+            "--sources",
+            "local_bm25",
+        ]
+    )
+
+    assert code == 0
+    assert _read_jsonl(output_path)[0]["status"] == "succeeded"
+    assert captured[0]["sources_override"] == ["local_bm25"]
+
+
 def test_row_judgement_policy_is_passed_to_search_service(
     tmp_path: Path,
     monkeypatch,

@@ -26,6 +26,18 @@ npm install
 根据 [`.env.example`](.env.example) 在项目根目录创建本地 `.env`；变量含义和默认值以该模板为准。
 模板已指向仓库随附的标题型 `datasets/local_bm25/pasa_papers.jsonl`，复制后即可进行离线 BM25 演示；它不是元数据完整的正式竞赛语料。LLM、语义模型和凭据仍保持关闭/空值。
 
+批量演示也可以显式使用本地来源；CLI 与生产检索器共享来源 schema：
+
+```powershell
+$env:PYTHONPATH="src"
+.\.venv\Scripts\python.exe scripts/run_search_batch.py `
+  --input docs/contest/demo-queries.jsonl `
+  --output outputs/demo-batch/results.jsonl `
+  --sources local_bm25
+```
+
+如果本地语料或索引配置缺失，运行会记录结构化失败，而不会静默改用在线来源。
+
 ## 启动后端
 
 ```bash
