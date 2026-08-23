@@ -93,6 +93,27 @@ def test_explicit_local_source_with_missing_corpus_fails_before_queueing(
     assert response.json()["detail"] == "local_bm25_corpus_not_found"
 
 
+def test_explicit_hybrid_source_reports_missing_inputs_before_queueing(
+    tmp_path: Path, monkeypatch
+) -> None:
+    bm25 = tmp_path / "bm25.jsonl"
+    bm25.write_text('{"_id":"1","title":"paper"}\n', encoding="utf-8")
+    monkeypatch.setenv("SCHOLAR_AGENT_LOCAL_BM25_CORPUS", str(bm25))
+    monkeypatch.setenv(
+        "SCHOLAR_AGENT_LOCAL_HYBRID_SEMANTIC_CORPUS",
+        str(tmp_path / "missing-semantic.jsonl"),
+    )
+    monkeypatch.setenv("SCHOLAR_AGENT_LOCAL_HYBRID_MODEL", str(tmp_path / "model"))
+
+    response = client.post(
+        "/api/v1/real/search/runs",
+        json={"query": "graph retrieval papers", "source_preferences": ["local_hybrid"]},
+    )
+
+    assert response.status_code == 409
+    assert response.json()["detail"] == "local_hybrid_semantic_corpus_not_found"
+
+
 def test_real_search_run_is_created_before_background_result_is_ready(
     monkeypatch,
 ) -> None:
