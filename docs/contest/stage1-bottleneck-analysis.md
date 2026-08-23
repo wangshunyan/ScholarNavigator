@@ -1,72 +1,39 @@
 # 阶段一：候选召回与 Judgement 离线瓶颈分析
 
-更新时间：2026-08-20。此文档仅分析完整成功的内部工程运行：
-`contest_full_rules_v1`、`contest_full_dense_v1` 与
-`contest_full_dense_reranker_v4`。所有 gold/qrels 均只在运行结束后的离线
-评估与诊断中使用，未用于语料、索引、在线检索、查询改写或 Judgement 规则。
-内部 F1/Recall 不等同赛事官方 scorer。
+更新时间：2026-08-23。
 
-## 证据范围
+本页只记录当前 checkout 可以读取的证据。旧版本曾引用服务器上的
+`contest_full_rules_v1`、Dense、Reranker 和 Soft-Judgement RunId，但这些目录、
+配置、代码指纹、输入/索引哈希和资源账本不在当前本地证据链中；旧表格和数字已删除，
+不能作为参赛成绩或当前实现结论。服务器结果必须先按
+[`server-evidence-sync.md`](server-evidence-sync.md) 导出脱敏 bundle，再重新审计。
 
-分析输入为每个完整运行目录的 `metrics.json`、`stage_metrics.json` 与
-`error_analysis.json`。三组均为 1000 条查询、`top_k=20`，并保存了完整的
-resource ledger。以下数字是阶段诊断证据，不是对隐藏测试集或官方排名的声明。
+## 当前可验证结论
 
-| 运行 | 初始候选 Recall | Judgement 后 Recall | 最终 Recall@20 | F1@20 | 平均端到端延迟 |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| rules | 0.13126 | 0.06437 | 0.06195 | 0.01087 | 0.711 s |
-| Dense | 0.23503 | 0.16188 | 0.13508 | 0.02155 | 0.955 s |
-| Dense + reranker v4 | 0.29675 | 0.19454 | 0.15010 | 0.02442 | 3.894 s |
+- 本地 BM25 标题语料约 569,432 条，arXiv ID 唯一；摘要、作者、年份、venue、DOI
+  完整度当前为 0。
+- 本地 semantic legacy 语料约 31,136 条，title/abstract 完整，但排序元数据缺失，
+  不能作为正式 P0/Faiss 语料。
+- 当前代码提供 rules、local BM25、local hybrid/Faiss、RRF、Reranker 和 LLM 开关，
+  但 Dense/Reranker/RRF 质量收益尚没有当前 checkout 可核验的成对资格运行。
+- `current_rules`、Query Evolution、RefChain、RRF、质量过滤和 LLM 均应保持默认保守；
+  只有同一查询顺序、输入、候选预算、模型和资源约束下的成对实验出现正向区间，才允许
+  改变默认路径。
 
-## 检索贡献
+## 正式实验门槛
 
-- Dense 相对于 rules 将初始候选 Recall 从 `0.13126` 提高至 `0.23503`。
-- reranker v4 链路的 BM25 命中 335 个 gold，Dense 摘要检索命中 441 个，二者
-  重叠 196 个，精确并集为 580 个；这与该运行的已检索 gold 数一致。
-- 因而 BM25 与 Dense 的互补性已有完整运行证据，后续变体必须继续保留两路候选
-  并集和原始检索分数，不能退化为单一路径。
-- 已检索之外仍有 1,822 个 gold 未进入 reranker v4 初始候选，是最大的绝对损失。
-  当前只允许通过不使用 gold 的受控候选池、RRF 或查询变体在新的资格运行中测试。
+1. 先取得合法、带稳定 arXiv ID、摘要、作者、年份、venue 和 DOI 的元数据输入，重建
+   语料与索引并保存输入/索引 SHA-256、字段完整度和资源账本。
+2. 在前 200 条固定 query 上配对 rules/BM25、Dense、Reranker 和 RRF；gold/qrels 只
+   在检索结束后的 evaluator 使用。
+3. 报告 candidate Recall、F1@5/10/20、Recall@20、MRR、延迟、调用数、失败率、
+   fallback 和 paired-bootstrap 区间。没有正向收益的策略保持关闭。
+4. 只有 200 条资格门禁、资源账本和完成标记全部通过，才允许运行完整 1000 条；内部
+   F1/Recall 必须明确标记为工程指标，不等同官方 scorer。
 
-## Judgement 与排序损失
+## 当前阻塞
 
-reranker v4 共检索到 580 个 gold：
-
-| 阶段 | gold 数量 | 损失 |
-| --- | ---: | ---: |
-| 初始候选 | 580 | - |
-| Judgement 保留 | 383 | 197：135 个 weak，62 个 irrelevant |
-| 最终 Top-20 | 278 | 105 个保留 gold 位于 Top-20 之外 |
-
-Judgement 对已检索 gold 的保留率为 `0.66034`，错误过滤率为 `0.33966`。这说明
-摘要缺失、词面差异或边缘满足约束的情况可能被硬阈值压低；但离线 gold 只能用于
-确认这一瓶颈，不能编码进在线规则。
-
-排序也仍有明确空间：383 个 Judgement 保留 gold 中有 105 个不在 Top-20，平均
-gold rank 为 `14.36`，中位 rank 为 `8`。因此，软 Judgement 与候选排序必须分别
-做独立消融，不能把任一变化的收益归因于另一变化。
-
-## 查询规划结论
-
-完整 reranker v4 运行使用 `current_rules`，记录 2,813 条子查询和 4,534 条适配
-查询；其中 `original_query` 路径有 524 次记录。现有诊断没有一组“删除原始查询”
-的配对运行，因此不能声称查询改写已经造成或没有造成主题词损失。
-
-后续候选保持原始查询，并只允许有限的受控变体。查询规划的有效性必须以新 200
-条资格运行的成对指标和 bootstrap 结果判断，而不是按本诊断推测。
-
-## 后续实验边界
-
-1. `dense_reranker_soft` 是独立候选，仅将 `partially_relevant_threshold` 从
-   `0.45` 调为 `0.35`，保留所有硬约束、BM25+Dense、RRF、reranker、候选上限和
-   查询配置。
-2. `contest_qual200_dense_reranker_soft_v1` 因 GPU0 资源争用发生 reranker fallback，
-   仅保留为诊断。受控重试必须使用 `contest_qual200_dense_reranker_soft_v2` 并固定
-   reranker 到 `cuda:1`，与 `contest_qual200_reranker_v4_gpu1` 做同一 200 条查询的配对门禁。只有 F1@20 或
-   Recall@20 严格提升、bootstrap 95% 区间支持、零失败、零 fallback 和资源账本
-   通过，才可启动新的完整 RunId。v2 已满足该门禁，并完成独立的
-   `contest_full_dense_reranker_soft_v2`；该运行 1000/1000、零失败、零 fallback，
-   但其指标仍是内部工程指标，不等同赛事官方 scorer。
-3. `contest_full_dense_reranker_llm_v14` 有 1000 条结果和后验诊断账本，但缺少
-   `RUN_COMPLETED`，因此是未完成、不可审计诊断；另有 4 次 fallback。它不作为
-   LLM 实测提升或 v15 资格依据。
+- P1-01：本地没有满足正式元数据完整度的输入。
+- P1-02：缺少当前代码指纹绑定的 Dense/Reranker/RRF 成对资格产物。
+- GPU、LLM Provider、开放全文许可、官方 scorer 和服务器实验 bundle 是外部依赖，
+  不通过读取 `.env`、SSH 凭据或旧聊天记录解除。

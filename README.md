@@ -114,7 +114,7 @@ bash scripts/run_contest_benchmark.sh \
   --reranker-device cuda:1
 ```
 
-只有 200 条完整、零失败、零 fallback、资源账本与 reranker 审计通过，并且 paired-bootstrap 95% 区间支持 F1@20 或 Recall@20 提升，才允许新的完整 1000 条 RunId。当前 `contest_full_dense_reranker_soft_v2` 已满足这些条件，内部 F1@20=0.02726、Recall@20=0.16817；所有内部 F1/Recall 仅为工程比较，不等同赛事官方 scorer。
+只有 200 条完整、零失败、零 fallback、资源账本与 reranker 审计通过，并且 paired-bootstrap 95% 区间支持 F1@20 或 Recall@20 提升，才允许新的完整 1000 条 RunId。历史文档曾提到 `contest_full_dense_reranker_soft_v2`，但该运行目录和可核验产物不在当前 checkout，不能把其数字当作当前成绩；重新运行前所有指标均标记为待测。所有内部 F1/Recall 仅为工程比较，不等同赛事官方 scorer。
 
 P3-00 另行预注册了候选召回/Judgement 验证，不复用 v2：
 

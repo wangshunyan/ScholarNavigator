@@ -77,6 +77,7 @@ def _bm25_smoke(root: Path) -> dict[str, Any]:
     if not corpus.exists():
         return {"status": "not_ready", "reason": "tracked_local_bm25_corpus_missing"}
     code = """
+import json
 from pathlib import Path
 from scholar_agent.connectors.local_bm25 import (
     LocalBM25Config, LocalBM25FieldConfig, configure_local_bm25,
@@ -94,12 +95,46 @@ configure_local_bm25(LocalBM25Config(
 result = search_local_bm25_detailed('graph neural networks for scientific document retrieval', 5)
 if len(result.papers) != 5 or any(not paper.title for paper in result.papers):
     raise SystemExit('bm25_result_invalid')
-print({'result_count': len(result.papers), 'warnings': result.warnings})
+print(json.dumps({
+    'schema_version': 'offline-search-result-v1',
+    'query': 'graph neural networks for scientific document retrieval',
+    'results': [
+        {
+            'rank': index,
+            'arxiv_id': paper.identifiers.arxiv_id,
+            'title': paper.title,
+            'sources': list(paper.sources),
+        }
+        for index, paper in enumerate(result.papers, start=1)
+    ],
+    'warnings': list(result.warnings),
+}, ensure_ascii=False, sort_keys=True))
 """
     result = _run(root, code)
     if result.returncode != 0:
         raise RuntimeError(f"bm25_smoke_failed:{result.stderr[-500:]}")
-    return {"status": "ready", "output": result.stdout.strip()}
+    try:
+        payload = json.loads(result.stdout)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError("bm25_structured_export_invalid_json") from exc
+    rows = payload.get("results")
+    if (
+        payload.get("schema_version") != "offline-search-result-v1"
+        or not isinstance(rows, list)
+        or len(rows) != 5
+        or [row.get("rank") for row in rows] != [1, 2, 3, 4, 5]
+        or any(not isinstance(row.get("title"), str) or not row["title"] for row in rows)
+        or any("gold" in row for row in rows)
+    ):
+        raise RuntimeError("bm25_structured_export_schema_invalid")
+    return {
+        "status": "ready",
+        "schema_version": payload["schema_version"],
+        "query": payload["query"],
+        "result_count": len(rows),
+        "results": rows,
+        "warnings": payload.get("warnings", []),
+    }
 
 
 def run_smoke(repository_root: Path, *, keep_directory: bool = False) -> dict[str, Any]:
@@ -126,6 +161,13 @@ def run_smoke(repository_root: Path, *, keep_directory: bool = False) -> dict[st
             raise RuntimeError("compileall_failed")
         api = _health_and_config(extracted)
         bm25 = _bm25_smoke(extracted)
+        dependency_inputs = {
+            "requirements_txt": (extracted / "requirements.txt").is_file(),
+            "frontend_package_json": (extracted / "frontend/package.json").is_file(),
+            "frontend_lockfile": (extracted / "frontend/package-lock.json").is_file(),
+        }
+        if not all(dependency_inputs.values()):
+            raise RuntimeError("release_dependency_contract_incomplete")
         report = {
             "schema_version": "clean_clone_smoke_v1",
             "status": "ready",
@@ -133,6 +175,7 @@ def run_smoke(repository_root: Path, *, keep_directory: bool = False) -> dict[st
             "package": package,
             "api": api,
             "local_bm25": bm25,
+            "dependency_inputs": dependency_inputs,
             "network_request_count": 0,
             "dotenv_read": False,
             "official_metric_scope": "internal_engineering_only",
