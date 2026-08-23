@@ -13,6 +13,7 @@ from pathlib import Path
 
 MANIFEST_NAME = "release-manifest.json"
 SOURCE_DATE_EPOCH = (1980, 1, 1, 0, 0, 0)
+MAX_RELEASE_BYTES = 200 * 1024 * 1024
 
 
 EXCLUDED_PREFIXES = (
@@ -138,6 +139,10 @@ def build_package(root: Path, output: Path) -> dict[str, object]:
             source = root / relative
             _write_deterministic(archive, relative.replace("\\", "/"), source.read_bytes())
         _write_deterministic(archive, MANIFEST_NAME, manifest_bytes)
+    archive_bytes = temporary.stat().st_size
+    if archive_bytes > MAX_RELEASE_BYTES:
+        temporary.unlink(missing_ok=True)
+        raise ValueError(f"release_size_exceeds_limit:{archive_bytes}>{MAX_RELEASE_BYTES}")
     temporary.replace(output)
     return {
         "schema_version": "contest-release-package-v1",
@@ -148,6 +153,8 @@ def build_package(root: Path, output: Path) -> dict[str, object]:
         "internal_metric_scope": "not_official_competition_scorer",
         "manifest_name": MANIFEST_NAME,
         "manifest_sha256": hashlib.sha256(manifest_bytes).hexdigest(),
+        "archive_bytes": archive_bytes,
+        "max_archive_bytes": MAX_RELEASE_BYTES,
     }
 
 

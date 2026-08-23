@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+from scripts import build_contest_release_package as release_builder
 from scripts.build_contest_release_package import build_package
 
 
@@ -46,6 +47,7 @@ def test_release_package_excludes_sensitive_and_legacy_paths(tmp_path: Path) -> 
         "datasets/local_bm25/pasa_papers.jsonl", "src/main.py"
     }
     assert report["manifest_name"] == "release-manifest.json"
+    assert report["archive_bytes"] <= report["max_archive_bytes"]
 
 
 def test_release_package_is_byte_stable_across_builds(tmp_path: Path) -> None:
@@ -78,3 +80,17 @@ def test_release_package_rejects_dirty_source_tree(tmp_path: Path) -> None:
     source.write_text("changed\n", encoding="utf-8")
     with pytest.raises(ValueError, match="release_requires_clean_git_tree"):
         build_package(root, tmp_path / "dirty.zip")
+
+
+def test_release_package_enforces_official_size_limit(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    root = tmp_path / "repo"
+    (root / ".git").mkdir(parents=True)
+    (root / "src").mkdir()
+    (root / "src" / "main.py").write_text("pass\n", encoding="utf-8")
+    import subprocess
+    subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+    subprocess.run(["git", "add", "."], cwd=root, check=True)
+    subprocess.run(["git", "commit", "-qm", "initial"], cwd=root, check=True)
+    monkeypatch.setattr(release_builder, "MAX_RELEASE_BYTES", 1)
+    with pytest.raises(ValueError, match="release_size_exceeds_limit"):
+        build_package(root, tmp_path / "oversize.zip")

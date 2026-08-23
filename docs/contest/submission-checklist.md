@@ -39,7 +39,7 @@
 - 项目说明书：使用 `docs/contest/submission-report-template.md`，填写问题、场景、系统架构、算法流程、数据集、评测协议、消融实验、真实结果、成本和局限性。
 - 项目源码：完整 README、`.env.example`、依赖锁定、Windows 启动命令、Benchmark 命令和产物目录说明。
 - `legacy/spar_original/` 当前没有随附可核验的许可证文件，提交包必须排除；审查记录见 [third-party-review.md](third-party-review.md)。
-- 发布压缩包必须由干净 Git 工作树的受跟踪文件构建，执行 `python scripts/build_contest_release_package.py --repository-root . --output <package.zip>`。构建器会拒绝 dirty tree，并在包内写入 `release-manifest.json`（源 commit、成员 SHA-256 和排除边界）；明确排除 `.env`、`outputs/`、`datasets/semantic/` 和 `legacy/spar_original/`。正式提交前仍须人工检查压缩包中没有凭据、运行产物或本地绝对路径。
+- 发布压缩包必须由干净 Git 工作树的受跟踪文件构建，执行 `python scripts/build_contest_release_package.py --repository-root . --output <package.zip>`。构建器会拒绝 dirty tree、超过官方 200 MB 的 ZIP，并在包内写入 `release-manifest.json`（源 commit、成员 SHA-256 和排除边界）；明确排除 `.env`、`outputs/`、`datasets/semantic/` 和 `legacy/spar_original/`。正式提交前仍须人工检查压缩包中没有凭据、运行产物或本地绝对路径。
 - 演示视频：从复杂查询输入到结构化论文结果、引用关系图、成本/延迟面板和异常降级。
 - 答辩材料：突出复杂约束解析、检索迭代、本地+外部混合检索、可复现实验和 F1/效率权衡。
 - 匿名检查：提交文档、视频、代码截图和压缩包不要暴露学校、导师、成员身份或本地敏感路径。
