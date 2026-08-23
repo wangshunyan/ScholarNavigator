@@ -152,7 +152,7 @@ SciFact BM25 上界审计位于 `scripts/audit_scifact_bm25.py` 和 `scholar_age
 
 ### ScholarNavigator 竞赛主线 P0/Faiss 运行
 
-当前 checkout 中没有可读取、可哈希核验的 P0/Faiss、Dense、Reranker 或 RRF 资格/完整运行目录；历史文档中的服务器 RunId、语料哈希、GPU 资源和 F1/Recall 数字不能作为当前证据。现有本地语料审计显示：标题 BM25 语料约 569,432 条且 arXiv ID 唯一，但摘要、作者、年份、venue、DOI 字段尚未补齐；semantic 语料约 31,136 条，title/abstract 完整但排序元数据缺失。P0/Faiss 与 Dense/Reranker/RRF 必须在新输入、新 RunId、相同查询顺序和完整资源账本下重新完成 200 条资格门禁，再决定是否运行 1000 条。
+当前 checkout 已有干净提交 `e7f2b72` 上可读取、可哈希核验的 200 条 BM25/Hybrid 成对诊断；两组 query 完整、`code.dirty=false`、失败日志为空，Hybrid 相对 BM25 的 Recall@20 与 F1@20 配对区间均为正。该运行仍使用 legacy title+abstract 语料，不是赛事官方成绩，也不替代完整元数据资格门禁。现有本地语料审计显示：标题 BM25 语料约 569,432 条且 arXiv ID 唯一，但摘要、作者、年份、venue、DOI 字段尚未补齐；semantic 语料约 31,136 条，title/abstract 完整但排序元数据缺失。完整 1000 条运行仍需在正式元数据输入和资格门禁通过后进行。
 
 LLM 运行仍保持默认关闭；本地 runtime smoke 报告 `provider_disabled`，不能把查询规划或反馈写成实测增益。服务器上的脱敏证据只能按
 [`docs/contest/server-evidence-sync.md`](contest/server-evidence-sync.md) 导出后再纳入审计。所有内部指标均不是赛事官方 scorer 成绩。
@@ -1147,7 +1147,7 @@ Precision@20。本轮合成矩阵不生成真实标签、κ、Precision 或正�
 
 ### 赛题三 200 条资格门禁
 
-P0 精确 ID 语料和 Faiss 索引变化后，固定 AutoScholarQuery test 前 200 条及其顺序，重新比较 rules/BM25、Dense、Reranker 与 RRF 候选。当前 checkout 尚无可审计的成对资格产物，因此不得引用历史 RunId 或启动完整 1000 条。候选必须在 F1@20 或 Recall@20 上严格提升，配对 query-level bootstrap 95% 区间下界大于 0，且资源账本、失败率和 fallback 门禁全部通过。
+P0 精确 ID 语料和 Faiss 索引变化后，固定 AutoScholarQuery test 前 200 条及其顺序，重新比较 rules/BM25、Dense、Reranker 与 RRF 候选。当前 checkout 的 `contest_qual200_local_clean_e7f2b72` 与 `contest_qual200_hybrid_clean_e7f2b72_retry` 已满足 clean/runtime/完整性条件，但输入元数据尚不完整，不能启动完整 1000 条。候选必须在 F1@20 或 Recall@20 上严格提升，配对 query-level bootstrap 95% 区间下界大于 0，且资源账本、失败率和 fallback 门禁全部通过。
 
 ### P3-00 候选召回与 Soft Judgement 闭环
 

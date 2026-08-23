@@ -38,6 +38,14 @@
 
 ## 结果保存位置与一致性判定
 
+## 合法元数据导入
+
+获得合法的、以 `arxiv_id` 为稳定键的外部 JSONL 后，可离线生成新语料；脚本默认只填充缺失字段，不覆盖已有值：
+
+    PYTHONPATH=src python scripts/merge_paper_metadata.py --base datasets/local_bm25/pasa_papers.jsonl --metadata <合法元数据.jsonl> --output outputs/pasa_papers_enriched.jsonl --report outputs/pasa_papers_enriched.report.json
+
+先用 `scripts/audit_corpus_metadata.py` 审计报告，再把新语料用于 smoke/200 条成对评测。不要把来源不明、标题猜测、gold/qrels 或服务器私有数据当作元数据输入。
+
 每次 benchmark 应在 outputs/benchmark_runs/<run_id>/ 生成 config.json、metrics.json、results.jsonl、failures.jsonl 和资源账本。outputs/ 默认被忽略，不会随 GitHub 发布。
 
 本地与服务器只有在以下字段全部相符时，才可称为“同一实验输入：

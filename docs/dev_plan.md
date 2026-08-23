@@ -10,7 +10,7 @@
 - [x] `npm run lint` 与 `npm run build` 当前通过。
 - [x] `PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q --maxfail=1` 已在当前 checkout 完整通过：`2267 passed, 185 skipped, 2 warnings`。跳过项均为结构化 preflight 标记的历史证据、冻结哈希、Windows 权限或外部环境阻塞；严格生产门禁仍在缺失/漂移时失败，不修改冻结哈希。
 - [x] 已增加显式历史证据 preflight：`scripts/audit_cluster_significance.py preflight` 与 `scripts/check_current_rules_regression.py preflight` 返回 `external_evidence_unavailable`，严格 `check` 仍失败；默认测试只对已显式接入 preflight 的门禁做结构化跳过，未接入的门禁仍会严格暴露阻塞。当前全量回归已完成，剩余跳过项均有对应边界说明。
-- [ ] 文档中声称的 `contest_full_dense_reranker_rrf_soft_v3`、P0 精确元数据/Faiss 运行产物不在当前工作树中；不得把相应数值视为可审计成绩，必须先改正文档并重新完成可读产物的成对实验。
+- [x] 已清理旧文档中不可核验的 `contest_full_dense_reranker_rrf_soft_v3`/P0 数字，并在干净提交 `e7f2b72` 重新生成可读的 200 条 BM25/Hybrid 成对诊断；完整元数据和 1000 条正式运行仍未完成。
 - [x] 已核对并统一 `docs/report/technical_report.md`、`docs/architecture.md`、`docs/contest/experiment-results.md`、`docs/evaluation.md` 和 `README.md` 的当前证据边界；不可读取的服务器 Dense/Reranker/RRF 数字已删除或明确标为历史不可核验，仍保留实验协议和复现入口。
 - [x] 只读比较上游 `solace47/ScholarNavigator` 最新 commit `345aadf` 与基线 `106891d...`：上游新增 LLM 候选选择、全篇获取和配对分析，但当前架构已有更严格的证据/门禁闭环；本轮只选择性移植全文重定向 allow-list 校验，未整体合并上游，也未在无 Provider/成对实验时启用 LLM 算法变化。
 - [ ] 不连接服务器、不读取 `.env` 或 SSH 凭据；需要真实 Provider/GPU/官方 scorer 的任务只记录外部依赖，不伪造完成。
@@ -19,6 +19,7 @@
 
 - [x] 在干净提交 `e7f2b72` 上完成同一前 200 条查询、相同 `high_recall`/300 候选预算的 BM25 与 Hybrid 配对运行：`contest_qual200_local_clean_e7f2b72` vs `contest_qual200_hybrid_clean_e7f2b72_retry`。两组 `code.dirty=false`、query 完整 200 条、失败日志为空且 runtime hash 一致；Hybrid ΔRecall@20=`0.04134`（95% CI `[0.01400,0.07179]`），ΔF1@20=`0.00687`（95% CI `[0.00301,0.01111]`）。输入仍是 legacy title+abstract 语料，authors/year/venue/doi 完整度为 0；因此这是当前 clean commit 的内部资格诊断，不是官方成绩，P1-01 未完成，不能自动启动 1000 条正式运行。
 - [x] 新增 `docs/sync-and-release.md`，明确服务器实验结果位置、脱敏 bundle 边界、本地/GitHub 一致性判定和队友复现范围；不上传 `outputs/`、模型、索引、`.env` 或 SSH 凭据。
+- [x] P1-01 增加 `scripts/merge_paper_metadata.py`：离线合并合法外部 JSONL 元数据，按稳定 arXiv ID 精确关联，只填充缺失字段；冲突、重复 ID、非法年份/身份和未匹配记录均可审计，默认不覆盖已有值。专项测试 `tests/test_merge_paper_metadata.py` 为 `3 passed`；当前真实语料仍未因该工具而虚构完整度。
 
 - [x] Benchmark CLI 的本地 BM25/Hybrid 语料身份改为显式必填：选择本地来源时必须同时提供 `--local-bm25-document-id-identity` 及对应字段映射（如 `arxiv_id` + `--local-bm25-arxiv-id-field arxiv_id`）。缺失时 fail-closed，避免使用默认 `s2orc_corpus_id` 导致评测运行成功但 gold 匹配静默全零。新增 3 个回归测试；专项 `tests/test_benchmark_runner.py` 为 `33 passed`。
 - [x] 用正确 arXiv 身份配置重跑 5 条离线 BM25 smoke：RunId `local_bm25_smoke_identity_guard_a2c65d2`，Recall@20 `0.20`、F1@5 `0.067`、MRR `0.20`、成功率 `1.0`；该结果仅为本地 smoke，不作为正式比赛成绩。运行绑定当前工作树（dirty）及语料/索引哈希，产物留在被忽略的 `outputs/`。
@@ -134,6 +135,7 @@
 - **增量验证（2026-08-22）**：`local_hybrid._paper_from_semantic_row()` 已将 authors/year/venue/doi 接入 `Paper`/`PaperIdentifiers`，含 DOI 规范化与年份范围校验；新增元数据映射测试通过。现有语料仍缺字段，故不能宣称排序元数据质量已达标。
 - **增量验证（2026-08-22）**：`local_hybrid` 读取语义语料时现在强制稳定 arXiv ID、规范化版本号并拒绝重复 ID；专项本地连接器/API/构建器测试 `26 passed`。这完成了索引入口契约的一部分，但真实语料的元数据补齐仍未完成。
 - **增量验证（2026-08-22）**：语义索引 `metadata.json` 现在记录 title/abstract/authors/year/venue/doi 的 `field_completeness`，与语料 SHA-256、文档数和 ANN 指纹一起持久化；索引测试通过。当前真实语料仍以 `authors/year/venue/doi=0` 为主，P1-01 不勾选完成。
+- **增量验证（2026-08-23）**：新增离线元数据合并器和冲突测试。它只提供可复现的输入管线，不生成或推断作者、年份、venue、DOI；在获得合法外部元数据前，P1-01 仍保持未完成。
 - **增量验证（2026-08-23）**：元数据审计新增 `--require-fields` 严格门禁，并区分 `structural_passed` 与 `required_fields_complete`；对当前 BM25 语料使用 title/abstract/authors/year/venue/doi 全字段要求时结构门禁通过但严格结果为 `passed=false`。当前 BM25 语料 SHA-256 为 `ede3bd1b…d102f28`（569,432 条），semantic 语料 SHA-256 为 `20ecf5d3…e234bcb`（31,136 条），缺失排序元数据仍是外部数据依赖，未伪造完成。
 
 ### P1-02 召回/F1 成对资格与完整评测
