@@ -227,6 +227,7 @@
 - **增量安全修复（2026-08-23）**：发布验证器独立拒绝 `.env`、密钥、`outputs/`、语义模型/索引和 legacy 源码路径，即使 ZIP 内 manifest 自洽也不放行；专项 `3 passed`。这避免验证器只证明完整性而漏掉发布边界。
 - **最终发布安全复核（2026-08-23，提交 `ad39fe9`）**：公开文档中的服务器绝对路径已替换为 `<server-project-root>` 占位符；验证器新增 Markdown/JSON/JSONL 等文本内容扫描，拒绝服务器地址；发布验证专项 `8 passed`，clean-clone smoke 仍为 `ready`，本地与 GitHub commit 一致。
 - **增量修复（2026-08-23）**：发现测试夹具也会随 source-only 包发布，已移除其中的服务器路径字面量，并取消验证器对 `tests/` 的扫描豁免；现在所有可读发布文本均执行路径扫描，专项 `6 passed`。
+- **最终验证（2026-08-23，提交 `fc1cb4b`）**：clean-clone smoke 通过；source-only ZIP `36,934,885` bytes、1,020 个文件，manifest/哈希/路径与文本安全扫描均通过，health/config=200，离线 BM25 5 条，网络请求 0，LLM disabled。
 
 ### P2-03 参赛材料一致性审查
 
