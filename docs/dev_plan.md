@@ -40,6 +40,7 @@
 - [x] 前端可复现构建 preflight 现在同时检查冻结提交祖先关系和 Windows symlink 权限；无 symlink 权限时结构化标记 `symlink_privilege_unavailable` 并跳过真实跨父目录构建，具备权限的平台仍执行严格字节一致性验证。专项 `5 passed, 1 skipped`。
 - [x] Full1000 launch-control preflight 现在检查冻结提交是否为当前 checkout 祖先；历史协议分叉时返回 `external_evidence_unavailable` 并跳过仅依赖冻结运行的模拟，严格 `build_preparation` 仍拒绝 `source_commit_not_ancestor`。专项 `14 skipped`（当前冻结输入不可用）。
 - [x] evidence transparency preflight 现在检查冻结提交是否为当前 checkout 祖先；历史对象存在但已分叉时返回 `source_blob_unavailable`，避免公共契约快照误进入严格构建。透明度/公共契约专项 `19 passed, 15 skipped`。
+- [x] 当前 checkout 在上述 preflight 修复后完成完整后端回归：`2294 passed, 184 skipped, 2 warnings`（约 13 分 11 秒）。跳过项均有历史外部证据、冻结提交分叉或平台权限边界；没有修改冻结哈希、伪造指标或将跳过项写成赛事资格通过。
 
 - [x] 修复前端失败轮询实际未使用 `status.error_message` 的缺口：失败运行现在优先展示状态接口提供的真实原因，仅在字段为空时回退请求结果接口；`frontend` 的 lint/build 均通过。该改动提升失败降级可解释性，不改变检索排序。
 
