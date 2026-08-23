@@ -56,6 +56,7 @@ from scholar_agent.evaluation.formal_validation_preregistration import (
     audit_readiness as audit_preregistration_readiness,
     evaluate_amendment,
     load_protocol as load_preregistration_protocol,
+    PreregistrationError,
     read_json as read_preregistration_json,
     verify_seal,
 )
@@ -344,13 +345,41 @@ def preflight_source_commit(repository_root: Path) -> dict[str, Any]:
         timeout=20,
         env={**os.environ, "LANG": "C", "LC_ALL": "C"},
     )
-    ready = completed.returncode == 0
+    object_present = completed.returncode == 0
+    head = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=repository_root,
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=20,
+        env={**os.environ, "LANG": "C", "LC_ALL": "C"},
+    )
+    observed_head = head.stdout.strip() if head.returncode == 0 else None
+    ancestry = False
+    if object_present and observed_head:
+        ancestry = subprocess.run(
+            ["git", "merge-base", "--is-ancestor", SOURCE_COMMIT, observed_head],
+            cwd=repository_root,
+            check=False,
+            capture_output=True,
+            timeout=20,
+            env={**os.environ, "LANG": "C", "LC_ALL": "C"},
+        ).returncode == 0
+    ready = object_present and ancestry
     return {
         "schema_version": "formal-validation-dress-rehearsal-preflight-v1",
         "status": "ready" if ready else "external_evidence_unavailable",
         "source_commit": SOURCE_COMMIT,
-        "object_present": ready,
-        "blockers": [] if ready else [{"kind": "frozen_source_commit_missing"}],
+        "object_present": object_present,
+        "observed_head": observed_head,
+        "ancestor_of_head": ancestry,
+        "blockers": [] if ready else [{
+            "kind": (
+                "frozen_source_commit_missing"
+                if not object_present else "frozen_source_commit_not_ancestor"
+            )
+        }],
     }
 
 
@@ -1410,9 +1439,20 @@ def audit_readiness(
     seal = read_preregistration_json(
         _binding_path(protocol, root, "preregistration_seal")
     )
-    preregistration_status = audit_preregistration_readiness(
-        preregistration, seal, repository_root=root
-    )
+    try:
+        preregistration_status = audit_preregistration_readiness(
+            preregistration, seal, repository_root=root
+        )
+    except PreregistrationError as exc:
+        # A frozen historical seal may reference implementation hashes from a
+        # different checkout. Keep the strict seal gate fail-closed, while the
+        # synthetic rehearsal reports the missing external evidence explicitly.
+        preregistration_status = {
+            "status": "external_evidence_unavailable",
+            "exit_code": 3,
+            "blockers": [f"preregistration_evidence_unavailable:{exc}"],
+            "formal_validation_complete": False,
+        }
     human_protocol = load_delivery_protocol(
         _binding_path(protocol, root, "human_delivery_protocol"), root
     )

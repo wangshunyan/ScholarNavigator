@@ -36,6 +36,7 @@
 - [x] local BM25 运行时配置现在展示索引构建时统计的 `title/abstract/authors/year/venue/doi` 字段完整度，并标注 `metadata_quality_scope=diagnostic_only`；缓存 schema 升级到 v4，旧索引自动重建，未生成索引时明确返回未知值。该能力只提升数据可信度与演示可解释性，不补齐或推断真实元数据，也不改变 BM25 排序；专项 `31 passed`。
 - [x] 前端运行面板现在展示在线检索源数量、本地 BM25 配置/字段完整度和 LLM Provider 状态；未建立索引时显示未知，LLM 关闭时明确展示规则回退与不读取凭据。该改动只提升评委可见性和失败边界，不改变排序；前端 lint/build 通过。
 - [x] 修正灾备历史输入 preflight：冻结 source commit 即使存在于本地对象库、但不是当前 checkout 祖先时，也返回 `external_evidence_unavailable` 并跳过历史模拟；严格运行仍拒绝 `source_commit_not_ancestor`。专项 `8 passed, 9 skipped`，未修改冻结协议哈希。
+- [x] 修正正式验证 rehearsal/preregistration 的历史证据 preflight：冻结提交非当前祖先时显式标记不可用并跳过依赖历史 seal/package 的测试；严格 seal/包校验仍拒绝哈希漂移。专项 `10 passed, 15 skipped`，未修改冻结协议或补写历史证据。
 
 - [x] 修复前端失败轮询实际未使用 `status.error_message` 的缺口：失败运行现在优先展示状态接口提供的真实原因，仅在字段为空时回退请求结果接口；`frontend` 的 lint/build 均通过。该改动提升失败降级可解释性，不改变检索排序。
 
