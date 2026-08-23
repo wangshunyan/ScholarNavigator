@@ -202,13 +202,30 @@ def preflight_source_commit(root: Path, protocol: Mapping[str, Any]) -> dict[str
         timeout=10,
         env={**os.environ, "LANG": "C", "LC_ALL": "C"},
     )
-    ready = completed.returncode == 0
+    object_present = completed.returncode == 0
+    head = subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=root.resolve(), check=False,
+        capture_output=True, text=True, timeout=10,
+        env={**os.environ, "LANG": "C", "LC_ALL": "C"},
+    )
+    observed_head = head.stdout.strip() if head.returncode == 0 else None
+    ancestor = False
+    if object_present and observed_head:
+        ancestor = _git_is_ancestor(root.resolve(), source_commit, observed_head)
+    ready = object_present and ancestor
+    blockers = []
+    if not object_present:
+        blockers.append({"kind": "frozen_source_commit_missing"})
+    elif not ancestor:
+        blockers.append({"kind": "frozen_source_commit_not_ancestor", "observed_head": observed_head})
     return {
         "schema_version": "full1000-launch-control-preflight-v1",
         "status": "ready" if ready else "external_evidence_unavailable",
         "source_commit": source_commit,
-        "object_present": ready,
-        "blockers": [] if ready else [{"kind": "frozen_source_commit_missing"}],
+        "object_present": object_present,
+        "observed_head": observed_head,
+        "ancestor_of_head": ancestor,
+        "blockers": blockers,
     }
 
 
