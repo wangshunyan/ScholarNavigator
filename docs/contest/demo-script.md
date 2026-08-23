@@ -52,6 +52,12 @@ PYTHONPATH=src python scripts/fetch_open_full_text.py \
 展示仓库 README 的安装与启动命令，以及离线 smoke 命令：
 
 ```bash
+cp .env.example .env
+```
+
+Windows PowerShell 使用 `Copy-Item .env.example .env`。复制模板后，首次本地 BM25 建索引可能需要十几秒；模板保持 LLM disabled，不需要 API Key。
+
+```bash
 PYTHONPATH=src python scripts/check_clean_clone_smoke.py \
   --output outputs/clean_clone_smoke_local.json
 ```

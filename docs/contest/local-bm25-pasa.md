@@ -55,7 +55,8 @@ SCHOLAR_AGENT_LOCAL_BM25_TITLE_FIELD=title
 SCHOLAR_AGENT_LOCAL_BM25_ABSTRACT_FIELD=abstract
 SCHOLAR_AGENT_LOCAL_BM25_DOCUMENT_IDENTITY=arxiv_id
 SCHOLAR_AGENT_LOCAL_BM25_ARXIV_ID_FIELD=arxiv_id
-SCHOLAR_AGENT_LOCAL_BM25_DOI_FIELD=doi
+# 随包标题语料没有 DOI；只有元数据完整语料才填写 doi
+SCHOLAR_AGENT_LOCAL_BM25_DOI_FIELD=
 ```
 
 启动后访问 `http://127.0.0.1:8000/api/v1/runtime/config`，看到 `local_bm25` 为 `available: true` 即表示后端已识别本地索引。
