@@ -33,3 +33,30 @@ def test_audit_rejects_invalid_rows(tmp_path: Path) -> None:
     assert report["invalid_json_rows"] == 1
     assert report["invalid_identity_rows"] == 0
     assert report["passed"] is False
+
+
+def test_audit_can_fail_closed_on_required_sorting_metadata(tmp_path: Path) -> None:
+    corpus = tmp_path / "papers.jsonl"
+    corpus.write_text(
+        json.dumps(
+            {
+                "arxiv_id": "2501.00001",
+                "title": "A",
+                "abstract": "x",
+                "authors": ["Author"],
+                "year": 2025,
+                "venue": "ACL",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    report = audit_jsonl_corpus(
+        corpus,
+        required_fields=("title", "abstract", "authors", "year", "venue", "doi"),
+    )
+
+    assert report["structural_passed"] is True
+    assert report["required_fields_complete"] is False
+    assert report["passed"] is False

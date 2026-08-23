@@ -92,19 +92,21 @@
 - **增量验证（2026-08-23）**：最终轮回归在 `2243 passed / 184 skipped` 暴露 validation-evidence-freshness 冻结 inventory 与当前真实实现提交/组件摘要不一致（276 个历史项 stale）。当前库存测试现显式跳过并保留严格 `verify_current()` 失败；不能把修改后的治理代码冒充旧 freshness seal。
 - **最终回归（2026-08-23）**：上述分层修复后，`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q --maxfail=1` 完整通过：`2264 passed, 185 skipped, 2 warnings`，耗时约 12 分钟。跳过项均有对应 preflight/环境说明；没有修改冻结哈希、删除门禁或伪造外部实验结果。该计数证明当前 checkout 的可重建代码与测试闭环通过，不等于官方比赛 scorer 或历史 GPU/Provider 指标已完成。
 - **增量验证（2026-08-22）**：P0-03 发布 smoke 已完成：source-only 包全新目录 `compileall` 通过，`/api/v1/health` 返回 200；从当前 Git HEAD 归档到全新目录后，API health 返回 200，使用 GitHub 可获得的 `datasets/local_bm25/pasa_papers.jsonl` 进行离线 BM25 检索返回 5 条结果（网络 0）。前端 lint/build 已通过。原始大型索引、semantic 语料和正式评测仍不随 Git 发布。
-- **增量验证（2026-08-22）**：同一 Git clone smoke 的 `/api/v1/runtime/config` 返回 200，明确报告 LLM `provider_disabled`、local connectors 未配置和真实 API connector 能力；没有把未配置 Provider 或本地索引写成已就绪。P0-03 仍待完整依赖安装和结构化导出步骤验证后再勾选。
-- **增量验证（2026-08-23）**：clean-clone smoke 已重复验证并写入 `outputs/clean_clone_smoke_20260823.json`（该目录受 `.gitignore` 保护，不上传 GitHub）。结果为 `status=ready`、API 两个 200、local BM25 五条结果、零网络请求；source-only release 成员数 1005，明确不含 `.env`、`outputs/`、semantic 语料或模型缓存。P0-03 仍保留未完成，待补充依赖安装/结构化导出验收并完成全量回归后再勾选。
-- **增量验证（2026-08-23）**：最终 clean-clone smoke 写入 `outputs/clean_clone_smoke_20260823_final.json`，仍为 `status=ready`、health/config 200、离线 BM25 5 条、网络请求 0、dotenv 读取 false；发布包成员数 1006（新增脚本/测试后），仍不含 `.env`、outputs、semantic 数据或模型缓存。该产物仅保留本地，不上传 GitHub。
+- **增量验证（2026-08-22）**：同一 Git clone smoke 的 `/api/v1/runtime/config` 返回 200，明确报告 LLM `provider_disabled`、local connectors 未配置和真实 API connector 能力；没有把未配置 Provider 或本地索引写成已就绪。当时仅完成 smoke，后续已补充全新环境依赖安装验收。
+- **增量验证（2026-08-23）**：clean-clone smoke 已重复验证并写入 `outputs/clean_clone_smoke_20260823.json`（该目录受 `.gitignore` 保护，不上传 GitHub）。结果为 `status=ready`、API 两个 200、local BM25 五条结果、零网络请求；source-only release 成员数 1005，明确不含 `.env`、`outputs/`、semantic 语料或模型缓存。该次检查当时尚未执行全新环境依赖安装，后续已补齐。
+- **增量验证（2026-08-23）**：最终 clean-clone smoke 写入 `outputs/clean_clone_smoke_20260823_final.json`，仍为 `status=ready`、health/config 200、离线 BM25 5 条、网络请求 0、dotenv 读取 false；发布包成员数 1006（新增脚本/测试后），仍不含 `.env`、outputs、semantic 数据或模型缓存。该产物仅保留本地，不上传 GitHub；实际依赖安装随后在全新 GitHub clone 中完成。
 - **增量验证（2026-08-23）**：扩展 clean-clone smoke 生成并校验 `offline-search-result-v1` 结构化离线结果（5 条、稳定 rank、arXiv ID/title/source、无 gold 字段），同时验收 `requirements.txt`、`frontend/package.json` 与 lockfile 在 source-only 包中存在；专项测试 `2 passed`，最终 smoke 为 `status=ready`、网络 0、dotenv 读取 false。仍未把“依赖实际安装”误写成已完成。
-- **完成判定（2026-08-23）**：P0-02 已完成。默认回归在当前 Windows checkout 通过，外部历史输入由显式 preflight 分层；生产严格 `check/evaluate` 命令仍 fail-closed。P0-03 继续保持未完成，仅剩全新环境中的实际依赖安装/启动验收；结构化离线结果导出已经通过 clean-clone smoke。
+- **完成判定（2026-08-23）**：P0-02 已完成。默认回归在当前 Windows checkout 通过，外部历史输入由显式 preflight 分层；生产严格 `check/evaluate` 命令仍 fail-closed。结构化离线结果导出已经通过 clean-clone smoke。
+- **最终回归（2026-08-23）**：加入元数据严格门禁后重新运行全仓库：`2266 passed, 185 skipped, 2 warnings`，耗时约 12 分 23 秒。跳过项仍是有明确 preflight/外部输入说明的历史证据，不修改冻结哈希、不使用 gold 替代物。
 
 ### P0-03 发布包与文档状态一致
 
-- [ ] **目标**：统一代码实际能力、评测结果、限制和发布包内容，删除过期“已完成/未实现”冲突描述。
+- [x] **目标**：统一代码实际能力、评测结果、限制和发布包内容，删除过期“已完成/未实现”冲突描述。
 - **验收**：从全新目录安装后可完成 smoke、前端构建、API 启动和离线评测；报告中的每个指标都能链接到实际产物，明确标注“内部指标/非官方成绩”。
 - **依赖**：P0-02；不要求历史 `record160` 或官方 scorer 可用。
-- **增量验证（2026-08-22）**：审阅并修正 `docs/contest/submission-checklist.md`、`submission-report-template.md`、`experiment-protocol.md` 中无法由当前 checkout 核验的 P0/Faiss、Dense/Reranker/RRF 完整运行数字；改为待重新运行/不可审计状态，并保留内部指标与官方成绩边界。`technical_report.md`、`architecture.md`、`experiment-results.md` 未发现同类具体 RunId 数字残留。P0-03 仍未完成，因尚未完成全新目录 smoke/API/frontend/release 验证。
-- **增量验证（2026-08-22）**：构建 source-only release audit 包 `outputs/release-audit-20260822.zip`，共 995 个成员；检查确认无 `.env`、`outputs/`、`datasets/semantic/`、服务器 IP 或本地绝对路径，构建器标记 `internal_metric_scope=not_official_competition_scorer`。仍需全新目录安装、API health、前端 build 和离线检索 smoke，故 P0-03 不勾选完成。
+- **增量验证（2026-08-22）**：审阅并修正 `docs/contest/submission-checklist.md`、`submission-report-template.md`、`experiment-protocol.md` 中无法由当前 checkout 核验的 P0/Faiss、Dense/Reranker/RRF 完整运行数字；改为待重新运行/不可审计状态，并保留内部指标与官方成绩边界。`technical_report.md`、`architecture.md`、`experiment-results.md` 未发现同类具体 RunId 数字残留。该次记录是在全新依赖安装前，现由后续验收补充。
+- **增量验证（2026-08-22）**：构建 source-only release audit 包 `outputs/release-audit-20260822.zip`，共 995 个成员；检查确认无 `.env`、`outputs/`、`datasets/semantic/`、服务器 IP 或本地绝对路径，构建器标记 `internal_metric_scope=not_official_competition_scorer`。当时尚未完成实际依赖安装，现已由全新 clone 验收补齐。
+- **完成判定（2026-08-23）**：从 GitHub `main` 的当前 HEAD `cc684e4` 全新浅克隆后，在全新 Python 3.12 虚拟环境安装 `requirements.txt` 与 `requirements-dev.txt`，前端执行 `npm ci`；API health/config 均返回 200，离线 BM25 返回 5 条，`npm run lint` 与 `npm run build` 均通过。该验收证明 source-only 项目的干净环境可复现，不代表语义模型、GPU Reranker、LLM Provider 或官方 scorer 已就绪。
 
 ## P1：最终效果（召回/F1 → 质量过滤 → 全文证据）
 
@@ -117,6 +119,7 @@
 - **增量验证（2026-08-22）**：`local_hybrid._paper_from_semantic_row()` 已将 authors/year/venue/doi 接入 `Paper`/`PaperIdentifiers`，含 DOI 规范化与年份范围校验；新增元数据映射测试通过。现有语料仍缺字段，故不能宣称排序元数据质量已达标。
 - **增量验证（2026-08-22）**：`local_hybrid` 读取语义语料时现在强制稳定 arXiv ID、规范化版本号并拒绝重复 ID；专项本地连接器/API/构建器测试 `26 passed`。这完成了索引入口契约的一部分，但真实语料的元数据补齐仍未完成。
 - **增量验证（2026-08-22）**：语义索引 `metadata.json` 现在记录 title/abstract/authors/year/venue/doi 的 `field_completeness`，与语料 SHA-256、文档数和 ANN 指纹一起持久化；索引测试通过。当前真实语料仍以 `authors/year/venue/doi=0` 为主，P1-01 不勾选完成。
+- **增量验证（2026-08-23）**：元数据审计新增 `--require-fields` 严格门禁，并区分 `structural_passed` 与 `required_fields_complete`；对当前 BM25 语料使用 title/abstract/authors/year/venue/doi 全字段要求时结构门禁通过但严格结果为 `passed=false`。当前 BM25 语料 SHA-256 为 `ede3bd1b…d102f28`（569,432 条），semantic 语料 SHA-256 为 `20ecf5d3…e234bcb`（31,136 条），缺失排序元数据仍是外部数据依赖，未伪造完成。
 
 ### P1-02 召回/F1 成对资格与完整评测
 

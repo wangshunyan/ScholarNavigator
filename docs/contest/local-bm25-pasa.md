@@ -32,6 +32,17 @@ AstaBench/PaperFindingBench 可作为泛化验证；SciFact 可作为封闭语�
 
 不要把 `AutoScholarQuery_test.jsonl` 的 gold 论文直接转换成检索语料。那会把答案泄漏进检索阶段，只能用于格式冒烟测试，不能用于正式评测或提交说明。
 
+转换后先运行结构与排序元数据门禁：
+
+```powershell
+$env:PYTHONPATH="src"
+.\.venv\Scripts\python.exe scripts\audit_corpus_metadata.py `
+  datasets\local_bm25\pasa_papers.jsonl `
+  --require-fields title abstract authors year venue doi
+```
+
+该命令只有在每条记录都具备稳定 arXiv ID 及全部排序字段时才返回成功；当前仓库附带的标题语料会明确失败，因为它是离线 BM25 smoke 资产而不是正式元数据完整语料。
+
 ## 后端 `.env`
 
 在项目根目录 `.env` 中配置：

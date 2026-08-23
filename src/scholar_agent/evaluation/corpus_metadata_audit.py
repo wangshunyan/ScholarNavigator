@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 from scholar_agent.core.identity import normalize_arxiv_id
 
@@ -13,7 +13,16 @@ from scholar_agent.core.identity import normalize_arxiv_id
 REQUIRED_FIELDS = ("title", "abstract", "authors", "year", "venue", "doi")
 
 
-def audit_jsonl_corpus(path: str | Path, *, identity_field: str = "arxiv_id") -> dict[str, Any]:
+def audit_jsonl_corpus(
+    path: str | Path,
+    *,
+    identity_field: str = "arxiv_id",
+    required_fields: Sequence[str] = (),
+) -> dict[str, Any]:
+    unknown_fields = sorted(set(required_fields) - set(REQUIRED_FIELDS))
+    if unknown_fields:
+        raise ValueError(f"unsupported_required_metadata_fields:{','.join(unknown_fields)}")
+    required = tuple(dict.fromkeys(required_fields))
     source = Path(path).expanduser().resolve()
     digest = hashlib.sha256()
     row_count = 0
@@ -50,6 +59,16 @@ def audit_jsonl_corpus(path: str | Path, *, identity_field: str = "arxiv_id") ->
             else:
                 identities.add(identity)
     valid_rows = row_count - invalid_json_rows - non_object_rows
+    required_fields_complete = all(
+        valid_rows > 0 and present_counts[field] == valid_rows for field in required
+    )
+    structural_passed = (
+        bool(valid_rows)
+        and invalid_json_rows == 0
+        and non_object_rows == 0
+        and invalid_identity_rows == 0
+        and duplicate_identity_rows == 0
+    )
     return {
         "schema_version": "corpus-metadata-audit-v1",
         "path": str(source),
@@ -67,9 +86,8 @@ def audit_jsonl_corpus(path: str | Path, *, identity_field: str = "arxiv_id") ->
             field: (present_counts[field] / valid_rows if valid_rows else 0.0)
             for field in REQUIRED_FIELDS
         },
-        "passed": bool(valid_rows)
-        and invalid_json_rows == 0
-        and non_object_rows == 0
-        and invalid_identity_rows == 0
-        and duplicate_identity_rows == 0,
+        "required_fields": list(required),
+        "required_fields_complete": required_fields_complete,
+        "structural_passed": structural_passed,
+        "passed": structural_passed and required_fields_complete,
     }
