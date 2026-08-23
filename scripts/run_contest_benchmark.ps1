@@ -54,7 +54,7 @@ $arguments = @(
     "--offset", $Offset,
     "--limit", $Limit,
     "--run-profile", $(
-        if ($Configuration -in @("hybrid_deep_rrf", "dense", "reranker", "dense_reranker_soft", "dense_reranker_rrf_soft", "dense_reranker_quality", "dense_reranker_llm", "dense_reranker_llm_feedback")) {
+        if ($Mode -eq "qualification" -or $Configuration -in @("hybrid_deep_rrf", "dense", "reranker", "dense_reranker_soft", "dense_reranker_rrf_soft", "dense_reranker_quality", "dense_reranker_llm", "dense_reranker_llm_feedback")) {
             "high_recall"
         } elseif ($Mode -eq "full") {
             "evaluation"
@@ -85,7 +85,7 @@ $arguments = @(
     "--local-bm25-doi-field", "doi"
 )
 
-if ($Configuration -in @("hybrid_deep_rrf", "dense", "reranker", "dense_reranker_soft", "dense_reranker_rrf_soft", "dense_reranker_quality", "dense_reranker_llm", "dense_reranker_llm_feedback")) {
+if ($Mode -eq "qualification" -or $Configuration -in @("hybrid_deep_rrf", "dense", "reranker", "dense_reranker_soft", "dense_reranker_rrf_soft", "dense_reranker_quality", "dense_reranker_llm", "dense_reranker_llm_feedback")) {
     $arguments += @(
         "--max-candidate-papers",
         "300"

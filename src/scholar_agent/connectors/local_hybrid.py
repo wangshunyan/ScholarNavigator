@@ -275,7 +275,20 @@ def build_local_hybrid_index(
         raise ValueError("local_hybrid_resume_progress_missing")
 
     peak_memory = _current_rss_bytes()
-    embeddings_complete = bool(progress and progress.get("phase") == "faiss")
+    reused_existing_embeddings = False
+    if progress is None and embeddings_path.is_file():
+        reused_existing_embeddings = _legacy_embeddings_reuse_eligible(
+            metadata_path,
+            embeddings_path,
+            corpus_sha=corpus_sha,
+            model_fingerprint=model_fingerprint,
+            document_count=len(rows),
+            embedding_dimension=embedding_dimension,
+        )
+    embeddings_complete = bool(
+        (progress and progress.get("phase") == "faiss")
+        or reused_existing_embeddings
+    )
     if embeddings_complete:
         if _embedding_shape(embeddings_path) != (len(rows), embedding_dimension):
             raise ValueError("local_hybrid_resume_embeddings_invalid")
@@ -350,7 +363,7 @@ def build_local_hybrid_index(
     for start in range(index_start, len(rows), _FAISS_BATCH_SIZE):
         end = min(len(rows), start + _FAISS_BATCH_SIZE)
         ann_index.add(np.asarray(matrix[start:end], dtype=np.float32))
-        faiss.write_index(ann_index, str(partial_faiss_path))
+        _write_faiss_index(ann_index, partial_faiss_path)
         peak_memory = max(peak_memory, _current_rss_bytes())
         _write_build_progress(progress_path, {**expected, "phase": "faiss", "next_row": end})
     if int(ann_index.ntotal) != len(rows):
@@ -397,6 +410,7 @@ def build_local_hybrid_index(
         "ann_query_seconds": ann_query_seconds,
         "exact_query_seconds": exact_query_seconds,
         "resumable_build": True,
+        "reused_existing_embeddings": reused_existing_embeddings,
     }
     _atomic_write_text(metadata_path, json.dumps(metadata_payload, ensure_ascii=False, indent=2) + "\n")
     progress_path.unlink(missing_ok=True)
@@ -832,10 +846,34 @@ def _read_faiss_index(
 ) -> Any:
     if not path.is_file():
         raise ValueError("local_hybrid_faiss_index_not_found")
-    index = _load_faiss().read_index(str(path))
+    faiss = _load_faiss()
+    try:
+        index = faiss.read_index(str(path))
+    except (OSError, RuntimeError, ValueError):
+        # The Windows Faiss wheel cannot reliably open non-ASCII paths.  The
+        # serialized API keeps the same binary format while letting Python
+        # perform Unicode-safe file I/O.
+        try:
+            index = faiss.deserialize_index(
+                np.frombuffer(path.read_bytes(), dtype=np.uint8)
+            )
+        except (OSError, RuntimeError, ValueError) as exc:
+            raise ValueError("local_hybrid_faiss_index_read_failed") from exc
     if int(index.d) != dimension or int(index.ntotal) != expected_count:
         raise ValueError("local_hybrid_faiss_index_shape_invalid")
     return index
+
+
+def _write_faiss_index(index: Any, path: Path) -> None:
+    """Persist a Faiss index through Unicode-safe Python file I/O."""
+
+    payload = np.asarray(_load_faiss().serialize_index(index), dtype=np.uint8)
+    temporary = _temporary_path(path)
+    try:
+        temporary.write_bytes(payload.tobytes())
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
 
 
 def _set_faiss_ef_search(index: Any, ef_search: int) -> None:
@@ -1060,6 +1098,50 @@ def _write_build_progress(path: Path, payload: dict[str, Any]) -> None:
         os.replace(temporary, path)
     finally:
         temporary.unlink(missing_ok=True)
+
+
+def _legacy_embeddings_reuse_eligible(
+    metadata_path: Path,
+    embeddings_path: Path,
+    *,
+    corpus_sha: str,
+    model_fingerprint: str,
+    document_count: int,
+    embedding_dimension: int,
+) -> bool:
+    """Return whether a prior embedding matrix can be safely migrated.
+
+    Index schema changes should not force an expensive re-encoding when the
+    corpus, model bytes, row count, shape, and passage/query contract are
+    unchanged.  The persisted ANN index is still rebuilt by the caller, and
+    any active build-progress file takes precedence over this migration path.
+    Invalid or incomplete legacy metadata simply falls back to a fresh build.
+    """
+
+    try:
+        payload = json.loads(metadata_path.read_text(encoding="utf-8"))
+        if not isinstance(payload, Mapping):
+            return False
+        if payload.get("semantic_corpus_sha256") != corpus_sha:
+            return False
+        if payload.get("model_fingerprint") != model_fingerprint:
+            return False
+        if int(payload.get("document_count", -1)) != document_count:
+            return False
+        if int(payload.get("embedding_dimension", -1)) != embedding_dimension:
+            return False
+        if str(payload.get("embedding_dtype", "float32")) != "float32":
+            return False
+        if payload.get("query_prefix", "query: ") != "query: ":
+            return False
+        if payload.get("passage_prefix", "passage: ") != "passage: ":
+            return False
+        return _embedding_shape(embeddings_path) == (
+            document_count,
+            embedding_dimension,
+        )
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return False
 
 
 def _progress_matches(progress: Mapping[str, Any], expected: Mapping[str, Any]) -> bool:

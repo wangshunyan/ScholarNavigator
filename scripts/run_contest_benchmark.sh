@@ -123,7 +123,7 @@ RUN_PROFILE="evaluation"
 if [[ "$MODE" != "full" ]]; then
   RUN_PROFILE="fast"
 fi
-if [[ "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_rrf_soft" || "$CONFIGURATION" == "dense_reranker_quality" || "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_reranker_llm_feedback" ]]; then
+if [[ "$MODE" == "qualification" || "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_rrf_soft" || "$CONFIGURATION" == "dense_reranker_quality" || "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_reranker_llm_feedback" ]]; then
   RUN_PROFILE="high_recall"
 fi
 
@@ -168,7 +168,7 @@ if [[ "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_re
   ARGS+=("--judgement-config" "benchmark/judgement_soft_current_rules_v1.json")
 fi
 
-if [[ "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_rrf_soft" || "$CONFIGURATION" == "dense_reranker_quality" || "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_reranker_llm_feedback" ]]; then
+if [[ "$MODE" == "qualification" || "$CONFIGURATION" == "hybrid_deep_rrf" || "$CONFIGURATION" == "dense" || "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == "dense_reranker_soft" || "$CONFIGURATION" == "dense_reranker_rrf_soft" || "$CONFIGURATION" == "dense_reranker_quality" || "$CONFIGURATION" == "dense_reranker_llm" || "$CONFIGURATION" == "dense_reranker_llm_feedback" ]]; then
   ARGS+=("--max-candidate-papers" "300")
 fi
 

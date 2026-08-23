@@ -1,6 +1,6 @@
 # 赛题三实验状态（以当前工作树为准）
 
-更新时间：2026 年 8 月 22 日。
+更新时间：2026 年 8 月 23 日。
 
 本页只记录当前 checkout 中可以直接读取、复核和重新运行的证据。服务器目录、旧聊天记录或不存在于当前 `outputs/benchmark_runs/` 的 RunId 都不构成当前证据。所有 F1、Recall 等数值只能作为内部离线工程指标，不能当作赛事官方成绩。
 
@@ -16,7 +16,22 @@
 
 本机存在若干 `outputs/benchmark_runs/` 目录。其中较完整的 local baseline/hybrid 运行使用旧语料或旧实现，且代码指纹不同；比较工具拒绝将它们视为严格成对比较。因此它们只能证明历史链路曾运行，不能证明当前代码的候选收益。
 
-文档曾提到的 Dense、Reranker、RRF 完整产物当前不在本机，相关数字暂不引用。服务器上的同名目录也必须先由操作者导出脱敏 manifest 和哈希后才能纳入审计。
+文档曾提到的 Dense、Reranker 完整产物当前不在本机，相关数字暂不引用。服务器上的同名目录也必须先由操作者导出脱敏 manifest 和哈希后才能纳入审计。
+
+### 当前提交的 200 条 Hybrid 诊断配对
+
+在当前提交 `05759c1309bcdc0b6c48209c58eaf6bdcabb7436`、同一前 200 条查询、相同 `high_recall`/300 候选预算/资源账本下，重新运行了：
+
+| 配置 | RunId | Recall@20 | F1@20 | MRR | 平均延迟（秒） |
+| --- | --- | ---: | ---: | ---: | ---: |
+| BM25 baseline | `contest_qual200_local_highrecall_pair_05759c1` | 0.0684 | 0.00982 | 0.0335 | 1.189 |
+| BM25 + Dense RRF | `contest_qual200_hybrid_deep_rrf_current_05759c1` | 0.1098 | 0.0167 | 0.0712 | 1.193 |
+
+同一查询级别 bootstrap（5,000 次，seed `20260818`）得到 ΔRecall@20=`0.0413`，95% CI `[0.0140, 0.0718]`；ΔF1@20=`0.00687`，95% CI `[0.00301, 0.01111]`。两组成功率均为 1.0，运行代码指纹一致。完整 JSONL/资源账本仍只在本地 `outputs/benchmark_runs/`，不会提交 GitHub。
+
+后续 qualification 命令已固定在两种脚本中统一使用 `high_recall` 和 300 候选预算；可用 `scripts/analyze_paired_benchmark_runs.py` 重新生成上述成对 JSON 报告。
+
+这只是当前 legacy title+abstract 语料上的内部诊断，不是正式资格门禁或赛事官方成绩：作者、年份、期刊和 DOI 完整度仍为 0，故 P1-01 未完成；不能据此启动 1000 条正式运行或宣称 Dense/RRF 已获资格。
 
 ## 正式实验门槛
 

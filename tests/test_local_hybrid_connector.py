@@ -206,6 +206,61 @@ def test_old_index_schema_is_rejected(tmp_path: Path) -> None:
         local_hybrid_module._load_index_metadata(config)
 
 
+def test_legacy_embedding_matrix_can_be_reused_for_schema_migration(
+    tmp_path: Path,
+) -> None:
+    index_dir = tmp_path / "index"
+    index_dir.mkdir()
+    embeddings = np.zeros((2, 3), dtype=np.float32)
+    np.save(index_dir / "embeddings.npy", embeddings)
+    (index_dir / "metadata.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1",
+                "semantic_corpus_sha256": "corpus",
+                "model_fingerprint": "model",
+                "document_count": 2,
+                "embedding_dimension": 3,
+                "embedding_dtype": "float32",
+                "query_prefix": "query: ",
+                "passage_prefix": "passage: ",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    assert local_hybrid_module._legacy_embeddings_reuse_eligible(
+        index_dir / "metadata.json",
+        index_dir / "embeddings.npy",
+        corpus_sha="corpus",
+        model_fingerprint="model",
+        document_count=2,
+        embedding_dimension=3,
+    )
+    assert not local_hybrid_module._legacy_embeddings_reuse_eligible(
+        index_dir / "metadata.json",
+        index_dir / "embeddings.npy",
+        corpus_sha="different-corpus",
+        model_fingerprint="model",
+        document_count=2,
+        embedding_dimension=3,
+    )
+
+
+def test_faiss_index_round_trip_supports_unicode_paths(tmp_path: Path) -> None:
+    faiss = pytest.importorskip("faiss")
+    index = faiss.IndexHNSWFlat(3, 4, faiss.METRIC_INNER_PRODUCT)
+    index.add(np.eye(3, dtype=np.float32))
+    path = tmp_path / "中文索引" / "index.faiss"
+    path.parent.mkdir()
+
+    local_hybrid_module._write_faiss_index(index, path)
+    restored = local_hybrid_module._read_faiss_index(path, 3, 3)
+
+    assert restored.d == 3
+    assert restored.ntotal == 3
+
+
 def test_reranker_configuration_requires_a_local_model_directory(tmp_path: Path) -> None:
     semantic = tmp_path / "semantic.jsonl"
     bm25 = tmp_path / "bm25.jsonl"
