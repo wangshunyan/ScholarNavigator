@@ -20,6 +20,7 @@
 - [x] 在干净提交 `e7f2b72` 上完成同一前 200 条查询、相同 `high_recall`/300 候选预算的 BM25 与 Hybrid 配对运行：`contest_qual200_local_clean_e7f2b72` vs `contest_qual200_hybrid_clean_e7f2b72_retry`。两组 `code.dirty=false`、query 完整 200 条、失败日志为空且 runtime hash 一致；Hybrid ΔRecall@20=`0.04134`（95% CI `[0.01400,0.07179]`），ΔF1@20=`0.00687`（95% CI `[0.00301,0.01111]`）。输入仍是 legacy title+abstract 语料，authors/year/venue/doi 完整度为 0；因此这是当前 clean commit 的内部资格诊断，不是官方成绩，P1-01 未完成，不能自动启动 1000 条正式运行。
 - [x] 新增 `docs/sync-and-release.md`，明确服务器实验结果位置、脱敏 bundle 边界、本地/GitHub 一致性判定和队友复现范围；不上传 `outputs/`、模型、索引、`.env` 或 SSH 凭据。
 - [x] P1-01 增加 `scripts/merge_paper_metadata.py`：离线合并合法外部 JSONL 元数据，按稳定 arXiv ID 精确关联，只填充缺失字段；冲突、重复 ID、非法年份/身份和未匹配记录均可审计，默认不覆盖已有值。专项测试 `tests/test_merge_paper_metadata.py` 为 `3 passed`；当前真实语料仍未因该工具而虚构完整度。
+- [x] 新增元数据合并器后的 clean-clone smoke 复核：`scripts/check_clean_clone_smoke.py` 返回 `status=ready`，API health/config=200，离线 BM25 5 条、网络请求 0、dotenv 读取 false，source-only 发布包 1013 个成员；新增脚本可从 GitHub 干净发布包获得，但语义模型/索引和完整元数据仍需单独准备。
 
 - [x] Benchmark CLI 的本地 BM25/Hybrid 语料身份改为显式必填：选择本地来源时必须同时提供 `--local-bm25-document-id-identity` 及对应字段映射（如 `arxiv_id` + `--local-bm25-arxiv-id-field arxiv_id`）。缺失时 fail-closed，避免使用默认 `s2orc_corpus_id` 导致评测运行成功但 gold 匹配静默全零。新增 3 个回归测试；专项 `tests/test_benchmark_runner.py` 为 `33 passed`。
 - [x] 用正确 arXiv 身份配置重跑 5 条离线 BM25 smoke：RunId `local_bm25_smoke_identity_guard_a2c65d2`，Recall@20 `0.20`、F1@5 `0.067`、MRR `0.20`、成功率 `1.0`；该结果仅为本地 smoke，不作为正式比赛成绩。运行绑定当前工作树（dirty）及语料/索引哈希，产物留在被忽略的 `outputs/`。
