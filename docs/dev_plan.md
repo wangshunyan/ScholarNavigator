@@ -10,6 +10,7 @@
 - 最近专项验证：local BM25/Hybrid/API `31 passed`；前端 `npm run lint` 与 `npm run build` 通过；clean-clone smoke `status=ready`，health/config=200、离线 BM25 5 条、网络请求 0、LLM disabled。
 - 当前公开语料仍不满足正式元数据门禁：BM25 569,432 条仅 title 完整；semantic 31,136 条 title/abstract 完整，authors/year/venue/doi 缺失。两者均结构有效但 `required_fields_complete=false`，不得启动正式资格评测。
 - 当前未导入服务器 evidence bundle；Git 同步不能证明服务器实验数据与本地一致。服务器只能通过 `scripts/package_server_evidence.py` 导出脱敏证据后再审计，原始运行、模型、索引和凭据不上传 GitHub。
+- 本轮补充 `scripts/import_server_evidence.py`：本地导入端只接受 `server_evidence_bundle_v1`，校验成员、导出大小/SHA-256、必要文件和敏感文本后写入被忽略的 `outputs/imported_server_evidence/`；专项导入/篡改回归 `4 passed`。当前仍没有实际用户服务器 bundle，因此服务器实验一致性尚未得到证据证明。
 - 下方带日期的条目是历史增量证据，除非与本快照或当前可读取产物复核一致，不得作为当前状态引用。
 
 ## 当前审计快照（2026-08-23）

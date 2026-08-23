@@ -14,6 +14,7 @@ PYTHONPATH=src python scripts/package_server_evidence.py \
 ```
 
 3. 将生成的 zip 复制到本地 `outputs/imported_server_evidence/`，保留为本地审计材料。工具会要求完整运行标记和核心产物，并会拒绝凭据字段；它会将绝对路径和服务器地址从可导出 JSON/JSONL/Markdown 中替换为占位符，同时记录源文件与导出文件 SHA-256。
+   在本地项目根目录执行 `PYTHONPATH=src python scripts/import_server_evidence.py --bundle <bundle-path> --destination outputs/imported_server_evidence/<run-id>`；导入器会验证 `server_evidence_bundle_v1`、成员列表、导出字节数/SHA-256 和敏感文本，验证失败时不会写入结果。
 4. GitHub 只提交可复现实验的代码、命令、脱敏 manifest 摘要和结论；不要提交 zip、`outputs/benchmark_runs/`、`datasets/semantic/`、`.env`、密钥、原始模型或索引。
 5. 其他人 clone 后按 `README.md` 安装依赖，并使用公开/自行获得的数据重新构建索引与复现实验。内部 F1/Recall 只能写为工程指标，不能描述成赛事官方成绩。
 
