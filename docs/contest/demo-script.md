@@ -27,6 +27,18 @@
 - 有许可全文时展开“全文证据与定位”，查看来源 URL、许可证、文档/段落 SHA-256、段落编号和字符范围；
 - 没有许可全文时明确显示摘要结果仍保留，不把摘要冒充全文证据。
 
+如需现场演示受限全文入口，只使用已经人工核验许可的公开来源，并显式提供 allow-list；没有许可确认时命令会失败关闭：
+
+```bash
+PYTHONPATH=src python scripts/fetch_open_full_text.py \
+  --url https://<已核验公开主机>/<paper> \
+  --license-id CC-BY-4.0 --license-verified \
+  --allowed-host <已核验公开主机> \
+  --output outputs/demo-full-text-evidence.json
+```
+
+该命令只获取指定 URL，不做来源发现或任意重定向；输出中的内容哈希和段落定位可直接在论文卡片/导出中展示。没有可核验来源时展示 `license_unverified` 降级结果，不要使用未知版权 PDF。
+
 ## 3:30–4:10 展示引用关系与导出
 
 打开引用图或方法聚类，随后分别点击 JSON 和 Markdown 导出。Markdown 导出应包含查询、成本、排名理由、普通证据以及全文证据定位，便于评委复核。
