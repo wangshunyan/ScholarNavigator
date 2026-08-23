@@ -2267,6 +2267,19 @@ function GraphEndpoint({ label, value }: { label: string; value: string }) {
 }
 
 function QuerySummary({ result }: { result: SearchRunResultResponse }) {
+  const constraints = result.query_analysis.constraints;
+  const timeRange = asRecord(constraints.time_range);
+  const constraintGroups = [
+    ["方法", asStringArray(constraints.methods)],
+    ["数据集", asStringArray(constraints.datasets)],
+    ["必须包含", asStringArray(constraints.must_have_terms)],
+    ["排除", asStringArray(constraints.excluded_terms)],
+    ["领域", asStringArray(constraints.domains)],
+    ["论文类型", asStringArray(constraints.paper_types)],
+    ["venue", asStringArray(constraints.venues)],
+  ].filter(([, values]) => values.length > 0) as Array<[string, string[]]>;
+  const facets = result.search_plan.query_planning.facets;
+
   return (
     <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
       <div className="panel-soft rounded-lg p-4">
@@ -2277,6 +2290,29 @@ function QuerySummary({ result }: { result: SearchRunResultResponse }) {
           {result.query_analysis.research_topics.map((topic) => (
             <Badge key={topic}>{topic}</Badge>
           ))}
+        </div>
+        <div className="mt-4 rounded-md border border-[var(--border)] bg-[var(--surface)] p-3">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
+            已解析约束
+          </p>
+          <div className="space-y-2 text-sm">
+            {timeRange ? (
+              <ConstraintRow
+                label="时间"
+                value={
+                  String(timeRange.label ||
+                    [timeRange.start_year, timeRange.end_year].filter(Boolean).join("–") ||
+                    "已指定")
+                }
+              />
+            ) : null}
+            {constraintGroups.map(([label, values]) => (
+              <ConstraintRow key={label} label={label} value={values.join(" · ")} />
+            ))}
+            {!timeRange && constraintGroups.length === 0 ? (
+              <p className="text-[var(--muted)]">未识别到显式约束，使用主题相关性检索。</p>
+            ) : null}
+          </div>
         </div>
       </div>
       <div className="panel-soft rounded-lg p-4">
@@ -2289,9 +2325,45 @@ function QuerySummary({ result }: { result: SearchRunResultResponse }) {
             </div>
           ))}
         </div>
+        {facets.length ? (
+          <details className="mt-3 rounded-md border border-[var(--border)] bg-[var(--surface)] p-3">
+            <summary className="cursor-pointer text-sm font-semibold">规划依据（{facets.length} 个 facets）</summary>
+            <div className="mt-3 space-y-2">
+              {facets.map((facet, index) => (
+                <div key={`${facet.facet_type}-${index}`} className="flex flex-wrap items-center gap-2 text-sm">
+                  <Badge>{facet.facet_type}</Badge>
+                  <span className="text-[var(--muted-strong)]">{facet.terms.join(" · ")}</span>
+                  <span className="text-xs text-[var(--muted)]">
+                    {facet.source} · 置信度 {facet.confidence.toFixed(2)}{facet.required ? " · 必需" : ""}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </details>
+        ) : null}
       </div>
     </div>
   );
+}
+
+function ConstraintRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex gap-3">
+      <span className="w-16 shrink-0 font-semibold text-[var(--muted)]">{label}</span>
+      <span className="break-words text-[var(--muted-strong)]">{value}</span>
+    </div>
+  );
+}
+
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function asStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
 }
 
 function PaperSection({
