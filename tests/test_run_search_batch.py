@@ -792,6 +792,7 @@ def test_fail_fast_returns_nonzero_after_first_failed_row(
     assert len(rows) == 1
     assert rows[0]["case_id"] == "bad"
     assert rows[0]["status"] == "failed"
+    assert (output_path.parent / "manifest.json").exists() is False
 
 
 def test_empty_query_outputs_failed_row_by_default(

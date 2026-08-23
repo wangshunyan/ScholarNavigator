@@ -17,6 +17,7 @@
 - 修复批量 CLI 未初始化本地 connector 的真实缺口：选择 local BM25/Hybrid 时先按环境配置并建立索引；当前 `demo-queries.jsonl` 实际运行 5/5 succeeded，4 条返回论文，1 条因标题型语料缺少中文/时间元数据而返回 0 条并保留结构化 warning。该演示无 gold/qrels、无网络、LLM disabled，不是比赛成绩。
 - 批量 CLI 现在对 local BM25/Hybrid 配置失败执行显式 preflight：行状态为 `failed`，错误为 `source_preflight_failed:<reason>`，不会伪装成 `succeeded + 0结果`；专项 `23 passed`。真实配置可用时仍保持离线批量演示链路。
 - 批量 CLI 新增可选 `--manifest`：绑定输入/输出 SHA-256、当前 Git commit、工作树是否干净、case 成功/失败数、网络/LLM 调用数和 `gold_or_qrels_loaded=false`。专项 `24 passed`；该 manifest 是内部复现记录，不是官方成绩。
+- 修正 `--fail-fast` 与 manifest 逻辑：触发首个失败后仍关闭输出句柄并生成完整 partial manifest，再返回退出码 1；避免中途 `return` 跳过复现记录。
 
 ## 当前审计快照（2026-08-23）
 

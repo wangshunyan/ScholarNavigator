@@ -178,6 +178,7 @@ def main(argv: list[str] | None = None) -> int:
         )
     service = SearchService(**service_kwargs)
     had_failure = False
+    fail_fast_triggered = False
 
     ranked_candidates_path = output_path.parent / "ranked_candidates.jsonl"
     ranked_candidates_handle = (
@@ -234,7 +235,8 @@ def main(argv: list[str] | None = None) -> int:
                     ranked_candidates_handle.write("\n")
                     ranked_candidates_handle.flush()
                 if had_failure and args.fail_fast:
-                    return 1
+                    fail_fast_triggered = True
+                    break
                 if sleep_between_cases_seconds > 0 and index < len(cases) - 1:
                     time.sleep(sleep_between_cases_seconds)
     finally:
@@ -252,7 +254,7 @@ def main(argv: list[str] | None = None) -> int:
             had_failure=had_failure,
         )
 
-    return 0
+    return 1 if fail_fast_triggered else 0
 
 
 def _write_batch_manifest(
