@@ -21,7 +21,7 @@
 - [x] **目标**：枚举所有测试/脚本引用的运行产物，区分仓库内 fixture、可重建输入和外部历史证据。
 - **验收**：自动检查输出 JSON/JSONL 的相对路径、存在性、SHA-256 和来源类型；缺失外部证据必须输出明确 `external_evidence_unavailable`，不得静默使用空数据。
 - **依赖**：现有 benchmark manifest、pytest 收集结果。
-- **完成说明（2026-08-22）**：新增 `src/scholar_agent/evaluation/dev_plan_audit.py` 与 `scripts/audit_dev_plan.py`，只读扫描 317 个 benchmark JSON manifest、2531 个路径引用；当前报告为 `1840 present`、`38 present_unhashed`、`131 missing_external`、`247 missing_tracked`、`275 hash_mismatch`，其中哈希漂移包含本轮真实代码/计划修改，因此仓库仍未达到全量证据闭环。专项 fixture 测试 `tests/test_dev_plan_audit.py` 为 `2 passed`，`compileall` 与 `git diff --check` 通过。
+- **完成说明（2026-08-22，当前快照复核 2026-08-23）**：新增 `src/scholar_agent/evaluation/dev_plan_audit.py` 与 `scripts/audit_dev_plan.py`，只读扫描 317 个 benchmark JSON manifest、2,531 个路径引用；当前报告为 `1,775 present`、`38 present_unhashed`、`131 missing_external`、`247 missing_tracked`、`340 hash_mismatch`，其中哈希漂移包含本轮真实代码/计划修改，因此仓库仍未达到全量证据闭环。严格审计命令仍返回失败；专项 fixture 测试 `tests/test_dev_plan_audit.py` 已通过，不能把该快照写成全量 readiness。
 
 ### P0-02 修复默认测试闭环（不弱化历史门禁）
 
