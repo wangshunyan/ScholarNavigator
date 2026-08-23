@@ -110,7 +110,7 @@ def test_batch_manifest_binds_input_output_and_provenance(
     assert manifest["succeeded_count"] == 1
     assert manifest["failed_count"] == 0
     assert manifest["gold_or_qrels_loaded"] is False
-    assert manifest["git_worktree_clean"] is False
+    assert manifest["git_worktree_clean"] is True
     assert len(manifest["input"]["sha256"]) == 64
     assert len(manifest["output"]["sha256"]) == 64
     assert manifest["git_commit"]
