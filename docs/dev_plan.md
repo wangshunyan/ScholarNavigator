@@ -4,12 +4,12 @@
 
 执行循环：读取本计划 → 选择最高优先级且可执行的未完成项 → 修改代码/测试 → 运行针对性验证 → 自我审查 → 更新本计划。任何检索、排序、Query Evolution、Reranker、LLM 或全文改动都必须有可复现的成对实验；没有收益不得默认启用。gold/qrels 只能在检索完成后的离线 evaluator 中使用，不能进入在线查询、索引、Prompt 或 connector。
 
-## 当前审计快照（2026-08-22）
+## 当前审计快照（2026-08-23）
 
 - [x] 已确认仓库包含多源检索、SQLite BM25、Dense/Faiss、Qwen3 Reranker、查询规划/演化、RefChain、LLM feedback、质量信号、全文证据模型、FastAPI/Next.js 和竞赛评测脚本。
 - [x] `npm run lint` 与 `npm run build` 当前通过。
 - [x] `PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q --maxfail=1` 已在当前 checkout 完整通过：`2264 passed, 185 skipped, 2 warnings`。跳过项均为结构化 preflight 标记的历史证据、冻结哈希、Windows 权限或外部环境阻塞；严格生产门禁仍在缺失/漂移时失败，不修改冻结哈希。
-- [x] 已增加显式历史证据 preflight：`scripts/audit_cluster_significance.py preflight` 与 `scripts/check_current_rules_regression.py preflight` 返回 `external_evidence_unavailable`，严格 `check` 仍失败；默认测试只对已显式接入 preflight 的门禁做结构化跳过，未接入的门禁仍会严格暴露阻塞。当前全量测试仍需继续清理其他非历史环境阻塞。
+- [x] 已增加显式历史证据 preflight：`scripts/audit_cluster_significance.py preflight` 与 `scripts/check_current_rules_regression.py preflight` 返回 `external_evidence_unavailable`，严格 `check` 仍失败；默认测试只对已显式接入 preflight 的门禁做结构化跳过，未接入的门禁仍会严格暴露阻塞。当前全量回归已完成，剩余跳过项均有对应边界说明。
 - [ ] 文档中声称的 `contest_full_dense_reranker_rrf_soft_v3`、P0 精确元数据/Faiss 运行产物不在当前工作树中；不得把相应数值视为可审计成绩，必须先改正文档并重新完成可读产物的成对实验。
 - [x] 已核对并统一 `docs/report/technical_report.md`、`docs/architecture.md`、`docs/contest/experiment-results.md`、`docs/evaluation.md` 和 `README.md` 的当前证据边界；不可读取的服务器 Dense/Reranker/RRF 数字已删除或明确标为历史不可核验，仍保留实验协议和复现入口。
 - [ ] 不连接服务器、不读取 `.env` 或 SSH 凭据；需要真实 Provider/GPU/官方 scorer 的任务只记录外部依赖，不伪造完成。
@@ -96,7 +96,7 @@
 - **增量验证（2026-08-23）**：clean-clone smoke 已重复验证并写入 `outputs/clean_clone_smoke_20260823.json`（该目录受 `.gitignore` 保护，不上传 GitHub）。结果为 `status=ready`、API 两个 200、local BM25 五条结果、零网络请求；source-only release 成员数 1005，明确不含 `.env`、`outputs/`、semantic 语料或模型缓存。P0-03 仍保留未完成，待补充依赖安装/结构化导出验收并完成全量回归后再勾选。
 - **增量验证（2026-08-23）**：最终 clean-clone smoke 写入 `outputs/clean_clone_smoke_20260823_final.json`，仍为 `status=ready`、health/config 200、离线 BM25 5 条、网络请求 0、dotenv 读取 false；发布包成员数 1006（新增脚本/测试后），仍不含 `.env`、outputs、semantic 数据或模型缓存。该产物仅保留本地，不上传 GitHub。
 - **增量验证（2026-08-23）**：扩展 clean-clone smoke 生成并校验 `offline-search-result-v1` 结构化离线结果（5 条、稳定 rank、arXiv ID/title/source、无 gold 字段），同时验收 `requirements.txt`、`frontend/package.json` 与 lockfile 在 source-only 包中存在；专项测试 `2 passed`，最终 smoke 为 `status=ready`、网络 0、dotenv 读取 false。仍未把“依赖实际安装”误写成已完成。
-- **完成判定（2026-08-23）**：P0-02 已完成。默认回归在当前 Windows checkout 通过，外部历史输入由显式 preflight 分层；生产严格 `check/evaluate` 命令仍 fail-closed。P0-03 继续保持未完成，因完整依赖安装和结构化结果导出尚未在全新环境中独立验收。
+- **完成判定（2026-08-23）**：P0-02 已完成。默认回归在当前 Windows checkout 通过，外部历史输入由显式 preflight 分层；生产严格 `check/evaluate` 命令仍 fail-closed。P0-03 继续保持未完成，仅剩全新环境中的实际依赖安装/启动验收；结构化离线结果导出已经通过 clean-clone smoke。
 
 ### P0-03 发布包与文档状态一致
 
