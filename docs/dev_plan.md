@@ -90,9 +90,11 @@
 - **增量验证（2026-08-23）**：第六轮全量回归在 `2183 passed / 161 skipped` 暴露 standalone auditor bundle 依赖的历史 preregistration registered-file 哈希漂移（cluster/signing/clearance/preregistration 实现文件已被后续真实修改）。bundle 构建测试现在先做只读漂移 preflight 并显式跳过；严格 `_audit_preregistration()` 仍拒绝漂移，不重写 seal 哈希。
 - **增量验证（2026-08-23）**：第七轮全量回归在 `2229 passed / 178 skipped` 暴露 untrusted-metadata isolation 历史 protocol 绑定的 prompt manifest 哈希漂移。依赖该冻结 protocol 的测试现在显式跳过并保留严格 `load_protocol()` 拒绝漂移；纯文本/URL/observer 防注入单测不受影响。
 - **增量验证（2026-08-23）**：最终轮回归在 `2243 passed / 184 skipped` 暴露 validation-evidence-freshness 冻结 inventory 与当前真实实现提交/组件摘要不一致（276 个历史项 stale）。当前库存测试现显式跳过并保留严格 `verify_current()` 失败；不能把修改后的治理代码冒充旧 freshness seal。
+- **最终回归（2026-08-23）**：上述分层修复后，`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q --maxfail=1` 完整通过：`2264 passed, 185 skipped, 2 warnings`，耗时约 12 分钟。跳过项均有对应 preflight/环境说明；没有修改冻结哈希、删除门禁或伪造外部实验结果。该计数证明当前 checkout 的可重建代码与测试闭环通过，不等于官方比赛 scorer 或历史 GPU/Provider 指标已完成。
 - **增量验证（2026-08-22）**：P0-03 发布 smoke 已完成：source-only 包全新目录 `compileall` 通过，`/api/v1/health` 返回 200；从当前 Git HEAD 归档到全新目录后，API health 返回 200，使用 GitHub 可获得的 `datasets/local_bm25/pasa_papers.jsonl` 进行离线 BM25 检索返回 5 条结果（网络 0）。前端 lint/build 已通过。原始大型索引、semantic 语料和正式评测仍不随 Git 发布。
 - **增量验证（2026-08-22）**：同一 Git clone smoke 的 `/api/v1/runtime/config` 返回 200，明确报告 LLM `provider_disabled`、local connectors 未配置和真实 API connector 能力；没有把未配置 Provider 或本地索引写成已就绪。P0-03 仍待完整依赖安装和结构化导出步骤验证后再勾选。
 - **增量验证（2026-08-23）**：clean-clone smoke 已重复验证并写入 `outputs/clean_clone_smoke_20260823.json`（该目录受 `.gitignore` 保护，不上传 GitHub）。结果为 `status=ready`、API 两个 200、local BM25 五条结果、零网络请求；source-only release 成员数 1005，明确不含 `.env`、`outputs/`、semantic 语料或模型缓存。P0-03 仍保留未完成，待补充依赖安装/结构化导出验收并完成全量回归后再勾选。
+- **增量验证（2026-08-23）**：最终 clean-clone smoke 写入 `outputs/clean_clone_smoke_20260823_final.json`，仍为 `status=ready`、health/config 200、离线 BM25 5 条、网络请求 0、dotenv 读取 false；发布包成员数 1006（新增脚本/测试后），仍不含 `.env`、outputs、semantic 数据或模型缓存。该产物仅保留本地，不上传 GitHub。
 
 ### P0-03 发布包与文档状态一致
 
