@@ -7,7 +7,7 @@
 ## 当前权威快照（2026-08-24，优先于下方历史增量记录）
 
 - 当前代码提交：以 `git rev-parse HEAD` 为准；本地 `main` 与 `origin/main` 一致，工作树干净。不要从历史快照复制提交号；发布 smoke 的 `source_commit` 是权威绑定。
-- 最近验证：查询清理提交后的后端全量回归 `2314 passed, 184 skipped, 2 warnings`（约 13 分 02 秒）；前端 `npm run lint` 与 `npm run build` 通过；使用项目 `.venv` 的 clean-clone smoke 在项目根目录运行并以自身的 `source_commit` 绑定，health/config=200、离线 BM25 5 条、网络请求 0、LLM disabled；系统 Python 未安装 FastAPI 时 smoke 会明确返回 `not_ready`，应使用项目锁定环境。
+- 最近验证：查询清理与跨代码版本成对分析提交后的后端全量回归 `2316 passed, 184 skipped, 2 warnings`（约 13 分 07 秒）；前端 `npm run lint` 与 `npm run build` 通过；使用项目 `.venv` 的 clean-clone smoke 在项目根目录运行并以自身的 `source_commit` 绑定，health/config=200、离线 BM25 5 条、网络请求 0、LLM disabled；系统 Python 未安装 FastAPI 时 smoke 会明确返回 `not_ready`，应使用项目锁定环境。
 - 当前公开语料仍不满足正式元数据门禁：BM25 569,432 条仅 title 完整；semantic 31,136 条 title/abstract 完整，authors/year/venue/doi 缺失。两者均结构有效但 `required_fields_complete=false`，不得启动正式资格评测。
 - 当前未导入服务器 evidence bundle；Git 同步不能证明服务器实验数据与本地一致。服务器只能通过 `scripts/package_server_evidence.py` 导出脱敏证据后再审计，原始运行、模型、索引和凭据不上传 GitHub。
 - 本轮补充 `scripts/import_server_evidence.py`：本地导入端只接受 `server_evidence_bundle_v1`，校验成员、导出大小/SHA-256、必要文件和敏感文本后写入被忽略的 `outputs/imported_server_evidence/`；专项导入/篡改回归 `4 passed`。当前仍没有实际用户服务器 bundle，因此服务器实验一致性尚未得到证据证明。
@@ -21,6 +21,7 @@
 - 在提交 `4f72991` 上完成全量回归：`2312 passed, 184 skipped, 2 warnings`；本次修复未引入新的产品测试失败。跳过项仍代表已登记的外部历史证据、模型/GPU、官方 scorer、全文评测或平台条件缺失，不等同赛事资格通过。
 - 本轮补齐前端查询理解可视化：结果页现在展示已解析的时间、方法、数据集、必含/排除、领域、论文类型和 venue 约束，并可展开查看规划 facets、来源、置信度和必需标记。该改动只消费现有 API `query_analysis`/`query_planning` 字段，不改变检索、排序或默认策略；后端 API/映射/查询理解专项 `92 passed, 1 warning`，前端 lint/build 通过。该项提升评委可见的可解释性，但不替代正式 Recall/F1 评测。
 - 本轮修复查询理解真实缺口：英文关系词 `that/use/report/result/evaluate/exclude` 不再进入 `must_have_terms`，关键词末尾标点会被规范化；固定同一 5 条 demo、标题型 BM25 语料、`balanced/top_k=5/current_year=2026`、零网络/零 LLM 的成对运行中，demo_01/02/04 的约束更干净，demo_04 可见结果由 4 条增至 5 条，demo_01/02/03/05 分别保持 5/5/5/2。证据 `outputs/demo_query_cleanup_pair_20260824.json` 仅是内部无 gold 诊断，不是 Recall/F1 或官方成绩；查询理解专项 `50 passed`。
+- 对公开 `AutoScholarQuery_test` 的 1,000 条查询只读取 `question` 做结构审计：问句/引导词在 `must_have_terms` 中的命中从大量存在降为 0；保留模型、方法、任务、数据集等实体词。随后在临时旧提交 `4753983` 与当前候选提交 `c579e8e` 上，以同一前 200 条顺序、同一 BM25 语料 SHA-256、身份映射、`high_recall`/300 候选、`top_k=20`、单 worker 和 `current_year=2026` 完成无网络/无 LLM 成对运行。结果：ΔRecall@20、ΔF1@10、ΔF1@20 均为 `0`，ΔF1@5=`-0.00143`（95% CI `[-0.00429,0]`）；无正向收益，故该改动只保留为查询理解/演示可解释性修复，不作为排序提升宣传。`scripts/analyze_paired_benchmark_runs.py` 现将 `runtime_code_hash` 报告为允许差异、仍严格校验数据/查询/预算等共享输入；专项 `4 passed`。配对产物位于 ignored `outputs/query_cleanup_pair_20260824_v2/`，仅为 legacy title+abstract 语料的内部工程指标，非官方成绩。
 - 本轮发布复核：`scripts/check_sync_state.py` 为 `status=ready`、`github_in_sync=true`；项目 `.venv` 下 clean-clone smoke 在干净树上为 `status=ready`，发布包 1,024 个文件、约 36.96 MB，manifest/成员哈希通过，health/config=200，离线 BM25 5 条，网络请求 0，LLM disabled。smoke 输出会绑定执行时的真实 `source_commit`，不以历史文档中的提交号代替。
 - 干净树全量回归（提交 `b2142d7`）：`2312 passed, 184 skipped, 2 warnings`（约 13 分 03 秒）。此前未提交文档时 clean-clone 门禁拒绝打包属于预期保护；提交后 smoke 已通过，未将该门禁误报为产品失败。
 - 下方带日期的条目是历史增量证据，除非与本快照或当前可读取产物复核一致，不得作为当前状态引用。
