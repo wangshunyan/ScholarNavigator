@@ -465,7 +465,9 @@ class SnapshotRuntime:
             unresolved_retrieval = [
                 entry.key
                 for entry in self.plan_entries()
-                if entry.entry_type == "retrieval" and not entry.already_present
+                if entry.entry_type == "retrieval"
+                and not entry.already_present
+                and not self._dynamic_query_dependencies_ready(entry)
             ]
             if unresolved_retrieval:
                 return ConnectorSearchResult(
@@ -585,6 +587,31 @@ class SnapshotRuntime:
                 "recorded_latency_seconds": elapsed,
             },
             deep=True,
+        )
+
+    def _dynamic_query_dependencies_ready(self, entry: SnapshotPlanEntry) -> bool:
+        """Allow later plan rounds to continue past already-collected QE keys.
+
+        Query evolution is intentionally dynamic: a second planning round may
+        derive one additional query from papers returned by the first round.
+        That new key is still recorded as missing, but it must not prevent
+        RefChain planning once the previous round's collection completed and
+        every dependency of the dynamic key is available.  Round one remains
+        strict, so RefChain cannot be planned before its retrieval inputs are
+        collected.
+        """
+
+        if self.plan_round <= 1 or self._prior_group is None:
+            return False
+        if not self._prior_group.collection_completed:
+            return False
+        if entry.generated_by != "query_evolution":
+            return False
+        if not entry.dependency_keys:
+            return False
+        return all(
+            self._read_optional("retrieval", dependency_key) is not None
+            for dependency_key in entry.dependency_keys
         )
 
     def fetch_recommendations(

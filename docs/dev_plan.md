@@ -17,6 +17,7 @@
 - 当前 demo 的第二个真实缺口是英文“exclude review papers”未进入硬排除约束；已增加保守的中英文显式排除解析（仅在 `exclude/without/排除/不含` 等表达出现时触发），并新增 `45 passed` Query Understanding 回归。固定同一 5 条 demo、语料和零网络/零 LLM 的成对运行显示 demo_02 的 `excluded_terms` 从空变为 `review/survey/literature review`，其余 case 可见结果数不变；证据见 `outputs/demo_query_exclusion_pair_20260823.json`，不含 gold/qrels，不是官方成绩。
 - 又补齐了命名方法/数据集的结构化抽取：`retrieval-augmented generation`、`graph neural network` 进入 `methods`，`HotpotQA`、`MoleculeNet` 进入 `datasets`。成对运行固定同一输入/语料/预算且零网络、零 LLM，demo_01/demo_02 的可见结果均保持 5 条，只增加结构化约束字段；回归为 `47 passed`，证据见 `outputs/demo_structured_facets_pair_20260823.json`，不含 gold/qrels，不是官方成绩。
 - 中文“自动学术论文检索智能体，涉及查询改写、迭代搜索或相关性判断”现在将 `agent/query rewriting/iterative search/relevance judgment` 及其受控同义项进入 `methods`；专项回归为 `48 passed`。固定 5 条 demo 的成对运行保持零网络/零 LLM，前四条可见结果不变，demo_05 从 1 条增至 2 条与查询改写直接相关的候选；证据见 `outputs/demo_chinese_workflow_facets_pair_20260823.json`，不含 gold/qrels，不是官方成绩。
+- 全量回归在 `2166 passed, 160 skipped` 处发现快照规划测试失败：第二轮 Query Evolution 生成的新检索键被错误地当作 RefChain 的未满足前置依赖，导致引用计划永远为空；该失败在旧提交也可复现，与中文解析改动无关。已修复 `SnapshotRuntime`：第一轮仍 fail-closed，后续轮次仅在上一轮收集完成且动态键的依赖快照全部存在时允许继续规划 RefChain；快照专项现 `24 passed`。
 - 下方带日期的条目是历史增量证据，除非与本快照或当前可读取产物复核一致，不得作为当前状态引用。
 - 本轮修复批量 CLI 来源白名单与生产 schema 不一致的问题：`scripts/run_search_batch.py --sources local_bm25/local_hybrid` 现在可用于离线复现，并在配置缺失时保留 fail-closed 行为；专项 `22 passed`。该改动不改变排序策略或默认在线来源。
 - 补充 `docs/contest/demo-queries.jsonl`，提供与人工演示查询一致的前 5 条无 gold 批量输入；README 的批量离线命令现在指向真实存在、可从 GitHub 获取的文件。
