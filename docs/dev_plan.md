@@ -6,7 +6,7 @@
 
 ## 当前权威快照（2026-08-24，优先于下方历史增量记录）
 
-- 当前代码提交：以 `git rev-parse HEAD` 为准；本地 `main` 与 `origin/main` 一致，工作树干净。当前提交为 `e2209c54e246c1899fc27fcf00fc0c3c96d7cc48`。
+- 当前代码提交：以 `git rev-parse HEAD` 为准；本地 `main` 与 `origin/main` 一致，工作树干净。当前提交为 `b2142d73ebe1e4e655dbc9415d1dc66c4d19793c`。
 - 最近验证：后端全量回归 `2312 passed, 184 skipped, 2 warnings`（约 13 分 03 秒）；前端 `npm run lint` 与 `npm run build` 通过；使用项目 `.venv` 的 clean-clone smoke `status=ready`，health/config=200、离线 BM25 5 条、网络请求 0、LLM disabled；系统 Python 未安装 FastAPI 时 smoke 会明确返回 `not_ready`，应使用项目锁定环境。
 - 当前公开语料仍不满足正式元数据门禁：BM25 569,432 条仅 title 完整；semantic 31,136 条 title/abstract 完整，authors/year/venue/doi 缺失。两者均结构有效但 `required_fields_complete=false`，不得启动正式资格评测。
 - 当前未导入服务器 evidence bundle；Git 同步不能证明服务器实验数据与本地一致。服务器只能通过 `scripts/package_server_evidence.py` 导出脱敏证据后再审计，原始运行、模型、索引和凭据不上传 GitHub。
@@ -20,7 +20,8 @@
 - 全量回归在 `2166 passed, 160 skipped` 处发现快照规划测试失败：第二轮 Query Evolution 生成的新检索键被错误地当作 RefChain 的未满足前置依赖，导致引用计划永远为空；该失败在旧提交也可复现，与中文解析改动无关。已修复 `SnapshotRuntime`：第一轮仍 fail-closed，后续轮次仅在上一轮收集完成且动态键的依赖快照全部存在时允许继续规划 RefChain；快照专项现 `24 passed`。
 - 在提交 `4f72991` 上完成全量回归：`2312 passed, 184 skipped, 2 warnings`；本次修复未引入新的产品测试失败。跳过项仍代表已登记的外部历史证据、模型/GPU、官方 scorer、全文评测或平台条件缺失，不等同赛事资格通过。
 - 本轮补齐前端查询理解可视化：结果页现在展示已解析的时间、方法、数据集、必含/排除、领域、论文类型和 venue 约束，并可展开查看规划 facets、来源、置信度和必需标记。该改动只消费现有 API `query_analysis`/`query_planning` 字段，不改变检索、排序或默认策略；后端 API/映射/查询理解专项 `92 passed, 1 warning`，前端 lint/build 通过。该项提升评委可见的可解释性，但不替代正式 Recall/F1 评测。
-- 本轮发布复核：`scripts/check_sync_state.py` 为 `status=ready`、`github_in_sync=true`；项目 `.venv` 下 clean-clone smoke 为 `status=ready`，发布包 1,024 个文件、约 36.96 MB，manifest/成员哈希通过，health/config=200，离线 BM25 5 条，网络请求 0，LLM disabled。最新 smoke 绑定提交 `b893892`；随后仅更新了本计划文档，下一次 smoke 应绑定最终提交 `e2209c5`。
+- 本轮发布复核：`scripts/check_sync_state.py` 为 `status=ready`、`github_in_sync=true`；项目 `.venv` 下 clean-clone smoke 为 `status=ready`，发布包 1,024 个文件、约 36.96 MB，manifest/成员哈希通过，health/config=200，离线 BM25 5 条，网络请求 0，LLM disabled。最新 smoke 绑定提交 `b2142d7`。
+- 干净树全量回归（提交 `b2142d7`）：`2312 passed, 184 skipped, 2 warnings`（约 13 分 03 秒）。此前未提交文档时 clean-clone 门禁拒绝打包属于预期保护；提交后 smoke 已通过，未将该门禁误报为产品失败。
 - 下方带日期的条目是历史增量证据，除非与本快照或当前可读取产物复核一致，不得作为当前状态引用。
 - 本轮修复批量 CLI 来源白名单与生产 schema 不一致的问题：`scripts/run_search_batch.py --sources local_bm25/local_hybrid` 现在可用于离线复现，并在配置缺失时保留 fail-closed 行为；专项 `22 passed`。该改动不改变排序策略或默认在线来源。
 - 补充 `docs/contest/demo-queries.jsonl`，提供与人工演示查询一致的前 5 条无 gold 批量输入；README 的批量离线命令现在指向真实存在、可从 GitHub 获取的文件。
