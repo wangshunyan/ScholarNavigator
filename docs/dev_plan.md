@@ -6,7 +6,7 @@
 
 ## 当前权威快照（2026-08-23，优先于下方历史增量记录）
 
-- 当前代码提交：`a353760a41870f2b8022031e020e6fcebbdab5bd`；本地 `main` 与 `origin/main` 一致，工作树干净。
+- 当前代码提交：`e632cfa523bf3c7c5c89a8def19ac1601db95191`；本地 `main` 与 `origin/main` 一致，工作树干净。
 - 最近专项验证：local BM25/Hybrid/API `31 passed`；前端 `npm run lint` 与 `npm run build` 通过；clean-clone smoke `status=ready`，health/config=200、离线 BM25 5 条、网络请求 0、LLM disabled。
 - 当前公开语料仍不满足正式元数据门禁：BM25 569,432 条仅 title 完整；semantic 31,136 条 title/abstract 完整，authors/year/venue/doi 缺失。两者均结构有效但 `required_fields_complete=false`，不得启动正式资格评测。
 - 当前未导入服务器 evidence bundle；Git 同步不能证明服务器实验数据与本地一致。服务器只能通过 `scripts/package_server_evidence.py` 导出脱敏证据后再审计，原始运行、模型、索引和凭据不上传 GitHub。
