@@ -45,6 +45,8 @@
 
 - [x] 发布 smoke 增加独立 `template_env` 阶段：在临时 clean clone 中复制 `.env.example` 为 `.env`，全新子进程验证 local BM25 `configured_from_env:569432_documents` 且 LLM 仍 `provider=disabled`；原有无 `.env` 的 hermetic 阶段仍保持 `dotenv_read=false`。专项 `2 passed`，最终 smoke `status=ready`。
 
+- [x] 将模板 smoke 扩展为真实 API 201→succeeded→200 查询链路，并捕获首次 clean clone 暴露的 DOI 字段映射问题：标题型随包语料没有 DOI，`.env.example` 已将可选 DOI 映射留空；当前 smoke 验证候选数 `5`、返回结果 `2`、API/LLM 调用均为 `0`，并保留真实 `missing_abstract` warning。专项 `1 passed`，发布 smoke `status=ready`。
+
 - [x] 在当前代码提交 `d93e047` 重新完成全仓库后端回归：`2285 passed, 185 skipped, 2 warnings`，耗时约 12 分 07 秒。未出现产品测试失败；185 个跳过项仍由显式 preflight/平台权限/缺失外部历史证据解释，严格生产门禁继续 fail-closed，不能写成赛事资格通过。
 
 - [x] 在干净提交 `e7f2b72` 上完成同一前 200 条查询、相同 `high_recall`/300 候选预算的 BM25 与 Hybrid 配对运行：`contest_qual200_local_clean_e7f2b72` vs `contest_qual200_hybrid_clean_e7f2b72_retry`。两组 `code.dirty=false`、query 完整 200 条、失败日志为空且 runtime hash 一致；Hybrid ΔRecall@20=`0.04134`（95% CI `[0.01400,0.07179]`），ΔF1@20=`0.00687`（95% CI `[0.00301,0.01111]`）。输入仍是 legacy title+abstract 语料，authors/year/venue/doi 完整度为 0；因此这是当前 clean commit 的内部资格诊断，不是官方成绩，P1-01 未完成，不能自动启动 1000 条正式运行。

@@ -82,22 +82,119 @@ def _template_env_smoke(root: Path) -> dict[str, Any]:
     env_file.write_text(template.read_text(encoding="utf-8"), encoding="utf-8")
     try:
         payload = _health_and_config(root)
+        connectors = {
+            item["name"]: item for item in payload["runtime_config"]["connectors"]
+        }
+        local_bm25 = connectors.get("local_bm25")
+        llm = payload["runtime_config"].get("llm", {})
+        if not local_bm25 or not local_bm25.get("available"):
+            raise RuntimeError("env_example_local_bm25_not_available")
+        if llm.get("available") or llm.get("provider") != "disabled":
+            raise RuntimeError("env_example_llm_must_remain_disabled")
+        search = _template_search_smoke(root)
     finally:
         env_file.unlink(missing_ok=True)
-
-    connectors = {
-        item["name"]: item for item in payload["runtime_config"]["connectors"]
-    }
-    local_bm25 = connectors.get("local_bm25")
-    llm = payload["runtime_config"].get("llm", {})
-    if not local_bm25 or not local_bm25.get("available"):
-        raise RuntimeError("env_example_local_bm25_not_available")
-    if llm.get("available") or llm.get("provider") != "disabled":
-        raise RuntimeError("env_example_llm_must_remain_disabled")
     return {
         "status": "ready",
         "local_bm25": local_bm25,
         "llm": llm,
+        "search": search,
+    }
+
+
+def _template_search_smoke(root: Path) -> dict[str, Any]:
+    """Run one bounded real search while the copied template ``.env`` exists."""
+
+    code = """
+import json
+import time
+from fastapi.testclient import TestClient
+from scholar_agent.app.main import app
+
+client = TestClient(app)
+runtime = client.get('/api/v1/runtime/config')
+if runtime.status_code != 200:
+    raise SystemExit(f'template_search_runtime_config_failed:{runtime.status_code}')
+if not next(
+    item for item in runtime.json()['connectors'] if item['name'] == 'local_bm25'
+).get('available'):
+    raise SystemExit('template_search_local_bm25_unavailable')
+created = client.post('/api/v1/real/search/runs', json={
+    'query': 'Keyphrase Generation for Scientific Document Retrieval',
+    'source_preferences': ['local_bm25'],
+    'top_k': 2,
+    'run_profile': 'fast',
+    'options': {
+        'enable_refchain': False,
+        'stream_events': False,
+        'return_markdown': False,
+        'return_json': True,
+    },
+    'budgets': {
+        'max_search_rounds': 1,
+        'max_candidate_papers': 10,
+        'max_llm_calls': 0,
+        'max_total_tokens': 0,
+        'max_latency_seconds': 60,
+    },
+})
+if created.status_code != 201:
+    raise SystemExit(f'template_search_create_failed:{created.status_code}')
+run_id = created.json()['run_id']
+terminal = None
+for _ in range(240):
+    status = client.get(f'/api/v1/real/search/runs/{run_id}')
+    if status.status_code != 200:
+        raise SystemExit(f'template_search_status_failed:{status.status_code}')
+    payload = status.json()
+    if payload['status'] in {'succeeded', 'failed', 'cancelled'}:
+        terminal = payload
+        break
+    time.sleep(0.25)
+if terminal is None or terminal['status'] != 'succeeded':
+    raise SystemExit(json.dumps({
+        'template_search_status': terminal,
+    }, ensure_ascii=False))
+result = client.get(f'/api/v1/real/search/runs/{run_id}/result')
+if result.status_code != 200:
+    raise SystemExit(f'template_search_result_failed:{result.status_code}')
+result_payload = result.json()
+papers = result_payload['highly_relevant_papers'] + result_payload['partially_relevant_papers']
+print(json.dumps({
+    'status': 'ready',
+    'result_count': len(papers),
+    'candidate_paper_count': terminal['progress']['candidate_paper_count'],
+    'api_call_count': terminal['cost_report']['api_call_count'],
+    'llm_call_count': terminal['cost_report']['llm_call_count'],
+    'warnings': result_payload.get('warnings', []),
+}, ensure_ascii=False, sort_keys=True))
+"""
+    result = _run(root, code)
+    if result.returncode != 0:
+        raise RuntimeError(f"template_env_search_failed:{result.stderr[-500:]}")
+    try:
+        search = json.loads(result.stdout)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError("template_env_search_invalid_json") from exc
+    if (
+        search.get("status") != "ready"
+        or not isinstance(search.get("result_count"), int)
+        or not isinstance(search.get("candidate_paper_count"), int)
+        or search["candidate_paper_count"] < 1
+        or search.get("api_call_count") != 0
+        or search.get("llm_call_count") != 0
+    ):
+            raise RuntimeError(
+                "template_env_search_contract_invalid:" + json.dumps(search)
+            )
+
+    return {
+        "status": "ready",
+        "result_count": search["result_count"],
+        "candidate_paper_count": search["candidate_paper_count"],
+        "api_call_count": search["api_call_count"],
+        "llm_call_count": search["llm_call_count"],
+        "warnings": search["warnings"],
     }
 
 
