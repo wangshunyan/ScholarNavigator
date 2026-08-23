@@ -23,6 +23,8 @@ from scholar_agent.core.env_loader import load_project_env  # noqa: E402
 from scholar_agent.services.search_service import SearchService  # noqa: E402
 from scholar_agent.agents.judgement_config import load_judgement_config  # noqa: E402
 from scholar_agent.core.search_schemas import SUPPORTED_SEARCH_SOURCES  # noqa: E402
+from scholar_agent.core.local_bm25_env import configure_local_bm25_from_env  # noqa: E402
+from scholar_agent.core.local_hybrid_env import configure_local_hybrid_from_env  # noqa: E402
 
 
 # Keep the batch CLI in lockstep with the production retriever.  In particular,
@@ -150,6 +152,12 @@ def main(argv: list[str] | None = None) -> int:
         print(str(exc), file=sys.stderr)
         return 1
 
+    # The API configures process-local connectors during its startup path, but
+    # a batch CLI has no startup hook.  Initialize selected local sources here
+    # so an otherwise valid offline run cannot report a misleading succeeded
+    # row with zero candidates because the connector was never configured.
+    _configure_local_sources(default_sources, cases)
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
     service_kwargs: dict[str, Any] = {"max_workers": args.max_workers}
     if args.judgement_policy != "current_rules" or args.judgement_config:
@@ -214,6 +222,37 @@ def main(argv: list[str] | None = None) -> int:
             ranked_candidates_handle.close()
 
     return 0
+
+
+def _configure_local_sources(
+    default_sources: list[str] | None,
+    cases: list[dict[str, Any]],
+) -> None:
+    selected: set[str] = set(default_sources or [])
+    for case in cases:
+        raw = case.get("source_preferences")
+        if raw is None:
+            continue
+        try:
+            selected.update(_parse_sources(raw, field_name="source_preferences") or [])
+        except ValueError:
+            # Preserve the existing per-row validation/error contract.
+            continue
+
+    if "local_bm25" in selected:
+        try:
+            configure_local_bm25_from_env(repository_root=REPO_ROOT, build_index=True)
+        except (OSError, RuntimeError, ValueError):
+            # The connector will emit a structured local_bm25_failed result for
+            # the affected rows; do not silently switch to an online source.
+            pass
+    if "local_hybrid" in selected:
+        try:
+            configure_local_hybrid_from_env(repository_root=REPO_ROOT, build_index=True)
+        except (OSError, RuntimeError, ValueError, ImportError):
+            # Keep row isolation and fail-closed semantics for missing model,
+            # semantic corpus, or optional vector dependencies.
+            pass
 
 
 def _load_cases(input_path: Path) -> list[dict[str, Any]]:

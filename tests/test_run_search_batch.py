@@ -352,6 +352,38 @@ def test_cli_accepts_local_bm25_as_an_offline_source(
     assert captured[0]["sources_override"] == ["local_bm25"]
 
 
+def test_local_source_initialization_is_requested_for_batch(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    input_path = _write_jsonl(
+        tmp_path / "queries.jsonl",
+        [{"case_id": "offline", "query": "scientific retrieval"}],
+    )
+    output_path = tmp_path / "results.jsonl"
+    calls: list[tuple[str, bool]] = []
+    monkeypatch.setattr(
+        run_search_batch,
+        "configure_local_bm25_from_env",
+        lambda **kwargs: calls.append(("bm25", bool(kwargs["build_index"]))) or None,
+    )
+    monkeypatch.setattr(run_search_batch, "SearchService", _fake_service_class())
+
+    code = run_search_batch.main(
+        [
+            "--input",
+            str(input_path),
+            "--output",
+            str(output_path),
+            "--sources",
+            "local_bm25",
+        ]
+    )
+
+    assert code == 0
+    assert calls == [("bm25", True)]
+
+
 def test_row_judgement_policy_is_passed_to_search_service(
     tmp_path: Path,
     monkeypatch,
