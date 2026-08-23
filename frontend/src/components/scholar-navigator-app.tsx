@@ -2392,6 +2392,7 @@ function PaperSection({
 
 function PaperCard({ paper }: { paper: RankedPaper }) {
   const identifiers = identifierEntries(paper.paper.identifiers);
+  const evidenceBoundary = describeEvidenceBoundary(paper);
 
   return (
     <article className="card paper-card result-paper-card">
@@ -2424,6 +2425,21 @@ function PaperCard({ paper }: { paper: RankedPaper }) {
           {paper.paper.abstract || "当前结果未返回摘要。"}
         </p>
       </details>
+
+      <div className="mt-3 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3 text-sm">
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="font-semibold">证据边界</p>
+          {evidenceBoundary.available.map((label) => (
+            <Badge key={label}>{label}</Badge>
+          ))}
+        </div>
+        <p className="mt-2 text-[var(--muted)]">{evidenceBoundary.summary}</p>
+        {evidenceBoundary.missing.length ? (
+          <p className="mt-1 text-xs text-[var(--muted)]">
+            未提供：{evidenceBoundary.missing.join("、")}
+          </p>
+        ) : null}
+      </div>
 
       <details className="mt-3 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3">
         <summary className="cursor-pointer text-sm font-bold text-[var(--foreground)]">
@@ -2500,6 +2516,47 @@ function PaperCard({ paper }: { paper: RankedPaper }) {
       ) : null}
     </article>
   );
+}
+
+function describeEvidenceBoundary(paper: RankedPaper): {
+  available: string[];
+  missing: string[];
+  summary: string;
+} {
+  const hasFullText = paper.paper.full_text_evidence.length > 0;
+  const hasAbstract = Boolean(paper.paper.abstract.trim());
+  const hasTitleEvidence = paper.evidence.some((item) => item.source === "title");
+  const available = [
+    hasTitleEvidence || !hasAbstract ? "标题证据" : null,
+    hasAbstract ? "摘要证据" : null,
+    hasFullText ? "许可全文证据" : null,
+  ].filter((label): label is string => label !== null);
+  const missing = [
+    hasAbstract ? null : "摘要",
+    paper.paper.year == null ? "年份" : null,
+    paper.paper.authors.length ? null : "作者",
+    paper.paper.venue ? null : "发表场所",
+  ].filter((label): label is string => label !== null);
+
+  if (hasFullText) {
+    return {
+      available,
+      missing,
+      summary: "全文证据已通过许可与定位校验；排序仍以当前检索与相关性证据为准。",
+    };
+  }
+  if (hasAbstract) {
+    return {
+      available,
+      missing,
+      summary: "当前结论由标题和摘要证据支持，不等同于全文核验。",
+    };
+  }
+  return {
+    available: available.length ? available : ["元数据证据"],
+    missing,
+    summary: "当前结果仅有标题/标识符层证据；不能据此核验摘要、年份、作者或全文结论。",
+  };
 }
 
 function FullTextEvidenceSection({
