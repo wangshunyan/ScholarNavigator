@@ -128,6 +128,19 @@ def test_named_camelcase_dataset_is_structured() -> None:
     assert "MoleculeNet" in plan.query_analysis.constraints.datasets
 
 
+def test_chinese_agent_workflow_facets_are_structured() -> None:
+    plan = analyze_query(
+        "搜索关于自动学术论文检索智能体的论文，要求涉及查询改写、迭代搜索或相关性判断。",
+        current_year=2026,
+    )
+
+    methods = plan.query_analysis.constraints.methods
+    assert "agent" in methods
+    assert "query rewriting" in methods
+    assert "iterative search" in methods
+    assert "relevance judgment" in methods
+
+
 def test_chinese_recent_three_years_uses_current_year() -> None:
     plan = analyze_query("近三年 LLM reranking 论文", current_year=2026)
 

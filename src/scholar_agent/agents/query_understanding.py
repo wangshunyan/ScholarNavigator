@@ -163,6 +163,10 @@ METHOD_TERMS = (
     "retrieval-augmented generation",
     "graph neural network",
     "diffusion model",
+    "query rewriting",
+    "iterative search",
+    "relevance judgment",
+    "agent",
     "大模型",
     "检索",
     "重排序",
@@ -225,6 +229,10 @@ CHINESE_KEYWORD_MAP: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("图像分割", ("image segmentation", "segmentation")),
     ("分割", ("segmentation",)),
     ("扩散模型", ("diffusion model", "diffusion models")),
+    ("智能体", ("agent", "research agent")),
+    ("查询改写", ("query rewriting", "query reformulation")),
+    ("迭代搜索", ("iterative search", "iterative retrieval")),
+    ("相关性判断", ("relevance judgment", "relevance assessment")),
     ("评价指标", ("evaluation metrics", "evaluation")),
     ("指标", ("evaluation metrics",)),
     ("生物", ("biomedical",)),
@@ -659,6 +667,16 @@ def _extract_terms(query: str, candidates: tuple[str, ...]) -> list[str]:
 
 def _extract_method_terms(query: str) -> list[str]:
     terms = _extract_terms(query, METHOD_TERMS)
+    chinese_method_mappings = (
+        ("智能体", ("agent", "research agent")),
+        ("查询改写", ("query rewriting", "query reformulation")),
+        ("迭代搜索", ("iterative search", "iterative retrieval")),
+        ("相关性判断", ("relevance judgment", "relevance assessment")),
+    )
+    lowered = query.casefold()
+    for source_term, mapped_terms in chinese_method_mappings:
+        if source_term in lowered:
+            terms.extend(mapped_terms)
     for match in re.finditer(
         r"\b([A-Za-z][A-Za-z0-9+.#-]*(?:\s+[A-Za-z][A-Za-z0-9+.#-]*){0,2})"
         r"\s+(?:methods?|approaches?)\b",
