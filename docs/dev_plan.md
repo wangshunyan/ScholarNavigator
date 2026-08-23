@@ -6,8 +6,8 @@
 
 ## 当前权威快照（2026-08-24，优先于下方历史增量记录）
 
-- 当前代码提交：以 `git rev-parse HEAD` 为准；本地 `main` 与 `origin/main` 一致，工作树干净。不要从历史快照复制提交号；发布 smoke 的 `source_commit` 是权威绑定。当前代码提交为 `c2b33309f92e446beed5531d1fbeacf64a4ef35b`。
-- 最近验证：后端全量回归 `2312 passed, 184 skipped, 2 warnings`（约 13 分 03 秒）；前端 `npm run lint` 与 `npm run build` 通过；使用项目 `.venv` 的 clean-clone smoke `status=ready`，health/config=200、离线 BM25 5 条、网络请求 0、LLM disabled；系统 Python 未安装 FastAPI 时 smoke 会明确返回 `not_ready`，应使用项目锁定环境。
+- 当前代码提交：以 `git rev-parse HEAD` 为准；本地 `main` 与 `origin/main` 一致，工作树干净。不要从历史快照复制提交号；发布 smoke 的 `source_commit` 是权威绑定。
+- 最近验证：查询清理提交后的后端全量回归 `2314 passed, 184 skipped, 2 warnings`（约 13 分 02 秒）；前端 `npm run lint` 与 `npm run build` 通过；使用项目 `.venv` 的 clean-clone smoke 在项目根目录运行并以自身的 `source_commit` 绑定，health/config=200、离线 BM25 5 条、网络请求 0、LLM disabled；系统 Python 未安装 FastAPI 时 smoke 会明确返回 `not_ready`，应使用项目锁定环境。
 - 当前公开语料仍不满足正式元数据门禁：BM25 569,432 条仅 title 完整；semantic 31,136 条 title/abstract 完整，authors/year/venue/doi 缺失。两者均结构有效但 `required_fields_complete=false`，不得启动正式资格评测。
 - 当前未导入服务器 evidence bundle；Git 同步不能证明服务器实验数据与本地一致。服务器只能通过 `scripts/package_server_evidence.py` 导出脱敏证据后再审计，原始运行、模型、索引和凭据不上传 GitHub。
 - 本轮补充 `scripts/import_server_evidence.py`：本地导入端只接受 `server_evidence_bundle_v1`，校验成员、导出大小/SHA-256、必要文件和敏感文本后写入被忽略的 `outputs/imported_server_evidence/`；专项导入/篡改回归 `4 passed`。当前仍没有实际用户服务器 bundle，因此服务器实验一致性尚未得到证据证明。
