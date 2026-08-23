@@ -180,6 +180,7 @@
 - **BLOCKED（外部输入，2026-08-23）**：P1-01 仍缺少可合法审计的完整元数据 JSONL（稳定 arXiv ID、abstract、authors、year、venue、DOI 及来源/许可说明）。所需输入：用户导出的脱敏元数据文件及其来源、许可和 SHA-256；在此之前不得勾选完成或启动正式 1000 条评测。
 - **增量实现（2026-08-23）**：local BM25 索引现在持久化并返回 `authors/year/venue`（支持数组、逗号分隔作者和嵌套字段），这些字段明确不进入 FTS 文本，因此不改变排序；缓存 schema 升级到 v3，旧索引自动失效重建。专项 local BM25/Hybrid/API `30 passed`，但正式 P1-01 仍因真实完整元数据输入缺失而保持 BLOCKED。
 - **最终验证（2026-08-23，提交 `777f260`）**：local BM25/Hybrid/API 专项 `30 passed`；clean-clone smoke 为 `ready`，source-only ZIP `36,936,009` bytes、1,020 个文件，模板环境检索返回 2 条结果且 API/LLM 调用为 0，新增 metadata 字段不会破坏队友复现。正式 P1-01 仍等待合法完整元数据。
+- **增量验证（2026-08-23，提交 `849213d`）**：补充结构化作者对象（`name`/`full_name`）规范化回归；local BM25/Hybrid/API 专项 `31 passed`，同步审计 `status=ready` 且本地与 GitHub 一致。该改动只改善元数据展示，不改变排序。
 
 ### P1-02 召回/F1 成对资格与完整评测
 
