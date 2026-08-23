@@ -36,7 +36,7 @@ $env:PYTHONPATH="src"
   --sources local_bm25
 ```
 
-如果本地语料或索引配置缺失，运行会记录结构化失败，而不会静默改用在线来源。
+如果本地语料或索引配置缺失，运行会记录结构化 connector warning/error，而不会静默改用在线来源。
 
 ## 启动后端
 
