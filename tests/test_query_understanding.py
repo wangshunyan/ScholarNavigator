@@ -143,6 +143,18 @@ def test_keyword_tokens_are_punctuation_free() -> None:
     assert "inference" in terms
 
 
+def test_question_scaffolding_does_not_become_required_topic_terms() -> None:
+    plan = analyze_query(
+        "Can you tell me some papers about hybrid architectures in "
+        "reconstruction-based techniques?",
+        current_year=2026,
+    )
+
+    terms = {term.casefold() for term in plan.query_analysis.constraints.must_include_terms}
+    assert not terms.intersection({"can", "you", "tell", "some", "papers", "about", "techniques"})
+    assert {"hybrid", "architectures", "reconstruction-based"}.issubset(terms)
+
+
 def test_named_camelcase_dataset_is_structured() -> None:
     plan = analyze_query(
         "Graph neural network papers that evaluate on MoleculeNet",
