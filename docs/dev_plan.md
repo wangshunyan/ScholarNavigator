@@ -12,6 +12,7 @@
 - [x] 已增加显式历史证据 preflight：`scripts/audit_cluster_significance.py preflight` 与 `scripts/check_current_rules_regression.py preflight` 返回 `external_evidence_unavailable`，严格 `check` 仍失败；默认测试只对已显式接入 preflight 的门禁做结构化跳过，未接入的门禁仍会严格暴露阻塞。当前全量回归已完成，剩余跳过项均有对应边界说明。
 - [ ] 文档中声称的 `contest_full_dense_reranker_rrf_soft_v3`、P0 精确元数据/Faiss 运行产物不在当前工作树中；不得把相应数值视为可审计成绩，必须先改正文档并重新完成可读产物的成对实验。
 - [x] 已核对并统一 `docs/report/technical_report.md`、`docs/architecture.md`、`docs/contest/experiment-results.md`、`docs/evaluation.md` 和 `README.md` 的当前证据边界；不可读取的服务器 Dense/Reranker/RRF 数字已删除或明确标为历史不可核验，仍保留实验协议和复现入口。
+- [x] 只读比较上游 `solace47/ScholarNavigator` 最新 commit `345aadf` 与基线 `106891d...`：上游新增 LLM 候选选择、全篇获取和配对分析，但当前架构已有更严格的证据/门禁闭环；本轮只选择性移植全文重定向 allow-list 校验，未整体合并上游，也未在无 Provider/成对实验时启用 LLM 算法变化。
 - [ ] 不连接服务器、不读取 `.env` 或 SSH 凭据；需要真实 Provider/GPU/官方 scorer 的任务只记录外部依赖，不伪造完成。
 
 ## P0：干净环境可复现性与反馈闭环
