@@ -41,7 +41,9 @@
 
 - [x] 以 `.env.example` 作为 `SCHOLAR_AGENT_ENV_FILE` 完成一次真实 FastAPI local-BM25 端到端 smoke：runtime config 报告 `configured_from_env:569432_documents`，HTTP 201 创建运行，终态 `succeeded`，结果 HTTP 200 返回 2 篇，API/LLM 调用均为 0。首次索引加载可能超过 10 秒，受控轮询已确认最终成功；该结果仅验证演示链路，不是比赛成绩。
 
-- [x] 当前最终核对：本地 `HEAD` 与 `origin/main` 均为 `a4b47ff`、工作树干净；环境模板、真实搜索 API、OpenAPI 错误契约专项合计 `30 passed, 1 warning`。这只证明当前源码发布闭环，不改变 P1 正式元数据/GPU/全文/LLM 外部阻塞。
+- [x] 当前最终核对（历史快照）：本地 `HEAD` 与 `origin/main` 均为 `a4b47ff`、工作树干净；环境模板、真实搜索 API、OpenAPI 错误契约专项合计 `30 passed, 1 warning`。这只证明当时源码发布闭环，不改变 P1 正式元数据/GPU/全文/LLM 外部阻塞。
+
+- [x] 当前发布快照 `1172070` 工作树干净且已与 `origin/main` 同步；模板 API 搜索 smoke 与文档契约变更均已提交，未发现调试残留或 `git diff --check` 问题。
 
 - [x] 发布 smoke 增加独立 `template_env` 阶段：在临时 clean clone 中复制 `.env.example` 为 `.env`，全新子进程验证 local BM25 `configured_from_env:569432_documents` 且 LLM 仍 `provider=disabled`；原有无 `.env` 的 hermetic 阶段仍保持 `dotenv_read=false`。专项 `2 passed`，最终 smoke `status=ready`。
 
