@@ -385,11 +385,16 @@ export function ScholarNavigatorApp() {
         setStatus(runStatus);
 
         if (runStatus.status === "failed") {
-          let message = "真实检索失败";
-          try {
-            await getRealSearchRunResult(runId);
-          } catch (error) {
-            message = error instanceof Error ? error.message : message;
+          // The status endpoint is the authoritative failure contract.  Use
+          // it first so a failed run remains explainable even when the result
+          // endpoint intentionally refuses to serve a partial/failed result.
+          let message = runStatus.error_message || "真实检索失败";
+          if (!runStatus.error_message) {
+            try {
+              await getRealSearchRunResult(runId);
+            } catch (error) {
+              message = error instanceof Error ? error.message : message;
+            }
           }
           if (searchSequence.current === sequence) {
             setBackendError(message);
