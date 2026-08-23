@@ -243,6 +243,19 @@ def test_legacy_mock_search_run_paths_are_not_in_openapi() -> None:
     assert "/api/v1/real/search/runs/{run_id}/cancel" in paths
 
 
+def test_real_search_status_openapi_exposes_optional_error_message() -> None:
+    response = client.get("/openapi.json")
+    assert response.status_code == 200
+    schema = response.json()["components"]["schemas"]["SearchRunStatusResponse"]
+    error_message = schema["properties"]["error_message"]
+
+    # Keep the public failure explanation contract explicit: clients may render
+    # a string when a run fails, while successful/in-progress runs use null.
+    assert error_message.get("title") == "Error Message"
+    variants = error_message.get("anyOf", [])
+    assert {variant.get("type") for variant in variants} == {"string", "null"}
+
+
 def _clear_llm_env(monkeypatch) -> None:
     for env_name in (
         "SCHOLAR_AGENT_LLM_PROVIDER",
