@@ -176,8 +176,8 @@ if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" || "
   BM25_LIMIT="60"
   SEMANTIC_LIMIT="60"
   if [[ "$CONFIGURATION" == "hybrid_deep_rrf" ]]; then
-    BM25_LIMIT="120"
-    SEMANTIC_LIMIT="120"
+    BM25_LIMIT="200"
+    SEMANTIC_LIMIT="200"
   fi
   ARGS+=(
     "--local-hybrid-semantic-corpus"

@@ -101,9 +101,9 @@ if ($Configuration -in @("hybrid", "hybrid_deep_rrf", "dense", "reranker", "dens
         "--local-hybrid-model",
         "datasets\semantic\models\models\AI-ModelScope--bge-small-en-v1.5\snapshots\master",
         "--local-hybrid-bm25-candidate-limit",
-        $(if ($Configuration -eq "hybrid_deep_rrf") { "120" } else { "60" }),
+        $(if ($Configuration -eq "hybrid_deep_rrf") { "200" } else { "60" }),
         "--local-hybrid-semantic-candidate-limit",
-        $(if ($Configuration -eq "hybrid_deep_rrf") { "120" } else { "60" }),
+        $(if ($Configuration -eq "hybrid_deep_rrf") { "200" } else { "60" }),
         "--local-hybrid-rrf-k",
         "60"
     )
