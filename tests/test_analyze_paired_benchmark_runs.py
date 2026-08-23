@@ -14,6 +14,7 @@ def _write_run(
     *,
     candidate: bool = False,
     drift: bool = False,
+    runtime_code_hash: str = "runtime-hash",
 ) -> Path:
     run = root / name
     run.mkdir()
@@ -35,7 +36,7 @@ def _write_run(
         "diagnostics": True,
         "llm": {"requested": False},
         "prompts": [],
-        "runtime_code_hash": "runtime-hash",
+        "runtime_code_hash": runtime_code_hash,
         "sources": ["candidate"] if candidate else ["baseline"],
         "ranking_policy": "candidate" if candidate else "current_rules",
     }
@@ -83,6 +84,24 @@ def test_analyze_paired_runs_rejects_shared_config_drift(tmp_path: Path) -> None
 
     with pytest.raises(ValueError, match="shared_config_drift:run_profile"):
         analyze_paired_runs(baseline, candidate)
+
+
+def test_analyze_paired_runs_reports_runtime_code_change(tmp_path: Path) -> None:
+    baseline = _write_run(tmp_path, "baseline", runtime_code_hash="old-code")
+    candidate = _write_run(
+        tmp_path,
+        "candidate",
+        candidate=True,
+        runtime_code_hash="new-code",
+    )
+
+    report = analyze_paired_runs(baseline, candidate, seed=7, iterations=200)
+
+    assert report["shared_inputs_match"] is True
+    assert report["reported_config_differences"]["runtime_code_hash"] == {
+        "baseline": "old-code",
+        "candidate": "new-code",
+    }
 
 
 def test_analyze_paired_runs_rejects_duplicate_case_ids(tmp_path: Path) -> None:

@@ -35,9 +35,9 @@ _SHARED_FIELDS = (
     "diagnostics",
     "llm",
     "prompts",
-    "runtime_code_hash",
 )
 _REPORTED_DIFFERENCES = (
+    "runtime_code_hash",
     "sources",
     "ranking_policy",
     "judgement_policy",
