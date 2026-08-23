@@ -22,6 +22,8 @@ def test_clean_clone_smoke_exports_structured_offline_result() -> None:
         "frontend_package_json": True,
         "frontend_lockfile": True,
     }
+    assert report["package"]["manifest_name"] == "release-manifest.json"
+    assert len(report["package"]["manifest_sha256"]) == 64
     export = report["local_bm25"]
     assert export["schema_version"] == "offline-search-result-v1"
     assert export["result_count"] == 5
