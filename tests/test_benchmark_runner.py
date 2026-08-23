@@ -137,6 +137,65 @@ def test_local_bm25_cli_is_default_off_and_records_public_index_config(
     assert result.config["local_bm25"]["evaluator_data_access"] is False
 
 
+def test_local_bm25_cli_requires_explicit_mapped_identity() -> None:
+    parsed = run_benchmark._parser().parse_args(  # noqa: SLF001
+        [
+            "--dataset",
+            "auto_scholar_query",
+            "--run-id",
+            "identity-required",
+            "--sources",
+            "local_bm25",
+            "--local-bm25-corpus",
+            "corpus.jsonl",
+        ]
+    )
+    with pytest.raises(ValueError, match="document-id-identity is required"):
+        run_benchmark._resolve_cli_local_bm25_identity(parsed, ["local_bm25"])  # noqa: SLF001
+
+
+def test_local_bm25_cli_rejects_identity_without_field_mapping() -> None:
+    parsed = run_benchmark._parser().parse_args(  # noqa: SLF001
+        [
+            "--dataset",
+            "auto_scholar_query",
+            "--run-id",
+            "identity-mapping-required",
+            "--sources",
+            "local_bm25",
+            "--local-bm25-corpus",
+            "corpus.jsonl",
+            "--local-bm25-document-id-identity",
+            "arxiv_id",
+        ]
+    )
+    with pytest.raises(ValueError, match="arxiv-id-field is required"):
+        run_benchmark._resolve_cli_local_bm25_identity(parsed, ["local_bm25"])  # noqa: SLF001
+
+
+def test_local_bm25_cli_accepts_explicit_arxiv_identity_mapping() -> None:
+    parsed = run_benchmark._parser().parse_args(  # noqa: SLF001
+        [
+            "--dataset",
+            "auto_scholar_query",
+            "--run-id",
+            "identity-ok",
+            "--sources",
+            "local_bm25",
+            "--local-bm25-corpus",
+            "corpus.jsonl",
+            "--local-bm25-document-id-identity",
+            "arxiv_id",
+            "--local-bm25-arxiv-id-field",
+            "arxiv_id",
+        ]
+    )
+    identity, _ = run_benchmark._resolve_cli_local_bm25_identity(  # noqa: SLF001
+        parsed, ["local_bm25"]
+    )
+    assert identity == "arxiv_id"
+
+
 def test_resume_ignores_local_bm25_operational_cache_state(tmp_path: Path) -> None:
     dataset = _dataset(tmp_path, count=1)
     corpus = tmp_path / "corpus.jsonl"

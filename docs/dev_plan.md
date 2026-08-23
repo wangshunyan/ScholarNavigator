@@ -15,6 +15,11 @@
 - [x] 只读比较上游 `solace47/ScholarNavigator` 最新 commit `345aadf` 与基线 `106891d...`：上游新增 LLM 候选选择、全篇获取和配对分析，但当前架构已有更严格的证据/门禁闭环；本轮只选择性移植全文重定向 allow-list 校验，未整体合并上游，也未在无 Provider/成对实验时启用 LLM 算法变化。
 - [ ] 不连接服务器、不读取 `.env` 或 SSH 凭据；需要真实 Provider/GPU/官方 scorer 的任务只记录外部依赖，不伪造完成。
 
+## 最新增量（2026-08-23）
+
+- [x] Benchmark CLI 的本地 BM25/Hybrid 语料身份改为显式必填：选择本地来源时必须同时提供 `--local-bm25-document-id-identity` 及对应字段映射（如 `arxiv_id` + `--local-bm25-arxiv-id-field arxiv_id`）。缺失时 fail-closed，避免使用默认 `s2orc_corpus_id` 导致评测运行成功但 gold 匹配静默全零。新增 3 个回归测试；专项 `tests/test_benchmark_runner.py` 为 `33 passed`。
+- [x] 用正确 arXiv 身份配置重跑 5 条离线 BM25 smoke：RunId `local_bm25_smoke_identity_guard_a2c65d2`，Recall@20 `0.20`、F1@5 `0.067`、MRR `0.20`、成功率 `1.0`；该结果仅为本地 smoke，不作为正式比赛成绩。运行绑定当前工作树（dirty）及语料/索引哈希，产物留在被忽略的 `outputs/`。
+
 ## P0：干净环境可复现性与反馈闭环
 
 ### P0-01 证据依赖清单与测试分层

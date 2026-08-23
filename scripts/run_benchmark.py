@@ -1816,7 +1816,12 @@ def _parser() -> argparse.ArgumentParser:
             "openalex_id",
             "pubmed_id",
         ],
-        default="s2orc_corpus_id",
+        default=None,
+        help=(
+            "stable identity field for local documents; required when "
+            "local_bm25 or local_hybrid is selected (prevents silent "
+            "all-zero identity evaluation)"
+        ),
     )
     parser.add_argument("--local-bm25-doi-field", default=None)
     parser.add_argument("--local-bm25-arxiv-id-field", default=None)
@@ -1984,6 +1989,64 @@ def _parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _resolve_cli_local_bm25_identity(
+    args: argparse.Namespace,
+    sources: list[str],
+) -> tuple[str, dict[str, str | None]]:
+    """Require an explicit, mapped identity for local-corpus CLI runs.
+
+    The connector can technically fall back to the document-id column when an
+    identity mapping is omitted.  That is unsafe for ``auto_scholar_query``:
+    a corpus with opaque ``_id`` values then produces valid-looking runs whose
+    gold matching is silently all zero.  Keep the programmatic API backwards
+    compatible, but make the public benchmark CLI fail closed.
+    """
+
+    identity = args.local_bm25_document_id_identity
+    if "local_bm25" not in sources and "local_hybrid" not in sources:
+        return identity or "s2orc_corpus_id", {}
+    if not args.local_bm25_corpus:
+        raise ValueError(
+            "--local-bm25-corpus is required when a local source is selected"
+        )
+    if not identity:
+        raise ValueError(
+            "--local-bm25-document-id-identity is required when a local "
+            "source is selected; choose the corpus' stable identifier "
+            "explicitly (for example arxiv_id)"
+        )
+    field_by_identity = {
+        "doi": (args.local_bm25_doi_field, "--local-bm25-doi-field"),
+        "arxiv_id": (
+            args.local_bm25_arxiv_id_field,
+            "--local-bm25-arxiv-id-field",
+        ),
+        "semantic_scholar_id": (
+            args.local_bm25_semantic_scholar_id_field,
+            "--local-bm25-semantic-scholar-id-field",
+        ),
+        "s2orc_corpus_id": (
+            args.local_bm25_s2orc_corpus_id_field,
+            "--local-bm25-s2orc-corpus-id-field",
+        ),
+        "openalex_id": (
+            args.local_bm25_openalex_id_field,
+            "--local-bm25-openalex-id-field",
+        ),
+        "pubmed_id": (
+            args.local_bm25_pubmed_id_field,
+            "--local-bm25-pubmed-id-field",
+        ),
+    }
+    field_value, field_flag = field_by_identity[identity]
+    if not field_value:
+        raise ValueError(
+            f"{field_flag} is required "
+            f"when identity is {identity}; map the actual corpus field"
+        )
+    return identity, {name: value for name, (value, _) in field_by_identity.items()}
+
+
 def _resume_runtime_config(args: argparse.Namespace) -> ResumeRuntimeConfig:
     default_budget = SearchBudget()
     return ResumeRuntimeConfig(
@@ -2104,6 +2167,7 @@ def main(argv: list[str] | None = None) -> int:
     load_project_env(REPO_ROOT)
     try:
         sources = _parse_sources(args.sources)
+        local_bm25_identity, _ = _resolve_cli_local_bm25_identity(args, sources)
         default_budget = SearchBudget()
         budgets = SearchBudget(
             max_search_rounds=(
@@ -2150,7 +2214,7 @@ def main(argv: list[str] | None = None) -> int:
                         document_id=args.local_bm25_document_id_field,
                         title=args.local_bm25_title_field,
                         abstract=args.local_bm25_abstract_field,
-                        document_id_identity=args.local_bm25_document_id_identity,
+                        document_id_identity=local_bm25_identity,
                         doi=args.local_bm25_doi_field,
                         arxiv_id=args.local_bm25_arxiv_id_field,
                         semantic_scholar_id=(
@@ -2173,7 +2237,7 @@ def main(argv: list[str] | None = None) -> int:
                             document_id=args.local_bm25_document_id_field,
                             title=args.local_bm25_title_field,
                             abstract=args.local_bm25_abstract_field,
-                            document_id_identity=args.local_bm25_document_id_identity,
+                            document_id_identity=local_bm25_identity,
                             doi=args.local_bm25_doi_field,
                             arxiv_id=args.local_bm25_arxiv_id_field,
                             semantic_scholar_id=(
