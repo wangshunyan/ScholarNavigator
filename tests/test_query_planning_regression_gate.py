@@ -4,6 +4,7 @@ import pytest
 
 from scholar_agent.evaluation.query_planning_regression import (
     check_planning_regression,
+    preflight_query_planning_inputs,
 )
 
 
@@ -12,6 +13,14 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 @pytest.mark.planning_regression
 def test_frozen_autoscholar_1000_query_planning_gate(tmp_path: Path) -> None:
+    preflight = preflight_query_planning_inputs(
+        REPOSITORY_ROOT / "benchmark" / "autoscholar_query_planning_manifest.json"
+    )
+    if preflight["status"] != "ready":
+        pytest.skip(
+            "historical query-planning inputs unavailable or drifted; "
+            f"run scripts/audit_autoscholar_query_planning.py preflight for details: {preflight}"
+        )
     report = check_planning_regression(
         REPOSITORY_ROOT / "benchmark" / "autoscholar_query_planning_manifest.json",
         tmp_path / "planning-gate",

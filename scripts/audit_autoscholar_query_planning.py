@@ -19,6 +19,7 @@ from scholar_agent.evaluation.query_planning_regression import (  # noqa: E402
     BASELINE_APPROVAL_TOKEN,
     QueryPlanningAuditError,
     check_planning_regression,
+    preflight_query_planning_inputs,
     project_query_only_manifest,
     propose_planning_baseline,
 )
@@ -44,6 +45,15 @@ def main() -> int:
         default=Path("benchmark/autoscholar_query_planning_manifest.json"),
     )
     check.add_argument("--output-dir", type=Path, required=True)
+
+    preflight = subparsers.add_parser(
+        "preflight", help="report frozen-input readiness without running the gate"
+    )
+    preflight.add_argument(
+        "--manifest",
+        type=Path,
+        default=Path("benchmark/autoscholar_query_planning_manifest.json"),
+    )
 
     propose = subparsers.add_parser(
         "propose-baseline",
@@ -77,6 +87,10 @@ def main() -> int:
                 f"token={BASELINE_APPROVAL_TOKEN} tracked_mutation=0"
             )
             return 0
+        if args.command == "preflight":
+            report = preflight_query_planning_inputs(args.manifest)
+            print(json.dumps(report, ensure_ascii=False, sort_keys=True))
+            return 0 if report["status"] == "ready" else 3
         report = check_planning_regression(args.manifest, args.output_dir)
         print(
             "query_planning_regression "

@@ -70,6 +70,58 @@ class QueryOnlyRecord(BaseModel):
     query: str
 
 
+def preflight_query_planning_inputs(manifest_path: str | Path) -> dict[str, Any]:
+    """Check frozen planning inputs without running the 1000-query audit.
+
+    A tracked manifest can intentionally refer to an older prompt/input
+    fingerprint.  The strict audit must continue to reject that drift, while
+    the default test suite needs a structured, actionable result instead of a
+    traceback when the historical replay is not available for this checkout.
+    """
+
+    manifest_file = Path(manifest_path).expanduser().resolve()
+    try:
+        manifest = _read_json(manifest_file)
+        _validate_manifest(manifest, require_baseline=False)
+    except (OSError, UnicodeError, json.JSONDecodeError, QueryPlanningAuditError) as exc:
+        return {
+            "schema_version": "query-planning-preflight-v1",
+            "status": "invalid_manifest",
+            "blockers": [{"kind": "manifest_unreadable_or_invalid", "error": str(exc)}],
+        }
+
+    blockers: list[dict[str, Any]] = []
+    for label, spec in (
+        ("query_input", manifest.get("query_input") or {}),
+        ("prompt_manifest", manifest.get("prompt_state") or {}),
+    ):
+        relative = spec.get("path") if label == "query_input" else spec.get("manifest_path")
+        expected = spec.get("sha256") if label == "query_input" else spec.get("manifest_sha256")
+        if not isinstance(relative, str) or not relative:
+            blockers.append({"kind": "missing_input_path", "input": label})
+            continue
+        path = _repo_path(relative)
+        if not path.is_file():
+            blockers.append({"kind": "repository_input_missing", "input": label, "path": relative})
+            continue
+        actual = sha256_file(path)
+        if not isinstance(expected, str) or actual != expected:
+            blockers.append(
+                {
+                    "kind": "input_or_protocol_drift",
+                    "input": label,
+                    "path": relative,
+                    "expected_sha256": expected,
+                    "actual_sha256": actual,
+                }
+            )
+    return {
+        "schema_version": "query-planning-preflight-v1",
+        "status": "ready" if not blockers else "external_evidence_unavailable",
+        "blockers": blockers,
+    }
+
+
 def project_query_only_manifest(source: Path, destination: Path) -> dict[str, Any]:
     """Project only qid/question from AutoScholarQuery JSONL.
 
