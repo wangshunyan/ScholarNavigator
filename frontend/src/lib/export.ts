@@ -200,7 +200,7 @@ function fullTextEvidenceMarkdown(
   documents: RankedPaper["paper"]["full_text_evidence"],
 ): string[] {
   if (!documents.length) {
-    return ["- N/A"]; 
+    return ["- N/A"];
   }
 
   return documents.flatMap((document, documentIndex) => {
@@ -212,7 +212,7 @@ function fullTextEvidenceMarkdown(
     return [
       `- document ${documentIndex + 1}; license: ${markdownText(document.license_id)}; content_sha256: ${document.content_sha256}`,
       `  source: ${sourceUrl ? markdownText(sourceUrl) : "unavailable (URL failed safety validation)"}`,
-      ...(paragraphs.length ? paragraphs : ["- no paragraphs" ]),
+      ...(paragraphs.length ? paragraphs : ["- no paragraphs"]),
     ];
   });
 }
