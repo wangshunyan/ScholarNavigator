@@ -544,7 +544,9 @@ def _validate_explicit_local_source_configuration(
             )
         if source == "local_hybrid":
             missing = (
-                "local_hybrid_semantic_corpus_not_found"
+                "local_hybrid_bm25_corpus_not_found"
+                if not config.bm25_config.corpus_path.is_file()
+                else "local_hybrid_semantic_corpus_not_found"
                 if not config.semantic_corpus_path.is_file()
                 else "local_hybrid_model_not_found"
                 if not config.model_path.is_dir()

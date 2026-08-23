@@ -46,6 +46,7 @@
 - [x] 真实检索 API 对显式请求的 `local_bm25`/`local_hybrid` 增加只读配置预检：未配置时在排队前返回 HTTP 409 和稳定原因，不创建后台运行；配置存在时保持原异步索引/检索链路。专项真实 API/local BM25/API mock `30 passed`，不改变排序。
 - [x] 扩展本地源入口预检：除环境变量存在外，BM25 corpus、Hybrid semantic corpus 和 model directory 必须实际存在；缺失时返回稳定 HTTP 409（不排队），正常配置端到端链路保持通过。专项 `31 passed`。
 - [x] 增加 Hybrid 缺失 semantic corpus 的端到端 API 回归；显式 `local_hybrid` 请求在排队前返回 `local_hybrid_semantic_corpus_not_found`，专项真实 API/local BM25/API mock `32 passed`。
+- [x] 补齐 Hybrid 复用的 BM25 corpus 入口预检与回归；显式 `local_hybrid` 在 BM25 corpus 缺失时返回 `local_hybrid_bm25_corpus_not_found`，专项真实 API/local BM25/API mock `33 passed`。
 
 - [x] 修复前端失败轮询实际未使用 `status.error_message` 的缺口：失败运行现在优先展示状态接口提供的真实原因，仅在字段为空时回退请求结果接口；`frontend` 的 lint/build 均通过。该改动提升失败降级可解释性，不改变检索排序。
 
