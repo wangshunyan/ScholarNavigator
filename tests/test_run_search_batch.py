@@ -335,6 +335,11 @@ def test_cli_accepts_local_bm25_as_an_offline_source(
         "SearchService",
         _fake_service_class(captured=captured),
     )
+    monkeypatch.setattr(
+        run_search_batch,
+        "configure_local_bm25_from_env",
+        lambda **kwargs: object(),
+    )
 
     code = run_search_batch.main(
         [
@@ -350,6 +355,40 @@ def test_cli_accepts_local_bm25_as_an_offline_source(
     assert code == 0
     assert _read_jsonl(output_path)[0]["status"] == "succeeded"
     assert captured[0]["sources_override"] == ["local_bm25"]
+
+
+def test_missing_local_source_is_a_structured_failed_row(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    input_path = _write_jsonl(
+        tmp_path / "queries.jsonl",
+        [{"case_id": "offline", "query": "scientific retrieval"}],
+    )
+    output_path = tmp_path / "results.jsonl"
+    monkeypatch.setattr(run_search_batch, "SearchService", _fake_service_class())
+    monkeypatch.setattr(
+        run_search_batch,
+        "configure_local_bm25_from_env",
+        lambda **kwargs: None,
+    )
+
+    code = run_search_batch.main(
+        [
+            "--input",
+            str(input_path),
+            "--output",
+            str(output_path),
+            "--sources",
+            "local_bm25",
+        ]
+    )
+
+    row = _read_jsonl(output_path)[0]
+    assert code == 0
+    assert row["status"] == "failed"
+    assert row["result"] is None
+    assert row["error"] == "source_preflight_failed:local_bm25_not_configured"
 
 
 def test_local_source_initialization_is_requested_for_batch(

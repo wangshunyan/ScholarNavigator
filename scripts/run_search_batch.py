@@ -156,7 +156,7 @@ def main(argv: list[str] | None = None) -> int:
     # a batch CLI has no startup hook.  Initialize selected local sources here
     # so an otherwise valid offline run cannot report a misleading succeeded
     # row with zero candidates because the connector was never configured.
-    _configure_local_sources(default_sources, cases)
+    local_preflight_errors = _configure_local_sources(default_sources, cases)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     service_kwargs: dict[str, Any] = {"max_workers": args.max_workers}
@@ -181,19 +181,32 @@ def main(argv: list[str] | None = None) -> int:
     try:
         with output_path.open("w", encoding="utf-8") as handle:
             for index, case in enumerate(cases):
-                result = _run_case(
-                    case,
-                    service=service,
-                    default_top_k=args.top_k,
-                    default_run_profile=args.run_profile,
-                    default_current_year=args.current_year,
-                    default_enable_query_evolution=args.enable_query_evolution,
-                    default_query_evolution_policy=args.query_evolution_policy,
-                    default_query_planning_policy=args.query_planning_policy,
-                    default_judgement_policy=args.judgement_policy,
-                    default_enable_refchain=args.enable_refchain,
-                    default_sources=default_sources,
+                try:
+                    case_sources = _case_sources(case, default_sources)
+                except ValueError:
+                    case_sources = None
+                failed_local_sources = sorted(
+                    set(case_sources or ()) & set(local_preflight_errors)
                 )
+                if failed_local_sources:
+                    result = _local_preflight_failure(
+                        case,
+                        [local_preflight_errors[source] for source in failed_local_sources],
+                    )
+                else:
+                    result = _run_case(
+                        case,
+                        service=service,
+                        default_top_k=args.top_k,
+                        default_run_profile=args.run_profile,
+                        default_current_year=args.current_year,
+                        default_enable_query_evolution=args.enable_query_evolution,
+                        default_query_evolution_policy=args.query_evolution_policy,
+                        default_query_planning_policy=args.query_planning_policy,
+                        default_judgement_policy=args.judgement_policy,
+                        default_enable_refchain=args.enable_refchain,
+                        default_sources=default_sources,
+                    )
                 if result["status"] == "failed":
                     had_failure = True
                 debug_payload = result.pop("_ranked_candidates_debug", None)
@@ -227,7 +240,7 @@ def main(argv: list[str] | None = None) -> int:
 def _configure_local_sources(
     default_sources: list[str] | None,
     cases: list[dict[str, Any]],
-) -> None:
+) -> dict[str, str]:
     selected: set[str] = set(default_sources or [])
     for case in cases:
         raw = case.get("source_preferences")
@@ -239,20 +252,47 @@ def _configure_local_sources(
             # Preserve the existing per-row validation/error contract.
             continue
 
+    errors: dict[str, str] = {}
     if "local_bm25" in selected:
         try:
-            configure_local_bm25_from_env(repository_root=REPO_ROOT, build_index=True)
-        except (OSError, RuntimeError, ValueError):
-            # The connector will emit a structured local_bm25_failed result for
-            # the affected rows; do not silently switch to an online source.
-            pass
+            metadata = configure_local_bm25_from_env(
+                repository_root=REPO_ROOT, build_index=True
+            )
+            if metadata is None:
+                errors["local_bm25"] = "local_bm25_not_configured"
+        except (OSError, RuntimeError, ValueError) as exc:
+            errors["local_bm25"] = _local_source_error("local_bm25", exc)
     if "local_hybrid" in selected:
         try:
-            configure_local_hybrid_from_env(repository_root=REPO_ROOT, build_index=True)
-        except (OSError, RuntimeError, ValueError, ImportError):
-            # Keep row isolation and fail-closed semantics for missing model,
-            # semantic corpus, or optional vector dependencies.
-            pass
+            metadata = configure_local_hybrid_from_env(
+                repository_root=REPO_ROOT, build_index=True
+            )
+            if metadata is None:
+                errors["local_hybrid"] = "local_hybrid_not_configured"
+        except (OSError, RuntimeError, ValueError, ImportError) as exc:
+            errors["local_hybrid"] = _local_source_error("local_hybrid", exc)
+    return errors
+
+
+def _local_source_error(source: str, exc: BaseException) -> str:
+    message = str(exc).strip()
+    if message.startswith(source + "_"):
+        return message
+    return f"{source}_preflight_failed:{type(exc).__name__}"
+
+
+def _local_preflight_failure(
+    case: dict[str, Any],
+    errors: list[str],
+) -> dict[str, Any]:
+    return {
+        "case_id": str(case["case_id"]),
+        "query": str(case.get("query") or ""),
+        "status": "failed",
+        "result": None,
+        "error": "source_preflight_failed:" + ",".join(sorted(set(errors))),
+        "latency_seconds": 0.0,
+    }
 
 
 def _load_cases(input_path: Path) -> list[dict[str, Any]]:

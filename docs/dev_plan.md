@@ -15,6 +15,7 @@
 - 本轮修复批量 CLI 来源白名单与生产 schema 不一致的问题：`scripts/run_search_batch.py --sources local_bm25/local_hybrid` 现在可用于离线复现，并在配置缺失时保留 fail-closed 行为；专项 `22 passed`。该改动不改变排序策略或默认在线来源。
 - 补充 `docs/contest/demo-queries.jsonl`，提供与人工演示查询一致的前 5 条无 gold 批量输入；README 的批量离线命令现在指向真实存在、可从 GitHub 获取的文件。
 - 修复批量 CLI 未初始化本地 connector 的真实缺口：选择 local BM25/Hybrid 时先按环境配置并建立索引；当前 `demo-queries.jsonl` 实际运行 5/5 succeeded，4 条返回论文，1 条因标题型语料缺少中文/时间元数据而返回 0 条并保留结构化 warning。该演示无 gold/qrels、无网络、LLM disabled，不是比赛成绩。
+- 批量 CLI 现在对 local BM25/Hybrid 配置失败执行显式 preflight：行状态为 `failed`，错误为 `source_preflight_failed:<reason>`，不会伪装成 `succeeded + 0结果`；专项 `23 passed`。真实配置可用时仍保持离线批量演示链路。
 
 ## 当前审计快照（2026-08-23）
 
