@@ -21,7 +21,7 @@
 
 ### 当前提交的 200 条 Hybrid 诊断配对
 
-在当前提交 `05759c1309bcdc0b6c48209c58eaf6bdcabb7436`、同一前 200 条查询、相同 `high_recall`/300 候选预算/资源账本下，重新运行了：
+在 Git HEAD `05759c1309bcdc0b6c48209c58eaf6bdcabb7436`、相同 dirty 工作树差异（两组 `runtime_code_hash=5c018d9b…`）、同一前 200 条查询、相同 `high_recall`/300 候选预算/资源账本下，重新运行了：
 
 | 配置 | RunId | Recall@20 | F1@20 | MRR | 平均延迟（秒） |
 | --- | --- | ---: | ---: | ---: | ---: |
@@ -32,7 +32,7 @@
 
 后续 qualification 命令已固定在两种脚本中统一使用 `high_recall` 和 300 候选预算；可用 `scripts/analyze_paired_benchmark_runs.py` 重新生成上述成对 JSON 报告。
 
-这只是当前 legacy title+abstract 语料上的内部诊断，不是正式资格门禁或赛事官方成绩：作者、年份、期刊和 DOI 完整度仍为 0，故 P1-01 未完成；不能据此启动 1000 条正式运行或宣称 Dense/RRF 已获资格。
+这只是 legacy title+abstract 语料上的内部诊断，不是干净提交的正式资格门禁，也不是赛事官方成绩：作者、年份、期刊和 DOI 完整度仍为 0，故 P1-01 未完成；不能据此启动 1000 条正式运行或宣称 Dense/RRF 已获资格。正式资格应在干净提交上重跑。
 
 ## 正式实验门槛
 
