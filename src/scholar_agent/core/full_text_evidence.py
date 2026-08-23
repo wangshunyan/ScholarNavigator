@@ -8,8 +8,8 @@ import re
 from html.parser import HTMLParser
 from typing import Any, Callable, Literal
 from urllib.error import HTTPError, URLError
-from urllib.parse import urlparse
-from urllib.request import Request, urlopen
+from urllib.parse import urljoin, urlparse
+from urllib.request import HTTPRedirectHandler, Request, build_opener, urlopen
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -82,6 +82,28 @@ DEFAULT_MAX_PDF_PAGES = 100
 _TEXT_MEDIA_TYPES = {"text/plain", "text/html", "application/xhtml+xml"}
 
 
+class _AllowlistedRedirectHandler(HTTPRedirectHandler):
+    """Re-check every redirect target against the caller's host allow-list."""
+
+    def __init__(self, allowed_hosts: set[str]) -> None:
+        super().__init__()
+        self._allowed_hosts = allowed_hosts
+
+    def redirect_request(
+        self,
+        request: Request,
+        fp: Any,
+        code: int,
+        msg: str,
+        headers: Any,
+        new_url: str,
+    ) -> Request | None:
+        target = urljoin(request.full_url, new_url)
+        if not _is_allowed_url(target, self._allowed_hosts):
+            raise FullTextEvidenceError("full_text_redirect_not_allowed")
+        return super().redirect_request(request, fp, code, msg, headers, target)
+
+
 def fetch_open_full_text(
     *,
     source_url: str,
@@ -119,7 +141,14 @@ def fetch_open_full_text(
 
     request = Request(clean_url, headers={"User-Agent": "ScholarNavigator"})
     try:
-        with opener(request, timeout=timeout_seconds) as response:
+        open_function = opener
+        if opener is urlopen:
+            # A custom opener is deliberately preserved for deterministic tests
+            # and callers that already enforce their own redirect policy.
+            open_function = build_opener(
+                _AllowlistedRedirectHandler(set(allowed_hosts))
+            ).open
+        with open_function(request, timeout=timeout_seconds) as response:
             status = int(getattr(response, "status", getattr(response, "code", 200)))
             if status < 200 or status >= 300:
                 return _failure("fetch_failed", clean_url, license_id, f"http_status:{status}")
@@ -131,6 +160,8 @@ def fetch_open_full_text(
             if content_type not in _TEXT_MEDIA_TYPES and content_type != "application/pdf":
                 return _failure("unsupported_media_type", clean_url, license_id, "media_type_not_supported", content_type)
             payload = response.read(max_bytes + 1)
+    except FullTextEvidenceError as exc:
+        return _failure("url_not_allowed", clean_url, license_id, str(exc))
     except (HTTPError, URLError, TimeoutError, OSError) as exc:
         return _failure("fetch_failed", clean_url, license_id, f"fetch_error:{type(exc).__name__}")
     if len(payload) > max_bytes:
@@ -247,7 +278,17 @@ def _failure(
 def _is_allowed_url(value: str, allowed_hosts: set[str]) -> bool:
     parsed = urlparse(value)
     host = (parsed.hostname or "").casefold()
-    return parsed.scheme == "https" and host in {item.casefold() for item in allowed_hosts}
+    try:
+        port = parsed.port
+    except ValueError:
+        return False
+    return (
+        parsed.scheme == "https"
+        and not parsed.username
+        and not parsed.password
+        and port in {None, 443}
+        and host in {item.casefold() for item in allowed_hosts}
+    )
 
 
 def _header(headers: Any, name: str) -> str | None:

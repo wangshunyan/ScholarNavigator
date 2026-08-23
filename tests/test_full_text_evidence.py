@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from io import BytesIO
+from urllib.request import Request
 
 import pytest
 from pypdf import PdfWriter
 from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject
 
 from scholar_agent.core.full_text_evidence import (
+    _AllowlistedRedirectHandler,
     FullTextLicenseError,
     build_paragraph_evidence,
     fetch_open_full_text,
@@ -151,6 +153,21 @@ def test_fetch_requires_verified_license_and_allowlisted_https_host() -> None:
 
     assert unverified.status == "license_unverified"
     assert blocked.status == "url_not_allowed"
+
+
+def test_redirect_handler_rechecks_allowlisted_host() -> None:
+    handler = _AllowlistedRedirectHandler({"open.example.test"})
+    request = Request("https://open.example.test/paper")
+
+    with pytest.raises(ValueError, match="full_text_redirect_not_allowed"):
+        handler.redirect_request(
+            request,
+            None,
+            302,
+            "Found",
+            {},
+            "https://other.example.test/paper",
+        )
 
 
 def test_fetch_limits_unsupported_types_and_pdf_evidence() -> None:

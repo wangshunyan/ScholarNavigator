@@ -8,7 +8,7 @@
 
 - [x] 已确认仓库包含多源检索、SQLite BM25、Dense/Faiss、Qwen3 Reranker、查询规划/演化、RefChain、LLM feedback、质量信号、全文证据模型、FastAPI/Next.js 和竞赛评测脚本。
 - [x] `npm run lint` 与 `npm run build` 当前通过。
-- [x] `PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q --maxfail=1` 已在当前 checkout 完整通过：`2266 passed, 185 skipped, 2 warnings`。跳过项均为结构化 preflight 标记的历史证据、冻结哈希、Windows 权限或外部环境阻塞；严格生产门禁仍在缺失/漂移时失败，不修改冻结哈希。
+- [x] `PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q --maxfail=1` 已在当前 checkout 完整通过：`2267 passed, 185 skipped, 2 warnings`。跳过项均为结构化 preflight 标记的历史证据、冻结哈希、Windows 权限或外部环境阻塞；严格生产门禁仍在缺失/漂移时失败，不修改冻结哈希。
 - [x] 已增加显式历史证据 preflight：`scripts/audit_cluster_significance.py preflight` 与 `scripts/check_current_rules_regression.py preflight` 返回 `external_evidence_unavailable`，严格 `check` 仍失败；默认测试只对已显式接入 preflight 的门禁做结构化跳过，未接入的门禁仍会严格暴露阻塞。当前全量回归已完成，剩余跳过项均有对应边界说明。
 - [ ] 文档中声称的 `contest_full_dense_reranker_rrf_soft_v3`、P0 精确元数据/Faiss 运行产物不在当前工作树中；不得把相应数值视为可审计成绩，必须先改正文档并重新完成可读产物的成对实验。
 - [x] 已核对并统一 `docs/report/technical_report.md`、`docs/architecture.md`、`docs/contest/experiment-results.md`、`docs/evaluation.md` 和 `README.md` 的当前证据边界；不可读取的服务器 Dense/Reranker/RRF 数字已删除或明确标为历史不可核验，仍保留实验协议和复现入口。
@@ -98,6 +98,7 @@
 - **增量验证（2026-08-23）**：扩展 clean-clone smoke 生成并校验 `offline-search-result-v1` 结构化离线结果（5 条、稳定 rank、arXiv ID/title/source、无 gold 字段），同时验收 `requirements.txt`、`frontend/package.json` 与 lockfile 在 source-only 包中存在；专项测试 `2 passed`，最终 smoke 为 `status=ready`、网络 0、dotenv 读取 false。仍未把“依赖实际安装”误写成已完成。
 - **完成判定（2026-08-23）**：P0-02 已完成。默认回归在当前 Windows checkout 通过，外部历史输入由显式 preflight 分层；生产严格 `check/evaluate` 命令仍 fail-closed。结构化离线结果导出已经通过 clean-clone smoke。
 - **最终回归（2026-08-23）**：加入元数据严格门禁后重新运行全仓库：`2266 passed, 185 skipped, 2 warnings`，耗时约 12 分 23 秒。跳过项仍是有明确 preflight/外部输入说明的历史证据，不修改冻结哈希、不使用 gold 替代物。
+- **最终回归（2026-08-23）**：全文重定向 allow-list 修复后重新运行全仓库：`2267 passed, 185 skipped, 2 warnings`，耗时约 12 分 22 秒；全文专项为 `8 passed`，前端 lint/build 通过。没有改变排序策略或评测口径。
 
 ### P0-03 发布包与文档状态一致
 
@@ -141,6 +142,7 @@
 - **依赖**：P1-01；锁定 `pypdf`/解析依赖；真实开放全文仅做受限验证。
 - **增量验证（2026-08-23）**：前端 `PaperCard` 已展示后端已验证的全文证据文档：安全校验后的来源 URL、许可 ID、内容 SHA-256、段落编号、字符起止位置、段落 SHA-256 和原文。该改动只增加可折叠展示，不参与排序，也不代表全文获取、许可覆盖或 Evidence F1 基线已完成；`npm run lint` 与 `npm run build` 通过。
 - **增量验证（2026-08-23）**：Markdown 导出现在同步包含全文证据的来源、许可证、文档/段落 SHA-256、字符位置和段落文本；不改变 JSON 原始结构或排序。前端 lint/build 通过。全文获取覆盖、许可核验和独立 Evidence F1 仍未完成。
+- **增量验证（2026-08-23）**：选择性借鉴上游的边界控制思路，全文获取现在对 urllib 重定向目标再次执行 HTTPS/allow-list/凭据/端口校验；跨域重定向专项测试通过。该修复不参与排序，但真实开放全文覆盖和 Evidence F1 仍未完成。
 
 ## P2：受控智能增强与发布演示
 
