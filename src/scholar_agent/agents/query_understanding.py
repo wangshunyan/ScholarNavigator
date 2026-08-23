@@ -160,6 +160,9 @@ METHOD_TERMS = (
     "embedding",
     "deep learning",
     "machine learning",
+    "retrieval-augmented generation",
+    "graph neural network",
+    "diffusion model",
     "大模型",
     "检索",
     "重排序",
@@ -681,6 +684,18 @@ def _extract_dataset_terms(query: str) -> list[str]:
     ):
         name = match.group(1)
         if name.casefold() not in {"a", "the", "new", "public"}:
+            terms.append(name)
+    # Preserve named benchmarks/datasets that appear after an explicit
+    # evaluation relation, e.g. ``results on HotpotQA`` or ``evaluate on
+    # MoleculeNet``.  The capitalized-name guard avoids turning ordinary
+    # English nouns into dataset constraints.
+    for match in re.finditer(
+        r"\b(?:on|using|via|with|evaluate(?:d)?\s+on|results?\s+on)\s+"
+        r"([A-Z][A-Za-z0-9_.-]{2,})\b",
+        query,
+    ):
+        name = match.group(1)
+        if name.casefold() not in {"the", "new", "public"}:
             terms.append(name)
     return _dedupe(terms)
 

@@ -107,6 +107,27 @@ def test_chinese_review_exclusion_is_supported() -> None:
     assert "review" in plan.query_analysis.constraints.exclude_terms
 
 
+def test_named_benchmark_and_method_phrases_are_structured() -> None:
+    plan = analyze_query(
+        "Find papers after 2022 that use retrieval-augmented generation for "
+        "multi-hop question answering and report results on HotpotQA.",
+        current_year=2026,
+    )
+
+    assert "retrieval-augmented generation" in plan.query_analysis.constraints.methods
+    assert "HotpotQA" in plan.query_analysis.constraints.datasets
+
+
+def test_named_camelcase_dataset_is_structured() -> None:
+    plan = analyze_query(
+        "Graph neural network papers that evaluate on MoleculeNet",
+        current_year=2026,
+    )
+
+    assert "graph neural network" in plan.query_analysis.constraints.methods
+    assert "MoleculeNet" in plan.query_analysis.constraints.datasets
+
+
 def test_chinese_recent_three_years_uses_current_year() -> None:
     plan = analyze_query("近三年 LLM reranking 论文", current_year=2026)
 
