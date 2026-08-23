@@ -2196,6 +2196,10 @@ function PaperCard({ paper }: { paper: RankedPaper }) {
         </div>
       ) : null}
 
+      {paper.paper.full_text_evidence.length ? (
+        <FullTextEvidenceSection documents={paper.paper.full_text_evidence} />
+      ) : null}
+
       {identifiers.length ? (
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
           {identifiers.map(([label, value]) => (
@@ -2207,6 +2211,77 @@ function PaperCard({ paper }: { paper: RankedPaper }) {
         </div>
       ) : null}
     </article>
+  );
+}
+
+function FullTextEvidenceSection({
+  documents,
+}: {
+  documents: RankedPaper["paper"]["full_text_evidence"];
+}) {
+  return (
+    <div className="mt-4 space-y-2" aria-label="全文证据">
+      <p className="text-sm font-semibold">全文证据与定位</p>
+      {documents.map((document, documentIndex) => {
+        const sourceUrl = safeExternalUrl(document.source_url);
+        return (
+          <details
+            key={`${document.content_sha256}-${documentIndex}`}
+            className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3"
+          >
+            <summary className="cursor-pointer text-sm font-bold text-[var(--foreground)]">
+              证据文档 {documentIndex + 1} · {document.paragraphs.length} 个段落
+            </summary>
+            <div className="mt-3 space-y-3 text-sm">
+              <dl className="grid gap-2 sm:grid-cols-2">
+                <div>
+                  <dt className="font-semibold text-[var(--muted)]">许可</dt>
+                  <dd className="mt-1 break-words text-[var(--foreground)]">{document.license_id}</dd>
+                </div>
+                <div>
+                  <dt className="font-semibold text-[var(--muted)]">内容 SHA-256</dt>
+                  <dd className="mt-1 break-all font-mono text-xs text-[var(--foreground)]">
+                    {document.content_sha256}
+                  </dd>
+                </div>
+              </dl>
+              <div>
+                <p className="font-semibold text-[var(--muted)]">来源</p>
+                {sourceUrl ? (
+                  <a
+                    href={sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-1 inline-flex break-all text-[var(--primary)] underline-offset-2 hover:underline"
+                  >
+                    {sourceUrl}
+                  </a>
+                ) : (
+                  <p className="mt-1 text-[var(--muted)]">来源地址未通过安全校验</p>
+                )}
+              </div>
+              <div className="space-y-2">
+                {document.paragraphs.map((paragraph) => (
+                  <div
+                    key={paragraph.evidence_id}
+                    className="rounded-md border border-[var(--border)] bg-[var(--background)] p-3"
+                  >
+                    <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-[var(--muted)]">
+                      <Badge>段落 {paragraph.paragraph_index + 1}</Badge>
+                      <span>字符 {paragraph.start_char}–{paragraph.end_char}</span>
+                      <span className="font-mono">段落 SHA-256 {paragraph.text_sha256}</span>
+                    </div>
+                    <p className="whitespace-pre-wrap leading-6 text-[var(--muted-strong)]">
+                      {paragraph.text}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </details>
+        );
+      })}
+    </div>
   );
 }
 

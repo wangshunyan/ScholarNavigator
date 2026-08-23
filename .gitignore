@@ -73,6 +73,8 @@ data/raw/
 data/processed/
 
 # === 实验运行输出 ===
+# 本地实验、审计包和发布压缩包只作为工作区证据保留，不进入 GitHub。
+outputs/
 experiments/runs/
 experiments/logs/
 experiments/outputs/
