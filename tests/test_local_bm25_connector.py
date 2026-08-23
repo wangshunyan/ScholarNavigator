@@ -119,6 +119,22 @@ def test_local_bm25_builds_deterministically_and_preserves_identity(
     assert first.papers[-1].abstract == ""
 
 
+def test_local_bm25_normalizes_structured_author_names(tmp_path: Path) -> None:
+    corpus = tmp_path / "authors.jsonl"
+    _write_jsonl(corpus, [{
+        "_id": "1",
+        "title": "Structured author paper",
+        "authors": [{"name": "Ada Lovelace"}, {"full_name": "Alan Turing"}],
+        "year": "2023",
+        "venue": "ICLR",
+    }])
+    configure_local_bm25(LocalBM25Config(corpus_path=corpus, cache_dir=tmp_path / "cache"))
+    paper = search_local_bm25_detailed("structured author", 1).papers[0]
+    assert paper.authors == ["Ada Lovelace", "Alan Turing"]
+    assert paper.year == 2023
+    assert paper.venue == "ICLR"
+
+
 def test_local_bm25_query_tokenizer_removes_question_filler() -> None:
     tokens = tokenize_local_bm25_query(
         "Could you list papers about graph retrieval methods?"

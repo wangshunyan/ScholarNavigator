@@ -626,7 +626,13 @@ def _metadata_values(
 ) -> tuple[str, str | None, str | None]:
     raw_authors = _value_at_path(payload, fields.authors)
     if isinstance(raw_authors, list):
-        authors = [str(item).strip() for item in raw_authors if str(item).strip()]
+        authors = []
+        for item in raw_authors:
+            if isinstance(item, dict):
+                item = item.get("name") or item.get("full_name") or item.get("author")
+            normalized = str(item or "").strip()
+            if normalized:
+                authors.append(normalized)
     elif raw_authors is None:
         authors = []
     else:
