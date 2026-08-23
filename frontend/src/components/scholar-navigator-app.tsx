@@ -2213,6 +2213,15 @@ function PaperCard({ paper }: { paper: RankedPaper }) {
             {paper.quality_rank_change_reason ||
               "质量信号仅作受限、可解释的辅助，不代表相关性或撤稿结论。"}
           </p>
+          {paper.quality_signals?.length ? (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {paper.quality_signals.map((signal) => (
+                <Badge key={signal.name}>
+                  {signal.name}: {signal.state}
+                </Badge>
+              ))}
+            </div>
+          ) : null}
         </div>
       ) : null}
 

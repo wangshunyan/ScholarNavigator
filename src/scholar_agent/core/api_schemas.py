@@ -35,6 +35,13 @@ RelevanceCategory = Literal[
 ]
 
 
+class QualitySignal(BaseModel):
+    name: str
+    state: Literal["present", "missing", "unknown"]
+    value: float | None = Field(default=None, ge=0.0, le=1.0)
+    detail: str
+
+
 class HealthResponse(BaseModel):
     status: str = "ok"
     version: str
@@ -314,6 +321,7 @@ class RankedPaper(BaseModel):
     quality_contribution: float | None = Field(default=None, ge=0.0, le=0.02)
     quality_config_hash: str | None = None
     quality_rank_change_reason: str | None = None
+    quality_signals: list[QualitySignal] = Field(default_factory=list)
 
 
 class QueryAnalysis(BaseModel):

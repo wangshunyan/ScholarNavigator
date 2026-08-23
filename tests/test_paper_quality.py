@@ -44,6 +44,9 @@ def test_quality_report_is_explainable_and_deterministic() -> None:
     assert by_name["source_corroboration"].value == 1.0
     assert by_name["stable_identifier_coverage"].value == 2 / 3
     assert by_name["licensed_full_text_evidence"].value == 1.0
+    assert by_name["author_metadata"].state == "missing"
+    assert by_name["doi_metadata"].state == "present"
+    assert by_name["identity_consistency"].state == "unknown"
     assert by_name["retraction_status"].state == "unknown"
     assert by_name["duplicate_risk"].state == "unknown"
 
@@ -56,6 +59,9 @@ def test_missing_metadata_is_not_a_relevance_or_external_risk_claim() -> None:
     assert by_name["metadata_completeness"].state == "present"
     assert by_name["metadata_completeness"].value == 0.25
     assert by_name["stable_identifier_coverage"].state == "missing"
+    assert by_name["author_metadata"].state == "missing"
+    assert by_name["doi_metadata"].state == "missing"
+    assert by_name["identity_consistency"].state == "missing"
     assert by_name["retraction_status"].state == "unknown"
     assert by_name["duplicate_risk"].state == "unknown"
 
@@ -107,6 +113,50 @@ def test_verified_risk_evidence_is_opt_in_and_changes_only_known_signal() -> Non
     assert signals["duplicate_risk"].state == "missing"
     assert signals["duplicate_risk"].value == 0.0
     assert "registry-record-1" not in signals["retraction_status"].detail
+
+
+def test_arxiv_doi_identity_consistency_is_explicit_but_not_scored() -> None:
+    matching = Paper(
+        title="Matching identity",
+        identifiers=PaperIdentifiers(
+            arxiv_id="2401.00001",
+            doi="10.48550/arxiv.2401.00001",
+        ),
+    )
+    conflicting = matching.model_copy(
+        update={"identifiers": PaperIdentifiers(
+            arxiv_id="2401.00001",
+            doi="10.48550/arxiv.2401.00002",
+        )}
+    )
+
+    matching_report = assess_paper_quality(matching)
+    conflicting_report = assess_paper_quality(conflicting)
+    matching_signal = next(
+        item for item in matching_report.signals if item.name == "identity_consistency"
+    )
+    conflicting_signal = next(
+        item for item in conflicting_report.signals if item.name == "identity_consistency"
+    )
+
+    assert matching_signal.state == "present"
+    assert conflicting_signal.state == "missing"
+    for report in (matching_report, conflicting_report):
+        scored = [
+            signal.value
+            for signal in report.signals
+            if signal.name
+            in {
+                "metadata_completeness",
+                "source_corroboration",
+                "stable_identifier_coverage",
+                "licensed_full_text_evidence",
+                "retraction_status",
+                "duplicate_risk",
+            }
+            and signal.value is not None
+        ]
+        assert report.quality_score == sum(scored) / len(scored)
 
 
 def test_unmatched_external_evidence_remains_unknown_without_penalty() -> None:

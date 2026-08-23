@@ -8,6 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 from scholar_agent.core.paper_schemas import Paper
 from scholar_agent.core.diagnostics_schemas import ConnectorDiagnostics
+from scholar_agent.core.paper_quality import QualitySignal
 
 
 SourceName = Literal[
@@ -612,6 +613,7 @@ class RankedPaper(BaseModel):
     quality_contribution: float | None = Field(default=None, ge=0.0, le=0.02)
     quality_config_hash: str | None = None
     quality_rank_change_reason: str | None = None
+    quality_signals: list[QualitySignal] = Field(default_factory=list)
 
 
 class QueryEvolutionOptions(BaseModel):

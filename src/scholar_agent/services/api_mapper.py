@@ -236,6 +236,10 @@ def map_ranked_paper(ranked: InternalRankedPaper) -> api.RankedPaper:
         quality_contribution=ranked.quality_contribution,
         quality_config_hash=ranked.quality_config_hash,
         quality_rank_change_reason=ranked.quality_rank_change_reason,
+        quality_signals=[
+            api.QualitySignal(**signal.model_dump(mode="json"))
+            for signal in ranked.quality_signals
+        ],
     )
 
 

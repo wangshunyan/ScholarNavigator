@@ -11,6 +11,7 @@
 - `datasets/semantic/pasa_papers_with_abstracts.jsonl` 包含 31,136 条唯一 arXiv ID 记录；title 与 abstract 完整度为 1.0，但 authors、year、venue、doi 完整度均为 0。该语料是 legacy 功能验证输入，不满足正式元数据质量目标。
 - 构建器现在要求稳定 arXiv ID，并可保留合法输入中的 authors、year、venue、doi；不允许通过标题模糊匹配或 AutoScholarQuery gold/qrels 生成正式语料。
 - 本地代码包含 SQLite BM25、local_hybrid、Faiss/语义索引接口、规则判断、结构化导出、FastAPI 和前端检索源选择；是否带来质量提升必须用同一输入和成对实验重新验证。
+- 质量面板现在额外展示作者/DOI 完整度与 arXiv–DOI 身份一致性；这些是独立诊断，不改变当前默认排序。没有独立撤稿或重复风险来源时仍显示 `unknown`。
 
 ## 当前可读取的历史运行
 

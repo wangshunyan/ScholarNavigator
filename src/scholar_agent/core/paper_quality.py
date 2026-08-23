@@ -262,6 +262,17 @@ def assess_paper_quality(
     full_text_count = len(paper.full_text_evidence)
     signals: list[QualitySignal] = [
         _known_signal("metadata_completeness", completeness, "title_abstract_year_venue"),
+        _metadata_signal(
+            "author_metadata",
+            bool(paper.authors),
+            "authors_present" if paper.authors else "authors_missing",
+        ),
+        _metadata_signal(
+            "doi_metadata",
+            bool(normalize_doi(paper.identifiers.doi)),
+            "doi_present" if normalize_doi(paper.identifiers.doi) else "doi_missing",
+        ),
+        _identity_consistency_signal(paper),
         _known_signal("source_corroboration", source_score, f"unique_sources:{unique_sources}"),
         _known_signal("stable_identifier_coverage", identifier_score, f"stable_identifiers:{identifier_count}"),
         _known_signal(
@@ -293,7 +304,22 @@ def assess_paper_quality(
                     ),
                 )
             )
-    known = [signal for signal in signals if signal.value is not None]
+    # The three bibliographic diagnostics above are intentionally observable
+    # but do not alter the frozen quality-soft score.  Enabling them in the
+    # score would change ranking semantics without a paired experiment.
+    score_signal_names = {
+        "metadata_completeness",
+        "source_corroboration",
+        "stable_identifier_coverage",
+        "licensed_full_text_evidence",
+        "retraction_status",
+        "duplicate_risk",
+    }
+    known = [
+        signal
+        for signal in signals
+        if signal.name in score_signal_names and signal.value is not None
+    ]
     score = sum(signal.value or 0.0 for signal in known) / len(known)
     return PaperQualityReport(
         quality_score=score,
@@ -339,6 +365,55 @@ def _known_signal(name: str, value: float, detail: str) -> QualitySignal:
         state="present" if value > 0 else "missing",
         value=value,
         detail=detail,
+    )
+
+
+def _metadata_signal(name: str, present: bool, detail: str) -> QualitySignal:
+    """Expose a bibliographic fact without silently changing ranking weight."""
+
+    return QualitySignal(
+        name=name,
+        state="present" if present else "missing",
+        value=1.0 if present else 0.0,
+        detail=detail,
+    )
+
+
+def _identity_consistency_signal(paper: Paper) -> QualitySignal:
+    arxiv_id = normalize_arxiv_id(paper.identifiers.arxiv_id)
+    doi = normalize_doi(paper.identifiers.doi)
+    if not arxiv_id and not doi:
+        return QualitySignal(
+            name="identity_consistency",
+            state="missing",
+            value=0.0,
+            detail="no_arxiv_or_doi_identity",
+        )
+    if not arxiv_id or not doi:
+        return QualitySignal(
+            name="identity_consistency",
+            state="unknown",
+            value=None,
+            detail="single_stable_identifier_no_cross_check",
+        )
+    if doi.startswith("10.48550/arxiv."):
+        doi_arxiv = normalize_arxiv_id(doi.removeprefix("10.48550/arxiv."))
+        if doi_arxiv == arxiv_id:
+            return _metadata_signal(
+                "identity_consistency",
+                True,
+                "doi_arxiv_identity_match",
+            )
+        return _metadata_signal(
+            "identity_consistency",
+            False,
+            "doi_arxiv_identity_conflict",
+        )
+    return QualitySignal(
+        name="identity_consistency",
+        state="unknown",
+        value=None,
+        detail="doi_and_arxiv_present_but_relation_not_determinable",
     )
 
 

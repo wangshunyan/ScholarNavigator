@@ -204,6 +204,7 @@ def apply_quality_soft_ranking(
                     "quality_score": report.quality_score,
                     "quality_contribution": contribution,
                     "quality_config_hash": config_hash,
+                    "quality_signals": list(report.signals),
                 }
             )
         )

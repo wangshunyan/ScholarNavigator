@@ -322,6 +322,12 @@ export interface RankedPaper {
   quality_contribution?: number | null;
   quality_config_hash?: string | null;
   quality_rank_change_reason?: string | null;
+  quality_signals: Array<{
+    name: string;
+    state: "present" | "missing" | "unknown";
+    value?: number | null;
+    detail: string;
+  }>;
 }
 
 export interface QueryAnalysis {
