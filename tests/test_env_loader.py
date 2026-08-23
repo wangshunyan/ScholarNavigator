@@ -8,6 +8,7 @@ from scholar_agent.core.env_loader import load_env_file, load_project_env
 from scholar_agent.llm.provider import get_llm_request_options, get_llm_runtime_config
 
 
+ROOT = Path(__file__).resolve().parents[1]
 ENV_KEYS = (
     "SCHOLAR_AGENT_LLM_PROVIDER",
     "SCHOLAR_AGENT_LLM_MODEL",
@@ -16,6 +17,17 @@ ENV_KEYS = (
     "SCHOLAR_AGENT_LLM_BASE_URL",
     "OPENALEX_MAILTO",
 )
+
+
+def test_env_example_enables_bundled_local_bm25_without_credentials() -> None:
+    template = ROOT / ".env.example"
+    text = template.read_text(encoding="utf-8")
+
+    assert (
+        "SCHOLAR_AGENT_LOCAL_BM25_CORPUS=datasets/local_bm25/pasa_papers.jsonl"
+        in text
+    )
+    assert "SCHOLAR_AGENT_LLM_API_KEY=" in text
 
 
 def test_load_env_file_sets_values_without_overriding_existing_env(

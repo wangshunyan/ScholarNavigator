@@ -24,6 +24,7 @@ npm install
 ## 配置环境变量
 
 根据 [`.env.example`](.env.example) 在项目根目录创建本地 `.env`；变量含义和默认值以该模板为准。
+模板已指向仓库随附的标题型 `datasets/local_bm25/pasa_papers.jsonl`，复制后即可进行离线 BM25 演示；它不是元数据完整的正式竞赛语料。LLM、语义模型和凭据仍保持关闭/空值。
 
 ## 启动后端
 
