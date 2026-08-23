@@ -991,6 +991,7 @@ function SearchWorkbench({
     enableLlmQueryUnderstanding,
     enableLlmJudgement,
   ].filter(Boolean).length;
+  const llmAvailable = runtimeConfig?.llm.available ?? false;
 
   const handleTopKStep = (delta: number) => {
     onTopKChange(Math.min(100, Math.max(1, topK + delta)));
@@ -1202,15 +1203,17 @@ function SearchWorkbench({
                 />
                 <ToggleControl
                   label="LLM 查询理解"
-                  description="增强查询解析"
+                  description={llmAvailable ? "增强查询解析" : "当前未配置 Provider，保持关闭并使用规则解析"}
                   checked={enableLlmQueryUnderstanding}
                   onChange={onLlmQueryUnderstandingChange}
+                  disabled={!llmAvailable}
                 />
                 <ToggleControl
                   label="LLM 相关性判断"
-                  description="判断更强"
+                  description={llmAvailable ? "判断更强" : "当前未配置 Provider，保持关闭并使用规则判断"}
                   checked={enableLlmJudgement}
                   onChange={onLlmJudgementChange}
+                  disabled={!llmAvailable}
                 />
               </div>
             </div>
@@ -1226,11 +1229,13 @@ function ToggleControl({
   description,
   checked,
   onChange,
+  disabled = false,
 }: {
   label: string;
   description: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
+  disabled?: boolean;
 }) {
   return (
     <label
@@ -1244,6 +1249,7 @@ function ToggleControl({
         type="checkbox"
         className="advanced-toggle-card__input"
         checked={checked}
+        disabled={disabled}
         onChange={(event) => onChange(event.target.checked)}
         aria-label={label}
       />

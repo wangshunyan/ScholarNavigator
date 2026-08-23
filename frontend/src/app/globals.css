@@ -1317,6 +1317,15 @@ button:disabled {
   color: var(--source-fancy-ink);
 }
 
+.advanced-toggle-card:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.advanced-toggle-card:has(input:disabled):hover {
+  transform: none;
+}
+
 .run-profile-radio-inputs {
   --run-profile-label-width: 112px;
   --run-profile-round: 0;
