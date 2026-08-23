@@ -23,6 +23,7 @@
 - [x] 在同一前 200 条查询、相同 `high_recall`/300 候选预算下完成 BM25 与 Dense+RRF 配对诊断：RunId `contest_qual200_local_highrecall_pair_05759c1` vs `contest_qual200_hybrid_deep_rrf_current_05759c1`，两组绑定相同 `runtime_code_hash=5c018d9b…`，但运行时工作树为 dirty；ΔRecall@20=`0.0413`（95% CI `[0.0140,0.0718]`），ΔF1@20=`0.00687`（95% CI `[0.00301,0.01111]`），两组成功率 `1.0`。这是 legacy title+abstract 语料的内部诊断，不是干净提交的正式资格或赛事成绩；authors/year/venue/doi 完整度为 0，P1-01/P1-02 仍不勾选，正式资格需在干净提交上重跑。
 - [x] 新增 `scripts/analyze_paired_benchmark_runs.py` 作为通用成对分析入口：只读取 config/metrics，校验共享输入与 query 顺序，输出 query-level bootstrap CI，并对路径字段脱敏；新增 3 个回归测试。修正 `run_contest_benchmark.ps1/.sh` 在 qualification 模式下统一使用 `high_recall` 与 300 候选预算，避免 baseline/candidate 因脚本默认 profile 不同而产生无效比较。
 - [x] P1-03 增加可解释且不改变默认排序的质量信号：作者元数据、DOI 元数据、arXiv–DOI 身份一致性已从 `PaperQualityReport` 贯通到内部 `RankedPaper`、API 和前端质量面板；质量分仍只使用既有冻结信号，未知风险不扣分。新增一致性/不改变分数回归测试，后端质量/API 专项与前端 lint/build 通过。独立撤稿/重复证据仍需外部来源，尚未完成 P1-03 全部验收。
+- [x] P2-02 的 source-only 基础再次验收：`scripts/check_clean_clone_smoke.py` 在当前 checkout 返回 `status=ready`，发布包 1010 个成员，API health/config=200，离线 BM25 返回 5 条，`network_request_count=0`、`dotenv_read=false`；该验收不替代 P1-02 正式资格、全文覆盖或赛事提交规格核验。
 
 ## P0：干净环境可复现性与反馈闭环
 
