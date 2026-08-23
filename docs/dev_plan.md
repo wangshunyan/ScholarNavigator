@@ -20,7 +20,7 @@
 - 全量回归在 `2166 passed, 160 skipped` 处发现快照规划测试失败：第二轮 Query Evolution 生成的新检索键被错误地当作 RefChain 的未满足前置依赖，导致引用计划永远为空；该失败在旧提交也可复现，与中文解析改动无关。已修复 `SnapshotRuntime`：第一轮仍 fail-closed，后续轮次仅在上一轮收集完成且动态键的依赖快照全部存在时允许继续规划 RefChain；快照专项现 `24 passed`。
 - 在提交 `4f72991` 上完成全量回归：`2312 passed, 184 skipped, 2 warnings`；本次修复未引入新的产品测试失败。跳过项仍代表已登记的外部历史证据、模型/GPU、官方 scorer、全文评测或平台条件缺失，不等同赛事资格通过。
 - 本轮补齐前端查询理解可视化：结果页现在展示已解析的时间、方法、数据集、必含/排除、领域、论文类型和 venue 约束，并可展开查看规划 facets、来源、置信度和必需标记。该改动只消费现有 API `query_analysis`/`query_planning` 字段，不改变检索、排序或默认策略；后端 API/映射/查询理解专项 `92 passed, 1 warning`，前端 lint/build 通过。该项提升评委可见的可解释性，但不替代正式 Recall/F1 评测。
-- 本轮发布复核：`scripts/check_sync_state.py` 为 `status=ready`、`github_in_sync=true`；项目 `.venv` 下 clean-clone smoke 为 `status=ready`，发布包 1,024 个文件、约 36.96 MB，manifest/成员哈希通过，health/config=200，离线 BM25 5 条，网络请求 0，LLM disabled。
+- 本轮发布复核：`scripts/check_sync_state.py` 为 `status=ready`、`github_in_sync=true`；项目 `.venv` 下 clean-clone smoke 为 `status=ready`，发布包 1,024 个文件、约 36.96 MB，manifest/成员哈希通过，health/config=200，离线 BM25 5 条，网络请求 0，LLM disabled。最新 smoke 绑定提交 `b893892`。
 - 下方带日期的条目是历史增量证据，除非与本快照或当前可读取产物复核一致，不得作为当前状态引用。
 - 本轮修复批量 CLI 来源白名单与生产 schema 不一致的问题：`scripts/run_search_batch.py --sources local_bm25/local_hybrid` 现在可用于离线复现，并在配置缺失时保留 fail-closed 行为；专项 `22 passed`。该改动不改变排序策略或默认在线来源。
 - 补充 `docs/contest/demo-queries.jsonl`，提供与人工演示查询一致的前 5 条无 gold 批量输入；README 的批量离线命令现在指向真实存在、可从 GitHub 获取的文件。
