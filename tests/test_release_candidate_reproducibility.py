@@ -24,6 +24,7 @@ from scholar_agent.evaluation.release_candidate_reproducibility import (
     compare_outputs,
     load_contract,
     materialize_source,
+    preflight_source_commit,
     sha256_file,
     stable_digest,
     summarize_double_build_report,
@@ -53,6 +54,12 @@ def test_contract_binds_exact_git_source_and_excludes_local_state(contract: dict
 
 
 def test_materialized_source_is_exact_and_independent(tmp_path: Path, contract: dict[str, object]) -> None:
+    preflight = preflight_source_commit(ROOT, contract)
+    if preflight["status"] != "ready":
+        pytest.skip(
+            "historical release source commit unavailable; "
+            f"preflight={preflight}"
+        )
     first = tmp_path / "one/source"
     second = tmp_path / "other-parent/two/source"
     materialize_source(ROOT, contract, first)
@@ -63,6 +70,12 @@ def test_materialized_source_is_exact_and_independent(tmp_path: Path, contract: 
 
 
 def test_wheel_and_source_archive_are_byte_deterministic(tmp_path: Path, contract: dict[str, object]) -> None:
+    preflight = preflight_source_commit(ROOT, contract)
+    if preflight["status"] != "ready":
+        pytest.skip(
+            "historical release source commit unavailable; "
+            f"preflight={preflight}"
+        )
     first = tmp_path / "a/source"
     second = tmp_path / "different/b/source"
     materialize_source(ROOT, contract, first)
@@ -265,6 +278,12 @@ def test_double_build_summary_keeps_stable_evidence_only(contract: dict[str, obj
 
 
 def test_current_evidence_keeps_readiness_blocked(contract: dict[str, object]) -> None:
+    preflight = preflight_source_commit(ROOT, contract)
+    if preflight["status"] != "ready":
+        pytest.skip(
+            "historical release source commit unavailable; "
+            f"preflight={preflight}"
+        )
     evidence = ROOT / "benchmark/release_candidate_reproducibility_v1_evidence/current.json"
     report = audit_readiness(ROOT, contract, evidence)
     assert report["exit_code"] == 2
