@@ -275,6 +275,7 @@ def _write_batch_manifest(
         "source_preferences": list(default_sources or []),
         "local_preflight_errors": dict(sorted(local_preflight_errors.items())),
         "case_count": len(cases),
+        "case_summaries": [_manifest_case_summary(row) for row in rows],
         "succeeded_count": sum(row.get("status") == "succeeded" for row in rows),
         "failed_count": sum(row.get("status") == "failed" for row in rows),
         "had_failure": had_failure,
@@ -302,6 +303,37 @@ def _load_jsonl_rows(path: Path) -> list[dict[str, Any]]:
             if isinstance(value, dict):
                 rows.append(value)
     return rows
+
+
+def _manifest_case_summary(row: dict[str, Any]) -> dict[str, Any]:
+    result = row.get("result")
+    if not isinstance(result, dict):
+        return {
+            "case_id": row.get("case_id"),
+            "status": row.get("status"),
+            "source_preferences": [],
+            "result_count": 0,
+            "warning_count": 0,
+            "error": row.get("error"),
+        }
+    search_plan = result.get("search_plan")
+    source_preferences = (
+        search_plan.get("source_preferences", [])
+        if isinstance(search_plan, dict)
+        else []
+    )
+    warnings = result.get("warnings", [])
+    return {
+        "case_id": row.get("case_id"),
+        "status": row.get("status"),
+        "source_preferences": list(source_preferences)
+        if isinstance(source_preferences, list)
+        else [],
+        "result_count": len(result.get("highly_relevant_papers", []) or [])
+        + len(result.get("partially_relevant_papers", []) or []),
+        "warning_count": len(warnings) if isinstance(warnings, list) else 0,
+        "error": row.get("error"),
+    }
 
 
 def _sha256_file(path: Path) -> str:

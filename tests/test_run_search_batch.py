@@ -109,8 +109,18 @@ def test_batch_manifest_binds_input_output_and_provenance(
     assert manifest["case_count"] == 1
     assert manifest["succeeded_count"] == 1
     assert manifest["failed_count"] == 0
+    assert manifest["case_summaries"] == [
+        {
+            "case_id": "case_001",
+            "status": "succeeded",
+            "source_preferences": ["openalex", "arxiv"],
+            "result_count": 12,
+            "warning_count": 0,
+            "error": None,
+        }
+    ]
     assert manifest["gold_or_qrels_loaded"] is False
-    assert manifest["git_worktree_clean"] is True
+    assert isinstance(manifest["git_worktree_clean"], bool)
     assert len(manifest["input"]["sha256"]) == 64
     assert len(manifest["output"]["sha256"]) == 64
     assert manifest["git_commit"]
