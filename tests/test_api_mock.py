@@ -185,6 +185,10 @@ def test_runtime_config_shows_local_hybrid_from_env(
     assert connectors["local_hybrid"]["reason"] == (
         "configured_from_env:1_documents:1_abstracts"
     )
+    assert connectors["local_hybrid"]["details"] == {
+        "field_completeness": None,
+        "metadata_quality_scope": "diagnostic_only",
+    }
 
     _clear_local_hybrid_env(monkeypatch)
     _clear_local_bm25_env(monkeypatch)

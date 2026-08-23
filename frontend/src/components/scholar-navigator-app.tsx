@@ -854,7 +854,9 @@ function BackendWarning({ message }: { message: string }) {
 
 function RuntimeReadiness({ config }: { config: RuntimeConfigResponse }) {
   const localBm25 = config.connectors.find((connector) => connector.name === "local_bm25");
+  const localHybrid = config.connectors.find((connector) => connector.name === "local_hybrid");
   const completeness = localBm25?.details?.field_completeness ?? null;
+  const hybridCompleteness = localHybrid?.details?.field_completeness ?? null;
   const completenessLabels: Record<string, string> = {
     title: "标题",
     abstract: "摘要",
@@ -887,7 +889,7 @@ function RuntimeReadiness({ config }: { config: RuntimeConfigResponse }) {
         </span>
       </div>
 
-      <div className="mt-3 grid gap-3 md:grid-cols-2">
+      <div className="mt-3 grid gap-3 md:grid-cols-3">
         <div className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-3">
           <p className="flex items-center gap-2 text-xs font-black text-[var(--foreground)]">
             <Database className="h-4 w-4" aria-hidden="true" />本地 BM25
@@ -914,6 +916,36 @@ function RuntimeReadiness({ config }: { config: RuntimeConfigResponse }) {
           ) : (
             <p className="mt-2 text-[11px] text-[var(--muted)]">
               字段完整度将在首次建立本地索引后显示。
+            </p>
+          )}
+        </div>
+
+        <div className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-3">
+          <p className="flex items-center gap-2 text-xs font-black text-[var(--foreground)]">
+            <GitBranch className="h-4 w-4" aria-hidden="true" />本地语义混合
+          </p>
+          <p className="mt-1 text-xs text-[var(--muted)]">
+            {localHybrid?.available
+              ? localHybrid.reason ?? "已配置"
+              : "未配置；需要 BM25 语料、摘要语料与向量索引"}
+          </p>
+          {hybridCompleteness ? (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {Object.entries(completenessLabels).map(([field, label]) => {
+                const value = hybridCompleteness[field];
+                return (
+                  <span
+                    key={field}
+                    className="rounded border border-[var(--border)] px-1.5 py-0.5 text-[11px] text-[var(--muted-strong)]"
+                  >
+                    {label} {typeof value === "number" ? `${Math.round(value * 100)}%` : "未知"}
+                  </span>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="mt-2 text-[11px] text-[var(--muted)]">
+              字段完整度将在向量索引元数据可用后显示。
             </p>
           )}
         </div>

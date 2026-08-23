@@ -432,6 +432,10 @@ def _local_hybrid_runtime_config() -> ConnectorRuntimeConfig:
             f"{metadata.document_count}_documents:"
             f"{metadata.abstract_document_count}_abstracts"
         ),
+        details={
+            "field_completeness": metadata.field_completeness,
+            "metadata_quality_scope": "diagnostic_only",
+        },
     )
 
 
