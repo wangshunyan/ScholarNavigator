@@ -325,14 +325,29 @@ def _manifest_case_summary(row: dict[str, Any]) -> dict[str, Any]:
         else []
     )
     warnings = result.get("warnings", [])
+    retrieval = result.get("retrieval_diagnostics")
+    retrieval = retrieval if isinstance(retrieval, dict) else {}
+    cost = result.get("cost_report")
+    cost = cost if isinstance(cost, dict) else {}
+    visible_result_count = len(result.get("highly_relevant_papers", []) or []) + len(
+        result.get("partially_relevant_papers", []) or []
+    )
     return {
         "case_id": row.get("case_id"),
         "status": row.get("status"),
         "source_preferences": list(source_preferences)
         if isinstance(source_preferences, list)
         else [],
-        "result_count": len(result.get("highly_relevant_papers", []) or [])
-        + len(result.get("partially_relevant_papers", []) or []),
+        # ``result_count`` is retained for compatibility and means visible
+        # (highly/partially relevant) papers, never the retrieval candidate
+        # pool.  The explicit names below prevent metric ambiguity.
+        "result_count": visible_result_count,
+        "visible_result_count": visible_result_count,
+        "retrieval_raw_count": int(retrieval.get("raw_count", 0) or 0),
+        "retrieval_deduplicated_count": int(
+            retrieval.get("deduplicated_count", 0) or 0
+        ),
+        "judged_paper_count": int(cost.get("judged_paper_count", 0) or 0),
         "warning_count": len(warnings) if isinstance(warnings, list) else 0,
         "error": row.get("error"),
     }

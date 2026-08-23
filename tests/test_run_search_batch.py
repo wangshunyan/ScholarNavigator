@@ -116,8 +116,12 @@ def test_batch_manifest_binds_input_output_and_provenance(
             "source_preferences": ["openalex", "arxiv"],
             "result_count": 12,
             "warning_count": 0,
-            "error": None,
-        }
+                "error": None,
+                "visible_result_count": 12,
+                "retrieval_raw_count": 12,
+                "retrieval_deduplicated_count": 12,
+                "judged_paper_count": 0,
+            }
     ]
     assert manifest["gold_or_qrels_loaded"] is False
     assert isinstance(manifest["git_worktree_clean"], bool)

@@ -20,6 +20,7 @@
 - 修正 `--fail-fast` 与 manifest 逻辑：触发首个失败后仍关闭输出句柄并生成完整 partial manifest，再返回退出码 1；避免中途 `return` 跳过复现记录。
 - manifest 增加每个已执行 case 的来源、结果数量、warning 数和错误摘要，便于现场核对“实际走了哪个 connector”；专项 `24 passed`。不记录查询正文、gold/qrels 或本地绝对路径。
 - 补齐 fail-fast partial manifest 回归：现在明确验证 `case_count=2`、`executed_case_count=1`、`partial=true` 和失败计数；专项仍为 `24 passed`。
+- 每案例 manifest 现在明确区分 `visible_result_count`、`retrieval_raw_count`、`retrieval_deduplicated_count` 和 `judged_paper_count`，避免把展示结果数误称为召回指标；兼容保留的 `result_count` 明确等于 visible result 数。专项 `24 passed`。
 
 ## 当前审计快照（2026-08-23）
 
