@@ -537,6 +537,21 @@ def _validate_explicit_local_source_configuration(
                 status_code=409,
                 detail=f"{source}_not_configured",
             )
+        if source == "local_bm25" and not config.corpus_path.is_file():
+            raise HTTPException(
+                status_code=409,
+                detail="local_bm25_corpus_not_found",
+            )
+        if source == "local_hybrid":
+            missing = (
+                "local_hybrid_semantic_corpus_not_found"
+                if not config.semantic_corpus_path.is_file()
+                else "local_hybrid_model_not_found"
+                if not config.model_path.is_dir()
+                else None
+            )
+            if missing is not None:
+                raise HTTPException(status_code=409, detail=missing)
 
 
 @router.get(

@@ -75,6 +75,24 @@ def test_explicit_unconfigured_local_source_fails_before_queueing(
     assert response.json()["detail"] == "local_bm25_not_configured"
 
 
+def test_explicit_local_source_with_missing_corpus_fails_before_queueing(
+    tmp_path: Path, monkeypatch
+) -> None:
+    monkeypatch.setenv(
+        "SCHOLAR_AGENT_LOCAL_BM25_CORPUS", str(tmp_path / "missing.jsonl")
+    )
+    monkeypatch.delenv("SCHOLAR_AGENT_LOCAL_BM25_DOCUMENT_IDENTITY", raising=False)
+    response = client.post(
+        "/api/v1/real/search/runs",
+        json={
+            "query": "graph retrieval papers",
+            "source_preferences": ["local_bm25"],
+        },
+    )
+    assert response.status_code == 409
+    assert response.json()["detail"] == "local_bm25_corpus_not_found"
+
+
 def test_real_search_run_is_created_before_background_result_is_ready(
     monkeypatch,
 ) -> None:
