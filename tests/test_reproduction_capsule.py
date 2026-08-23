@@ -232,7 +232,12 @@ def test_source_query_configuration_and_external_dependency_drift_are_ineligible
     external_source = _source(tmp_path, "external-source")
     fixture = external_source / "inputs/retrieval_outputs.json"
     fixture.unlink()
-    fixture.symlink_to(ROOT / "datasets/eval_fixtures/sample/retrieval_outputs.json")
+    try:
+        fixture.symlink_to(ROOT / "datasets/eval_fixtures/sample/retrieval_outputs.json")
+    except OSError as exc:
+        if getattr(exc, "winerror", None) == 1314:
+            pytest.skip("Windows symlink privilege unavailable for external-dependency fixture")
+        raise
     with pytest.raises((CapsuleNotEligible, CapsuleIntegrityError)):
         export_capsule(external_source, tmp_path / "external.tar", host_repository_root=ROOT)
 
