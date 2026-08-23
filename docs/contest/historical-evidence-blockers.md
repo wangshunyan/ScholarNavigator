@@ -5,7 +5,7 @@
 
 ## 已核实的缺失项
 
-本机和服务器 `/mnt/highway1/wang/ScholarNavigator-main` 的只读检查均未找到：
+本机和外部执行站点 `<server-project-root>` 的只读检查均未找到：
 
 - `outputs/benchmark_runs/lexical_normalization_record160_813cf3a_r5/`；
 - `outputs/benchmark_runs/lexical_normalization_record160_813cf3a_r6/`；

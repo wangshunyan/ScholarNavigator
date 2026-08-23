@@ -101,7 +101,7 @@
 - **增量验证（2026-08-22）**：全量回归在 `777 passed / 27 skipped` 处触及缺失的历史 network snapshot `results.jsonl`；依赖该历史输入的冲突测试现在显式报告环境跳过，生产 `_historical_snapshot_keys` 仍在缺失/漂移时 fail-closed。
 - **增量验证（2026-08-22）**：network-request manifest 运行时现在在历史 results/config/snapshot 任一缺失时返回结构化 `historical_snapshot_inputs_unavailable`（退出 3），CLI 测试补齐 Windows 最小环境并对该外部 blocker 显式跳过；专项测试 `11 passed, 5 skipped`。
 - **增量验证（2026-08-22）**：修正 formal provider-health supervisor 测试子进程缺少 Windows `SystemRoot/WINDIR` 的环境问题；专项测试 `20 passed`。
-- **增量验证（2026-08-22）**：用户说明部分实验位于外部服务器 `/mnt/highway1/wang/ScholarNavigator-main`；本轮不连接该服务器、不读取 SSH 凭据。服务器产物未纳入本地证据链，待用户自行导出脱敏的 `config.json`、输入/索引哈希、`metrics.json`、`results.jsonl`、`resource_ledger.json` 和完成标记后再审计。
+- **增量验证（2026-08-22）**：用户说明部分实验位于外部执行站点 `<server-project-root>`；本轮不连接该站点、不读取 SSH 凭据。服务器产物未纳入本地证据链，待用户自行导出脱敏的 `config.json`、输入/索引哈希、`metrics.json`、`results.jsonl`、`resource_ledger.json` 和完成标记后再审计。
 - **增量验证（2026-08-22）**：灾备模拟协议绑定的历史 `source_commit=905b4d24...` 不在当前 Git 对象库。新增只读 `preflight_disaster_recovery_inputs()` 与 `scripts/check_formal_run_recovery.py preflight`；缺失时返回 `external_evidence_unavailable`/退出 3，`simulate-disaster` 不再抛 traceback 或绕过 commit 绑定。依赖该历史 commit 的 fixture 测试显式跳过；专项测试 `8 passed, 9 skipped`。冻结协议哈希未修改。
 - **增量验证（2026-08-22）**：修正 `test_formal_run_storage_governance` 的 Windows 最小子进程环境，补充 `SystemRoot/WINDIR`，避免 Python `asyncio` 在隔离环境中因 WinSock 初始化失败而误报产品错误；专项测试 `17 passed`。
 - **增量验证（2026-08-22）**：同样修正 `test_formal_scheduler_fairness` 两个 CLI 场景的 Windows 最小子进程环境；专项测试 `22 passed`。

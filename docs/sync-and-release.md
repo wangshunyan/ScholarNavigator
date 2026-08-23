@@ -11,14 +11,14 @@
 
 在服务器项目目录中确认状态，不要复制整个项目目录：
 
-    cd /mnt/highway1/wang/ScholarNavigator-main
+    cd <server-project-root>
     git rev-parse HEAD
     git status --short
     find outputs/benchmark_runs -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort | tail
 
 对单个运行目录执行脱敏打包：
 
-    PYTHONPATH=src python scripts/package_server_evidence.py --run-dir outputs/benchmark_runs/<run_id> --output /tmp/<run_id>-evidence.zip
+    PYTHONPATH=src python scripts/package_server_evidence.py --run-dir outputs/benchmark_runs/<run_id> --output <temporary-evidence-path>/<run_id>-evidence.zip
 
 脚本离线运行，不读取 .env 或 SSH 文件。将 zip 复制到本地后再审计；不要上传 zip 到 GitHub。
 

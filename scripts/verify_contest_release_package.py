@@ -13,6 +13,7 @@ from scripts.build_contest_release_package import MANIFEST_NAME, MAX_RELEASE_BYT
 
 
 FORBIDDEN_PREFIXES = ("outputs/", "datasets/semantic/", "legacy/spar_original/")
+FORBIDDEN_CONTENT_MARKERS = ("172.16.36.16", "/mnt/highway1")
 
 
 class ReleaseVerificationError(ValueError):
@@ -45,6 +46,12 @@ def verify_package(package: Path, *, expected_commit: str | None = None) -> dict
                     raise ReleaseVerificationError(f"forbidden_zip_member:{name}")
                 if any(name.startswith(prefix) for prefix in FORBIDDEN_PREFIXES):
                     raise ReleaseVerificationError(f"forbidden_zip_member:{name}")
+                if name != MANIFEST_NAME and not name.startswith("tests/"):
+                    suffix = path.suffix.lower()
+                    if suffix in {".md", ".json", ".jsonl", ".txt", ".yaml", ".yml"}:
+                        decoded = archive.read(name).decode("utf-8", errors="replace")
+                        if any(marker in decoded for marker in FORBIDDEN_CONTENT_MARKERS):
+                            raise ReleaseVerificationError(f"forbidden_content_marker:{name}")
             try:
                 manifest = json.loads(archive.read(MANIFEST_NAME).decode("utf-8"))
             except (UnicodeDecodeError, json.JSONDecodeError) as exc:
