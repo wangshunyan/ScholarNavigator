@@ -9,6 +9,7 @@
 - [x] 已确认仓库包含多源检索、SQLite BM25、Dense/Faiss、Qwen3 Reranker、查询规划/演化、RefChain、LLM feedback、质量信号、全文证据模型、FastAPI/Next.js 和竞赛评测脚本。
 - [x] `npm run lint` 与 `npm run build` 当前通过。
 - [x] `PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q --maxfail=1` 已在当前 checkout 完整通过：`2267 passed, 185 skipped, 2 warnings`。跳过项均为结构化 preflight 标记的历史证据、冻结哈希、Windows 权限或外部环境阻塞；严格生产门禁仍在缺失/漂移时失败，不修改冻结哈希。
+- [x] 当前 HEAD `480b1bd` 的完整回归复核通过：`2282 passed, 185 skipped, 2 warnings`（约 12 分 36 秒）。新增全文 CLI、元数据哈希绑定和 README 变更未引入测试回归；跳过项仍是已登记的外部历史证据/环境条件，不等同赛事资格通过。
 - [x] 已增加显式历史证据 preflight：`scripts/audit_cluster_significance.py preflight` 与 `scripts/check_current_rules_regression.py preflight` 返回 `external_evidence_unavailable`，严格 `check` 仍失败；默认测试只对已显式接入 preflight 的门禁做结构化跳过，未接入的门禁仍会严格暴露阻塞。当前全量回归已完成，剩余跳过项均有对应边界说明。
 - [x] 已清理旧文档中不可核验的 `contest_full_dense_reranker_rrf_soft_v3`/P0 数字，并在干净提交 `e7f2b72` 重新生成可读的 200 条 BM25/Hybrid 成对诊断；完整元数据和 1000 条正式运行仍未完成。
 - [x] 已核对并统一 `docs/report/technical_report.md`、`docs/architecture.md`、`docs/contest/experiment-results.md`、`docs/evaluation.md` 和 `README.md` 的当前证据边界；不可读取的服务器 Dense/Reranker/RRF 数字已删除或明确标为历史不可核验，仍保留实验协议和复现入口。
