@@ -33,10 +33,12 @@ $env:PYTHONPATH="src"
 .\.venv\Scripts\python.exe scripts/run_search_batch.py `
   --input docs/contest/demo-queries.jsonl `
   --output outputs/demo-batch/results.jsonl `
+  --manifest outputs/demo-batch/manifest.json `
   --sources local_bm25
 ```
 
 如果本地语料或索引配置缺失，运行会记录结构化 connector warning/error，而不会静默改用在线来源。
+`manifest.json` 会绑定输入/输出 SHA-256、代码 commit、成功/失败数量及网络/LLM 调用计数，便于队友复核运行是否来自同一份输入；它不包含 gold/qrels，也不是官方成绩。
 
 ## 启动后端
 
