@@ -21,8 +21,8 @@ from scholar_agent.core.paper_schemas import Paper, PaperIdentifiers
 from scholar_agent.retrieval.query_adapter import ACADEMIC_QUERY_STOPWORDS
 
 
-LOCAL_BM25_CONNECTOR_VERSION = "local-bm25-v3"
-LOCAL_BM25_CACHE_SCHEMA_VERSION = "2"
+LOCAL_BM25_CONNECTOR_VERSION = "local-bm25-v4"
+LOCAL_BM25_CACHE_SCHEMA_VERSION = "3"
 LOCAL_BM25_TOKENIZER_VERSION = "unicode-word-casefold-v1"
 LOCAL_BM25_QUERY_TOKENIZER_VERSION = "academic-stopword-filter-v1"
 LOCAL_BM25_ENGINE = "sqlite-fts5-bm25-v1"
@@ -51,6 +51,9 @@ class LocalBM25FieldConfig:
     document_id: str = "_id"
     title: str = "title"
     abstract: str = "abstract"
+    authors: str = "authors"
+    year: str = "year"
+    venue: str = "venue"
     document_id_identity: IdentityField = "s2orc_corpus_id"
     doi: str | None = None
     arxiv_id: str | None = None
@@ -407,6 +410,7 @@ def _build_index(
                             document_id,
                             config.fields,
                         )
+                        authors_json, year, venue = _metadata_values(payload, config.fields)
                         values = (
                             document_id,
                             title,
@@ -415,6 +419,9 @@ def _build_index(
                                 getattr(identifiers, name)
                                 for name in _IDENTIFIER_COLUMNS
                             ),
+                            authors_json,
+                            year,
+                            venue,
                         )
                         if document_id in seen:
                             _validate_duplicate_row(connection, values)
@@ -424,6 +431,7 @@ def _build_index(
                         columns = (
                             "document_id,title,abstract,"
                             + ",".join(_IDENTIFIER_COLUMNS)
+                            + ",authors_json,year,venue"
                         )
                         connection.execute(
                             f"INSERT INTO {_SQLITE_TABLE} ({columns}) "
@@ -464,6 +472,7 @@ def _create_schema(connection: sqlite3.Connection) -> None:
     connection.execute(
         f"CREATE VIRTUAL TABLE {_SQLITE_TABLE} USING fts5("
         f"document_id UNINDEXED,title,abstract,{identifier_columns},"
+        "authors_json UNINDEXED,year UNINDEXED,venue UNINDEXED,"
         "tokenize='unicode61')"
     )
     connection.execute(
@@ -476,7 +485,11 @@ def _validate_duplicate_row(
     values: tuple[str | None, ...],
 ) -> None:
     document_id = str(values[0])
-    columns = "document_id,title,abstract," + ",".join(_IDENTIFIER_COLUMNS)
+    columns = (
+        "document_id,title,abstract,"
+        + ",".join(_IDENTIFIER_COLUMNS)
+        + ",authors_json,year,venue"
+    )
     prior = connection.execute(
         f"SELECT {columns} FROM {_SQLITE_TABLE} WHERE document_id = ? LIMIT 1",
         (document_id,),
@@ -495,7 +508,11 @@ def _search_index(
     match_expression = " OR ".join(
         '"' + token.replace('"', '""') + '"' for token in tokens
     )
-    columns = "rowid,document_id,title,abstract," + ",".join(_IDENTIFIER_COLUMNS)
+    columns = (
+        "rowid,document_id,title,abstract,"
+        + ",".join(_IDENTIFIER_COLUMNS)
+        + ",authors_json,year,venue"
+    )
     with _connect(index.database_path, read_only=True) as connection:
         matched = connection.execute(
             f"SELECT {columns} FROM {_SQLITE_TABLE} "
@@ -530,11 +547,34 @@ def _paper_from_row(row: sqlite3.Row | tuple[Any, ...]) -> Paper:
     identifiers = PaperIdentifiers(
         **{
             name: str(value) if value is not None else None
-            for name, value in zip(_IDENTIFIER_COLUMNS, values[4:], strict=True)
+            for name, value in zip(
+                _IDENTIFIER_COLUMNS,
+                values[4 : 4 + len(_IDENTIFIER_COLUMNS)],
+                strict=True,
+            )
         }
     )
+    authors_json = str(values[4 + len(_IDENTIFIER_COLUMNS)] or "[]")
+    try:
+        authors_value = json.loads(authors_json)
+    except json.JSONDecodeError:
+        authors_value = []
+    authors = (
+        [str(item) for item in authors_value if str(item).strip()]
+        if isinstance(authors_value, list)
+        else []
+    )
+    raw_year = values[5 + len(_IDENTIFIER_COLUMNS)]
+    try:
+        year = int(raw_year) if raw_year not in (None, "") else None
+    except (TypeError, ValueError):
+        year = None
+    venue = str(values[6 + len(_IDENTIFIER_COLUMNS)] or "") or None
     return Paper(
         title=str(values[2]),
+        authors=authors,
+        year=year,
+        venue=venue,
         abstract=str(values[3] or ""),
         identifiers=identifiers,
         sources=["local_bm25"],
@@ -579,6 +619,41 @@ def _identifiers(
         )
     values[fields.document_id_identity] = document_id
     return PaperIdentifiers(**values)
+
+
+def _metadata_values(
+    payload: dict[str, Any], fields: LocalBM25FieldConfig
+) -> tuple[str, str | None, str | None]:
+    raw_authors = _value_at_path(payload, fields.authors)
+    if isinstance(raw_authors, list):
+        authors = [str(item).strip() for item in raw_authors if str(item).strip()]
+    elif raw_authors is None:
+        authors = []
+    else:
+        authors = [
+            part.strip() for part in str(raw_authors).split(",") if part.strip()
+        ]
+    raw_year = _value_at_path(payload, fields.year)
+    year = str(raw_year).strip() if raw_year not in (None, "") else None
+    if year is not None:
+        try:
+            year = str(int(year))
+        except ValueError:
+            year = None
+    raw_venue = _value_at_path(payload, fields.venue)
+    venue = str(raw_venue).strip() if raw_venue not in (None, "") else None
+    return json.dumps(authors, ensure_ascii=False, separators=(",", ":")), year, venue
+
+
+def _value_at_path(payload: dict[str, Any], field_path: str | None) -> Any:
+    if not field_path:
+        return None
+    value: Any = payload
+    for part in field_path.split("."):
+        if not isinstance(value, dict) or part not in value:
+            return None
+        value = value[part]
+    return value
 
 
 def _required_value(

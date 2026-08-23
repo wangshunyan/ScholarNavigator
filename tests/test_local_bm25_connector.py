@@ -63,6 +63,9 @@ def _rows() -> list[dict[str, object]]:
             "_id": "2",
             "title": "β细胞与 immune response",
             "text": "Unicode 炎症 signaling",
+            "authors": ["A. Author", "B. Author"],
+            "year": 2024,
+            "venue": "NeurIPS",
             "metadata": {"doi": "10.1/two"},
         },
         {
@@ -109,6 +112,9 @@ def test_local_bm25_builds_deterministically_and_preserves_identity(
         "3",
     ]
     assert first.papers[0].identifiers.doi == "10.1/two"
+    assert first.papers[0].authors == ["A. Author", "B. Author"]
+    assert first.papers[0].year == 2024
+    assert first.papers[0].venue == "NeurIPS"
     assert first.papers[0].sources == ["local_bm25"]
     assert first.papers[-1].abstract == ""
 

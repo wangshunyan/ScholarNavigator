@@ -53,11 +53,18 @@ SCHOLAR_AGENT_LOCAL_BM25_CACHE_DIR=outputs/benchmark_cache/local_bm25
 SCHOLAR_AGENT_LOCAL_BM25_DOCUMENT_ID_FIELD=_id
 SCHOLAR_AGENT_LOCAL_BM25_TITLE_FIELD=title
 SCHOLAR_AGENT_LOCAL_BM25_ABSTRACT_FIELD=abstract
+SCHOLAR_AGENT_LOCAL_BM25_AUTHORS_FIELD=authors
+SCHOLAR_AGENT_LOCAL_BM25_YEAR_FIELD=year
+SCHOLAR_AGENT_LOCAL_BM25_VENUE_FIELD=venue
 SCHOLAR_AGENT_LOCAL_BM25_DOCUMENT_IDENTITY=arxiv_id
 SCHOLAR_AGENT_LOCAL_BM25_ARXIV_ID_FIELD=arxiv_id
 # 随包标题语料没有 DOI；只有元数据完整语料才填写 doi
 SCHOLAR_AGENT_LOCAL_BM25_DOI_FIELD=
 ```
+
+当输入记录包含 `authors`（数组或逗号分隔字符串）、`year` 和 `venue` 时，BM25
+索引会将它们保留到 `Paper`/API 结果中；这些字段不加入 FTS 文本，也不改变
+BM25 分数或默认排序。标题型随包语料缺少这些字段时，结果会明确保持为空。
 
 启动后访问 `http://127.0.0.1:8000/api/v1/runtime/config`，看到 `local_bm25` 为 `available: true` 即表示后端已识别本地索引。
 
