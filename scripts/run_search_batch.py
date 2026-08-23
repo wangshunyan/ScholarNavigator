@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -131,6 +133,11 @@ def main(argv: list[str] | None = None) -> int:
             "internal ranked-paper diagnostics. Defaults to disabled."
         ),
     )
+    parser.add_argument(
+        "--manifest",
+        default=None,
+        help="Optional JSON manifest path recording input/output hashes and run provenance.",
+    )
     args = parser.parse_args(argv)
 
     input_path = Path(args.input)
@@ -234,7 +241,101 @@ def main(argv: list[str] | None = None) -> int:
         if ranked_candidates_handle is not None:
             ranked_candidates_handle.close()
 
+    if args.manifest:
+        _write_batch_manifest(
+            Path(args.manifest),
+            input_path=input_path,
+            output_path=output_path,
+            cases=cases,
+            default_sources=default_sources,
+            local_preflight_errors=local_preflight_errors,
+            had_failure=had_failure,
+        )
+
     return 0
+
+
+def _write_batch_manifest(
+    path: Path,
+    *,
+    input_path: Path,
+    output_path: Path,
+    cases: list[dict[str, Any]],
+    default_sources: list[str] | None,
+    local_preflight_errors: dict[str, str],
+    had_failure: bool,
+) -> None:
+    rows = _load_jsonl_rows(output_path)
+    payload = {
+        "schema_version": "search-batch-manifest-v1",
+        "input": {"path_recorded": False, "sha256": _sha256_file(input_path)},
+        "output": {"path_recorded": False, "sha256": _sha256_file(output_path)},
+        "source_preferences": list(default_sources or []),
+        "local_preflight_errors": dict(sorted(local_preflight_errors.items())),
+        "case_count": len(cases),
+        "succeeded_count": sum(row.get("status") == "succeeded" for row in rows),
+        "failed_count": sum(row.get("status") == "failed" for row in rows),
+        "had_failure": had_failure,
+        "network_requests": sum(
+            int((row.get("result") or {}).get("cost_report", {}).get("api_call_count", 0))
+            for row in rows
+        ),
+        "llm_calls": sum(
+            int((row.get("result") or {}).get("cost_report", {}).get("llm_call_count", 0))
+            for row in rows
+        ),
+        "gold_or_qrels_loaded": False,
+        "git_commit": _git_head(),
+        "git_worktree_clean": _git_worktree_clean(),
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+
+
+def _load_jsonl_rows(path: Path) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            value = json.loads(line)
+            if isinstance(value, dict):
+                rows.append(value)
+    return rows
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _git_head() -> str | None:
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=REPO_ROOT,
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return result.stdout.strip() or None
+
+
+def _git_worktree_clean() -> bool | None:
+    try:
+        result = subprocess.run(
+            ["git", "status", "--porcelain=v1"],
+            cwd=REPO_ROOT,
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return not bool(result.stdout.strip())
 
 
 def _configure_local_sources(

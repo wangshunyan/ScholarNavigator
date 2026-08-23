@@ -83,6 +83,39 @@ def test_ranked_candidates_dump_disabled_by_default(
     assert not (output_path.parent / "ranked_candidates.jsonl").exists()
 
 
+def test_batch_manifest_binds_input_output_and_provenance(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    input_path = _write_jsonl(
+        tmp_path / "queries.jsonl",
+        [{"case_id": "case_001", "query": "scientific retrieval"}],
+    )
+    output_path = tmp_path / "out" / "results.jsonl"
+    manifest_path = tmp_path / "out" / "manifest.json"
+    monkeypatch.setattr(run_search_batch, "SearchService", _fake_service_class())
+
+    code = run_search_batch.main(
+        [
+            "--input", str(input_path),
+            "--output", str(output_path),
+            "--manifest", str(manifest_path),
+        ]
+    )
+
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assert code == 0
+    assert manifest["schema_version"] == "search-batch-manifest-v1"
+    assert manifest["case_count"] == 1
+    assert manifest["succeeded_count"] == 1
+    assert manifest["failed_count"] == 0
+    assert manifest["gold_or_qrels_loaded"] is False
+    assert manifest["git_worktree_clean"] is False
+    assert len(manifest["input"]["sha256"]) == 64
+    assert len(manifest["output"]["sha256"]) == 64
+    assert manifest["git_commit"]
+
+
 def test_ranked_candidates_dump_writes_top10_without_changing_results_jsonl(
     tmp_path: Path,
     monkeypatch,
