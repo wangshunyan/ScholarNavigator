@@ -56,3 +56,24 @@ def test_merge_rejects_duplicate_or_invalid_identity() -> None:
         assert str(exc) == "duplicate_base_id:2401.00001"
     else:  # pragma: no cover
         raise AssertionError("expected duplicate rejection")
+
+
+def test_cli_report_binds_base_metadata_and_output_hashes(tmp_path: Path) -> None:
+    from merge_paper_metadata import main
+
+    base = tmp_path / "base.jsonl"
+    metadata = tmp_path / "metadata.jsonl"
+    output = tmp_path / "merged.jsonl"
+    report = tmp_path / "report.json"
+    base.write_text('{"arxiv_id":"2401.00001","title":"T"}\n', encoding="utf-8")
+    metadata.write_text('{"arxiv_id":"2401.00001","year":2024}\n', encoding="utf-8")
+    exit_code = main([
+        "--base", str(base), "--metadata", str(metadata),
+        "--output", str(output), "--report", str(report),
+    ])
+    assert exit_code == 0
+    import json
+    value = json.loads(report.read_text(encoding="utf-8"))
+    assert value["base_sha256"]
+    assert value["metadata_sha256"]
+    assert value["output_sha256"]

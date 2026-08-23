@@ -147,7 +147,7 @@ def merge_rows(
     return output, report
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base", required=True, type=Path)
     parser.add_argument("--metadata", required=True, type=Path)
@@ -155,7 +155,7 @@ def main() -> int:
     parser.add_argument("--report", required=True, type=Path)
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--reject-conflicts", action="store_true")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     try:
         base = _read_jsonl(args.base)
         metadata = _read_jsonl(args.metadata)
@@ -166,6 +166,8 @@ def main() -> int:
         with args.output.open("w", encoding="utf-8", newline="\n") as handle:
             for row in merged:
                 handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+        report["base_sha256"] = hashlib.sha256(args.base.read_bytes()).hexdigest()
+        report["metadata_sha256"] = hashlib.sha256(args.metadata.read_bytes()).hexdigest()
         report["output_sha256"] = hashlib.sha256(args.output.read_bytes()).hexdigest()
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")

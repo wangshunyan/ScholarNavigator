@@ -44,7 +44,7 @@
 
     PYTHONPATH=src python scripts/merge_paper_metadata.py --base datasets/local_bm25/pasa_papers.jsonl --metadata <合法元数据.jsonl> --output outputs/pasa_papers_enriched.jsonl --report outputs/pasa_papers_enriched.report.json
 
-先用 `scripts/audit_corpus_metadata.py` 审计报告，再把新语料用于 smoke/200 条成对评测。不要把来源不明、标题猜测、gold/qrels 或服务器私有数据当作元数据输入。
+先用 `scripts/audit_corpus_metadata.py` 审计报告，再把新语料用于 smoke/200 条成对评测。合并报告会记录 base、metadata 和 merged 输出的 SHA-256，三者必须随运行配置保存。不要把来源不明、标题猜测、gold/qrels 或服务器私有数据当作元数据输入。
 
 每次 benchmark 应在 outputs/benchmark_runs/<run_id>/ 生成 config.json、metrics.json、results.jsonl、failures.jsonl 和资源账本。outputs/ 默认被忽略，不会随 GitHub 发布。
 
