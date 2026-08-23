@@ -286,6 +286,7 @@ class QueryUnderstandingAgent:
         methods = _extract_method_terms(normalized_query)
         datasets = _extract_dataset_terms(normalized_query)
         keyword_terms = _extract_keyword_terms(normalized_query, venues)
+        exclude_terms = _extract_excluded_terms(normalized_query)
         selected_sources, warnings = _select_sources(normalized_query, domain)
         limit_per_source, max_subqueries = _profile_settings(
             options.run_profile, options.top_k
@@ -299,7 +300,7 @@ class QueryUnderstandingAgent:
                 datasets=datasets,
                 domains=[domain],
                 must_include_terms=keyword_terms,
-                exclude_terms=[],
+                exclude_terms=exclude_terms,
                 paper_types=[],
             ),
             options.explicit_constraints,
@@ -314,6 +315,8 @@ class QueryUnderstandingAgent:
             reasoning.append("time_range_detected")
         if venues:
             reasoning.append("venue_constraints_detected")
+        if exclude_terms:
+            reasoning.append("exclusion_constraints_detected")
 
         query_analysis = QueryAnalysis(
             original_query=normalized_query,
@@ -698,6 +701,33 @@ def _extract_keyword_terms(query: str, venues: list[str]) -> list[str]:
             terms.extend(mapped_terms)
 
     terms.extend(venues)
+    return _dedupe(terms)
+
+
+def _extract_excluded_terms(query: str) -> list[str]:
+    """Extract only explicit paper-type exclusion phrases.
+
+    Exclusions are deliberately conservative: a bare ``review`` mention is
+    not treated as an exclusion, while phrases such as ``exclude review
+    papers`` and ``排除综述`` become hard judgement constraints.  This keeps
+    ordinary survey queries from silently losing relevant papers.
+    """
+
+    lowered = query.casefold()
+    terms: list[str] = []
+    if re.search(
+        r"\b(?:exclude|excluding|without|omit|omitting|not\s+including)"
+        r"\s+(?:any\s+)?(?:the\s+)?(?:review|reviews|survey|surveys|"
+        r"literature\s+reviews?)(?:\s+papers?)?\b",
+        lowered,
+    ):
+        terms.extend(("review", "survey", "literature review"))
+    if re.search(
+        r"(?:排除|不含|不包括|剔除)\s*(?:所有|任何)?\s*"
+        r"(?:综述|评论|survey|review)(?:类|型)?(?:论文)?",
+        lowered,
+    ):
+        terms.extend(("review", "survey", "literature review"))
     return _dedupe(terms)
 
 

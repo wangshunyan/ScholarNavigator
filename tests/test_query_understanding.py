@@ -80,6 +80,33 @@ def test_chinese_since_year_is_inclusive() -> None:
     assert time_range.end_year is None
 
 
+def test_explicit_review_exclusion_becomes_hard_constraint() -> None:
+    plan = analyze_query(
+        "Search for graph neural network papers on molecular property prediction "
+        "that evaluate on MoleculeNet and exclude review papers.",
+        current_year=2026,
+    )
+
+    assert plan.query_analysis.constraints.exclude_terms == [
+        "review",
+        "survey",
+        "literature review",
+    ]
+    assert "exclusion_constraints_detected" in plan.query_analysis.reasoning
+
+
+def test_review_topic_without_exclusion_is_not_filtered() -> None:
+    plan = analyze_query("Find review papers about graph retrieval", current_year=2026)
+
+    assert plan.query_analysis.constraints.exclude_terms == []
+
+
+def test_chinese_review_exclusion_is_supported() -> None:
+    plan = analyze_query("搜索医学图像分割论文，排除综述", current_year=2026)
+
+    assert "review" in plan.query_analysis.constraints.exclude_terms
+
+
 def test_chinese_recent_three_years_uses_current_year() -> None:
     plan = analyze_query("近三年 LLM reranking 论文", current_year=2026)
 
