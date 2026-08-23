@@ -7,6 +7,7 @@ import type {
   SearchRunResultResponse,
   SynthesisOutput,
 } from "@/types/api";
+import { safeExternalUrl } from "@/lib/format";
 
 export function exportSearchResultAsJson(result: SearchRunResultResponse): void {
   downloadTextFile(
@@ -178,6 +179,10 @@ function papersMarkdown(papers: RankedPaper[]): string[] {
     "",
     ...evidenceMarkdown(paper.evidence),
     "",
+    "#### Full-text Evidence",
+    "",
+    ...fullTextEvidenceMarkdown(paper.paper.full_text_evidence),
+    "",
   ]);
 }
 
@@ -189,6 +194,27 @@ function evidenceMarkdown(evidence: EvidenceItem[]): string[] {
     (item) =>
       `- ${item.source} (${item.confidence}): ${markdownText(item.text)}`,
   );
+}
+
+function fullTextEvidenceMarkdown(
+  documents: RankedPaper["paper"]["full_text_evidence"],
+): string[] {
+  if (!documents.length) {
+    return ["- N/A"]; 
+  }
+
+  return documents.flatMap((document, documentIndex) => {
+    const sourceUrl = safeExternalUrl(document.source_url);
+    const paragraphs = document.paragraphs.flatMap((paragraph) => [
+      `- paragraph ${paragraph.paragraph_index + 1}; chars ${paragraph.start_char}-${paragraph.end_char}; sha256 ${paragraph.text_sha256}`,
+      ...paragraph.text.split(/\r?\n/).map((line) => `  > ${markdownText(line)}`),
+    ]);
+    return [
+      `- document ${documentIndex + 1}; license: ${markdownText(document.license_id)}; content_sha256: ${document.content_sha256}`,
+      `  source: ${sourceUrl ? markdownText(sourceUrl) : "unavailable (URL failed safety validation)"}`,
+      ...(paragraphs.length ? paragraphs : ["- no paragraphs" ]),
+    ];
+  });
 }
 
 function identifiersText(identifiers: PaperIdentifiers): string {
