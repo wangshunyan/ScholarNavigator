@@ -1,9 +1,24 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 from scripts import check_contest_qualification as qualification
+
+
+def test_qualification_cli_help_works_when_run_as_script() -> None:
+    script = Path(__file__).resolve().parents[1] / "scripts" / "check_contest_qualification.py"
+    completed = subprocess.run(
+        [sys.executable, str(script), "--help"],
+        cwd=script.parents[1],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert completed.returncode == 0
+    assert "fixed 200-query contest qualification runs" in completed.stdout
 
 
 def _metrics(delta: float) -> dict:

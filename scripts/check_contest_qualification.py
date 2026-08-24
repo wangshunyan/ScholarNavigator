@@ -12,6 +12,11 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+# Direct ``python scripts/check_contest_qualification.py`` execution places
+# only ``scripts/`` on sys.path.  Add the repository root as well so the
+# sibling CLI imports below work exactly like module/test execution.
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 if str(ROOT / "src") not in sys.path:
     sys.path.insert(0, str(ROOT / "src"))
 
