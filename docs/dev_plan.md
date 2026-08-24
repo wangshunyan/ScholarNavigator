@@ -35,6 +35,7 @@
 - **本轮发布验证 CLI 复核（2026-08-24）**：同样修复 `scripts/verify_contest_release_package.py --help` 的直接脚本导入路径，并新增子进程回归；发布安全校验逻辑未改变，发布验证专项 `5 passed`，直接入口现可用。
 - **本轮最终发布复核（2026-08-24，提交 `1785789`）**：同步检查 `status=ready`、`github_in_sync=true`、工作树干净；clean-clone smoke 为 `status=ready`，source-only 包 1,024 个文件、36,970,565 bytes，manifest/成员哈希通过，源提交绑定 `1785789ab835162266c1128df650511f2e4b932e`，health/config=200，离线 BM25=5 条，网络请求=0，LLM disabled。该证据证明发布与可复现链路，不替代 P1 正式评测或官方成绩。
 - **本轮参赛材料一致性复核（2026-08-24）**：说明书模板已移除无法由当前 checkout 核验的“soft Judgement 已完成内部 1000 条验证”表述，并将旧 1000 条对照明确标为历史线索；新增文档回归，防止历史运行被写成当前正式成绩。
+- **本轮文档变更后发布复核（2026-08-24，提交 `7ad1df7`）**：文档一致性专项 `9 passed`；clean-clone smoke 重新通过，source-only 包 1,025 个文件、36,971,502 bytes，manifest/成员哈希通过，源提交绑定 `7ad1df74bca5d6505d3bff55f82145e2363dda1f`，health/config=200，离线 BM25=5 条，网络请求=0，LLM disabled。
 - **上一轮代码提交复核（2026-08-24，代码 `f42a7e2`）**：查询规划分面修复后的全量回归为 `2325 passed, 184 skipped, 2 warnings`；前端 `npm run lint` 与 `npm run build` 通过；以干净提交执行的 5 条 demo candidate manifest 为 `git_worktree_clean=true`、5/5 succeeded、网络/LLM 调用均为 0。随后 clean-clone smoke 返回 `status=ready`，source-only 包 1,024 个文件、约 36.97 MB，health/config=200、离线 BM25 5 条、网络请求 0、LLM disabled；这些是内部工程/发布证据，不是官方成绩。计划记录随后在 `00f1934` 更新，最终 HEAD 仍以 `git rev-parse HEAD` 为准。
 - 干净树全量回归（提交 `b2142d7`）：`2312 passed, 184 skipped, 2 warnings`（约 13 分 03 秒）。此前未提交文档时 clean-clone 门禁拒绝打包属于预期保护；提交后 smoke 已通过，未将该门禁误报为产品失败。
 - 下方带日期的条目是历史增量证据，除非与本快照或当前可读取产物复核一致，不得作为当前状态引用。
