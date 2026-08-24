@@ -61,6 +61,29 @@ import { Badge, Button, SectionPanel, SkeletonLine } from "./ui";
 const DEFAULT_QUERY =
   "请帮我搜索 2020 年以来关于 LLM reranking 在学术论文检索中的代表性论文，重点关注 ACL、EMNLP、SIGIR。";
 
+const DEMO_QUERY_OPTIONS = [
+  {
+    label: "扩散模型 × 医学图像分割",
+    query: "找 2021 年以后关于扩散模型用于医学图像分割的论文，要求结果里说明数据集和评价指标。",
+  },
+  {
+    label: "RAG × HotpotQA",
+    query: "Find papers after 2022 that use retrieval-augmented generation for multi-hop question answering and report results on HotpotQA.",
+  },
+  {
+    label: "GNN × MoleculeNet（排除综述）",
+    query: "Search for graph neural network papers on molecular property prediction that evaluate on MoleculeNet and exclude review papers.",
+  },
+  {
+    label: "学术检索智能体",
+    query: "搜索关于自动学术论文检索智能体的论文，要求涉及查询改写、迭代搜索或相关性判断。",
+  },
+  {
+    label: "联邦学习 × 医疗数据",
+    query: "Find survey-free papers on federated learning for non-IID medical data with experiments on real clinical datasets.",
+  },
+] as const;
+
 const STAGES = [
   {
     key: "query_understanding",
@@ -1066,6 +1089,35 @@ function SearchWorkbench({
               )}
             </button>
           </div>
+          <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <label htmlFor="demo-query" className="text-xs font-bold uppercase tracking-wide text-[var(--muted-strong)]">
+              现场演示查询
+            </label>
+            <select
+              id="demo-query"
+              defaultValue=""
+              onChange={(event) => {
+                const selected = event.target.value
+                  ? DEMO_QUERY_OPTIONS[Number(event.target.value)]
+                  : undefined;
+                if (selected) {
+                  onQueryChange(selected.query);
+                }
+              }}
+              className="min-h-9 min-w-0 rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--foreground)] outline-none focus:border-[var(--primary)] sm:max-w-[28rem]"
+              aria-describedby="demo-query-help"
+            >
+              <option value="">选择一条复杂查询（不会自动提交）</option>
+              {DEMO_QUERY_OPTIONS.map((option, index) => (
+                <option key={option.label} value={index}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <p id="demo-query-help" className="text-xs leading-5 text-[var(--muted)]">
+            查询仅用于现场演示；加载后仍需点击发送，不读取 gold/qrels，也不会自动改变检索源。
+          </p>
           {formError ? <p className="mt-2 px-2 text-sm text-[var(--danger)]">{formError}</p> : null}
         </div>
 
