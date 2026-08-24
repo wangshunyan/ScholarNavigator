@@ -6,6 +6,8 @@
 
 ## 当前可确认的能力
 
+本页随当前 Git 提交更新；可复核的代码/测试基线以 `git rev-parse HEAD` 和最新 clean-clone smoke 的 `source_commit` 为准。所有内部指标仍不是赛事官方 scorer 结果。
+
 - `datasets/pasa/paper_database/id2paper.json` 包含 569,432 个稳定 arXiv ID 到标题的映射。
 - `datasets/local_bm25/pasa_papers.jsonl` 包含 569,432 条唯一 arXiv ID 记录；当前 title 完整度为 1.0，但 abstract、authors、year、venue、doi 完整度均为 0。
 - `datasets/semantic/pasa_papers_with_abstracts.jsonl` 包含 31,136 条唯一 arXiv ID 记录；title 与 abstract 完整度为 1.0，但 authors、year、venue、doi 完整度均为 0。该语料是 legacy 功能验证输入，不满足正式元数据质量目标。
