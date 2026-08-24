@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from scholar_agent.agents.synthesis import synthesize_answer
 from scholar_agent.agents.retriever import SourceStats
+from scholar_agent.core.full_text_evidence import build_paragraph_evidence
 from scholar_agent.core.paper_schemas import Paper, PaperIdentifiers
 from scholar_agent.core.search_schemas import (
     EvidenceItem,
@@ -233,6 +234,58 @@ def test_metadata_only_evidence_is_marked_as_limitation() -> None:
         "metadata_only_evidence:no_abstract_or_full_text_evidence_used"
         in synthesis.limitations
     )
+    assert "full_text_evidence_unavailable" in synthesis.limitations
+
+
+def test_verified_full_text_is_added_to_synthesis_without_changing_ranking() -> None:
+    baseline_ranked = make_ranked_paper("Full Text Reranking Paper", rank=1)
+    baseline = synthesize_answer(make_search_output([baseline_ranked]))
+
+    enriched_paper = baseline_ranked.paper.model_copy(
+        update={
+            "full_text_evidence": [
+                build_paragraph_evidence(
+                    "The method improves scientific retrieval on a held-out benchmark.",
+                    source_url="https://open.example.test/paper.pdf",
+                    license_id="CC-BY-4.0",
+                    license_verified=True,
+                )
+            ]
+        }
+    )
+    enriched_ranked = baseline_ranked.model_copy(update={"paper": enriched_paper})
+    enriched = synthesize_answer(make_search_output([enriched_ranked]))
+
+    assert baseline_ranked.rank == enriched_ranked.rank == 1
+    assert baseline_ranked.final_score == enriched_ranked.final_score
+    assert any(row.evidence_source == "full_text" for row in enriched.evidence_table)
+    assert "full_text_evidence_unavailable" in baseline.limitations
+    assert "full_text_evidence_unavailable" not in enriched.limitations
+    assert enriched.citation_coverage.evidence_row_count == baseline.citation_coverage.evidence_row_count + 1
+
+
+def test_unverified_full_text_never_reaches_synthesis() -> None:
+    ranked = make_ranked_paper("Unverified Full Text Paper", rank=1)
+    document = build_paragraph_evidence(
+        "This paragraph must remain outside synthesis.",
+        source_url="https://open.example.test/paper.txt",
+        license_id="CC-BY-4.0",
+        license_verified=True,
+    )
+    document = document.model_copy(
+        update={
+            "source": document.source.model_copy(update={"license_verified": False})
+        }
+    )
+    ranked = ranked.model_copy(
+        update={
+            "paper": ranked.paper.model_copy(update={"full_text_evidence": [document]})
+        }
+    )
+
+    synthesis = synthesize_answer(make_search_output([ranked]))
+
+    assert not any(row.evidence_source == "full_text" for row in synthesis.evidence_table)
     assert "full_text_evidence_unavailable" in synthesis.limitations
 
 

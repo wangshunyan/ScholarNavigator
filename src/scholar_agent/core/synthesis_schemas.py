@@ -7,7 +7,13 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 from scholar_agent.core.paper_schemas import PaperIdentifiers
-from scholar_agent.core.search_schemas import EvidenceSource
+SynthesisEvidenceSource = Literal[
+    "title",
+    "abstract",
+    "venue",
+    "metadata",
+    "full_text",
+]
 
 
 class SynthesisOptions(BaseModel):
@@ -28,7 +34,7 @@ class SynthesisEvidenceRow(BaseModel):
     identifiers: PaperIdentifiers = Field(default_factory=PaperIdentifiers)
     category: str
     final_score: float = Field(ge=0.0, le=1.0)
-    evidence_source: EvidenceSource
+    evidence_source: SynthesisEvidenceSource
     evidence_text: str
     supported_terms: list[str] = Field(default_factory=list)
     supported_claim: str

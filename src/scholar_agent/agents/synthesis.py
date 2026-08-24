@@ -17,6 +17,7 @@ from scholar_agent.services.search_service import SearchServiceOutput
 
 
 SUPPORTED_EVIDENCE_SOURCES = {"title", "abstract", "venue", "metadata"}
+FULL_TEXT_EVIDENCE_SOURCE = "full_text"
 
 
 def synthesize_answer(
@@ -92,17 +93,23 @@ def _build_evidence_rows(
                 f"unsupported_evidence_filtered:rank={ranked.rank}:"
                 f"count={unsupported_count}"
             )
-        if not valid_evidence:
+        full_text_evidence = _full_text_evidence_items(ranked)
+        if not valid_evidence and not full_text_evidence:
             continue
 
         citation_key = f"R{ranked.rank}"
         cited_paper_count += 1
-        for evidence_index, evidence in enumerate(
-            valid_evidence[: options.max_evidence_rows_per_paper],
+        evidence_items = [
+            (evidence.source, evidence.text, evidence.confidence)
+            for evidence in valid_evidence
+        ]
+        evidence_items.extend(full_text_evidence)
+        for evidence_index, (evidence_source, evidence_text, _confidence) in enumerate(
+            evidence_items[: options.max_evidence_rows_per_paper],
             start=1,
         ):
             row_id = f"{citation_key}-E{evidence_index}"
-            evidence_text = _clip(evidence.text, options.evidence_snippet_chars)
+            evidence_text = _clip(evidence_text, options.evidence_snippet_chars)
             rows.append(
                 SynthesisEvidenceRow(
                     row_id=row_id,
@@ -115,10 +122,10 @@ def _build_evidence_rows(
                     identifiers=ranked.paper.identifiers,
                     category=ranked.category,
                     final_score=ranked.final_score,
-                    evidence_source=evidence.source,
+                    evidence_source=evidence_source,
                     evidence_text=evidence_text,
                     supported_terms=list(ranked.matched_terms),
-                    supported_claim=_supported_claim(ranked, evidence),
+                    supported_claim=_supported_claim(ranked, evidence_source),
                 )
             )
 
@@ -137,14 +144,30 @@ def _valid_evidence_items(evidence_items: list[EvidenceItem]) -> list[EvidenceIt
     return valid
 
 
-def _supported_claim(ranked: RankedPaper, evidence: EvidenceItem) -> str:
+def _full_text_evidence_items(
+    ranked: RankedPaper,
+) -> list[tuple[str, str, float]]:
+    """Expose only already verified, located full-text paragraphs to synthesis."""
+
+    items: list[tuple[str, str, float]] = []
+    for document in ranked.paper.full_text_evidence:
+        if not document.source.license_verified:
+            continue
+        for paragraph in document.paragraphs:
+            text = paragraph.text.strip()
+            if text:
+                items.append((FULL_TEXT_EVIDENCE_SOURCE, text, 0.95))
+    return items
+
+
+def _supported_claim(ranked: RankedPaper, source: str) -> str:
     terms = ", ".join(ranked.matched_terms[:3])
     if terms:
         return (
-            f"{ranked.paper.title} has {evidence.source} evidence related to "
+            f"{ranked.paper.title} has {source} evidence related to "
             f"{terms}."
         )
-    return f"{ranked.paper.title} has {evidence.source} evidence relevant to the query."
+    return f"{ranked.paper.title} has {source} evidence relevant to the query."
 
 
 def _build_findings(
@@ -270,8 +293,10 @@ def _collect_limitations(search_output: SearchServiceOutput) -> list[str]:
 
 
 def _evidence_limitations(evidence_rows: list[SynthesisEvidenceRow]) -> list[str]:
-    limitations = ["full_text_evidence_unavailable"]
+    limitations: list[str] = []
     sources = {row.evidence_source for row in evidence_rows}
+    if FULL_TEXT_EVIDENCE_SOURCE not in sources:
+        limitations.append("full_text_evidence_unavailable")
     metadata_like = {"title", "venue", "metadata"}
     if sources and sources.issubset(metadata_like):
         limitations.append("metadata_only_evidence:no_abstract_or_full_text_evidence_used")
