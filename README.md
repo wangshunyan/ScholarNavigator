@@ -112,13 +112,14 @@ Linux 服务器使用同等脚本：
 
 P0 语料或 Faiss 索引变化后，不恢复旧 `local/hybrid` 结果。先在同一批前 200 条查询上运行：
 
-对于服务器已构建的正式 v3 语料与索引，不要修改脚本或 `.env`。两个 runner 都接受
+对于服务器已构建的正式 v3 语料与索引，不要修改脚本或 `.env`。当前仓库已审计用户导出的
+v3 脱敏资产和 200 条成对运行；这些结果是内部工程证据，不是赛事官方成绩。两个 runner 都接受
 `Bm25Corpus`/`SemanticCorpus`/`SemanticIndexDir`/`SemanticModel`（Linux 分别为
 `--bm25-corpus`/`--semantic-corpus`/`--semantic-index-dir`/`--semantic-model`），使两组
 运行能够绑定同一份输入。可先使用 `-PlanOnly` 或 `--plan-only` 检查实际参数，不会加载
 模型、访问网络或创建运行目录。
 
-以下示例是 v3 Hybrid 与仅开启 Reranker 的受控 200 条对比；将尖括号替换为服务器上的
+以下示例是 v3 Hybrid 与仅开启 Reranker 的受控 200 条对比；若在服务器重现，将尖括号替换为服务器上的
 实际相对路径，并使用从未复用过的 RunId：
 
 ```bash
@@ -151,6 +152,12 @@ COMMON=(
 本地导入 bundle 后使用 `scripts/analyze_paired_benchmark_runs.py` 比较 Recall@20/F1 与
 bootstrap 区间。区间未严格支持提升、出现 fallback 或资源违规时，Reranker 保持关闭。
 若比较的是单一受控规划/判断策略，必须显式加入 `--allow-strategy-difference`；该选项最多允许一个策略字段变化，数据集、查询顺序、预算、来源资产和其他共享输入仍会严格校验。
+
+当前已审计的 v3 RunId 为 `contest_qual200_metadata_v3_hybrid_baseline_eb7d151`、
+`contest_qual200_metadata_v3_hybrid_reranker_eb7d151` 和
+`contest_qual200_metadata_v3_hybrid_retrieval120_eb7d151`，脱敏资产位于本地被忽略的
+`outputs/server_assets/20260824_metadata_v3/`。不要把这些运行目录、索引、模型或服务器凭据提交到 GitHub；
+队友从 GitHub 克隆后应使用 source-only smoke，完整 v3 复现需要单独取得同一语料、索引和模型指纹。
 对于这组“仅开启 Reranker”的正式对比，必须加入 `--strict-reranker-only`：该门禁要求
 两组都是干净代码的 200 条 `local_hybrid` 运行，固定相同语料/模型/索引/融合/预算，
 并审计 candidate 的逐案例 GPU 推理、零 fallback、固定 batch=8/候选=120、延迟和显存记录。
