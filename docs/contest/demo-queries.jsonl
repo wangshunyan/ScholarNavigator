@@ -2,4 +2,4 @@
 {"case_id":"demo_02","query":"Search for graph neural network papers on molecular property prediction that evaluate on MoleculeNet and exclude review papers.","top_k":5,"run_profile":"balanced"}
 {"case_id":"demo_03","query":"找 2021 年以后关于扩散模型用于医学图像分割的论文，要求结果里说明数据集和评价指标。","top_k":5,"run_profile":"balanced"}
 {"case_id":"demo_04","query":"Find papers about long-context language model evaluation that compare retrieval-based methods with full-context inference.","top_k":5,"run_profile":"balanced"}
-{"case_id":"demo_05","query":"搜索关于自动学术论文检索智能体的论文，要求涉及查询改写、迭代搜索或相关性判断。","top_k":5,"run_profile":"balanced"}
+{"case_id":"demo_05","query":"Find papers about academic paper retrieval agents, including query reformulation, iterative search, or relevance judgment.","top_k":5,"run_profile":"balanced"}

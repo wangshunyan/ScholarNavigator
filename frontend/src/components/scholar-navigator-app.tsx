@@ -76,7 +76,7 @@ const DEMO_QUERY_OPTIONS = [
   },
   {
     label: "学术检索智能体",
-    query: "搜索关于自动学术论文检索智能体的论文，要求涉及查询改写、迭代搜索或相关性判断。",
+    query: "Find papers about academic paper retrieval agents, including query reformulation, iterative search, or relevance judgment.",
   },
   {
     label: "联邦学习 × 医疗数据",

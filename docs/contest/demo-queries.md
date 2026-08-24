@@ -12,7 +12,7 @@
 6. Find survey-free papers on federated learning for non-IID medical data with experiments on real clinical datasets.
 7. 查找 NeurIPS 或 ICLR 中关于 test-time adaptation 的论文，排除纯综述，关注图像分类任务。
 8. Find recent papers that combine knowledge graphs and large language models for biomedical question answering.
-9. 搜索关于自动学术论文检索智能体的论文，要求涉及查询改写、迭代搜索或相关性判断。
+9. 搜索关于自动学术论文检索智能体的论文（academic paper retrieval agents），要求涉及查询改写、迭代搜索或相关性判断。
 10. Find papers on contrastive learning for recommender systems that evaluate on Amazon or MovieLens datasets.
 11. 找 2020 年以后使用 Transformer 进行时间序列异常检测的论文，并说明是否使用公开数据集。
 12. Find papers about efficient fine-tuning of large language models for code generation, excluding prompt-only methods.
