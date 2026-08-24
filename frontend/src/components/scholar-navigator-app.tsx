@@ -1715,6 +1715,14 @@ function ResultsPanel({
 function ResultExportActions({ result }: { result: SearchRunResultResponse }) {
   return (
     <div className="rounded-md border border-[var(--border)] bg-[var(--surface-raised)] p-3">
+      <div className="mb-3 rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-2">
+        <span className="block text-[0.68rem] font-black uppercase tracking-[0.12em] text-[var(--muted)]">
+          可复核运行 ID
+        </span>
+        <code className="mt-1 block break-all text-xs text-[var(--muted-strong)]" aria-label="可复核运行 ID">
+          {result.run_id}
+        </code>
+      </div>
       <div className="flex flex-wrap gap-2">
         <Button
           type="button"
