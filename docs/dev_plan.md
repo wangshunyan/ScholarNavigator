@@ -43,6 +43,7 @@
 - **本轮最终发布复核（2026-08-24，提交 `2bc6a2d`）**：clean-clone smoke 为 `status=ready`，source-only 包 1,026 个文件、36,973,696 bytes，manifest/成员哈希通过，源提交绑定 `2bc6a2de8508e5995be7466750900f27921f5646`，health/config=200，离线 BM25=5 条，网络请求=0，LLM disabled。
 - **本轮本地 Hybrid 资产复核（2026-08-24）**：使用仓库内 legacy title+abstract 语料、已有 BGE/Faiss 资产和显式本地环境完成 5 条 demo 离线 smoke：5/5 成功、5/5/5/5/4 条可见结果、零网络/零 LLM、`gold_or_qrels_loaded=false`。索引元数据仍显示 authors/year/venue/doi 完整度为 0，因此该运行只证明本地 Hybrid 演示链路可用，不解除 P1-01/P1-02，也不进入正式成绩。
 - **一键演示复现验收（2026-08-24）**：新增 `scripts/check_demo_reproducibility.py` 与回归测试，复用批量 CLI 对固定 5 条 gold-blind 演示查询执行完整性门禁。实际运行返回 `status=ready`：5/5 成功、每条至少 1 条可见结果、失败 0、网络请求 0、LLM 调用 0、`gold_or_qrels_loaded=false`。该命令只证明现场演示链路可复现，不是 Recall/F1 或官方成绩，也不改变检索/排序策略。
+- **运行时边界复核（2026-08-24）**：正式证据隔离专项首次发现前端提示文本包含门禁禁止的评测标注术语；已改为不暴露内部评测命名的中文提示。`tests/test_formal_evidence_quarantine.py` 为 `31 passed, 1 skipped`，前端 `npm run lint` 与 `npm run build` 通过；未改变检索、排序或评测口径。
 - **上一轮代码提交复核（2026-08-24，代码 `f42a7e2`）**：查询规划分面修复后的全量回归为 `2325 passed, 184 skipped, 2 warnings`；前端 `npm run lint` 与 `npm run build` 通过；以干净提交执行的 5 条 demo candidate manifest 为 `git_worktree_clean=true`、5/5 succeeded、网络/LLM 调用均为 0。随后 clean-clone smoke 返回 `status=ready`，source-only 包 1,024 个文件、约 36.97 MB，health/config=200、离线 BM25 5 条、网络请求 0、LLM disabled；这些是内部工程/发布证据，不是官方成绩。计划记录随后在 `00f1934` 更新，最终 HEAD 仍以 `git rev-parse HEAD` 为准。
 - 干净树全量回归（提交 `b2142d7`）：`2312 passed, 184 skipped, 2 warnings`（约 13 分 03 秒）。此前未提交文档时 clean-clone 门禁拒绝打包属于预期保护；提交后 smoke 已通过，未将该门禁误报为产品失败。
 - 下方带日期的条目是历史增量证据，除非与本快照或当前可读取产物复核一致，不得作为当前状态引用。

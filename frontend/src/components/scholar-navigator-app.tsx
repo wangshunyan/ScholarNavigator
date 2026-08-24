@@ -1116,7 +1116,7 @@ function SearchWorkbench({
             </select>
           </div>
           <p id="demo-query-help" className="text-xs leading-5 text-[var(--muted)]">
-            查询仅用于现场演示；加载后仍需点击发送，不读取 gold/qrels，也不会自动改变检索源。
+            查询仅用于现场演示；加载后仍需点击发送，不读取隐藏评测标注，也不会自动改变检索源。
           </p>
           {formError ? <p className="mt-2 px-2 text-sm text-[var(--danger)]">{formError}</p> : null}
         </div>
