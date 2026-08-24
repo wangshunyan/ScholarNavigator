@@ -21,6 +21,7 @@ from typing import Any
 
 
 SCHEMA = "server_evidence_bundle_v1"
+LEGACY_INVENTORY_SCHEMA = "server_legacy_inventory_v1"
 ALLOWED_FILES = (
     "config.json",
     "metrics.json",
@@ -32,6 +33,19 @@ ALLOWED_FILES = (
     ".run_complete",
     ".run_committed",
 )
+LEGACY_INVENTORY_FILES = (
+    "config.json",
+    "metrics.json",
+    "resource_ledger.json",
+    "summary.md",
+    "stage_metrics.json",
+    "error_analysis.json",
+    "dataset_report.json",
+    "qualification_gate.json",
+    "reranker_audit.json",
+    "failures.jsonl",
+)
+REQUIRED_FILES = {"config.json", "metrics.json", "results.jsonl", "resource_ledger.json"}
 MAX_FILE_BYTES = 2 * 1024 * 1024 * 1024
 FORBIDDEN_TEXT = (
     re.compile(r"(?i)(?:^|[^0-9])172\.16\.36\.16(?:[^0-9]|$)"),
@@ -171,8 +185,7 @@ def inspect_run(run_dir: Path) -> dict[str, Any]:
             "exported_bytes": len(exported),
             "exported_sha256": hashlib.sha256(exported).hexdigest(),
         })
-    required = {"config.json", "metrics.json", "results.jsonl", "resource_ledger.json"}
-    missing = sorted(required - {row["path"] for row in present})
+    missing = sorted(REQUIRED_FILES - {row["path"] for row in present})
     if missing:
         raise EvidenceError("required_artifact_missing:" + ",".join(missing))
     markers = {row["path"] for row in present} & {".run_complete", ".run_committed"}
@@ -181,10 +194,68 @@ def inspect_run(run_dir: Path) -> dict[str, Any]:
     return {
         "run_id": run_dir.name,
         "files": present,
-        "required_files": sorted(required),
+        "required_files": sorted(REQUIRED_FILES),
         "completion_markers": sorted(markers),
         "source_path_recorded": False,
         "sensitive_values_scanned": True,
+    }
+
+
+def inspect_legacy_inventory(run_dir: Path) -> dict[str, Any]:
+    """Inspect an old run without asserting it ever reached completion.
+
+    Legacy directories sometimes predate completion markers.  This inventory
+    deliberately excludes raw ``results.jsonl`` and any gold diagnostics; it
+    records only the raw result artifact's size and digest so the local audit
+    can later request the exact payload if the run is otherwise usable.
+    """
+    run_dir = run_dir.expanduser().resolve()
+    if not run_dir.is_dir():
+        raise EvidenceError(f"run_directory_missing:{run_dir.name}")
+    present: list[dict[str, Any]] = []
+    for name in LEGACY_INVENTORY_FILES:
+        path = run_dir / name
+        if not path.exists():
+            continue
+        if not path.is_file() or PurePosixPath(name).name != name:
+            raise EvidenceError(f"invalid_member:{name}")
+        _safe_text(path)
+        _validate_json_shape(path)
+        exported = _redacted_bytes(path)
+        present.append({
+            "path": name,
+            "source_bytes": path.stat().st_size,
+            "source_sha256": _sha256(path),
+            "exported_bytes": len(exported),
+            "exported_sha256": hashlib.sha256(exported).hexdigest(),
+        })
+    required_inventory = REQUIRED_FILES - {"results.jsonl"}
+    missing = sorted(required_inventory - {row["path"] for row in present})
+    if missing:
+        raise EvidenceError("required_artifact_missing:" + ",".join(missing))
+    results = run_dir / "results.jsonl"
+    if not results.is_file():
+        raise EvidenceError("required_artifact_missing:results.jsonl")
+    if results.stat().st_size > MAX_FILE_BYTES:
+        raise EvidenceError("file_too_large:results.jsonl")
+    markers = sorted(
+        name for name in (".run_complete", ".run_committed") if (run_dir / name).is_file()
+    )
+    return {
+        "run_id": run_dir.name,
+        "files": present,
+        "required_files": sorted(required_inventory),
+        "result_artifact": {
+            "path": "results.jsonl",
+            "source_bytes": results.stat().st_size,
+            "source_sha256": _sha256(results),
+            "exported": False,
+        },
+        "completion_markers": markers,
+        "completion_status": "unverified_legacy_inventory",
+        "source_path_recorded": False,
+        "sensitive_values_scanned": True,
+        "gold_diagnostics_exported": False,
     }
 
 
@@ -213,15 +284,49 @@ def build_bundle(run_dir: Path, output: Path) -> dict[str, Any]:
     return {**manifest, "archive": output.name, "archive_sha256": _sha256(output)}
 
 
+def build_legacy_inventory(run_dir: Path, output: Path) -> dict[str, Any]:
+    inspection = inspect_legacy_inventory(run_dir)
+    root = run_dir.expanduser().resolve()
+    output = output.expanduser().resolve()
+    if output == root or root in output.parents:
+        raise EvidenceError("output_must_be_outside_run")
+    manifest: dict[str, Any] = {
+        "schema_version": LEGACY_INVENTORY_SCHEMA,
+        "run": inspection,
+        "archive_contains_redacted_bytes": True,
+        "official_metric_scope": "unverified_legacy_inventory_not_official",
+        "raw_results_exported": False,
+        "gold_diagnostics_exported": False,
+        "network_requests": 0,
+        "ssh_or_dotenv_read": False,
+    }
+    output.parent.mkdir(parents=True, exist_ok=True)
+    temporary = output.with_name(output.name + ".tmp")
+    with zipfile.ZipFile(temporary, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        for row in inspection["files"]:
+            name = str(row["path"])
+            archive.writestr(f"run/{name}", _redacted_bytes(root / name))
+        archive.writestr("manifest.json", json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
+    temporary.replace(output)
+    return {**manifest, "archive": output.name, "archive_sha256": _sha256(output)}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-dir", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument(
+        "--legacy-inventory",
+        action="store_true",
+        help="export a non-official inventory for a pre-marker legacy run; raw results stay on the server",
+    )
     args = parser.parse_args()
     try:
-        print(json.dumps(build_bundle(args.run_dir, args.output), ensure_ascii=False, sort_keys=True))
+        builder = build_legacy_inventory if args.legacy_inventory else build_bundle
+        print(json.dumps(builder(args.run_dir, args.output), ensure_ascii=False, sort_keys=True))
     except EvidenceError as exc:
-        print(json.dumps({"schema_version": SCHEMA, "status": "blocked", "reason": str(exc)}, ensure_ascii=False, sort_keys=True))
+        schema = LEGACY_INVENTORY_SCHEMA if args.legacy_inventory else SCHEMA
+        print(json.dumps({"schema_version": schema, "status": "blocked", "reason": str(exc)}, ensure_ascii=False, sort_keys=True))
         return 3
     return 0
 

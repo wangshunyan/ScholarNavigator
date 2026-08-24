@@ -19,7 +19,9 @@ from typing import Any
 
 
 SCHEMA = "server_evidence_bundle_v1"
+LEGACY_INVENTORY_SCHEMA = "server_legacy_inventory_v1"
 REQUIRED_FILES = {"config.json", "metrics.json", "results.jsonl", "resource_ledger.json"}
+LEGACY_REQUIRED_FILES = REQUIRED_FILES - {"results.jsonl"}
 FORBIDDEN_TEXT = (
     re.compile(r"(?i)(?:^|[^0-9])172\.16\.36\.16(?:[^0-9]|$)"),
     re.compile(r"(?i)(?:^|[^a-z])(?:ssh[_ -]?private|private[_ -]?key|api[_ -]?key|access[_ -]?token|secret)(?:[^a-z]|$)"),
@@ -50,7 +52,7 @@ def _load_manifest(raw: bytes) -> dict[str, Any]:
         value = json.loads(raw.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise ImportError("manifest_invalid_json") from exc
-    if not isinstance(value, dict) or value.get("schema_version") != SCHEMA:
+    if not isinstance(value, dict) or value.get("schema_version") not in {SCHEMA, LEGACY_INVENTORY_SCHEMA}:
         raise ImportError("manifest_schema_mismatch")
     if value.get("archive_contains_redacted_bytes") is not True:
         raise ImportError("manifest_not_redacted")
@@ -78,6 +80,7 @@ def inspect_bundle(bundle: Path) -> dict[str, Any]:
         if "manifest.json" not in names:
             raise ImportError("manifest_missing")
         manifest = _load_manifest(archive.read("manifest.json"))
+        is_legacy = manifest["schema_version"] == LEGACY_INVENTORY_SCHEMA
         rows = manifest["run"].get("files")
         if not isinstance(rows, list) or not rows:
             raise ImportError("manifest_files_invalid")
@@ -89,9 +92,23 @@ def inspect_bundle(bundle: Path) -> dict[str, Any]:
             if path in expected or path.startswith("/") or ".." in PurePosixPath(path).parts:
                 raise ImportError("manifest_file_path_invalid")
             expected[path] = row
-        required = REQUIRED_FILES - set(expected)
+        required_set = LEGACY_REQUIRED_FILES if is_legacy else REQUIRED_FILES
+        required = required_set - set(expected)
         if required:
             raise ImportError("required_artifact_missing:" + ",".join(sorted(required)))
+        if is_legacy:
+            result = manifest["run"].get("result_artifact")
+            if (
+                not isinstance(result, dict)
+                or result.get("path") != "results.jsonl"
+                or not isinstance(result.get("source_bytes"), int)
+                or not isinstance(result.get("source_sha256"), str)
+                or not re.fullmatch(r"[0-9a-f]{64}", result["source_sha256"])
+                or manifest["run"].get("completion_status") != "unverified_legacy_inventory"
+                or manifest.get("raw_results_exported") is not False
+                or manifest.get("gold_diagnostics_exported") is not False
+            ):
+                raise ImportError("legacy_inventory_contract_invalid")
         actual_run_names = {name.removeprefix("run/") for name in names if name.startswith("run/")}
         if actual_run_names != set(expected):
             raise ImportError("archive_manifest_member_mismatch")
@@ -116,8 +133,10 @@ def inspect_bundle(bundle: Path) -> dict[str, Any]:
             "archive_sha256": archive_sha256,
             "run_id": manifest["run"]["run_id"],
             "member_count": len(expected),
-            "required_files": sorted(REQUIRED_FILES),
+            "required_files": sorted(required_set),
             "official_metric_scope": manifest.get("official_metric_scope", "internal_engineering_only"),
+            "evidence_kind": "legacy_inventory" if is_legacy else "completed_run_bundle",
+            "raw_results_exported": manifest.get("raw_results_exported", True) if is_legacy else True,
             "network_requests": 0,
             "ssh_or_dotenv_read": False,
         }

@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.package_server_evidence import EvidenceError, build_bundle, inspect_run
+from scripts.package_server_evidence import EvidenceError, build_bundle, build_legacy_inventory, inspect_run
 
 
 def _write_run(root: Path, *, complete: bool = True) -> Path:
@@ -67,3 +67,19 @@ def test_bundle_redacts_sensitive_diagnostic_text_in_result_rows(tmp_path: Path)
         result = archive.read("run/results.jsonl").decode("utf-8")
     assert "API key" not in result
     assert "<redacted-sensitive-text>" in result
+
+
+def test_legacy_inventory_excludes_results_and_gold_diagnostics(tmp_path: Path) -> None:
+    run = _write_run(tmp_path, complete=False)
+    (run / "gold_diagnostics.jsonl").write_text('{"gold":"not-exported"}\n', encoding="utf-8")
+    bundle = tmp_path / "legacy.zip"
+
+    report = build_legacy_inventory(run, bundle)
+
+    assert report["schema_version"] == "server_legacy_inventory_v1"
+    assert report["run"]["completion_status"] == "unverified_legacy_inventory"
+    with zipfile.ZipFile(bundle) as archive:
+        assert "run/results.jsonl" not in archive.namelist()
+        assert "run/gold_diagnostics.jsonl" not in archive.namelist()
+        manifest = json.loads(archive.read("manifest.json"))
+    assert manifest["run"]["result_artifact"]["source_bytes"] > 0

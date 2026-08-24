@@ -22,6 +22,16 @@
 
 脚本离线运行，不读取 .env 或 SSH 文件。将 zip 复制到本地后再审计；不要上传 zip 到 GitHub。
 
+若历史运行早于完成标记机制，不能手工补写 `.run_complete` 或
+`.run_committed`。可使用只读历史清单模式：
+
+    PYTHONPATH=src python scripts/package_server_evidence.py --legacy-inventory --run-dir outputs/benchmark_runs/<run_id> --output <temporary-evidence-path>/<run_id>-inventory.zip
+
+该模式只导出已脱敏的配置、指标、资源账本和结果文件的原始大小/SHA-256；
+不导出原始 `results.jsonl` 或 `gold_diagnostics.jsonl`。清单标记为
+`unverified_legacy_inventory_not_official`，只能用于定位和审计历史输入，
+不能作为完整运行或赛事成绩。
+
 ## 本地端
 
 在提交或接收服务器证据前，可先运行只读同步审计：
@@ -33,7 +43,8 @@
 `tracked_output_paths`，它们是历史上已公开的轻量报告，建议下一次整理为
 `docs/` 下的公开摘要或从 Git 索引移除；原始实验输出不应继续提交。
 
-将 bundle 放入 outputs/server_evidence/ 后，解压并核对其中的 manifest.json、文件哈希、提交和完成标记；如需重新生成或验证原始运行目录，使用同一个 package_server_evidence.py。bundle 本身不应提交 Git。
+将 bundle 放入 outputs/server_evidence/ 后，使用
+`scripts/import_server_evidence.py` 导入并校验 manifest、成员哈希、提交和完成标记；如需重新生成或验证原始运行目录，使用同一个 package_server_evidence.py。历史清单会保留为 `legacy_inventory`，不得与完整 bundle 混称。bundle 本身不应提交 Git。
 
 记录本地代码状态和 GitHub 是否已同步：
 

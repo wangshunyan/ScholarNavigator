@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from scripts.import_server_evidence import ImportError, import_bundle
-from scripts.package_server_evidence import build_bundle
+from scripts.package_server_evidence import build_bundle, build_legacy_inventory
 
 
 def _run(root: Path) -> Path:
@@ -44,3 +44,18 @@ def test_import_rejects_tampered_member(tmp_path: Path) -> None:
             target.writestr(info, payload)
     with pytest.raises(ImportError, match="exported_(?:size|hash)_mismatch:metrics.json"):
         import_bundle(tampered, tmp_path / "destination")
+
+
+def test_import_accepts_legacy_inventory_without_raw_results(tmp_path: Path) -> None:
+    bundle = tmp_path / "legacy.zip"
+    run = _run(tmp_path)
+    (run / ".run_complete").unlink()
+    build_legacy_inventory(run, bundle)
+
+    destination = tmp_path / "destination"
+    report = import_bundle(bundle, destination)
+
+    assert report["status"] == "ready"
+    assert report["evidence_kind"] == "legacy_inventory"
+    assert report["raw_results_exported"] is False
+    assert not (destination / "results.jsonl").exists()
