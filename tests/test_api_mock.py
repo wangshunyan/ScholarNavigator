@@ -136,6 +136,10 @@ def test_runtime_config_shows_local_hybrid_from_env(
     model_dir = tmp_path / "model"
     index_dir.mkdir()
     model_dir.mkdir()
+    # Runtime readiness validates model contents rather than trusting the
+    # configured path.  Keep this fixture intentionally tiny while still
+    # satisfying that reproducibility contract.
+    (model_dir / "config.json").write_text("{}", encoding="utf-8")
     np.save(index_dir / "embeddings.npy", np.array([[1.0, 0.0, 0.0]], dtype=np.float32))
     faiss_index = faiss.IndexHNSWFlat(3, 4, faiss.METRIC_INNER_PRODUCT)
     faiss_index.add(np.array([[1.0, 0.0, 0.0]], dtype=np.float32))
@@ -149,7 +153,9 @@ def test_runtime_config_shows_local_hybrid_from_env(
         "abstract_document_count": 1,
         "embedding_dimension": 3,
         "model_path": str(model_dir.resolve()),
-        "model_fingerprint": "test",
+        "model_fingerprint": hashlib.sha256(
+            b"config.json" + (model_dir / "config.json").read_bytes()
+        ).hexdigest(),
         "index_fingerprint": "test",
         "index_type": "hnsw_ip",
         "hnsw_m": 4,
