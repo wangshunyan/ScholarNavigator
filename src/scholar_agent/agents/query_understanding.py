@@ -255,6 +255,35 @@ STOPWORDS = {
     "evaluates",
     "exclude",
     "excluding",
+    # Question scaffolding and grammatical modifiers are not scientific
+    # constraints.  Keeping them out of the lexical query prevents a
+    # candidate from being penalized for not literally containing words such
+    # as ``implemented`` or ``called`` that describe the question rather than
+    # the requested method/topic.
+    "called",
+    "demonstrated",
+    "demonstrate",
+    "described",
+    "describing",
+    "developed",
+    "implemented",
+    "introduce",
+    "introduced",
+    "involving",
+    "involves",
+    "finding",
+    "focused",
+    "focuses",
+    "first",
+    "its",
+    "only",
+    "proving",
+    "proposed",
+    "prediction",
+    "operation",
+    "methodologies",
+    "methodology",
+    "works",
     # Narrative request words are not scientific constraints. Keeping them
     # in lexical queries makes local BM25/Hybrid retrieval overly narrow
     # (for example, ``resources providing information about attempts to``).

@@ -187,6 +187,37 @@ def test_narrative_request_words_do_not_narrow_lexical_query() -> None:
     assert {"detect", "calibrate", "biases", "peer", "reviews"}.issubset(terms)
 
 
+@pytest.mark.parametrize(
+    ("query", "scientific_terms", "narrative_terms"),
+    [
+        (
+            "Which work first implemented token-level edit operation prediction in Seq2Edit methods?",
+            {"token-level", "edit", "Seq2Edit"},
+            {"which", "work", "first", "implemented", "operation", "prediction"},
+        ),
+        (
+            "What studies introduce the unsupervised disentanglement score called Distortion?",
+            {"unsupervised", "disentanglement", "Distortion"},
+            {"what", "studies", "introduce", "called"},
+        ),
+        (
+            "What works focused on MAML and its variants?",
+            {"MAML", "variants"},
+            {"what", "works", "focused", "its"},
+        ),
+    ],
+)
+def test_question_scaffolding_and_relation_words_are_not_required_topics(
+    query: str,
+    scientific_terms: set[str],
+    narrative_terms: set[str],
+) -> None:
+    plan = analyze_query(query, current_year=2026)
+    terms = {term.casefold() for term in plan.query_analysis.constraints.must_include_terms}
+    assert {term.casefold() for term in scientific_terms}.issubset(terms)
+    assert not terms.intersection({term.casefold() for term in narrative_terms})
+
+
 def test_named_camelcase_dataset_is_structured() -> None:
     plan = analyze_query(
         "Graph neural network papers that evaluate on MoleculeNet",

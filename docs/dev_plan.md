@@ -6,6 +6,8 @@
 
 ## 当前权威快照（2026-08-25，优先于下方历史增量记录）
 
+- **本轮查询约束清理复核（2026-08-25）**：真实代码复核发现规则解析仍会把 `implemented`、`called`、`finding`、`its`、`only` 等叙述/语法词放入 `must_include_terms`，从而可能收窄 BM25/Hybrid 查询并触发约束覆盖惩罚。已在 `query_understanding` 的保守停用词表中移除这类词，新增 3 条代表性问句回归；专项测试 `56 passed`。固定 AutoScholarQuery 前 30 条、同一标题型 BM25 语料、`high_recall`/300 候选、`top_k=20`、单 worker、零网络/零 LLM 的筛选中，Recall@5/10/20、F1@5/10/20、nDCG@5/10/20 的均值差均为 `0`（配对结果未见质量提升），仅少量候选的最终可见数变化；该修复保留为查询可解释性/避免误杀，不改变默认检索策略，也不宣传为收益。完整 200 条正式 paired experiment 仍需在合格 v3 语料和可审计运行资产上完成。
+
 - 当前代码提交：始终以 `git rev-parse HEAD` 为准；本地 `main` 与 `origin/main` 必须一致，发布 smoke 的 `source_commit` 是权威绑定。每次提交后都必须重新运行 clean-clone smoke，不在文档中复制易过期的短提交号。
 - **本轮检索策略筛选（2026-08-24，v3 语料，均为内部非官方指标）**：在同一前 200 条查询、同一 v3 语料/索引和 `high_recall`/300 候选预算下，`prf_v1` 完整配对 ΔRecall@20=`-0.00175`（95% CI `[-0.00659,0.00200]`）、ΔF1@20=`-0.00016`（`[-0.00172,0.00134]`），不启用；30 条 `controlled_relaxation` 筛选的 Recall@20/F1@20 未变化且 F1@10 下降，不扩展；30 条 `rrf_k=10` 筛选的 Recall@20/F1@20 未变化且 F1@10 下降，不启用；30 条 BM25/semantic 候选 60→200 筛选的 Recall@20=`-0.01111`、F1@20=`-0.00047`，不启用；`calibrated_rules_v1` 完整配对 ΔRecall@20=`-0.00250`（95% CI `[-0.01000,0.00500]`）、ΔF1@20=`-0.00083`（`[-0.00261,0.00091]`），不切换默认判定。以上实验均无失败、无网络、无 LLM，未将 gold/qrels 输入在线检索；报告位于 ignored `outputs/benchmark_runs/`。
 - **当前复核（2026-08-25，本轮）**：全仓库 pytest 结果为 `2338 passed, 184 skipped, 2 warnings`（约 13 分 06 秒）；前端 `npm run lint` 与 `npm run build` 均通过。当前提交上的 clean-clone smoke 为 `status=ready`，source-only 包 1,031 个文件、约 36.99 MB，health/config=200、离线 BM25 5 条、网络 0、gold/qrels 未加载，发布包验证 `status=ready`。
