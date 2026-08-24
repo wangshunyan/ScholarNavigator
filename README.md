@@ -141,6 +141,7 @@ COMMON=(
 `scripts/package_server_evidence.py` 导出脱敏 bundle；历史 inventory 不能替代这一步。
 本地导入 bundle 后使用 `scripts/analyze_paired_benchmark_runs.py` 比较 Recall@20/F1 与
 bootstrap 区间。区间未严格支持提升、出现 fallback 或资源违规时，Reranker 保持关闭。
+若比较的是单一受控规划/判断策略，必须显式加入 `--allow-strategy-difference`；该选项最多允许一个策略字段变化，数据集、查询顺序、预算、来源资产和其他共享输入仍会严格校验。
 对于这组“仅开启 Reranker”的正式对比，必须加入 `--strict-reranker-only`：该门禁要求
 两组都是干净代码的 200 条 `local_hybrid` 运行，固定相同语料/模型/索引/融合/预算，
 并审计 candidate 的逐案例 GPU 推理、零 fallback、固定 batch=8/候选=120、延迟和显存记录。

@@ -86,6 +86,33 @@ def test_analyze_paired_runs_rejects_shared_config_drift(tmp_path: Path) -> None
         analyze_paired_runs(baseline, candidate)
 
 
+def test_analyze_paired_runs_can_opt_into_one_strategy_difference(
+    tmp_path: Path,
+) -> None:
+    baseline = _write_run(tmp_path, "baseline")
+    candidate = _write_run(tmp_path, "candidate", candidate=True)
+    baseline_config = json.loads((baseline / "config.json").read_text(encoding="utf-8"))
+    candidate_config = json.loads((candidate / "config.json").read_text(encoding="utf-8"))
+    baseline_config["query_planning_policy"] = "current_rules"
+    candidate_config["query_planning_policy"] = "facet_balanced"
+    candidate_config["ranking_policy"] = baseline_config["ranking_policy"]
+    (baseline / "config.json").write_text(json.dumps(baseline_config), encoding="utf-8")
+    (candidate / "config.json").write_text(json.dumps(candidate_config), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="shared_config_drift:query_planning_policy"):
+        analyze_paired_runs(baseline, candidate)
+
+    report = analyze_paired_runs(
+        baseline,
+        candidate,
+        allow_strategy_difference=True,
+        seed=7,
+        iterations=20,
+    )
+    assert report["strategy_difference_allowed"] is True
+    assert report["strategy_differences"] == ["query_planning_policy"]
+
+
 def test_analyze_paired_runs_reports_runtime_code_change(tmp_path: Path) -> None:
     baseline = _write_run(tmp_path, "baseline", runtime_code_hash="old-code")
     candidate = _write_run(

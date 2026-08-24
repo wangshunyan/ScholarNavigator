@@ -36,6 +36,11 @@ _SHARED_FIELDS = (
     "llm",
     "prompts",
 )
+_STRATEGY_FIELDS = (
+    "query_planning_policy",
+    "query_evolution_policy",
+    "judgement_policy",
+)
 _REPORTED_DIFFERENCES = (
     "runtime_code_hash",
     "sources",
@@ -75,6 +80,14 @@ def _parser() -> argparse.ArgumentParser:
         action="store_true",
         help="require a clean 200-query Hybrid pair differing only by neural reranking",
     )
+    parser.add_argument(
+        "--allow-strategy-difference",
+        action="store_true",
+        help=(
+            "allow exactly one ranking/planning/judgement policy to differ; "
+            "all dataset, query, budget and asset inputs remain shared"
+        ),
+    )
     return parser
 
 
@@ -85,6 +98,7 @@ def analyze_paired_runs(
     seed: int = 20260818,
     iterations: int = 5000,
     strict_reranker_only: bool = False,
+    allow_strategy_difference: bool = False,
 ) -> dict[str, Any]:
     if seed < 0:
         raise ValueError("seed_must_be_non_negative")
@@ -94,13 +108,29 @@ def analyze_paired_runs(
     candidate = _load_run(candidate_dir)
     baseline_config = baseline["config"]
     candidate_config = candidate["config"]
-    mismatched = [
+    shared_fields = tuple(
         field
         for field in _SHARED_FIELDS
+        if not (allow_strategy_difference and field in _STRATEGY_FIELDS)
+    )
+    mismatched = [
+        field
+        for field in shared_fields
         if baseline_config.get(field) != candidate_config.get(field)
     ]
     if mismatched:
         raise ValueError("shared_config_drift:" + ",".join(mismatched))
+    strategy_differences = [
+        field
+        for field in _STRATEGY_FIELDS
+        if baseline_config.get(field) != candidate_config.get(field)
+    ]
+    if len(strategy_differences) > 1:
+        raise ValueError(
+            "strategy_config_drift_multiple:" + ",".join(strategy_differences)
+        )
+    if strategy_differences and not allow_strategy_difference:
+        raise ValueError("shared_config_drift:" + ",".join(strategy_differences))
     reranker_audit = None
     if strict_reranker_only:
         reranker_audit = _validate_strict_reranker_only_pair(baseline, candidate)
@@ -128,6 +158,8 @@ def analyze_paired_runs(
         "baseline_runtime_code_hash": baseline_config.get("runtime_code_hash"),
         "candidate_runtime_code_hash": candidate_config.get("runtime_code_hash"),
         "shared_inputs_match": True,
+        "strategy_difference_allowed": allow_strategy_difference,
+        "strategy_differences": strategy_differences,
         "reported_config_differences": {
             field: {
                 "baseline": _redact_config_value(
@@ -308,6 +340,7 @@ def main(argv: list[str] | None = None) -> int:
             seed=args.seed,
             iterations=args.iterations,
             strict_reranker_only=args.strict_reranker_only,
+            allow_strategy_difference=args.allow_strategy_difference,
         )
     except ValueError as exc:
         print(str(exc), file=sys.stderr)
