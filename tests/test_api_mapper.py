@@ -671,6 +671,7 @@ def test_map_paper_exposes_license_verified_full_text_evidence() -> None:
     assert len(mapped.full_text_evidence) == 1
     document = mapped.full_text_evidence[0]
     assert document.license_id == "CC-BY-4.0"
+    assert document.license_verified is True
     assert document.source_url == "https://example.test/evidence-paper.txt"
     assert document.paragraphs[0].text == "A grounded result paragraph."
     assert document.paragraphs[0].evidence_id.startswith("paragraph:")

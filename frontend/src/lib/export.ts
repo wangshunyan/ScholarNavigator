@@ -210,7 +210,7 @@ function fullTextEvidenceMarkdown(
       ...paragraph.text.split(/\r?\n/).map((line) => `  > ${markdownText(line)}`),
     ]);
     return [
-      `- document ${documentIndex + 1}; license: ${markdownText(document.license_id)}; content_sha256: ${document.content_sha256}`,
+      `- document ${documentIndex + 1}; license: ${markdownText(document.license_id)}; license_verified: ${document.license_verified}; content_sha256: ${document.content_sha256}`,
       `  source: ${sourceUrl ? markdownText(sourceUrl) : "unavailable (URL failed safety validation)"}`,
       ...(paragraphs.length ? paragraphs : ["- no paragraphs"]),
     ];

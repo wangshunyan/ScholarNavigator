@@ -17,6 +17,14 @@ import sys
 from pathlib import Path
 from typing import Any
 
+# Keep the CLI usable both as ``python -m`` and as a direct script.  Strict
+# reranker validation imports another repository-local script below; when this
+# file is executed directly Python otherwise puts only ``scripts/`` on
+# ``sys.path`` and cannot resolve the package namespace.
+_REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+if str(_REPOSITORY_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPOSITORY_ROOT))
+
 
 _SHARED_FIELDS = (
     "dataset",
@@ -251,7 +259,16 @@ def _validate_strict_reranker_only_pair(
     top_level_drift = [
         key
         for key in sorted(set(baseline_config) | set(candidate_config))
-        if key not in {"started_at", "resume_signature", "local_hybrid"}
+        # Process IDs, launch commands and timestamps are run-instance
+        # metadata, not quality inputs.  They necessarily differ between a
+        # baseline and its candidate even when every retrieval/evaluation
+        # setting is held fixed, so strict mode must not reject on them.
+        if key not in {
+            "started_at",
+            "resume_signature",
+            "execution",
+            "local_hybrid",
+        }
         and baseline_config.get(key) != candidate_config.get(key)
     ]
     if top_level_drift:

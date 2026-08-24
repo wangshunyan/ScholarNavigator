@@ -188,6 +188,7 @@ def map_paper(paper: InternalPaper) -> api.Paper:
                 )
                 or "",
                 license_id=document.source.license_id,
+                license_verified=document.source.license_verified,
                 content_sha256=document.source.content_sha256,
                 paragraphs=[
                     api.FullTextParagraphEvidence(

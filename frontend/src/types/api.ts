@@ -237,6 +237,7 @@ export interface FullTextEvidenceDocument {
   schema_version: string;
   source_url: string;
   license_id: string;
+  license_verified: boolean;
   content_sha256: string;
   paragraphs: FullTextParagraphEvidence[];
 }

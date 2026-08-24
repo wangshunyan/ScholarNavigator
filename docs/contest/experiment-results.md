@@ -32,6 +32,22 @@
 
 后续 qualification 命令已固定在两种脚本中统一使用 `high_recall` 和 300 候选预算；可用 `scripts/analyze_paired_benchmark_runs.py` 重新生成上述成对 JSON 报告。
 
+### 2026-08-24：服务器 v3 Hybrid 成对审计
+
+用户导出的脱敏服务器资产已复制到本地 `outputs/server_assets/20260824_metadata_v3/`（该目录被 Git 忽略，不进入发布包）。三组运行的最新 `.run_commits` generation 均包含 `RUN_COMPLETED` 与 `COMMITTED`，`run_manifest` 均为 200/200；每组 `results.jsonl` 为 200 行、`failures.jsonl` 为空。三组均绑定同一 v3 语料 SHA-256=`7a385c87250ff438f5748cc49ee683acf1edd01d2f12432d17fe60e83908a31a`、569,432 篇和索引指纹 `91302a92…e68f71`。
+
+v3 语料严格审计结果：arXiv ID 唯一，title/abstract/authors/year 完整度均为 100%；venue 为 12.152%、DOI 为 17.897%。因此它足以支持当前 Hybrid 检索工程诊断，但仍不满足“venue 与 DOI 全量可核验”的正式元数据门禁，不能据此宣称 P1-01 或赛事资格完成。
+
+baseline `contest_qual200_metadata_v3_hybrid_baseline_eb7d151` 与 candidate `contest_qual200_metadata_v3_hybrid_reranker_eb7d151` 已通过严格只差 Reranker 的审计：同一提交/查询顺序/预算/语料/索引；candidate 使用 CUDA、fallback=0、batch=8、候选=120，593 次成功推理，P50/P95 约 1.761/2.077 秒，峰值显存约 1.50 GB。5,000 次 query-level bootstrap 为：
+
+| 指标 | baseline | candidate | Δ（candidate-baseline） | 95% CI |
+| --- | ---: | ---: | ---: | ---: |
+| Recall@20 | 0.12850 | 0.12797 | -0.00054 | [-0.00987, 0.00838] |
+| F1@20 | 0.02108 | 0.02137 | +0.00029 | [-0.00219, 0.00273] |
+| F1@10 | 0.02324 | 0.01849 | -0.00475 | [-0.00875, -0.00143] |
+
+没有指标满足“均值为正且 95% CI 下界大于 0”的启用门槛，Reranker 保持默认关闭。候选数 60→120 的负向消融同样没有改善（ΔRecall@20=-0.00400，95% CI [-0.02083, 0.01133]），因此也不采用。以上数值是内部离线工程指标，不是赛事官方成绩。
+
 这组结果曾绑定干净提交且两组各有 200 条完整查询，但仍只是 legacy title+abstract 语料上的历史内部资格诊断，不是当前提交的运行结果或赛事官方成绩：作者、年份、期刊和 DOI 完整度为 0，故 P1-01 未完成；不能据此启动 1000 条正式运行或宣称已通过赛事资格。
 
 候选预算消融（同一前 200 条查询）显示：Hybrid 的 120→200 将 Recall@20 从 `0.10975` 提升至 `0.11200`、F1@20 从 `0.01669` 提升至 `0.01750`；200→300 指标不再提升。因此 `hybrid_deep_rrf` 的诊断入口使用 200，生产默认仍保持不变。

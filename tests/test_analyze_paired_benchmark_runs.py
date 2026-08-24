@@ -237,6 +237,15 @@ def _write_strict_reranker_pair(root: Path) -> tuple[Path, Path]:
 def test_strict_reranker_only_accepts_clean_200_query_pair(tmp_path: Path) -> None:
     baseline, candidate = _write_strict_reranker_pair(tmp_path)
 
+    for run, process_id in ((baseline, 101), (candidate, 202)):
+        config_path = run / "config.json"
+        config = json.loads(config_path.read_text(encoding="utf-8"))
+        config["execution"] = {
+            "process_id": process_id,
+            "launch_command": ["run_benchmark.py", "--run-id", run.name],
+        }
+        config_path.write_text(json.dumps(config), encoding="utf-8")
+
     report = analyze_paired_runs(
         baseline, candidate, strict_reranker_only=True, iterations=20
     )

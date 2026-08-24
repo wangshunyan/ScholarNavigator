@@ -230,6 +230,7 @@ class FullTextEvidenceDocument(BaseModel):
     schema_version: str
     source_url: str
     license_id: str
+    license_verified: bool = False
     content_sha256: str
     paragraphs: list[FullTextParagraphEvidence] = Field(default_factory=list)
 

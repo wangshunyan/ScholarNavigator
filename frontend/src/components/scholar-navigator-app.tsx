@@ -2636,6 +2636,12 @@ function FullTextEvidenceSection({
                   <dd className="mt-1 break-words text-[var(--foreground)]">{document.license_id}</dd>
                 </div>
                 <div>
+                  <dt className="font-semibold text-[var(--muted)]">许可核验</dt>
+                  <dd className="mt-1 text-[var(--foreground)]">
+                    {document.license_verified ? "已核验" : "未核验（不纳入归纳）"}
+                  </dd>
+                </div>
+                <div>
                   <dt className="font-semibold text-[var(--muted)]">内容 SHA-256</dt>
                   <dd className="mt-1 break-all font-mono text-xs text-[var(--foreground)]">
                     {document.content_sha256}
