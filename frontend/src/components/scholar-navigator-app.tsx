@@ -1483,15 +1483,18 @@ function RunProgress({
             (event) =>
               event.payload.stage === stage.key &&
               (event.event === "stage_started" || event.event === `${stage.key}_started`),
-          );
+          ) || status?.current_stage === stage.key;
           const state = done ? "done" : active ? "active" : "pending";
           const connected = done && index < STAGES.length - 1;
+          const stateLabel = done ? "已完成" : active ? "进行中" : "待开始";
           return (
             <div
               key={stage.key}
               className={`run-stage-card run-stage-card--${state} ${
                 connected ? "run-stage-card--connected" : ""
               }`}
+              aria-label={`${stage.title}：${stateLabel}`}
+              aria-current={active ? "step" : undefined}
             >
               <span className="run-stage-card__orbit" aria-hidden="true" />
               <span className="run-stage-card__shine" aria-hidden="true" />
@@ -1509,11 +1512,15 @@ function RunProgress({
                     <span key={line}>{line}</span>
                   ))}
                 </p>
+                <span className="sr-only">{stateLabel}</span>
               </div>
             </div>
           );
         })}
       </div>
+      <p className="sr-only" aria-live="polite">
+        当前阶段：{status?.current_stage ? stageDisplayLabel(status.current_stage) : "尚未开始"}
+      </p>
 
       {runConfig ? <CompactRunConfig runConfig={runConfig} /> : null}
 
