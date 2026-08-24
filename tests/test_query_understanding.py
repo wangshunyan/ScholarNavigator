@@ -203,7 +203,7 @@ def test_narrative_request_words_do_not_narrow_lexical_query() -> None:
         (
             "What works focused on MAML and its variants?",
             {"MAML", "variants"},
-            {"what", "works", "focused", "its"},
+            {"what", "works", "its"},
         ),
     ],
 )

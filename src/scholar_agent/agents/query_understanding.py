@@ -272,7 +272,6 @@ STOPWORDS = {
     "involving",
     "involves",
     "finding",
-    "focused",
     "focuses",
     "first",
     "its",
