@@ -40,6 +40,15 @@ $env:PYTHONPATH="src"
 如果本地语料或索引配置缺失，运行会记录结构化 connector warning/error，而不会静默改用在线来源。
 `manifest.json` 会绑定输入/输出 SHA-256、代码 commit、成功/失败数量及网络/LLM 调用计数，便于队友复核运行是否来自同一份输入；它不包含 gold/qrels，也不是官方成绩。
 
+评委现场可用一条命令验收 5 条 gold-blind 演示查询（需要先按 `.env.example` 配置本地 BM25）：
+
+```powershell
+$env:PYTHONPATH="src"
+.\.venv\Scripts\python.exe scripts\check_demo_reproducibility.py
+```
+
+该检查复用批量 CLI，要求 5/5 查询成功、每条至少有 1 条可见结果、网络/LLM 调用为 0 且未加载 gold/qrels；输出 manifest 只用于演示复现，不是 Recall/F1 或官方成绩。
+
 ## 启动后端
 
 ```bash

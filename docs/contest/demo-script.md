@@ -64,4 +64,12 @@ PYTHONPATH=src python scripts/check_clean_clone_smoke.py \
   --output outputs/clean_clone_smoke_local.json
 ```
 
+验收 5 条演示查询可连续返回结果时，可运行：
+
+```bash
+PYTHONPATH=src python scripts/check_demo_reproducibility.py
+```
+
+该命令要求每条演示至少有一条可见结果，并检查零网络、零 LLM 与 `gold_or_qrels_loaded=false`；失败时应展示结构化原因，不要把单条失败包装成成功。
+
 最后说明：公开 GitHub 包不含 `.env`、模型缓存、语义大语料和临时实验输出；正式 Dense/Reranker/RRF 成绩需使用绑定当前代码、输入哈希和资源账本的新运行重新核验。
