@@ -6,14 +6,14 @@
 
 ## 当前权威快照（2026-08-25，优先于下方历史增量记录）
 
-- 当前代码提交：以 `git rev-parse HEAD` 为准；本地 `main` 与 `origin/main` 一致，发布 smoke 的 `source_commit` 是权威绑定。当前提交为 `f491b06`；最近一次 clean-clone smoke 需在该提交上重新生成。
+- 当前代码提交：始终以 `git rev-parse HEAD` 为准；本地 `main` 与 `origin/main` 必须一致，发布 smoke 的 `source_commit` 是权威绑定。每次提交后都必须重新运行 clean-clone smoke，不在文档中复制易过期的短提交号。
 - **本轮检索策略筛选（2026-08-24，v3 语料，均为内部非官方指标）**：在同一前 200 条查询、同一 v3 语料/索引和 `high_recall`/300 候选预算下，`prf_v1` 完整配对 ΔRecall@20=`-0.00175`（95% CI `[-0.00659,0.00200]`）、ΔF1@20=`-0.00016`（`[-0.00172,0.00134]`），不启用；30 条 `controlled_relaxation` 筛选的 Recall@20/F1@20 未变化且 F1@10 下降，不扩展；30 条 `rrf_k=10` 筛选的 Recall@20/F1@20 未变化且 F1@10 下降，不启用；30 条 BM25/semantic 候选 60→200 筛选的 Recall@20=`-0.01111`、F1@20=`-0.00047`，不启用；`calibrated_rules_v1` 完整配对 ΔRecall@20=`-0.00250`（95% CI `[-0.01000,0.00500]`）、ΔF1@20=`-0.00083`（`[-0.00261,0.00091]`），不切换默认判定。以上实验均无失败、无网络、无 LLM，未将 gold/qrels 输入在线检索；报告位于 ignored `outputs/benchmark_runs/`。
 - **当前复核（2026-08-24，本轮）**：全仓库 pytest 结果为 `2337 passed, 184 skipped, 2 warnings`（约 13 分 07 秒）；前端 `npm run lint` 与 `npm run build` 均通过。提交后的 clean-clone smoke 为 `status=ready`，source-only 包 1,030 个文件、36,986,859 bytes，health/config=200、离线 BM25 5 条、网络 0、gold/qrels 未加载，发布包验证 `status=ready`。
 - **当前语料门禁复核（2026-08-25）**：公开 source-only 语料仍是 legacy：BM25 569,432 条仅 title 完整，semantic 31,136 条 title/abstract 完整；用户导出的 v3 脱敏语料另有 569,432 条，title/abstract/authors/year 完整，venue=12.152%、DOI=17.897%，结构和 ID 门禁通过但全字段严格门禁仍为 `passed=false`。因此 P1-01/P1-02 的正式资格状态继续保持未完成，不能把 v3 内部运行写成官方成绩。
 - **P1-04 可执行子目标（2026-08-24，提交 `2ca9b1a`）**：修复合成器只接受 title/abstract/venue/metadata、忽略已验证全文段落的缺口。现在仅将 `license_verified=true` 且带稳定段落定位的全文证据加入 synthesis evidence table；未验证全文仍 fail-closed。固定同一 RankedPaper 的前后成对测试显示 rank/final_score 不变，全文版本新增 `full_text` 证据行并移除“全文不可用”限制；相关全文/API/合成/质量/边界专项 `97 passed, 1 skipped, 1 warning`，前端 lint/build 和 clean-clone smoke 也通过。这提升证据展示，不代表全文覆盖率或 Evidence F1 已完成。
 - **P1-04 证据透明度补齐（当前工作）**：全文 API、前端卡片和 Markdown 导出补齐 `license_verified`，让评委能区分已核验许可与未核验来源；该字段只用于展示与审计，不参与检索、排序或归纳决策。
 - **P2-02 演示可靠性修复（2026-08-25，本轮）**：阶段卡片现在同时使用 SSE 事件和轮询返回的 `current_stage`，事件连接短暂丢失时仍能正确显示进行中阶段；每个阶段补充可访问状态文本和 `aria-live` 当前阶段播报。该改动不改变检索、排序、预算或结果结构；前端 lint/build 已通过，需在提交后重跑 clean-clone smoke。
-- **P2-02 发布 smoke 复核（2026-08-25，本轮）**：使用项目 `.venv` 运行 `scripts/check_clean_clone_smoke.py`，结果 `status=ready`；health/config=200，离线 BM25=5 条，网络请求=0，LLM=disabled，gold/qrels 未加载；最近一次包验证通过，最终提交变更后需重新绑定 `source_commit`。该结果仍不替代正式赛事 scorer 或 P1-02 资格评测。
+- **P2-02 发布 smoke 复核（2026-08-25，本轮）**：使用项目 `.venv` 运行 `scripts/check_clean_clone_smoke.py`，结果 `status=ready`；health/config=200，离线 BM25=5 条，网络请求=0，LLM=disabled，gold/qrels 未加载；manifest/source commit 由 smoke 运行时自动绑定。该结果仍不替代正式赛事 scorer 或 P1-02 资格评测。
 - **P0-02 当前回归修复（2026-08-25，本轮）**：全量 pytest 复核暴露 runtime-config 的 Hybrid 最小 fixture 未携带模型内容，因而被真实模型指纹校验拒绝。已将 fixture 改为写入最小 `config.json` 并按生产同一算法计算指纹；专项回归通过。该修复只校正测试夹具，使能力探测测试继续覆盖真实索引/模型完整性契约，不改变运行时代码或检索策略。
 - **P0-02 全量回归复核（2026-08-25，本轮）**：修复后 `.venv` 全量 pytest 为 `2338 passed, 184 skipped, 2 warnings`（约 13 分 06 秒）；前端 `npm run lint` 与 `npm run build` 均通过。跳过项仍由已登记的历史证据、外部 scorer、模型/GPU、Provider 或平台权限条件解释，未改写严格门禁。
 - **P2-03 当前证据版说明书（2026-08-25，本轮）**：新增 `docs/contest/submission-report-current.md`，只引用当前可读取的 v3 200 条内部工程指标、元数据哈希、发布 smoke 和已知限制；不填官方成绩、不隐藏 venue/DOI 缺口、不把 Reranker 或 LLM 写成默认收益。该说明书可作为提交底稿，但团队信息、官方 scorer 和 1000 条正式结果仍待外部输入。
