@@ -138,6 +138,31 @@ def test_build_preserves_optional_ranking_metadata(tmp_path: Path) -> None:
     assert report.field_completeness["doi"] == 1.0
 
 
+def test_snapshot_uses_first_version_year_before_metadata_update_date(tmp_path: Path) -> None:
+    pasa = tmp_path / "pasa.json"
+    pasa.write_text(json.dumps({"0704.00001": "Paper"}), encoding="utf-8")
+    metadata = tmp_path / "arxiv-metadata-oai-snapshot.json"
+    _write_jsonl(
+        metadata,
+        [
+            {
+                "id": "0704.00001",
+                "abstract": "Abstract",
+                "update_date": "2008-11-26",
+                "versions": [
+                    {"version": "v2", "created": "Tue, 24 Jul 2007 20:10:27 GMT"},
+                    {"version": "v1", "created": "Mon, 2 Apr 2007 19:18:42 GMT"},
+                ],
+            }
+        ],
+    )
+
+    build_semantic_corpus(metadata, pasa, tmp_path / "output.jsonl")
+
+    row = json.loads((tmp_path / "output.jsonl").read_text(encoding="utf-8"))
+    assert row["year"] == 2007
+
+
 def test_conflicting_duplicate_metadata_fails(tmp_path: Path) -> None:
     pasa = tmp_path / "pasa.json"
     pasa.write_text(json.dumps({"2501.00001": "Paper"}), encoding="utf-8")

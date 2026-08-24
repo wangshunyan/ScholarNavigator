@@ -35,7 +35,8 @@ _ABSTRACT_FIELDS = ("abstract", "summary", "summaries", "paper_abstract")
 _CATEGORY_FIELDS = ("categories", "category", "terms", "subjects")
 _AUTHOR_FIELDS = ("authors", "author", "authors_parsed")
 _UPDATE_DATE_FIELDS = ("update_date", "updated", "last_updated")
-_YEAR_FIELDS = ("year", "published", "publication_date", "update_date")
+_YEAR_FIELDS = ("year", "published", "publication_date")
+_UPDATE_YEAR_FIELDS = ("update_date", "updated", "last_updated")
 _VENUE_FIELDS = ("venue", "journal_ref", "journal-ref", "journal")
 _DOI_FIELDS = ("doi", "DOI")
 
@@ -284,7 +285,7 @@ def _read_metadata(
         title = _clean_text(_first_field(payload, _TITLE_FIELDS))
         categories = _parse_list(_first_field(payload, _CATEGORY_FIELDS))
         authors = _parse_list(_first_field(payload, _AUTHOR_FIELDS))
-        year = _parse_year(_first_field(payload, _YEAR_FIELDS))
+        year = _publication_year(payload)
         venue = _clean_text(_first_field(payload, _VENUE_FIELDS))
         doi = _clean_doi(_first_field(payload, _DOI_FIELDS))
         missing_title_rows += not bool(title)
@@ -338,6 +339,32 @@ def _parse_year(value: Any) -> int | None:
         return None
     year = int(match.group(0))
     return year if 1900 <= year <= 2100 else None
+
+
+def _publication_year(payload: Mapping[str, Any]) -> int | None:
+    """Return a paper's publication/submission year without mistaking updates for it.
+
+    The official arXiv snapshot has an ``update_date`` used for metadata
+    maintenance; it can be later than the actual paper.  Prefer an explicit
+    publication field, then the earliest valid ``versions[].created`` date.
+    Only use ``update_date`` as a last-resort fallback for sources which do
+    not provide a submission history.
+    """
+    explicit = _parse_year(_first_field(payload, _YEAR_FIELDS))
+    if explicit is not None:
+        return explicit
+    versions = _lookup_path(payload, "versions")
+    if isinstance(versions, (list, tuple)):
+        candidates = [
+            year
+            for version in versions
+            if isinstance(version, Mapping)
+            for year in (_parse_year(_first_field(version, ("created", "date"))),)
+            if year is not None
+        ]
+        if candidates:
+            return min(candidates)
+    return _parse_year(_first_field(payload, _UPDATE_YEAR_FIELDS))
 
 
 def _clean_doi(value: Any) -> str:
