@@ -1715,6 +1715,12 @@ function ResultsPanel({
 function ResultExportActions({ result }: { result: SearchRunResultResponse }) {
   return (
     <div className="rounded-md border border-[var(--border)] bg-[var(--surface-raised)] p-3">
+      <p
+        role="note"
+        className="mb-3 rounded-md border border-[color-mix(in_srgb,var(--warning)_45%,var(--border))] bg-[color-mix(in_srgb,var(--warning)_8%,var(--surface))] px-3 py-2 text-xs leading-5 text-[var(--muted-strong)]"
+      >
+        当前为可复核的工程/演示运行，不是赛事官方 scorer 成绩。
+      </p>
       <div className="mb-3 rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-2">
         <span className="block text-[0.68rem] font-black uppercase tracking-[0.12em] text-[var(--muted)]">
           可复核运行 ID
