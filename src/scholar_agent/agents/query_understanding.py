@@ -876,11 +876,41 @@ def _build_subqueries(
     if explicit_constraint_query:
         candidates.append(explicit_constraint_query)
 
+    # When a query contains multiple structured dimensions (for example both
+    # a method and a named benchmark), keep those dimensions inside the small
+    # bounded-profile budget before spending a slot on a generic intent
+    # expansion such as ``representative papers`` or ``survey review``.  The
+    # original query is still first and the intent expansion remains available
+    # whenever there is only one structured dimension.  This prevents a
+    # three-query demo/fast path from silently dropping the dataset facet while
+    # leaving broad, low-information queries unchanged.
+    structured_dimensions = _structured_dimension_subqueries(base_query, constraints)
     intent_query = _intent_subquery(intent, base_query, constraints.time_range)
+    generic_dataset_terms = {
+        "dataset",
+        "benchmark",
+        "evaluation",
+        "corpus",
+        "数据集",
+        "评测",
+        "基准",
+    }
+    has_named_dataset = any(
+        value.casefold() not in generic_dataset_terms
+        for value in constraints.datasets
+    )
+    prioritize_dimensions = (
+        not constraints.explicit_fields
+        and max_subqueries >= 3
+        and len(structured_dimensions) >= 2
+        and has_named_dataset
+    )
+    if prioritize_dimensions:
+        candidates.extend(structured_dimensions)
     if intent_query:
         candidates.append(intent_query)
-
-    candidates.extend(_structured_dimension_subqueries(base_query, constraints))
+    if not prioritize_dimensions:
+        candidates.extend(structured_dimensions)
 
     if base_query.casefold() != original_query.casefold():
         candidates.append((base_query, "normalized_keywords"))

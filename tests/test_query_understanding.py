@@ -118,6 +118,24 @@ def test_named_benchmark_and_method_phrases_are_structured() -> None:
     assert "HotpotQA" in plan.query_analysis.constraints.datasets
 
 
+def test_named_dataset_dimension_is_not_displaced_by_generic_intent_expansion() -> None:
+    plan = analyze_query(
+        "Find papers after 2022 that use retrieval-augmented generation for "
+        "multi-hop question answering and report results on HotpotQA.",
+        run_profile="balanced",
+        current_year=2026,
+    )
+
+    purposes = [item.purpose for item in plan.subqueries]
+    assert purposes[:3] == [
+        "original_query",
+        "method_dimension",
+        "dataset_dimension",
+    ]
+    assert plan.query_planning.dataset_coverage == 1.0
+    assert "paper_finding_expansion" not in purposes[:3]
+
+
 def test_english_relation_words_do_not_become_required_topics() -> None:
     plan = analyze_query(
         "Find papers after 2022 that use retrieval-augmented generation for "
