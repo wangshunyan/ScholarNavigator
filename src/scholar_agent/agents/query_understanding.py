@@ -255,6 +255,28 @@ STOPWORDS = {
     "evaluates",
     "exclude",
     "excluding",
+    # Narrative request words are not scientific constraints. Keeping them
+    # in lexical queries makes local BM25/Hybrid retrieval overly narrow
+    # (for example, ``resources providing information about attempts to``).
+    # Domain nouns and explicit method/dataset phrases are extracted by their
+    # dedicated parsers and are intentionally not removed here.
+    "resources",
+    "providing",
+    "attempts",
+    "automatically",
+    "scenarios",
+    "suitable",
+    "approximations",
+    "parts",
+    "aim",
+    "different",
+    "tasks",
+    "related",
+    "specifically",
+    "aimed",
+    "examples",
+    "development",
+    "sophisticated",
 }
 
 CHINESE_KEYWORD_MAP: tuple[tuple[str, tuple[str, ...]], ...] = (

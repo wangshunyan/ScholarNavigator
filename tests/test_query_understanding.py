@@ -173,6 +173,20 @@ def test_question_scaffolding_does_not_become_required_topic_terms() -> None:
     assert {"hybrid", "architectures", "reconstruction-based"}.issubset(terms)
 
 
+def test_narrative_request_words_do_not_narrow_lexical_query() -> None:
+    plan = analyze_query(
+        "Any resources providing information about attempts to detect or "
+        "calibrate biases automatically in peer reviews?",
+        current_year=2026,
+    )
+
+    terms = {term.casefold() for term in plan.query_analysis.constraints.must_include_terms}
+    assert not terms.intersection(
+        {"resources", "providing", "attempts", "automatically"}
+    )
+    assert {"detect", "calibrate", "biases", "peer", "reviews"}.issubset(terms)
+
+
 def test_named_camelcase_dataset_is_structured() -> None:
     plan = analyze_query(
         "Graph neural network papers that evaluate on MoleculeNet",

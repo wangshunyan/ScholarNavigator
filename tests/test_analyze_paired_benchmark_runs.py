@@ -131,6 +131,29 @@ def test_analyze_paired_runs_reports_runtime_code_change(tmp_path: Path) -> None
     }
 
 
+def test_disabled_llm_provider_label_does_not_break_offline_pair(
+    tmp_path: Path,
+) -> None:
+    baseline = _write_run(tmp_path, "baseline")
+    candidate = _write_run(tmp_path, "candidate", candidate=True)
+    for path, provider in (
+        (baseline / "config.json", "openai_compatible"),
+        (candidate / "config.json", "disabled"),
+    ):
+        config = json.loads(path.read_text(encoding="utf-8"))
+        config["llm"] = {
+            "requested": False,
+            "llm_enabled": False,
+            "runtime_available": False,
+            "model": None,
+            "provider": provider,
+        }
+        path.write_text(json.dumps(config), encoding="utf-8")
+
+    report = analyze_paired_runs(baseline, candidate, seed=7, iterations=20)
+    assert report["shared_inputs_match"] is True
+
+
 def test_analyze_paired_runs_rejects_duplicate_case_ids(tmp_path: Path) -> None:
     baseline = _write_run(tmp_path, "baseline")
     candidate = _write_run(tmp_path, "candidate", candidate=True)

@@ -124,14 +124,16 @@ def analyze_paired_runs(
     mismatched = [
         field
         for field in shared_fields
-        if baseline_config.get(field) != candidate_config.get(field)
+        if _shared_config_value(field, baseline_config.get(field))
+        != _shared_config_value(field, candidate_config.get(field))
     ]
     if mismatched:
         raise ValueError("shared_config_drift:" + ",".join(mismatched))
     strategy_differences = [
         field
         for field in _STRATEGY_FIELDS
-        if baseline_config.get(field) != candidate_config.get(field)
+        if _shared_config_value(field, baseline_config.get(field))
+        != _shared_config_value(field, candidate_config.get(field))
     ]
     if len(strategy_differences) > 1:
         raise ValueError(
@@ -204,6 +206,30 @@ def _load_run(path: Path) -> dict[str, Any]:
         "config": config,
         "metrics": metrics,
     }
+
+
+def _shared_config_value(field: str, value: Any) -> Any:
+    """Normalize semantically inert runtime metadata for paired checks.
+
+    Historical qualification runs may record the configured provider name
+    while the runtime was explicitly disabled.  When no request was enabled,
+    model selected, or runtime available, that provider label cannot affect
+    retrieval and should not invalidate an otherwise identical offline pair.
+    All other LLM fields remain exact-match requirements.
+    """
+
+    if field != "llm" or not isinstance(value, dict):
+        return value
+    if (
+        value.get("requested") is False
+        and value.get("llm_enabled") is False
+        and value.get("runtime_available") is False
+        and value.get("model") is None
+    ):
+        normalized = dict(value)
+        normalized["provider"] = "disabled"
+        return normalized
+    return value
 
 
 def _case_metrics(metrics: dict[str, Any]) -> dict[str, dict[str, float]]:
