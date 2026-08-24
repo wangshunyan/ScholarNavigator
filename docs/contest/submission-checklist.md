@@ -2,6 +2,8 @@
 
 ## 当前已完成
 
+- 当前证据版说明书底稿见 [`submission-report-current.md`](submission-report-current.md)；它只引用可读取的 v3 脱敏 200 条内部工程证据，并把官方 scorer、完整元数据和 1000 条正式成绩明确留作提交前事项。
+
 - FastAPI 后端和 Next.js 前端可在 Windows 本地启动。
 - 真实公开学术源已接入：OpenAlex、arXiv、Semantic Scholar、PubMed。
 - 查询理解、子查询规划、检索、去重、相关性判断、重排序、结构化结果和 SSE 进度已具备。
