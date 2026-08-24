@@ -141,6 +141,17 @@ COMMON=(
 `scripts/package_server_evidence.py` 导出脱敏 bundle；历史 inventory 不能替代这一步。
 本地导入 bundle 后使用 `scripts/analyze_paired_benchmark_runs.py` 比较 Recall@20/F1 与
 bootstrap 区间。区间未严格支持提升、出现 fallback 或资源违规时，Reranker 保持关闭。
+对于这组“仅开启 Reranker”的正式对比，必须加入 `--strict-reranker-only`：该门禁要求
+两组都是干净代码的 200 条 `local_hybrid` 运行，固定相同语料/模型/索引/融合/预算，
+并审计 candidate 的逐案例 GPU 推理、零 fallback、固定 batch=8/候选=120、延迟和显存记录。
+
+```bash
+PYTHONPATH=src .venv/bin/python scripts/analyze_paired_benchmark_runs.py \
+  --baseline outputs/imported_server_evidence/contest_v3_qual200_hybrid_baseline_<date> \
+  --candidate outputs/imported_server_evidence/contest_v3_qual200_hybrid_reranker_<date> \
+  --strict-reranker-only \
+  --output outputs/server_evidence/paired_v3_reranker_analysis.json
+```
 
 ```powershell
 .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration rules -RunId contest_qual200_bm25_v1

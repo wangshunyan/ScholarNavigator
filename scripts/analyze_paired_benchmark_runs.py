@@ -2,10 +2,10 @@
 """Produce a deterministic paired analysis for two completed benchmark runs.
 
 This utility consumes only ``config.json`` and evaluator-produced
-``metrics.json`` from each run.  It never loads the query gold, qrels, result
-documents, or any online connector, so it cannot leak evaluator data into
-retrieval.  Source/policy differences are reported explicitly while shared
-execution inputs are required to match.
+``metrics.json`` from each run.  Its optional strict reranker mode also reads
+the candidate's already-produced result diagnostics to verify real neural
+inference; it never loads query gold, qrels, documents, or an online
+connector, so it cannot leak evaluator data into retrieval.
 """
 
 from __future__ import annotations
@@ -46,6 +46,21 @@ _REPORTED_DIFFERENCES = (
     "local_bm25",
     "local_hybrid",
 )
+_RERANKER_ONLY_HYBRID_FIELDS = (
+    "connector_version",
+    "bm25_corpus_sha256",
+    "bm25_document_count",
+    "semantic_corpus_sha256",
+    "semantic_corpus_size_bytes",
+    "semantic_document_count",
+    "semantic_abstract_document_count",
+    "embedding_dimension",
+    "model_fingerprint",
+    "index_fingerprint",
+    "fusion",
+    "query_input",
+    "evaluator_data_access",
+)
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -55,6 +70,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--seed", type=int, default=20260818)
     parser.add_argument("--iterations", type=int, default=5000)
+    parser.add_argument(
+        "--strict-reranker-only",
+        action="store_true",
+        help="require a clean 200-query Hybrid pair differing only by neural reranking",
+    )
     return parser
 
 
@@ -64,6 +84,7 @@ def analyze_paired_runs(
     *,
     seed: int = 20260818,
     iterations: int = 5000,
+    strict_reranker_only: bool = False,
 ) -> dict[str, Any]:
     if seed < 0:
         raise ValueError("seed_must_be_non_negative")
@@ -80,6 +101,9 @@ def analyze_paired_runs(
     ]
     if mismatched:
         raise ValueError("shared_config_drift:" + ",".join(mismatched))
+    reranker_audit = None
+    if strict_reranker_only:
+        reranker_audit = _validate_strict_reranker_only_pair(baseline, candidate)
 
     baseline_cases = _case_metrics(baseline["metrics"])
     candidate_cases = _case_metrics(candidate["metrics"])
@@ -121,6 +145,8 @@ def analyze_paired_runs(
             metric: value["mean_delta"] > 0 and value["ci95"]["low"] > 0
             for metric, value in comparisons.items()
         },
+        "strict_reranker_only": strict_reranker_only,
+        "reranker_audit": reranker_audit,
         "internal_metric_scope": "not_official_competition_scorer",
     }
 
@@ -132,7 +158,12 @@ def _load_run(path: Path) -> dict[str, Any]:
     run_id = str(run_dir.name)
     if not isinstance(config, dict) or not isinstance(metrics, dict):
         raise ValueError("benchmark_run_json_must_be_objects")
-    return {"run_id": run_id, "config": config, "metrics": metrics}
+    return {
+        "run_id": run_id,
+        "run_dir": run_dir,
+        "config": config,
+        "metrics": metrics,
+    }
 
 
 def _case_metrics(metrics: dict[str, Any]) -> dict[str, dict[str, float]]:
@@ -158,6 +189,66 @@ def _case_metrics(metrics: dict[str, Any]) -> dict[str, dict[str, float]]:
             "recall_at_20": float(recall.get("20", 0.0)),
         }
     return result
+
+
+def _validate_strict_reranker_only_pair(
+    baseline: dict[str, Any], candidate: dict[str, Any]
+) -> dict[str, Any]:
+    """Prove that a 200-query Hybrid pair differs only by neural reranking."""
+
+    baseline_config = baseline["config"]
+    candidate_config = candidate["config"]
+    for name, run in (("baseline", baseline), ("candidate", candidate)):
+        config = run["config"]
+        if config.get("case_count") != 200 or config.get("limit") != 200:
+            raise ValueError(f"strict_reranker_only_requires_200_queries:{name}")
+        if config.get("sources") != ["local_hybrid"]:
+            raise ValueError(f"strict_reranker_only_requires_local_hybrid:{name}")
+        code = config.get("code")
+        if not isinstance(code, dict) or code.get("dirty") is not False:
+            raise ValueError(f"strict_reranker_only_requires_clean_code:{name}")
+        statistics = run["metrics"].get("case_statistics")
+        if not isinstance(statistics, dict) or int(
+            statistics.get("total_case_count", 0)
+        ) != 200 or int(statistics.get("failed_case_count", -1)) != 0:
+            raise ValueError(f"strict_reranker_only_requires_complete_success:{name}")
+    if baseline_config.get("runtime_code_hash") != candidate_config.get(
+        "runtime_code_hash"
+    ) or baseline_config["code"].get("commit") != candidate_config["code"].get("commit"):
+        raise ValueError("strict_reranker_only_code_drift")
+    top_level_drift = [
+        key
+        for key in sorted(set(baseline_config) | set(candidate_config))
+        if key not in {"started_at", "resume_signature", "local_hybrid"}
+        and baseline_config.get(key) != candidate_config.get(key)
+    ]
+    if top_level_drift:
+        raise ValueError(
+            "strict_reranker_only_config_drift:" + ",".join(top_level_drift)
+        )
+    baseline_hybrid = baseline_config.get("local_hybrid")
+    candidate_hybrid = candidate_config.get("local_hybrid")
+    if not isinstance(baseline_hybrid, dict) or not isinstance(candidate_hybrid, dict):
+        raise ValueError("strict_reranker_only_hybrid_config_missing")
+    hybrid_drift = [
+        key
+        for key in _RERANKER_ONLY_HYBRID_FIELDS
+        if baseline_hybrid.get(key) != candidate_hybrid.get(key)
+    ]
+    if hybrid_drift:
+        raise ValueError("strict_reranker_only_hybrid_drift:" + ",".join(hybrid_drift))
+    if baseline_hybrid.get("reranker_model_path") is not None:
+        raise ValueError("strict_reranker_only_baseline_reranker_enabled")
+    if not isinstance(candidate_hybrid.get("reranker_model_path"), str) or not candidate_hybrid.get("reranker_model_path"):
+        raise ValueError("strict_reranker_only_candidate_reranker_missing")
+    if candidate_hybrid.get("reranker_batch_size") != 8 or candidate_hybrid.get("reranker_candidate_limit") != 120:
+        raise ValueError("strict_reranker_only_candidate_reranker_limits_invalid")
+    from scripts.check_contest_qualification import _audit_reranker_run
+
+    audit = _audit_reranker_run(candidate["run_dir"], expected_rows=200)
+    if audit["status"] != "passed":
+        raise ValueError("strict_reranker_only_candidate_audit_failed:" + ",".join(audit["reasons"]))
+    return audit
 
 
 def _bootstrap_delta(
@@ -216,6 +307,7 @@ def main(argv: list[str] | None = None) -> int:
             args.candidate,
             seed=args.seed,
             iterations=args.iterations,
+            strict_reranker_only=args.strict_reranker_only,
         )
     except ValueError as exc:
         print(str(exc), file=sys.stderr)
