@@ -34,6 +34,12 @@ def test_linux_runner_wires_semantic_corpus_and_soft_config() -> None:
     assert '"datasets/semantic/pasa_papers_with_abstracts.jsonl"' in script
     assert '--reranker-device)' in script
     assert '"--local-hybrid-reranker-device" "$RERANKER_DEVICE"' in script
+    assert '--bm25-corpus)' in script
+    assert '--semantic-corpus)' in script
+    assert '"$SEMANTIC_INDEX_DIR"' in script
+    assert '"$SEMANTIC_MODEL"' in script
+    assert '--plan-only)' in script
+    assert 'schema_version=contest-benchmark-plan-v1' in script
 
 
 def test_windows_runner_wires_semantic_corpus_and_soft_config() -> None:
@@ -47,3 +53,10 @@ def test_windows_runner_wires_semantic_corpus_and_soft_config() -> None:
     assert '"dense_reranker_llm_feedback"' in script
     assert '[string]$RerankerDevice = "auto"' in script
     assert '"--local-hybrid-reranker-device", $RerankerDevice' in script
+    assert '[string]$Bm25Corpus' in script
+    assert '[string]$SemanticCorpus' in script
+    assert '[string]$SemanticIndexDir' in script
+    assert '[string]$SemanticModel' in script
+    assert '"--local-hybrid-semantic-corpus",' in script
+    assert '[switch]$PlanOnly' in script
+    assert 'schema_version = "contest-benchmark-plan-v1"' in script

@@ -103,6 +103,45 @@ Linux 服务器使用同等脚本：
 
 P0 语料或 Faiss 索引变化后，不恢复旧 `local/hybrid` 结果。先在同一批前 200 条查询上运行：
 
+对于服务器已构建的正式 v3 语料与索引，不要修改脚本或 `.env`。两个 runner 都接受
+`Bm25Corpus`/`SemanticCorpus`/`SemanticIndexDir`/`SemanticModel`（Linux 分别为
+`--bm25-corpus`/`--semantic-corpus`/`--semantic-index-dir`/`--semantic-model`），使两组
+运行能够绑定同一份输入。可先使用 `-PlanOnly` 或 `--plan-only` 检查实际参数，不会加载
+模型、访问网络或创建运行目录。
+
+以下示例是 v3 Hybrid 与仅开启 Reranker 的受控 200 条对比；将尖括号替换为服务器上的
+实际相对路径，并使用从未复用过的 RunId：
+
+```bash
+COMMON=(
+  --mode qualification
+  --bm25-corpus outputs/metadata/pasa_arxiv_enriched_v3.jsonl
+  --bm25-cache-dir outputs/benchmark_cache/local_bm25_v3
+  --semantic-corpus outputs/metadata/pasa_arxiv_enriched_v3.jsonl
+  --semantic-index-dir outputs/benchmark_cache/local_hybrid_v3
+  --semantic-model <bge-model-directory>
+  --max-workers 1
+)
+
+./scripts/run_contest_benchmark.sh "${COMMON[@]}" \
+  --configuration hybrid \
+  --run-id contest_v3_qual200_hybrid_baseline_<date> \
+  --plan-only
+
+./scripts/run_contest_benchmark.sh "${COMMON[@]}" \
+  --configuration reranker \
+  --run-id contest_v3_qual200_hybrid_reranker_<date> \
+  --reranker-model <qwen3-reranker-directory> \
+  --reranker-device cuda:<index> \
+  --plan-only
+```
+
+确认两份计划除 RunId 和 Reranker 相关参数外一致后，删除 `--plan-only` 顺序运行。
+完成的运行必须保留结果、资源账本和完成标记，并通过
+`scripts/package_server_evidence.py` 导出脱敏 bundle；历史 inventory 不能替代这一步。
+本地导入 bundle 后使用 `scripts/analyze_paired_benchmark_runs.py` 比较 Recall@20/F1 与
+bootstrap 区间。区间未严格支持提升、出现 fallback 或资源违规时，Reranker 保持关闭。
+
 ```powershell
 .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration rules -RunId contest_qual200_bm25_v1
 .\scripts\run_contest_benchmark.ps1 -Mode qualification -Configuration dense -RunId contest_qual200_dense_v1

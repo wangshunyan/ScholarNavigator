@@ -12,12 +12,24 @@ param(
 
     [int]$Limit = 0,
 
+    [switch]$PlanOnly,
+
     [switch]$Resume,
 
     [ValidateRange(1, 32)]
     [int]$MaxWorkers = 1,
 
     [string]$RerankerModel = "datasets\semantic\models\Qwen3-Reranker-0.6B",
+
+    [string]$Bm25Corpus = "datasets\local_bm25\pasa_papers.jsonl",
+
+    [string]$Bm25CacheDir = "outputs\benchmark_cache\local_bm25",
+
+    [string]$SemanticCorpus = "datasets\semantic\pasa_papers_with_abstracts.jsonl",
+
+    [string]$SemanticIndexDir = "outputs\benchmark_cache\local_hybrid",
+
+    [string]$SemanticModel = "datasets\semantic\models\models\AI-ModelScope--bge-small-en-v1.5\snapshots\master",
 
     [ValidatePattern("^(auto|cpu|cuda(:\d+)?)$")]
     [string]$RerankerDevice = "auto",
@@ -79,7 +91,8 @@ $arguments = @(
             "local_bm25"
         }
     ),
-    "--local-bm25-corpus", "datasets\local_bm25\pasa_papers.jsonl",
+    "--local-bm25-corpus", $Bm25Corpus,
+    "--local-bm25-cache-dir", $Bm25CacheDir,
     "--local-bm25-document-id-identity", "arxiv_id",
     "--local-bm25-arxiv-id-field", "arxiv_id",
     "--local-bm25-doi-field", "doi"
@@ -95,11 +108,11 @@ if ($Mode -eq "qualification" -or $Configuration -in @("hybrid_deep_rrf", "dense
 if ($Configuration -in @("hybrid", "hybrid_deep_rrf", "dense", "reranker", "dense_reranker_soft", "dense_reranker_rrf_soft", "dense_reranker_quality", "dense_reranker_llm", "dense_reranker_llm_feedback")) {
     $arguments += @(
         "--local-hybrid-semantic-corpus",
-        "datasets\semantic\pasa_papers_with_abstracts.jsonl",
+        $SemanticCorpus,
         "--local-hybrid-index-dir",
-        "outputs\benchmark_cache\local_hybrid",
+        $SemanticIndexDir,
         "--local-hybrid-model",
-        "datasets\semantic\models\models\AI-ModelScope--bge-small-en-v1.5\snapshots\master",
+        $SemanticModel,
         "--local-hybrid-bm25-candidate-limit",
         $(if ($Configuration -eq "hybrid_deep_rrf") { "200" } else { "60" }),
         "--local-hybrid-semantic-candidate-limit",
@@ -157,6 +170,26 @@ if (-not [string]::IsNullOrWhiteSpace($QualityEvidenceLedger)) {
 
 if ($Resume) {
     $arguments += "--resume"
+}
+
+if ($PlanOnly) {
+    [ordered]@{
+        schema_version = "contest-benchmark-plan-v1"
+        run_id = $RunId
+        mode = $Mode
+        configuration = $Configuration
+        reranker_enabled = ($Configuration -in @("reranker", "dense_reranker_soft", "dense_reranker_rrf_soft", "dense_reranker_quality", "dense_reranker_llm", "dense_reranker_llm_feedback"))
+        assets = [ordered]@{
+            bm25_corpus = $Bm25Corpus
+            bm25_cache_dir = $Bm25CacheDir
+            semantic_corpus = $SemanticCorpus
+            semantic_index_dir = $SemanticIndexDir
+            semantic_model = $SemanticModel
+            reranker_model = $(if ($Configuration -in @("reranker", "dense_reranker_soft", "dense_reranker_rrf_soft", "dense_reranker_quality", "dense_reranker_llm", "dense_reranker_llm_feedback")) { $RerankerModel } else { $null })
+        }
+        arguments = $arguments
+    } | ConvertTo-Json -Depth 5
+    exit 0
 }
 
 Push-Location $projectRoot

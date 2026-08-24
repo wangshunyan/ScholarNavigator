@@ -6,8 +6,14 @@ CONFIGURATION="hybrid"
 RUN_ID=""
 OFFSET="0"
 LIMIT="0"
+PLAN_ONLY="0"
 RESUME="0"
 RERANKER_MODEL="datasets/semantic/models/Qwen3-Reranker-0.6B"
+BM25_CORPUS="datasets/local_bm25/pasa_papers.jsonl"
+BM25_CACHE_DIR="outputs/benchmark_cache/local_bm25"
+SEMANTIC_CORPUS="datasets/semantic/pasa_papers_with_abstracts.jsonl"
+SEMANTIC_INDEX_DIR="outputs/benchmark_cache/local_hybrid"
+SEMANTIC_MODEL="datasets/semantic/models/models/AI-ModelScope--bge-small-en-v1.5/snapshots/master"
 RERANKER_DEVICE="auto"
 MAX_WORKERS="1"
 QUALITY_EVIDENCE_LEDGER=""
@@ -36,12 +42,36 @@ while [[ $# -gt 0 ]]; do
       LIMIT="$2"
       shift 2
       ;;
+    --plan-only)
+      PLAN_ONLY="1"
+      shift
+      ;;
     --resume)
       RESUME="1"
       shift
       ;;
     --reranker-model)
       RERANKER_MODEL="$2"
+      shift 2
+      ;;
+    --bm25-corpus)
+      BM25_CORPUS="$2"
+      shift 2
+      ;;
+    --bm25-cache-dir)
+      BM25_CACHE_DIR="$2"
+      shift 2
+      ;;
+    --semantic-corpus)
+      SEMANTIC_CORPUS="$2"
+      shift 2
+      ;;
+    --semantic-index-dir)
+      SEMANTIC_INDEX_DIR="$2"
+      shift 2
+      ;;
+    --semantic-model)
+      SEMANTIC_MODEL="$2"
       shift 2
       ;;
     --reranker-device)
@@ -158,7 +188,8 @@ ARGS=(
   "--ranking-policy" "$RANKING_POLICY"
   "--max-workers" "$MAX_WORKERS"
   "--sources" "$SOURCES"
-  "--local-bm25-corpus" "datasets/local_bm25/pasa_papers.jsonl"
+  "--local-bm25-corpus" "$BM25_CORPUS"
+  "--local-bm25-cache-dir" "$BM25_CACHE_DIR"
   "--local-bm25-document-id-identity" "arxiv_id"
   "--local-bm25-arxiv-id-field" "arxiv_id"
   "--local-bm25-doi-field" "doi"
@@ -181,11 +212,11 @@ if [[ "$CONFIGURATION" == "hybrid" || "$CONFIGURATION" == "hybrid_deep_rrf" || "
   fi
   ARGS+=(
     "--local-hybrid-semantic-corpus"
-    "datasets/semantic/pasa_papers_with_abstracts.jsonl"
+    "$SEMANTIC_CORPUS"
     "--local-hybrid-index-dir"
-    "outputs/benchmark_cache/local_hybrid"
+    "$SEMANTIC_INDEX_DIR"
     "--local-hybrid-model"
-    "datasets/semantic/models/models/AI-ModelScope--bge-small-en-v1.5/snapshots/master"
+    "$SEMANTIC_MODEL"
     "--local-hybrid-bm25-candidate-limit"
     "$BM25_LIMIT"
     "--local-hybrid-semantic-candidate-limit"
@@ -236,6 +267,20 @@ fi
 
 if [[ "$RESUME" == "1" ]]; then
   ARGS+=("--resume")
+fi
+
+if [[ "$PLAN_ONLY" == "1" ]]; then
+  printf 'schema_version=contest-benchmark-plan-v1\n'
+  printf 'run_id=%s\nmode=%s\nconfiguration=%s\n' "$RUN_ID" "$MODE" "$CONFIGURATION"
+  if [[ "$CONFIGURATION" == "reranker" || "$CONFIGURATION" == dense_reranker_* ]]; then
+    printf 'reranker_enabled=true\nreranker_model=%s\n' "$RERANKER_MODEL"
+  else
+    printf 'reranker_enabled=false\n'
+  fi
+  printf 'bm25_corpus=%s\nbm25_cache_dir=%s\nsemantic_corpus=%s\nsemantic_index_dir=%s\nsemantic_model=%s\n' \
+    "$BM25_CORPUS" "$BM25_CACHE_DIR" "$SEMANTIC_CORPUS" "$SEMANTIC_INDEX_DIR" "$SEMANTIC_MODEL"
+  printf 'arguments='; printf '%q ' "${ARGS[@]}"; printf '\n'
+  exit 0
 fi
 
 cd "$PROJECT_ROOT"

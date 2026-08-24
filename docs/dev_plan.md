@@ -7,6 +7,8 @@
 ## 当前权威快照（2026-08-24，优先于下方历史增量记录）
 
 - 当前代码提交：以 `git rev-parse HEAD` 为准；本地 `main` 与 `origin/main` 一致，工作树干净。不要从历史快照复制提交号；发布 smoke 的 `source_commit` 是权威绑定。
+- 当前本地已导入的 4 个服务器 ZIP 均为 `server_legacy_inventory_v1`，其中 200 条 BM25 与 Reranker 运行分别使用 `local_bm25/fast/200` 与 `local_hybrid/high_recall/300`，且均无完成标记；配对分析器按 `run_profile,budgets` 漂移拒绝比较。因此它们只能作为历史线索，不能完成 P1-02 或证明 Reranker 收益。
+- 已修复正式实验入口的可复现性缺口：`scripts/run_contest_benchmark.ps1/.sh` 现在允许显式传入 BM25 语料/缓存、语义语料/索引和 BGE 模型路径，并提供无副作用的 `-PlanOnly/--plan-only` 参数审计。以同一 v3 资产生成的 Hybrid baseline 与 `reranker` candidate 计划已验证：除 RunId 和 Reranker 参数外，53 项 baseline 与 61 项 candidate 参数一致。专项回归 `52 passed`；Linux shell 因当前 Windows 无 WSL/Bash 运行时只能静态复核，服务器实际运行仍待脱敏 bundle 审计。
 - 最近验证：查询清理与跨代码版本成对分析提交后的后端全量回归 `2316 passed, 184 skipped, 2 warnings`（约 13 分 07 秒）；前端 `npm run lint` 与 `npm run build` 通过；使用项目 `.venv` 的 clean-clone smoke 在项目根目录运行并以自身的 `source_commit` 绑定，health/config=200、离线 BM25 5 条、网络请求 0、LLM disabled；系统 Python 未安装 FastAPI 时 smoke 会明确返回 `not_ready`，应使用项目锁定环境。
 - 当前公开语料仍不满足正式元数据门禁：BM25 569,432 条仅 title 完整；semantic 31,136 条 title/abstract 完整，authors/year/venue/doi 缺失。两者均结构有效但 `required_fields_complete=false`，不得启动正式资格评测。
 - 当前未导入服务器 evidence bundle；Git 同步不能证明服务器实验数据与本地一致。服务器只能通过 `scripts/package_server_evidence.py` 导出脱敏证据后再审计，原始运行、模型、索引和凭据不上传 GitHub。
@@ -236,6 +238,7 @@
 - **验收**：固定 200 条资格门禁通过后才允许 1000 条；报告 candidate recall、F1@5/10/20、Recall@20、MRR、延迟、调用数、失败率和显著性区间；任何无收益策略保持默认关闭。
 - **依赖**：P1-01；GPU/模型或 Provider 不可用时只完成离线门禁，不伪造成绩。
 - **BLOCKED（继承 P1-01，2026-08-23）**：完整元数据资格尚未通过；此外正式 Dense/Reranker 资格还需要可审计 GPU 模型、设备和资源账本。所需输入：P1-01 合格语料与可读取的 GPU/模型运行产物。
+- **增量实现（2026-08-24）**：正式 runner 不再锁死旧 `datasets/` 资产路径；通过显式资产参数与 plan-only 审计，可在不读取 `.env`、不访问网络或创建运行目录的条件下，先证明 v3 Hybrid baseline 与仅开启 Reranker 的 candidate 共享语料、索引、BGE、预算、profile、查询范围和候选池。代码测试及 Windows 参数实测通过；待服务器完成两个新的 RunId 并导入完整脱敏 bundle 后，才可执行最终配对分析与资格判断。
 
 ### P1-03 低质量论文过滤（可解释、默认保守）
 
