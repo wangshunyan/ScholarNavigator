@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 import zipfile
 from pathlib import Path
 
@@ -8,6 +10,19 @@ import pytest
 
 from scripts.build_contest_release_package import build_package
 from scripts.verify_contest_release_package import ReleaseVerificationError, verify_package
+
+
+def test_verify_cli_help_works_when_run_as_script() -> None:
+    script = Path(__file__).resolve().parents[1] / "scripts" / "verify_contest_release_package.py"
+    completed = subprocess.run(
+        [sys.executable, str(script), "--help"],
+        cwd=script.parents[1],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert completed.returncode == 0
+    assert "source ZIP" in completed.stdout
 
 
 def _repo(tmp_path: Path) -> Path:
