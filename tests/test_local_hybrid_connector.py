@@ -102,6 +102,64 @@ def test_semantic_corpus_requires_unique_stable_arxiv_ids(tmp_path: Path) -> Non
         local_hybrid_module._read_semantic_rows(duplicate)
 
 
+def test_persisted_index_metadata_keeps_server_path_as_provenance(
+    tmp_path: Path, monkeypatch
+) -> None:
+    """Imported indexes must not require the server's absolute model path."""
+    index_dir = tmp_path / "index"
+    index_dir.mkdir()
+    corpus = tmp_path / "semantic.jsonl"
+    corpus.write_text(
+        '{"arxiv_id":"2501.00001","title":"Paper","abstract":"A"}\n',
+        encoding="utf-8",
+    )
+    metadata = {
+        "schema_version": "2",
+        "semantic_corpus_sha256": local_hybrid_module._sha256_file(corpus)[0],
+        "semantic_corpus_size_bytes": corpus.stat().st_size,
+        "model_fingerprint": "same-model",
+        "document_count": 1,
+        "abstract_document_count": 1,
+        "embedding_dimension": 3,
+        "model_path": "/build-host/absolute/path/model",
+        "index_type": "exact_flat",
+        "index_fingerprint": "index",
+        "hnsw_m": 32,
+        "hnsw_ef_construction": 80,
+        "hnsw_ef_search": 64,
+        "build_seconds": 0.0,
+        "peak_memory_bytes": 0,
+        "ann_recall_at_k": 1.0,
+        "recall_query_count": 1,
+        "recall_k": 1,
+        "ann_query_seconds": 0.0,
+        "exact_query_seconds": 0.0,
+    }
+    (index_dir / "metadata.json").write_text(json.dumps(metadata), encoding="utf-8")
+    np.save(index_dir / "embeddings.npy", np.zeros((1, 3), dtype=np.float32))
+    model_path = tmp_path / "local-model"
+    model_path.mkdir()
+    monkeypatch.setattr(
+        local_hybrid_module, "_model_fingerprint", lambda _path: "same-model"
+    )
+    monkeypatch.setattr(
+        local_hybrid_module, "configure_local_bm25", lambda *a, **k: None
+    )
+    config = LocalHybridConfig(
+        bm25_config=LocalBM25Config(
+            corpus_path=corpus, cache_dir=tmp_path / "bm25-cache"
+        ),
+        semantic_corpus_path=corpus,
+        semantic_index_dir=index_dir,
+        model_path=model_path,
+    )
+    loaded = local_hybrid_module.configure_local_hybrid(
+        config, build_bm25_index=False
+    )
+    assert loaded is not None
+    assert loaded.model_path == "/build-host/absolute/path/model"
+
+
 class _FakeEncoder:
     def get_sentence_embedding_dimension(self) -> int:
         return 3

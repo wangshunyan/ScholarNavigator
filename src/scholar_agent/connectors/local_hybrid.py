@@ -160,8 +160,13 @@ def configure_local_hybrid(
             normalized.semantic_corpus_path
         )[0]:
             raise ValueError("local_hybrid_semantic_corpus_changed")
-        if metadata.model_path != str(normalized.model_path):
-            raise ValueError("local_hybrid_model_path_changed")
+        # The persisted path is provenance only and may legitimately differ
+        # between machines (for example, a server build imported into a
+        # teammate's checkout).  The model fingerprint is the reproducibility
+        # contract; an absolute path must never make a portable index unusable.
+        current_model_fingerprint = _model_fingerprint(normalized.model_path)
+        if metadata.model_fingerprint != current_model_fingerprint:
+            raise ValueError("local_hybrid_model_changed")
         if metadata.document_count <= 0:
             raise ValueError("local_hybrid_empty_index")
         embeddings_path = normalized.semantic_index_dir / _EMBEDDINGS_FILE
