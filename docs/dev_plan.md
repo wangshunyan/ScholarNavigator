@@ -7,6 +7,9 @@
 ## 当前权威快照（2026-08-24，优先于下方历史增量记录）
 
 - 当前代码提交：以 `git rev-parse HEAD` 为准；本地 `main` 与 `origin/main` 一致，工作树干净。不要从历史快照复制提交号；发布 smoke 的 `source_commit` 是权威绑定。
+- **当前复核（2026-08-24，提交后全量回归）**：在提交 `fab402d` 的当前 checkout 上重新执行全仓库 pytest，结果为 `2332 passed, 184 skipped, 2 warnings`（约 14 分 21 秒）；此前正式证据隔离专项暴露的前端术语问题已修复并包含在本次通过结果中。跳过项仍代表已登记的外部数据、GPU/Provider、官方 scorer 或平台条件，不等同正式比赛资格。
+- **当前语料门禁复核（2026-08-24）**：对仓库实际可读取的 `datasets/local_bm25/pasa_papers.jsonl`（569,432 条，SHA-256=`ede3bd1b…d102f28`）与 `datasets/semantic/pasa_papers_with_abstracts.jsonl`（31,136 条，SHA-256=`20ecf5d3…e234bcb`）执行全字段严格审计；两者结构完整、arXiv ID 唯一，但 authors/year/venue/doi 完整度分别为 0，`required_fields_complete=false`，因此 P1-01/P1-02 继续保持未完成。
+- **上游选择性复核（2026-08-24）**：只读比较 `solace47/ScholarNavigator` 当前 `b3d9eae`；其主要新增 Semantic Scholar 全文片段/引用分页及大范围重构。当前项目已有独立的来源、RefChain、证据和回退边界；未整体合并，也未在没有成对实验的情况下改变默认检索/排序路径。
 - 当前本地已导入的 4 个服务器 ZIP 均为 `server_legacy_inventory_v1`，其中 200 条 BM25 与 Reranker 运行分别使用 `local_bm25/fast/200` 与 `local_hybrid/high_recall/300`，且均无完成标记；配对分析器按 `run_profile,budgets` 漂移拒绝比较。因此它们只能作为历史线索，不能完成 P1-02 或证明 Reranker 收益。
 - 已修复正式实验入口的可复现性缺口：`scripts/run_contest_benchmark.ps1/.sh` 现在允许显式传入 BM25 语料/缓存、语义语料/索引和 BGE 模型路径，并提供无副作用的 `-PlanOnly/--plan-only` 参数审计。以同一 v3 资产生成的 Hybrid baseline 与 `reranker` candidate 计划已验证：除 RunId 和 Reranker 参数外，53 项 baseline 与 61 项 candidate 参数一致。专项回归 `52 passed`；Linux shell 因当前 Windows 无 WSL/Bash 运行时只能静态复核，服务器实际运行仍待脱敏 bundle 审计。
 - 已修复 runner 到服务器证据包的完成标记断点：新 runner 的权威 `RUN_COMPLETED` 位于 `.run_commits` generation 链，打包器现会先验证该链及顶层兼容视图的 config/metrics/results/resource-ledger 字节一致性，再允许导出 bundle；manifest 只记录 generation、记录数与完成标记哈希。篡改顶层结果或伪造缺少完成契约的 manifest 都会失败关闭。专项 runner/commit/evidence 回归 `70 passed`。
