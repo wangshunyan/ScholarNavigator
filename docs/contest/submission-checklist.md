@@ -17,7 +17,7 @@
 - 旧来源消融目录只作为历史线索；当前可引用结果必须来自本 checkout 可读取、代码指纹一致的完整运行。
 - 已提供 `scripts/run_contest_benchmark.ps1` 及 VSCode 任务，可启动可恢复的 local baseline 和 local_hybrid candidate。
 - 已提供 `scripts/run_contest_benchmark.sh`，用于 Linux 服务器在独立项目目录内运行相同 Benchmark。
-- 已保存当前代码版本的完整 1000 条历史对照：`contest_full_local_baseline_v3` 与 `contest_full_local_hybrid_v2`，两组资源账本均通过；由于使用旧标题匹配语料和旧全矩阵实现，只能作 legacy 工程基线，不是 P0/Faiss 正式成绩。
+- 仓库仍保留 `contest_full_local_baseline_v3` 与 `contest_full_local_hybrid_v2` 的历史对照线索；它们使用旧标题匹配语料和旧全矩阵实现，不能当作当前代码版本、P0/Faiss 正式成绩或赛事结果。
 - 已保存 100 条历史候选参数实验：`hybrid_deep_rrf` 只用于诊断，P0/Faiss 变更后不得直接恢复。
 - 已准备 20 条演示查询，覆盖时间、方法、数据集、排除条件、中英文混合和结构化导出。
 

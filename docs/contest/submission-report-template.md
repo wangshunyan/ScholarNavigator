@@ -75,7 +75,7 @@ flowchart LR
 - 结果级证据链、引用图与导出，支持科研人员复核推荐理由。
 - Qwen3-Reranker-0.6B 使用固定官方判定模板、2048 token 上限、batch=8 与显式 GPU 隔离；soft Judgement 仅改变一个预先声明的阈值并通过配对 bootstrap 决策。
 
-当前限制：旧 `local_hybrid` 标题匹配语料只能作为 legacy 对照；LLM v5-v16 均为诊断，尚无零 fallback、完整审计通过的 1000 条 LLM 结果。soft Judgement 已完成内部 1000 条验证，但不代表赛事官方 scorer。Linux/Python 3.12 离线 wheelhouse 验证与 `record160` 历史冻结证据仍是最终 release tag 的阻塞项。
+当前限制：旧 `local_hybrid` 标题匹配语料只能作为 legacy 对照；LLM v5-v16 均为诊断，尚无零 fallback、完整审计通过的 1000 条 LLM 结果。历史 soft Judgement 运行曾被记录，但当前 checkout 没有可核验的完整 RunId 与逐条产物，因此不引用其数字，也不把它写成已完成验证。Linux/Python 3.12 离线 wheelhouse 验证与 `record160` 历史冻结证据仍是最终 release tag 的阻塞项。
 
 ## 演示与复现
 
