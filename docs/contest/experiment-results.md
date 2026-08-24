@@ -2,22 +2,21 @@
 
 更新时间：2026 年 8 月 24 日。
 
-本页只记录当前 checkout 中可以直接读取、复核和重新运行的证据。服务器目录、旧聊天记录或不存在于当前 `outputs/benchmark_runs/` 的 RunId 都不构成当前证据。所有 F1、Recall 等数值只能作为内部离线工程指标，不能当作赛事官方成绩。
+本页只记录当前 checkout 中可以直接读取、复核和重新运行的证据。服务器原始目录、旧聊天记录或未导出的 RunId 都不构成当前证据；用户导出的脱敏 v3 资产位于被忽略的 `outputs/server_assets/20260824_metadata_v3/`，并通过完成链与哈希复核。所有 F1、Recall 等数值只能作为内部离线工程指标，不能当作赛事官方成绩。
 
 ## 当前可确认的能力
 
 - `datasets/pasa/paper_database/id2paper.json` 包含 569,432 个稳定 arXiv ID 到标题的映射。
 - `datasets/local_bm25/pasa_papers.jsonl` 包含 569,432 条唯一 arXiv ID 记录；当前 title 完整度为 1.0，但 abstract、authors、year、venue、doi 完整度均为 0。
 - `datasets/semantic/pasa_papers_with_abstracts.jsonl` 包含 31,136 条唯一 arXiv ID 记录；title 与 abstract 完整度为 1.0，但 authors、year、venue、doi 完整度均为 0。该语料是 legacy 功能验证输入，不满足正式元数据质量目标。
+- v3 脱敏语料 `outputs/server_assets/20260824_metadata_v3/pasa_arxiv_enriched_v3.jsonl` 包含 569,432 条唯一 arXiv ID 记录；title、abstract、authors、year 完整度为 1.0，venue 为 12.152%，DOI 为 17.897%。它用于可审计内部 Hybrid 诊断，但尚未满足 venue/DOI 全量正式门禁。
 - 构建器现在要求稳定 arXiv ID，并可保留合法输入中的 authors、year、venue、doi；不允许通过标题模糊匹配或 AutoScholarQuery gold/qrels 生成正式语料。
 - 本地代码包含 SQLite BM25、local_hybrid、Faiss/语义索引接口、规则判断、结构化导出、FastAPI 和前端检索源选择；是否带来质量提升必须用同一输入和成对实验重新验证。
 - 质量面板现在额外展示作者/DOI 完整度与 arXiv–DOI 身份一致性；这些是独立诊断，不改变当前默认排序。没有独立撤稿或重复风险来源时仍显示 `unknown`。
 
 ## 当前可读取的历史运行
 
-本机存在若干 `outputs/benchmark_runs/` 目录。其中较完整的 local baseline/hybrid 运行使用旧语料或旧实现，且代码指纹不同；比较工具拒绝将它们视为严格成对比较。因此它们只能证明历史链路曾运行，不能证明当前代码的候选收益。
-
-文档曾提到的 Dense、Reranker 完整产物当前不在本机，相关数字暂不引用。服务器上的同名目录也必须先由操作者导出脱敏 manifest 和哈希后才能纳入审计。
+本机存在若干旧 `outputs/benchmark_runs/` 目录。其中较完整的 local baseline/hybrid 运行使用旧语料或旧实现，且代码指纹不同；比较工具拒绝将它们视为当前严格成对比较。v3 的三组完整脱敏运行已导入并完成哈希/完成链审计，相关数字只在下方 v3 小节引用。
 
 ### 历史可读取的 200 条 Hybrid 诊断配对
 

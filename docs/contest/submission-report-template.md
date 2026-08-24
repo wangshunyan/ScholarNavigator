@@ -43,7 +43,7 @@ flowchart LR
 
 ## 数据集与评测
 
-主评测使用 PaSa/AutoScholarQuery。当前可审计证据显示 PaSa 标题库为 569,432 条、arXiv ID 唯一；语义语料为 31,136 条、title/abstract 完整，但 authors/year/venue/DOI 尚未补齐。正式语义索引和完整 P0/Faiss 成绩尚未形成可读取产物，因此本模板中的正式结果必须保持待填写。任何索引关联不得使用标题匹配、AutoScholarQuery gold 或 qrels。
+主评测使用 PaSa/AutoScholarQuery。当前可审计 v3 证据显示语料为 569,432 条、arXiv ID 唯一，title/abstract/authors/year 完整，venue/DOI 覆盖分别为 12.152%/17.897%；已形成 200 条 Hybrid/Reranker 脱敏成对运行，但仍属于内部工程指标，不是赛事官方成绩。venue/DOI 全量门禁、1000 条正式成绩和官方 scorer 结果仍必须保持待填写。任何索引关联不得使用标题匹配、AutoScholarQuery gold 或 qrels。
 
 指标：F1@20、Precision@20、Recall@20、MRR、nDCG、成功率、API 调用数、Token、延迟和失败率。
 
@@ -58,15 +58,14 @@ flowchart LR
 
 ## 当前可填写的内部工程证据
 
-当前 checkout 中没有可核验的 P0/Faiss 1000 条完整运行目录。只有在运行目录、代码指纹、输入/索引哈希和资源账本均可读取后，才能填写下表；内部 F1/Recall 不等同赛事官方 scorer。
+当前 checkout 中没有可核验的 1000 条完整运行目录；已有 v3 200 条运行可用于内部工程表，但不能替代完整资格或官方 scorer。只有在运行目录、代码指纹、输入/索引哈希和资源账本均可读取后，才能填写正式成绩；内部 F1/Recall 不等同赛事官方 scorer。
 
 | 配置 | 运行目录 | F1@20 | P@20 | R@20 | MRR | 平均 API | 平均 Token | 平均延迟 | 成功率 |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| rules | 待当前代码重新运行 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 |
-| Dense | 待当前代码重新运行 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 |
-| Dense + reranker | 待当前代码重新运行 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 | 待测 |
+| v3 Hybrid baseline | `contest_qual200_metadata_v3_hybrid_baseline_eb7d151`（脱敏服务器资产） | 0.02108 | 待填 | 0.12850 | 待填 | 0 | 0 | 2.558 | 1.000 |
+| v3 Hybrid + Reranker | `contest_qual200_metadata_v3_hybrid_reranker_eb7d151`（脱敏服务器资产） | 0.02137 | 待填 | 0.12797 | 待填 | 0 | 0 | 需按资源账本填写 | 1.000 |
 
-历史文档中的 reranker/soft-Judgement 阶段数字当前无法由本 checkout 的完整 RunId 核验，暂不引用；需重新完成同一 200 条资格与 1000 条成对实验后再填写。
+以上为 200 条 v3 内部工程指标，不能写成赛事成绩；Reranker 未达到严格正向门禁，默认关闭。LLM、1000 条完整运行和官方 scorer 仍需单独核验。
 
 ## 创新点与边界
 
