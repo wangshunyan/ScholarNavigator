@@ -19,6 +19,11 @@ import zipfile
 from pathlib import Path, PurePosixPath
 from typing import Any
 
+from scholar_agent.evaluation.crash_consistency import (
+    BenchmarkRunCommitStore,
+    CrashConsistencyError,
+)
+
 
 SCHEMA = "server_evidence_bundle_v1"
 LEGACY_INVENTORY_SCHEMA = "server_legacy_inventory_v1"
@@ -164,6 +169,40 @@ def _validate_json_shape(path: Path) -> None:
         raise EvidenceError(f"json_root_invalid:{path.name}")
 
 
+def _committed_generation_completion(run_dir: Path) -> dict[str, Any] | None:
+    """Verify the authoritative completion chain used by new benchmark runs.
+
+    ``run_benchmark.py`` stores the completion marker below ``.run_commits``
+    rather than creating a legacy top-level marker.  Do not merely discover
+    that nested file: load the committed generation and ensure the public
+    compatibility view still exactly equals its authoritative artifacts.
+    """
+
+    store = BenchmarkRunCommitStore(run_dir)
+    if not store.root.exists():
+        return None
+    try:
+        state = store.load_latest()
+    except (CrashConsistencyError, OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise EvidenceError("committed_generation_invalid") from exc
+    if state.status != "completed":
+        return None
+    marker = state.generation_path / "RUN_COMPLETED"
+    if not marker.is_file():
+        return None
+    expected = store.public_artifacts(state)
+    for name in REQUIRED_FILES:
+        path = run_dir / name
+        if not path.is_file() or expected.get(name) != path.read_bytes():
+            raise EvidenceError(f"committed_compatibility_view_drift:{name}")
+    return {
+        "kind": "run_commit_generation",
+        "generation": state.generation,
+        "record_count": len(state.records),
+        "completion_marker_sha256": _sha256(marker),
+    }
+
+
 def inspect_run(run_dir: Path) -> dict[str, Any]:
     run_dir = run_dir.expanduser().resolve()
     if not run_dir.is_dir():
@@ -188,10 +227,15 @@ def inspect_run(run_dir: Path) -> dict[str, Any]:
     missing = sorted(REQUIRED_FILES - {row["path"] for row in present})
     if missing:
         raise EvidenceError("required_artifact_missing:" + ",".join(missing))
-    markers = {row["path"] for row in present} & {".run_complete", ".run_committed"}
+    markers = sorted(
+        {row["path"] for row in present} & {".run_complete", ".run_committed"}
+    )
+    committed_completion = _committed_generation_completion(run_dir)
+    if committed_completion is not None:
+        markers.append("run_commit_generation")
     if not markers:
         raise EvidenceError("completion_marker_missing")
-    return {
+    result: dict[str, Any] = {
         "run_id": run_dir.name,
         "files": present,
         "required_files": sorted(REQUIRED_FILES),
@@ -199,6 +243,9 @@ def inspect_run(run_dir: Path) -> dict[str, Any]:
         "source_path_recorded": False,
         "sensitive_values_scanned": True,
     }
+    if committed_completion is not None:
+        result["committed_completion"] = committed_completion
+    return result
 
 
 def inspect_legacy_inventory(run_dir: Path) -> dict[str, Any]:

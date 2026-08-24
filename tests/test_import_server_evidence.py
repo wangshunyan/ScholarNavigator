@@ -59,3 +59,20 @@ def test_import_accepts_legacy_inventory_without_raw_results(tmp_path: Path) -> 
     assert report["evidence_kind"] == "legacy_inventory"
     assert report["raw_results_exported"] is False
     assert not (destination / "results.jsonl").exists()
+
+
+def test_import_rejects_completed_bundle_without_completion_contract(tmp_path: Path) -> None:
+    bundle = tmp_path / "evidence.zip"
+    build_bundle(_run(tmp_path), bundle)
+    malformed = tmp_path / "malformed.zip"
+    with zipfile.ZipFile(bundle) as source, zipfile.ZipFile(malformed, "w") as target:
+        for info in source.infolist():
+            payload = source.read(info.filename)
+            if info.filename == "manifest.json":
+                manifest = json.loads(payload)
+                manifest["run"].pop("completion_markers")
+                payload = json.dumps(manifest).encode("utf-8")
+            target.writestr(info, payload)
+
+    with pytest.raises(ImportError, match="manifest_completion_markers_invalid"):
+        import_bundle(malformed, tmp_path / "destination")

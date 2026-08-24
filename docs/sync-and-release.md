@@ -22,6 +22,14 @@
 
 脚本离线运行，不读取 .env 或 SSH 文件。将 zip 复制到本地后再审计；不要上传 zip 到 GitHub。
 
+新 benchmark runner 的完成证明保存在
+`.run_commits/generations/generation-*/RUN_COMPLETED`，而不是顶层空标记。
+打包器会加载并校验这条提交代际链，并确认顶层 `config.json`、`metrics.json`、
+`results.jsonl` 和 `resource_ledger.json` 与最新已完成 generation 完全一致；不一致时
+以 `committed_compatibility_view_drift` 失败关闭。成功 bundle 的 manifest 会记录
+`run_commit_generation`、generation 编号、记录数和完成标记 SHA-256，但不导出内部
+`.run_commits` 目录或服务器路径。
+
 若历史运行早于完成标记机制，不能手工补写 `.run_complete` 或
 `.run_committed`。可使用只读历史清单模式：
 

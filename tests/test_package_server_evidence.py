@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from scripts.package_server_evidence import EvidenceError, build_bundle, build_legacy_inventory, inspect_run
+from scholar_agent.evaluation.crash_consistency import BenchmarkRunCommitStore
 
 
 def _write_run(root: Path, *, complete: bool = True) -> Path:
@@ -50,6 +51,39 @@ def test_incomplete_or_credential_bearing_run_is_rejected(tmp_path: Path) -> Non
     run = _write_run(tmp_path / "credential")
     (run / "config.json").write_text(json.dumps({"api_key": "not-exportable"}), encoding="utf-8")
     with pytest.raises(EvidenceError, match="credential_field_present"):
+        inspect_run(run)
+
+
+def test_committed_generation_is_accepted_and_torn_compatibility_view_rejected(
+    tmp_path: Path,
+) -> None:
+    run = tmp_path / "committed-run"
+    run.mkdir()
+    store = BenchmarkRunCommitStore(run)
+    state = store.initialize(
+        run_id=run.name,
+        expected_query_ids=["q1"],
+        config={"dataset": "fixture", "case_ids": ["q1"]},
+        dataset_report={"case_count": 1},
+    )
+    state = store.commit_record({"case_id": "q1", "status": "succeeded"})
+    state = store.commit_completion(
+        {"metrics.json": b"{}\n", "resource_ledger.json": b"{}\n"}
+    )
+    store.materialize_compatibility_view(state)
+
+    inspection = inspect_run(run)
+
+    assert inspection["completion_markers"] == ["run_commit_generation"]
+    assert inspection["committed_completion"]["record_count"] == 1
+    bundle = tmp_path / "committed-evidence.zip"
+    build_bundle(run, bundle)
+    with zipfile.ZipFile(bundle) as archive:
+        manifest = json.loads(archive.read("manifest.json"))
+    assert manifest["run"]["committed_completion"]["generation"] == state.generation
+
+    (run / "results.jsonl").write_text('{"case_id":"tampered"}\n', encoding="utf-8")
+    with pytest.raises(EvidenceError, match="committed_compatibility_view_drift:results.jsonl"):
         inspect_run(run)
 
 

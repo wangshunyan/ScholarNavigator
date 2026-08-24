@@ -59,6 +59,27 @@ def _load_manifest(raw: bytes) -> dict[str, Any]:
     run = value.get("run")
     if not isinstance(run, dict) or not isinstance(run.get("run_id"), str):
         raise ImportError("manifest_run_invalid")
+    is_legacy = value.get("schema_version") == LEGACY_INVENTORY_SCHEMA
+    markers = run.get("completion_markers")
+    if (
+        not isinstance(markers, list)
+        or any(not isinstance(item, str) for item in markers)
+        or (not is_legacy and not markers)
+    ):
+        raise ImportError("manifest_completion_markers_invalid")
+    if "run_commit_generation" in markers:
+        completion = run.get("committed_completion")
+        if (
+            not isinstance(completion, dict)
+            or completion.get("kind") != "run_commit_generation"
+            or not isinstance(completion.get("generation"), int)
+            or not isinstance(completion.get("record_count"), int)
+            or not isinstance(completion.get("completion_marker_sha256"), str)
+            or not re.fullmatch(
+                r"[0-9a-f]{64}", completion["completion_marker_sha256"]
+            )
+        ):
+            raise ImportError("manifest_committed_completion_invalid")
     return value
 
 
