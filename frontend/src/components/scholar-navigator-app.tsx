@@ -1451,6 +1451,11 @@ function RunProgress({
           <h2 id="run-progress-title" className="text-2xl font-black">
             检索运行状态
           </h2>
+          {runId ? (
+            <p className="mt-2 text-xs text-[var(--muted)]">
+              运行 ID：<code className="break-all text-[var(--muted-strong)]">{runId}</code>
+            </p>
+          ) : null}
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {canCancelRealSearch ? (
