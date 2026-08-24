@@ -51,3 +51,19 @@ def test_incomplete_or_credential_bearing_run_is_rejected(tmp_path: Path) -> Non
     (run / "config.json").write_text(json.dumps({"api_key": "not-exportable"}), encoding="utf-8")
     with pytest.raises(EvidenceError, match="credential_field_present"):
         inspect_run(run)
+
+
+def test_bundle_redacts_sensitive_diagnostic_text_in_result_rows(tmp_path: Path) -> None:
+    run = _write_run(tmp_path)
+    (run / "results.jsonl").write_text(
+        json.dumps({"case_id": "q1", "error_message": "API key unavailable"}) + "\n",
+        encoding="utf-8",
+    )
+
+    bundle = tmp_path / "evidence.zip"
+    build_bundle(run, bundle)
+
+    with zipfile.ZipFile(bundle) as archive:
+        result = archive.read("run/results.jsonl").decode("utf-8")
+    assert "API key" not in result
+    assert "<redacted-sensitive-text>" in result

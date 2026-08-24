@@ -72,6 +72,13 @@ def _safe_text(path: Path) -> None:
 def _redact_string(value: str) -> str:
     value = re.sub(r"(?i)(?:^|[^0-9])172\.16\.36\.16(?:[^0-9]|$)", "<redacted-host>", value)
     value = re.sub(r"(?:(?:[A-Za-z]:)?[\\/](?:Users|home|mnt|root)[\\/][^\s\"']+)", "<redacted-path>", value)
+    # Run results can legitimately retain diagnostic messages such as
+    # "API key unavailable" or a copied private-key error.  They are useful
+    # to the local operator but must never leave the experiment host.  Replace
+    # the entire string rather than attempting token-level cleanup, so that a
+    # real credential cannot survive next to the matched phrase.
+    if _contains_sensitive_text(value):
+        return "<redacted-sensitive-text>"
     return value
 
 
