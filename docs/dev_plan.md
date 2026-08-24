@@ -6,7 +6,7 @@
 
 ## 当前权威快照（2026-08-24，优先于下方历史增量记录）
 
-- 当前代码提交：以 `git rev-parse HEAD` 为准；本地 `main` 与 `origin/main` 一致，工作树干净。不要从历史快照复制提交号；发布 smoke 的 `source_commit` 是权威绑定。当前提交为 `19e8d95`。
+- 当前代码提交：以 `git rev-parse HEAD` 为准；本地 `main` 与 `origin/main` 一致，工作树干净。不要从历史快照复制提交号；发布 smoke 的 `source_commit` 是权威绑定。当前提交为 `1d7dee6`。
 - **本轮检索策略筛选（2026-08-24，v3 语料，均为内部非官方指标）**：在同一前 200 条查询、同一 v3 语料/索引和 `high_recall`/300 候选预算下，`prf_v1` 完整配对 ΔRecall@20=`-0.00175`（95% CI `[-0.00659,0.00200]`）、ΔF1@20=`-0.00016`（`[-0.00172,0.00134]`），不启用；30 条 `controlled_relaxation` 筛选的 Recall@20/F1@20 未变化且 F1@10 下降，不扩展；30 条 `rrf_k=10` 筛选的 Recall@20/F1@20 未变化且 F1@10 下降，不启用；30 条 BM25/semantic 候选 60→200 筛选的 Recall@20=`-0.01111`、F1@20=`-0.00047`，不启用；`calibrated_rules_v1` 完整配对 ΔRecall@20=`-0.00250`（95% CI `[-0.01000,0.00500]`）、ΔF1@20=`-0.00083`（`[-0.00261,0.00091]`），不切换默认判定。以上实验均无失败、无网络、无 LLM，未将 gold/qrels 输入在线检索；报告位于 ignored `outputs/benchmark_runs/`。
 - **当前复核（2026-08-24，本轮）**：全仓库 pytest 结果为 `2337 passed, 184 skipped, 2 warnings`（约 13 分 07 秒）；前端 `npm run lint` 与 `npm run build` 均通过。提交后的 clean-clone smoke 为 `status=ready`，source-only 包 1,030 个文件、36,986,859 bytes，health/config=200、离线 BM25 5 条、网络 0、gold/qrels 未加载，发布包验证 `status=ready`。
 - **当前语料门禁复核（2026-08-24）**：对仓库实际可读取的 `datasets/local_bm25/pasa_papers.jsonl`（569,432 条，SHA-256=`ede3bd1b…d102f28`）与 `datasets/semantic/pasa_papers_with_abstracts.jsonl`（31,136 条，SHA-256=`20ecf5d3…e234bcb`）执行全字段严格审计；两者结构完整、arXiv ID 唯一，但 authors/year/venue/doi 完整度分别为 0，`required_fields_complete=false`，因此 P1-01/P1-02 继续保持未完成。
