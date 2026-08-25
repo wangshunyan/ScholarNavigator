@@ -1,6 +1,7 @@
 import type {
   HealthResponse,
   InternalSearchPreviewRequest,
+  FullTextFetchResult,
   RuntimeConfigResponse,
   SearchRunCreateRequest,
   SearchRunCreateResponse,
@@ -91,6 +92,21 @@ export function getHealth(): Promise<HealthResponse> {
 
 export function getRuntimeConfig(): Promise<RuntimeConfigResponse> {
   return requestJson<RuntimeConfigResponse>("/api/v1/runtime/config");
+}
+
+export function fetchFullTextEvidence(payload: {
+  source_url: string;
+  license_id: string;
+  license_verified: boolean;
+  allowed_hosts: string[];
+  timeout_seconds?: number;
+  max_bytes?: number;
+  max_pdf_pages?: number;
+}): Promise<FullTextFetchResult> {
+  return requestJson<FullTextFetchResult>("/api/v1/full-text/fetch", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
 
 export function createRealSearchRun(

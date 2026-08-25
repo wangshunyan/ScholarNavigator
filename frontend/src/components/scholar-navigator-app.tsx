@@ -30,6 +30,7 @@ import {
   ApiError,
   cancelRealSearchRun,
   createRealSearchRun,
+  fetchFullTextEvidence,
   getHealth,
   getRealSearchRun,
   getRealSearchRunResult,
@@ -55,8 +56,9 @@ import type {
   SearchRunStatusResponse,
   StreamEvent,
   SynthesisOutput,
+  FullTextEvidenceDocument,
 } from "@/types/api";
-import { Badge, Button, SectionPanel, SkeletonLine } from "./ui";
+import { Badge, Button, FieldLabel, SectionPanel, SkeletonLine, TextInput } from "./ui";
 
 const DEFAULT_QUERY =
   "请帮我搜索 2020 年以来关于 LLM reranking 在学术论文检索中的代表性论文，重点关注 ACL、EMNLP、SIGIR。";
@@ -536,7 +538,11 @@ export function ScholarNavigatorApp() {
           />
         </div>
 
-        <ResultsPanel result={result} isLoading={isSubmitting && !result} />
+        <ResultsPanel
+          key={runId ?? "no-run"}
+          result={result}
+          isLoading={isSubmitting && !result}
+        />
       </div>
     </main>
   );
@@ -1665,6 +1671,9 @@ function ResultsPanel({
   result: SearchRunResultResponse | null;
   isLoading: boolean;
 }) {
+  const [fullTextByPaperKey, setFullTextByPaperKey] = useState<
+    Record<string, FullTextEvidenceDocument[]>
+  >({});
   const visiblePaperCount = result
     ? result.highly_relevant_papers.length + result.partially_relevant_papers.length
     : 0;
@@ -1710,11 +1719,19 @@ function ResultsPanel({
           <PaperSection
             title="高度相关论文"
             papers={result.highly_relevant_papers}
+            fullTextByPaperKey={fullTextByPaperKey}
+            onFullTextFetched={(paperKey, documents) =>
+              setFullTextByPaperKey((current) => ({ ...current, [paperKey]: documents }))
+            }
           />
 
           <PaperSection
             title="部分相关论文"
             papers={result.partially_relevant_papers}
+            fullTextByPaperKey={fullTextByPaperKey}
+            onFullTextFetched={(paperKey, documents) =>
+              setFullTextByPaperKey((current) => ({ ...current, [paperKey]: documents }))
+            }
           />
 
           <div className="grid gap-4 lg:grid-cols-3">
@@ -2470,10 +2487,14 @@ function PaperSection({
   title,
   description,
   papers,
+  fullTextByPaperKey,
+  onFullTextFetched,
 }: {
   title: string;
   description?: string;
   papers: RankedPaper[];
+  fullTextByPaperKey: Record<string, FullTextEvidenceDocument[]>;
+  onFullTextFetched: (paperKey: string, documents: FullTextEvidenceDocument[]) => void;
 }) {
   return (
     <section aria-label={title}>
@@ -2483,16 +2504,35 @@ function PaperSection({
       </div>
       <div className="grid gap-4 xl:grid-cols-2">
         {papers.map((paper) => (
-          <PaperCard key={top20PaperKey(paper)} paper={paper} />
+          <PaperCard
+            key={top20PaperKey(paper)}
+            paper={paper}
+            fullTextDocuments={fullTextByPaperKey[top20PaperKey(paper)]}
+            onFullTextFetched={(documents) =>
+              onFullTextFetched(top20PaperKey(paper), documents)
+            }
+          />
         ))}
       </div>
     </section>
   );
 }
 
-function PaperCard({ paper }: { paper: RankedPaper }) {
+function PaperCard({
+  paper,
+  fullTextDocuments,
+  onFullTextFetched,
+}: {
+  paper: RankedPaper;
+  fullTextDocuments?: FullTextEvidenceDocument[];
+  onFullTextFetched: (documents: FullTextEvidenceDocument[]) => void;
+}) {
   const identifiers = identifierEntries(paper.paper.identifiers);
-  const evidenceBoundary = describeEvidenceBoundary(paper);
+  const displayPaper = fullTextDocuments
+    ? { ...paper.paper, full_text_evidence: fullTextDocuments }
+    : paper.paper;
+  const displayRankedPaper = fullTextDocuments ? { ...paper, paper: displayPaper } : paper;
+  const evidenceBoundary = describeEvidenceBoundary(displayRankedPaper);
 
   return (
     <article className="card paper-card result-paper-card">
@@ -2600,9 +2640,11 @@ function PaperCard({ paper }: { paper: RankedPaper }) {
         </div>
       ) : null}
 
-      {paper.paper.full_text_evidence.length ? (
-        <FullTextEvidenceSection documents={paper.paper.full_text_evidence} />
-      ) : null}
+      {displayPaper.full_text_evidence.length ? (
+        <FullTextEvidenceSection documents={displayPaper.full_text_evidence} />
+      ) : (
+        <FullTextFetchControl paper={paper.paper} onFetched={onFullTextFetched} />
+      )}
 
       {identifiers.length ? (
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
@@ -2657,6 +2699,134 @@ function describeEvidenceBoundary(paper: RankedPaper): {
     missing,
     summary: "当前结果仅有标题/标识符层证据；不能据此核验摘要、年份、作者或全文结论。",
   };
+}
+
+function FullTextFetchControl({
+  paper,
+  onFetched,
+}: {
+  paper: RankedPaper["paper"];
+  onFetched: (documents: FullTextEvidenceDocument[]) => void;
+}) {
+  const [sourceUrl, setSourceUrl] = useState(paper.urls.pdf || "");
+  const [licenseId, setLicenseId] = useState("");
+  const [licenseVerified, setLicenseVerified] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleFetch() {
+    const cleanUrl = safeExternalUrl(sourceUrl.trim());
+    if (!cleanUrl) {
+      setError("请输入合法的 HTTP(S) 全文地址；服务端只接受 HTTPS。 ");
+      return;
+    }
+    let parsed: URL;
+    try {
+      parsed = new URL(cleanUrl);
+    } catch {
+      setError("全文地址无法解析。");
+      return;
+    }
+    if (parsed.protocol !== "https:") {
+      setError("全文证据只允许 HTTPS 地址。");
+      return;
+    }
+    if (!licenseId.trim()) {
+      setError("请填写许可证标识，例如 CC0 或 CC-BY-4.0。");
+      return;
+    }
+    if (!licenseVerified) {
+      setError("请先确认你已独立核验该全文许可证。");
+      return;
+    }
+
+    setIsFetching(true);
+    setMessage(null);
+    setError(null);
+    try {
+      const response = await fetchFullTextEvidence({
+        source_url: cleanUrl,
+        license_id: licenseId.trim(),
+        license_verified: true,
+        allowed_hosts: [parsed.hostname],
+      });
+      if (response.status !== "succeeded" || !response.document) {
+        setError(
+          response.failure_reason
+            ? `全文未纳入证据：${response.failure_reason}`
+            : `全文未纳入证据：${response.status}`,
+        );
+        return;
+      }
+      const document = response.document;
+      onFetched([
+        {
+          schema_version: document.schema_version,
+          source_url: document.source.source_url,
+          license_id: document.source.license_id,
+          license_verified: document.source.license_verified,
+          content_sha256: document.source.content_sha256,
+          paragraphs: document.paragraphs,
+        },
+      ]);
+      setMessage(`已载入 ${document.paragraphs.length} 个可定位段落；排序未改变。`);
+    } catch (fetchError) {
+      setError(fetchError instanceof Error ? fetchError.message : "全文请求失败。");
+    } finally {
+      setIsFetching(false);
+    }
+  }
+
+  return (
+    <details className="mt-4 rounded-lg border border-dashed border-[var(--border-strong)] bg-[var(--surface)] p-3">
+      <summary className="cursor-pointer text-sm font-semibold">
+        按许可获取全文证据（可选）
+      </summary>
+      <div className="mt-3 space-y-3 text-sm">
+        <p className="text-[var(--muted)]">
+          系统不会自动发现或推断许可证。请只填写你已核验、且明确允许访问的 HTTPS 全文地址；全文只补充证据展示，不参与排序。
+        </p>
+        <div>
+          <FieldLabel htmlFor={`full-text-url-${paper.identifiers.arxiv_id || paper.title}`}>
+            全文 HTTPS 地址
+          </FieldLabel>
+          <TextInput
+            id={`full-text-url-${paper.identifiers.arxiv_id || paper.title}`}
+            value={sourceUrl}
+            onChange={(event) => setSourceUrl(event.target.value)}
+            placeholder="https://www.ebi.ac.uk/.../fullTextXML"
+            inputMode="url"
+          />
+        </div>
+        <div>
+          <FieldLabel htmlFor={`full-text-license-${paper.identifiers.arxiv_id || paper.title}`}>
+            已核验许可证标识
+          </FieldLabel>
+          <TextInput
+            id={`full-text-license-${paper.identifiers.arxiv_id || paper.title}`}
+            value={licenseId}
+            onChange={(event) => setLicenseId(event.target.value)}
+            placeholder="例如 CC0、CC-BY-4.0"
+          />
+        </div>
+        <label className="flex items-start gap-2 text-xs text-[var(--muted-strong)]">
+          <input
+            type="checkbox"
+            className="mt-0.5 h-4 w-4 accent-[var(--accent)]"
+            checked={licenseVerified}
+            onChange={(event) => setLicenseVerified(event.target.checked)}
+          />
+          <span>我已独立核验该 URL 对应全文的许可证，且该主机在我的许可范围内。</span>
+        </label>
+        <Button type="button" variant="secondary" onClick={handleFetch} disabled={isFetching}>
+          {isFetching ? "获取并解析中…" : "获取全文证据"}
+        </Button>
+        {message ? <p className="text-xs text-emerald-700 dark:text-emerald-300">{message}</p> : null}
+        {error ? <p className="text-xs text-rose-700 dark:text-rose-300">{error}</p> : null}
+      </div>
+    </details>
+  );
 }
 
 function FullTextEvidenceSection({

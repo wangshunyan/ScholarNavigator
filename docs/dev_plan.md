@@ -4,7 +4,7 @@
 
 ## 当前已核验基线（2026-08-25）
 
-- 本地工作树干净，当前提交以 `git rev-parse HEAD` 为准；服务器原目录仍在 `eb7d151` 且有未提交内容，因此不在原目录直接启动新实验或覆盖文件。
+- 当前公开提交为 `ce556219cdcfb2c3765cc5014e80ff0d05d8b7fc`（`ce55621`），GitHub `origin/HEAD` 与本地一致；本地工作树已清理为干净状态。服务器原目录仍在 `eb7d151` 且有未提交内容，因此不在原目录直接启动新实验或覆盖文件；所有新核验只使用 `/mnt/highway1/wang/ScholarNavigator-isolated-20260825`。
 - 本地 `outputs/server_assets/20260824_metadata_v3/` 的 v3 语料 SHA-256 为 `7a385c87250ff438f5748cc49ee683acf1edd01d2f12432d17fe60e83908a31a`，与服务器一致。它有 569,432 条唯一 arXiv ID；title、abstract、authors、year 完整，venue 12.152%、DOI 17.897%。该资产被 Git 忽略，仅作内部可审计实验输入。
 - 同条件 200 条内部诊断显示 v3 Hybrid baseline 的 Recall@20 为 0.12850、F1@20 为 0.02108。Qwen3 Reranker 的 Recall@20 差值为 -0.00054（95% CI [-0.00987, 0.00838]）、F1@20 差值为 +0.00029（95% CI [-0.00219, 0.00273]）；不启用 Reranker。候选数 60→120 也无收益。上述均非官方比赛成绩。
 
@@ -18,18 +18,18 @@
 ## P0：可复现性与反馈闭环
 
 - [x] **P0-01 当前提交的全量回归与前端构建**
-  - 目标：以当前 `0241186` 重新建立本地基线，而非依赖旧文档。
-  - 验收：2026-08-25 完整回归为 `2340 passed, 184 skipped, 2 warnings`；clean-clone 严格测试在提交后通过；`frontend` lint 与 build 通过。
+  - 目标：以当前 `ce55621` 重新建立本地基线，而非依赖旧文档。
+  - 验收：此前全量回归、clean-clone 严格测试和 `frontend` lint/build 已通过；本轮又以当前提交重跑 5 条 gold-blind demo，5/5 成功、网络 0、LLM 0、gold/qrels 未加载。
   - 依赖：锁定的本地 `.venv` 与 `frontend/node_modules`。
 
 - [x] **P0-02 隔离服务器实验工作区**
   - 目标：不改动服务器原有 dirty 工作树，创建基于当前公开提交的独立工作目录，并记录其 commit、依赖与 v3 资产校验。
-  - 验收：2026-08-25 已创建 `<server-isolated-worktree>`，固定 `6b763bf` 且干净；v3 语料 SHA-256、索引指纹 `91302a92…e68f71`、模型指纹 `926ed116…fdf1b7`、569,432 篇和 ANN Recall@10=0.984 均复核；原目录未修改。
+  - 验收：2026-08-25 已创建 `/mnt/highway1/wang/ScholarNavigator-isolated-20260825`，固定 `ce55621` 且干净；v3 语料 SHA-256、索引指纹 `91302a92…e68f71`、模型指纹 `926ed116…fdf1b7`、569,432 篇和 ANN Recall@10=0.984 均复核；原目录未修改。服务器使用原目录 `.venv` 作为依赖运行时，隔离 worktree 不复制模型、索引或环境凭据。
   - 依赖：服务器磁盘空间、已授权 SSH、已存在的模型和 v3 索引。
 
 - [x] **P0-03 可审计发布闭环复核**
   - 目标：确认队友从 GitHub 源码包可运行离线演示，且不依赖本机 `.env` 或私有数据。
-  - 验收：2026-08-25 clean-clone smoke 返回 `ready`；发布包 36.96 MB、1,031 个文件，health/config=200，离线 BM25=5，网络/LLM/gold-qrels 均未加载，模板环境 API 搜索成功。
+  - 验收：2026-08-25 以 `ce55621` 重跑 clean-clone smoke，返回 `ready`；发布包 36.97 MB、1,032 个文件，health/config=200，离线 BM25=5，网络/LLM/gold-qrels 均未加载，模板环境 API 搜索成功；当前 demo manifest 也绑定该提交且工作树干净。
   - 依赖：P0-01 通过。
 
 ## P1：最终检索效果与证据质量
@@ -55,7 +55,7 @@
   - 目标：将已验证许可的全文段落稳定呈现给用户，并保持来源、许可证、段落定位和原文哈希可追溯。
   - 验收：真实允许来源的 HTML/PDF 至少完成一个端到端 smoke；无许可、超限、解析失败均 fail-closed；全文不改变默认排序，Evidence F1 需单独评测。
   - 依赖：允许抓取的开放全文与 P0-02。
-  - 当前进展（2026-08-25）：新增独立 `POST /api/v1/full-text/fetch` 受控入口，要求调用方提供已核验许可证和精确 HTTPS 主机 allow-list；全文不进入搜索排序。新增 XML/HTML 解析和反爬挑战页拒绝逻辑，14 项全文相关测试通过。真实 Europe PMC `fullTextXML` smoke 成功（CC0、application/xml、2 个可定位段落，内容哈希 `018532f2…2d7f`）；PMC HTML challenge 被识别并 fail-closed。Evidence F1 与真实查询中的自动全文接入仍未完成，因此本项保持未完成。
+  - 当前进展（2026-08-25）：新增独立 `POST /api/v1/full-text/fetch` 受控入口，要求调用方提供已核验许可证和精确 HTTPS 主机 allow-list；全文不进入搜索排序。新增 XML/HTML 解析和反爬挑战页拒绝逻辑，后端全文/API 专项回归 39 项通过。前端论文卡片已增加默认折叠的“按许可获取全文证据”控件：只接受显式 HTTPS URL、许可证标识和人工核验确认，成功后展示段落、字符范围和哈希，不修改排名；前端 lint/build 均通过。新增 `evidence-f1-v1` 段落级离线评测器和输入契约，缺少人工 gold 时明确返回 `pending_human_labels`，不输出伪造零分。服务器与本地 Europe PMC `fullTextXML` smoke 均成功（CC0、application/xml、2 个可定位段落，内容哈希 `018532f2…2d7f`）；PMC HTML challenge 被识别并 fail-closed。真实查询集合的人工 Evidence F1 与自动全文接入仍未完成，因此本项保持未完成。
 
 ## P2：受控智能增强与参赛交付
 
@@ -68,6 +68,7 @@
   - 目标：输出可复现的源码发布包、零凭据离线演示和一组不依赖 gold 的评委查询。
   - 验收：P0-03 通过；演示脚本可完整走通查询理解、检索、质量说明、证据定位和导出；不声称内部指标是官方成绩。
   - 依赖：P0-03、P1-04。
+  - 当前进展（2026-08-25）：当前提交已重跑 5 条 gold-blind demo，5/5 成功、可见结果不少于 5、网络/LLM/gold-qrels 均为 0；clean-clone 发布包也已绑定 `ce55621`。待 P1-04 的真实全文 Evidence F1 和现场端到端证据定位闭环完成后再勾选。
 
 - [ ] **P2-03 参赛材料一致性审查**
   - 目标：技术报告、项目说明、实验表、限制声明与仓库实际能力一致。

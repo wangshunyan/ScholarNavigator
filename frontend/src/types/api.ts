@@ -245,6 +245,32 @@ export interface FullTextEvidenceDocument {
   paragraphs: FullTextParagraphEvidence[];
 }
 
+export interface FullTextFetchResult {
+  status:
+    | "succeeded"
+    | "license_unverified"
+    | "url_not_allowed"
+    | "fetch_failed"
+    | "response_too_large"
+    | "unsupported_media_type"
+    | "parser_unavailable"
+    | "parse_failed";
+  document?: {
+    schema_version: string;
+    source: {
+      source_url: string;
+      license_id: string;
+      license_verified: boolean;
+      content_sha256: string;
+    };
+    paragraphs: FullTextParagraphEvidence[];
+  } | null;
+  source_url?: string | null;
+  license_id?: string | null;
+  response_media_type?: string | null;
+  failure_reason?: string | null;
+}
+
 export interface Paper {
   title: string;
   authors: string[];
