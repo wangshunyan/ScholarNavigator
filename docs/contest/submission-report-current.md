@@ -34,7 +34,7 @@ ScholarNavigator 面向“科研场景下复杂学术查询的智能论文搜索
 
 ## 5. 演示与复现
 
-评委可用 `docs/contest/demo-script.md` 和 `docs/contest/demo-queries.md` 演示复杂查询、阶段进度、证据定位、引用图、Markdown/JSON 导出、成本统计和失败降级。当前 clean-clone smoke 已验证：health/config=200、离线 BM25 返回 5 条、网络请求 0、LLM disabled、gold/qrels 未加载；source-only 包约 37 MB，低于 200 MB 源码包上限。
+评委可用 `docs/contest/demo-script.md` 和 `docs/contest/demo-queries.md` 演示复杂查询、阶段进度、证据定位、引用图、Markdown/JSON 导出、成本统计和失败降级。当前提交 `1173973` 的 clean-clone smoke 已验证：health/config=200、离线 BM25 返回 5 条、网络请求 0、LLM disabled、gold/qrels 未加载；5 条 gold-blind 演示均成功且每条至少有 5 个可见结果；source-only 包约 37 MB，低于 200 MB 源码包上限。
 
 推荐现场查询：
 

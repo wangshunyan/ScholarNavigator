@@ -37,7 +37,7 @@
 
 用户导出的脱敏服务器资产已复制到本地 `outputs/server_assets/20260824_metadata_v3/`（该目录被 Git 忽略，不进入发布包）。三组运行的最新 `.run_commits` generation 均包含 `RUN_COMPLETED` 与 `COMMITTED`，`run_manifest` 均为 200/200；每组 `results.jsonl` 为 200 行、`failures.jsonl` 为空。三组均绑定同一 v3 语料 SHA-256=`7a385c87250ff438f5748cc49ee683acf1edd01d2f12432d17fe60e83908a31a`、569,432 篇和索引指纹 `91302a92…e68f71`。
 
-v3 语料严格审计结果：arXiv ID 唯一，title/abstract/authors/year 完整度均为 100%；venue 为 12.152%、DOI 为 17.897%。因此它足以支持当前 Hybrid 检索工程诊断，但仍不满足“venue 与 DOI 全量可核验”的正式元数据门禁，不能据此宣称 P1-01 或赛事资格完成。
+v3 语料严格审计结果：arXiv ID 唯一，title/abstract/authors/year 完整度均为 100%；venue 为 12.152%、DOI 为 17.897%。因此它足以支持当前 Hybrid 检索工程诊断和字段质量面板，但仍不满足“venue 与 DOI 全量可核验”的正式数据资格门禁，不能据此宣称检索资格或赛事资格完成。
 
 baseline `contest_qual200_metadata_v3_hybrid_baseline_eb7d151` 与 candidate `contest_qual200_metadata_v3_hybrid_reranker_eb7d151` 已通过严格只差 Reranker 的审计：同一提交/查询顺序/预算/语料/索引；candidate 使用 CUDA、fallback=0、batch=8、候选=120，593 次成功推理，P50/P95 约 1.761/2.077 秒，峰值显存约 1.50 GB。5,000 次 query-level bootstrap 为：
 
@@ -107,7 +107,7 @@ baseline `contest_qual200_metadata_v3_hybrid_baseline_eb7d151` 与 candidate `co
 
 ## 已知阻塞
 
-- 当前没有可读取的带稳定 arXiv ID 的完整元数据输入，P1-01 尚未完成。
+- 当前没有可读取的、venue 与 DOI 覆盖满足正式资格门槛的元数据输入；字段质量面板已完成，但正式数据资格门禁尚未完成。
 - 历史 replay、network snapshot、预注册哈希和官方 scorer 输入部分缺失或漂移；严格门禁必须失败，不能通过改哈希或伪造产物解除。
 - LLM Provider、GPU、开放全文许可和服务器实验结果均属外部条件；本地开发不读取 `.env`、服务器或 SSH 凭据。
 
