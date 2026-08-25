@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+from urllib.parse import urlparse
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -50,6 +51,13 @@ from ...core.local_hybrid_env import (
     configure_local_hybrid_from_env,
     local_hybrid_config_from_env,
 )
+from ...core.full_text_evidence import (
+    DEFAULT_FULL_TEXT_TIMEOUT_SECONDS,
+    DEFAULT_MAX_FULL_TEXT_BYTES,
+    DEFAULT_MAX_PDF_PAGES,
+    FullTextFetchResult,
+    fetch_open_full_text,
+)
 from ...llm.provider import get_llm_runtime_config
 from ...services.api_mapper import map_search_service_output_to_api_result
 from ...services.search_service import (
@@ -78,6 +86,20 @@ PUBMED_API_KEY_ENV = "PUBMED_API_KEY"
 REAL_SEARCH_TERMINAL_STATUSES = {"succeeded", "failed", "cancelled"}
 
 router = APIRouter(prefix="/api/v1", tags=["api"])
+
+
+class FullTextFetchRequest(BaseModel):
+    """Explicit, license-gated full-text request; never used by ranking."""
+
+    source_url: str = Field(..., min_length=1, max_length=2048)
+    license_id: str = Field(..., min_length=1, max_length=120)
+    license_verified: bool = False
+    allowed_hosts: list[str] = Field(..., min_length=1, max_length=1)
+    timeout_seconds: float = Field(
+        default=DEFAULT_FULL_TEXT_TIMEOUT_SECONDS, gt=0.0, le=30.0
+    )
+    max_bytes: int = Field(default=DEFAULT_MAX_FULL_TEXT_BYTES, gt=0, le=10_000_000)
+    max_pdf_pages: int = Field(default=DEFAULT_MAX_PDF_PAGES, gt=0, le=200)
 
 
 @dataclass
@@ -159,6 +181,40 @@ def _get_real_run(run_id: str) -> RealRun:
 
 def _model_dump(model: BaseModel) -> dict[str, Any]:
     return model.model_dump(mode="json")
+
+
+@router.post(
+    "/full-text/fetch",
+    response_model=FullTextFetchResult,
+    tags=["full-text-evidence"],
+)
+def fetch_full_text_evidence(request: FullTextFetchRequest) -> FullTextFetchResult:
+    """Fetch one caller-authorized open document without touching search ranking.
+
+    The caller must provide both a verified license assertion and an exact
+    single-host allow-list.  This endpoint is intentionally separate from
+    search runs so full-text retrieval is observable, bounded, and opt-in.
+    """
+
+    parsed = urlparse(request.source_url.strip())
+    allowed_host = request.allowed_hosts[0].strip().casefold()
+    if not parsed.hostname or parsed.hostname.casefold() != allowed_host:
+        raise HTTPException(
+            status_code=400,
+            detail="full_text_allowed_host_must_match_source_url",
+        )
+    try:
+        return fetch_open_full_text(
+            source_url=request.source_url,
+            license_id=request.license_id,
+            license_verified=request.license_verified,
+            allowed_hosts={allowed_host},
+            timeout_seconds=request.timeout_seconds,
+            max_bytes=request.max_bytes,
+            max_pdf_pages=request.max_pdf_pages,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
 def _max_workers_from_env(env_name: str, default: int) -> int:

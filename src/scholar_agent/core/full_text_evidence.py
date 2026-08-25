@@ -79,7 +79,13 @@ class FullTextFetchResult(BaseModel):
 DEFAULT_FULL_TEXT_TIMEOUT_SECONDS = 10.0
 DEFAULT_MAX_FULL_TEXT_BYTES = 2_000_000
 DEFAULT_MAX_PDF_PAGES = 100
-_TEXT_MEDIA_TYPES = {"text/plain", "text/html", "application/xhtml+xml"}
+_TEXT_MEDIA_TYPES = {
+    "text/plain",
+    "text/html",
+    "application/xhtml+xml",
+    "application/xml",
+    "text/xml",
+}
 
 
 class _AllowlistedRedirectHandler(HTTPRedirectHandler):
@@ -171,8 +177,15 @@ def fetch_open_full_text(
             text = _pdf_to_text(payload, max_pages=max_pdf_pages)
         else:
             text = _decode_text(payload, content_type)
-        if content_type in {"text/html", "application/xhtml+xml"}:
+        if content_type in {
+            "text/html",
+            "application/xhtml+xml",
+            "application/xml",
+            "text/xml",
+        }:
             text = _html_to_text(text)
+            if _looks_like_browser_challenge(text):
+                raise FullTextEvidenceError("full_text_challenge_page")
         document = build_paragraph_evidence(
             text,
             source_url=clean_url,
@@ -312,6 +325,19 @@ def _decode_text(payload: bytes, media_type: str) -> str:
     if not payload:
         raise FullTextEvidenceError("full_text_empty")
     return payload.decode("utf-8", errors="strict")
+
+
+def _looks_like_browser_challenge(text: str) -> bool:
+    """Reject anti-bot interstitials instead of exposing them as evidence."""
+
+    normalized = re.sub(r"\s+", " ", text).casefold()
+    markers = (
+        "checking your browser",
+        "verify you are human",
+        "enable javascript and cookies",
+        "captcha",
+    )
+    return any(marker in normalized for marker in markers)
 
 
 def _pdf_to_text(payload: bytes, *, max_pages: int) -> str:

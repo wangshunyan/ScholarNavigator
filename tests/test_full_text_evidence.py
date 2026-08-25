@@ -223,3 +223,38 @@ def test_encrypted_or_malformed_pdf_fails_closed() -> None:
 
     assert malformed.status == "parse_failed"
     assert encrypted.status == "parse_failed"
+
+
+def test_xml_full_text_is_supported_and_challenge_pages_fail_closed() -> None:
+    common = {
+        "source_url": "https://open.example.test/paper",
+        "license_id": "CC0",
+        "license_verified": True,
+        "allowed_hosts": {"open.example.test"},
+        "timeout_seconds": 2,
+    }
+    xml = fetch_open_full_text(
+        **common,
+        opener=_opener(
+            _Response(
+                b"<?xml version='1.0'?><article><p>XML evidence.</p></article>",
+                "application/xml",
+            )
+        ),
+    )
+    challenge = fetch_open_full_text(
+        **common,
+        opener=_opener(
+            _Response(
+                b"<html><body>Checking your browser before accessing this site."
+                b"<script>captcha()</script></body></html>",
+                "text/html",
+            )
+        ),
+    )
+
+    assert xml.status == "succeeded"
+    assert xml.document is not None
+    assert xml.document.paragraphs[0].text == "XML evidence."
+    assert challenge.status == "parse_failed"
+    assert challenge.failure_reason == "full_text_challenge_page"

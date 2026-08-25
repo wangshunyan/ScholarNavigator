@@ -94,6 +94,10 @@ baseline `contest_qual200_metadata_v3_hybrid_baseline_eb7d151` 与 candidate `co
 
 筛选未达到“均值为正且 95% CI 下界大于 0”的进入门槛，且 F1@20 点估计下降，因此不启动 200 条正式配对、不切换生产默认策略。该结果仍只是内部工程指标，不是赛事官方成绩。脱敏包 SHA-256：baseline `66af50eee5d6e70e78caae0ca4cac0626fba33b6d75f6977939416556d4cd9b1`，candidate `0e3268643116dd924492e5356566d6755443a460d9a5d502837271d5871ccf01`。
 
+### 2026-08-25：许可全文证据 smoke
+
+新增独立的受控全文入口 `POST /api/v1/full-text/fetch`。调用方必须同时给出已核验许可证和精确 HTTPS 主机 allow-list；全文只生成可定位段落证据，不参与默认排序。Europe PMC `fullTextXML` 的真实 smoke 成功：`CC0`、`application/xml`、2 个段落，内容 SHA-256 为 `018532f23069059da5c7984af68e858fe4ead732be43841587213ecde1bf2d7f`。PMC HTML 反爬挑战页被识别为 `parse_failed`，不会被误当作论文证据。该 smoke 证明抓取/解析/许可证/哈希链路可用，但尚未证明真实查询集合的 Evidence F1，也未把全文自动接入默认搜索流程。
+
 ## 正式实验门槛
 
 1. 获取带稳定 arXiv ID、摘要、作者、年份、期刊和 DOI 的合法元数据源，并重建语料与索引。
