@@ -17,9 +17,9 @@
 
 ## P0：可复现性与反馈闭环
 
-- [ ] **P0-01 当前提交的全量回归与前端构建**
+- [x] **P0-01 当前提交的全量回归与前端构建**
   - 目标：以当前 `0241186` 重新建立本地基线，而非依赖旧文档。
-  - 验收：`PYTHONPATH=src .venv\\Scripts\\python.exe -m pytest -q`、`frontend` 的 lint 与 build 均通过；失败必须修复或记录为真实外部依赖。
+  - 验收：2026-08-25 完整回归为 `2340 passed, 184 skipped, 2 warnings`；clean-clone 严格测试在提交后通过；`frontend` lint 与 build 通过。
   - 依赖：锁定的本地 `.venv` 与 `frontend/node_modules`。
 
 - [ ] **P0-02 隔离服务器实验工作区**
