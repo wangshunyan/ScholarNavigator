@@ -27,9 +27,9 @@
   - 验收：2026-08-25 已创建 `<server-isolated-worktree>`，固定 `6b763bf` 且干净；v3 语料 SHA-256、索引指纹 `91302a92…e68f71`、模型指纹 `926ed116…fdf1b7`、569,432 篇和 ANN Recall@10=0.984 均复核；原目录未修改。
   - 依赖：服务器磁盘空间、已授权 SSH、已存在的模型和 v3 索引。
 
-- [ ] **P0-03 可审计发布闭环复核**
+- [x] **P0-03 可审计发布闭环复核**
   - 目标：确认队友从 GitHub 源码包可运行离线演示，且不依赖本机 `.env` 或私有数据。
-  - 验收：clean-clone smoke 返回 ready，离线 BM25 和 API 链路可用，网络/LLM/gold-qrels 均未加载。
+  - 验收：2026-08-25 clean-clone smoke 返回 `ready`；发布包 36.96 MB、1,031 个文件，health/config=200，离线 BM25=5，网络/LLM/gold-qrels 均未加载，模板环境 API 搜索成功。
   - 依赖：P0-01 通过。
 
 ## P1：最终检索效果与证据质量
