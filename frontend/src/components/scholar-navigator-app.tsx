@@ -2708,22 +2708,21 @@ function FullTextFetchControl({
   paper: RankedPaper["paper"];
   onFetched: (documents: FullTextEvidenceDocument[]) => void;
 }) {
-  const [sourceUrl, setSourceUrl] = useState(paper.urls.pdf || "");
   const [licenseId, setLicenseId] = useState("");
   const [licenseVerified, setLicenseVerified] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const sourceUrl = safeExternalUrl(paper.urls.pdf);
 
   async function handleFetch() {
-    const cleanUrl = safeExternalUrl(sourceUrl.trim());
-    if (!cleanUrl) {
-      setError("请输入合法的 HTTP(S) 全文地址；服务端只接受 HTTPS。 ");
+    if (!sourceUrl) {
+      setError("当前论文没有可核验的 HTTPS PDF 地址，不能附加全文证据。");
       return;
     }
     let parsed: URL;
     try {
-      parsed = new URL(cleanUrl);
+      parsed = new URL(sourceUrl);
     } catch {
       setError("全文地址无法解析。");
       return;
@@ -2746,7 +2745,7 @@ function FullTextFetchControl({
     setError(null);
     try {
       const response = await fetchFullTextEvidence({
-        source_url: cleanUrl,
+        source_url: sourceUrl,
         license_id: licenseId.trim(),
         license_verified: true,
         allowed_hosts: [parsed.hostname],
@@ -2785,19 +2784,21 @@ function FullTextFetchControl({
       </summary>
       <div className="mt-3 space-y-3 text-sm">
         <p className="text-[var(--muted)]">
-          系统不会自动发现或推断许可证。请只填写你已核验、且明确允许访问的 HTTPS 全文地址；全文只补充证据展示，不参与排序。
+          系统只允许使用这张论文卡已返回的 HTTPS PDF 地址，避免把别的论文全文错配到当前结果。请先独立核验许可证；全文只补充证据展示，不参与排序。
         </p>
         <div>
-          <FieldLabel htmlFor={`full-text-url-${paper.identifiers.arxiv_id || paper.title}`}>
-            全文 HTTPS 地址
+          <FieldLabel>
+            已绑定全文地址
           </FieldLabel>
-          <TextInput
-            id={`full-text-url-${paper.identifiers.arxiv_id || paper.title}`}
-            value={sourceUrl}
-            onChange={(event) => setSourceUrl(event.target.value)}
-            placeholder="https://www.ebi.ac.uk/.../fullTextXML"
-            inputMode="url"
-          />
+          {sourceUrl ? (
+            <p className="break-all rounded-md border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-xs text-[var(--muted-strong)]">
+              {sourceUrl}
+            </p>
+          ) : (
+            <p className="rounded-md border border-dashed border-[var(--border)] bg-[var(--background)] px-3 py-2 text-xs text-[var(--muted)]">
+              当前结果没有可安全绑定的 PDF URL。可通过受控数据导入流程补充，不能在此粘贴任意 URL。
+            </p>
+          )}
         </div>
         <div>
           <FieldLabel htmlFor={`full-text-license-${paper.identifiers.arxiv_id || paper.title}`}>
@@ -2819,7 +2820,7 @@ function FullTextFetchControl({
           />
           <span>我已独立核验该 URL 对应全文的许可证，且该主机在我的许可范围内。</span>
         </label>
-        <Button type="button" variant="secondary" onClick={handleFetch} disabled={isFetching}>
+        <Button type="button" variant="secondary" onClick={handleFetch} disabled={isFetching || !sourceUrl}>
           {isFetching ? "获取并解析中…" : "获取全文证据"}
         </Button>
         {message ? <p className="text-xs text-emerald-700 dark:text-emerald-300">{message}</p> : null}

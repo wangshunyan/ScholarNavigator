@@ -49,13 +49,15 @@
   - 目标：把撤稿和重复风险的独立证据接入现有质量报告；未知状态不扣分，质量分与相关性分分离。
   - 验收：只在可验证的外部证据明确标记时显示/软影响结果；API、前端和测试同步；对固定样本验证排序变化并评估 Recall/F1 影响。
   - 依赖：可公开访问的撤稿/更正数据源与 P1-01 的稳定身份字段。
-  - 当前进展（2026-08-25）：Crossref 撤稿关系采集、严格 ledger 绑定、质量信号 API/前端展示及 fail-closed 测试已存在。补齐了 Crossref 明确 `relation.retraction` 的识别（原先只识别 `is-retracted-by`/`update-to`），并以公开撤稿 DOI `10.1007/s11613-016-0476-y` 真实 smoke 生成了 `flagged` ledger；未知状态仍不扣分。历史 20 条 arXiv→Crossref probe 未发现实际候选中的明确证据（7 条无 DOI、10 条未返回、3 条无明确关系），且 v3 语料 DOI 覆盖只有 17.897%，因此尚不能声称“过滤”带来 Recall/F1 收益；质量 soft 仍默认关闭，需获得含明确外部风险证据的固定真实候选样本后再做 paired ranking experiment。
+  - 当前进展（2026-08-25）：Crossref 撤稿关系采集、严格 ledger 绑定、质量信号 API/前端展示及 fail-closed 测试已存在。补齐了 Crossref 明确 `relation.retraction` 的识别（原先只识别 `is-retracted-by`/`update-to`），并以公开撤稿 DOI `10.1007/s11613-016-0476-y` 真实 smoke 生成了 `flagged` ledger；未知状态仍不扣分。历史 20 条 arXiv→Crossref probe 未发现实际候选中的明确证据（7 条无 DOI、10 条未返回、3 条无明确关系）；随后用 1,362 个 Crossref 明确撤稿 DOI 与 v3 语料精确 DOI 交集，命中为 0。v3 DOI 覆盖只有 17.897%，因此尚不能声称“过滤”带来 Recall/F1 收益；质量 soft 保持默认关闭。
+  - **BLOCKED（外部数据）**：需要一个固定真实候选集，其中至少有一篇带稳定 DOI/arXiv 身份、可公开复核的明确撤稿/更正证据；取得后才可执行质量 soft-ranking 的严格成对实验。不得以外部临时论文替换当前 v3 候选来伪造收益。
 
 - [ ] **P1-04 全文证据展示与定位**
   - 目标：将已验证许可的全文段落稳定呈现给用户，并保持来源、许可证、段落定位和原文哈希可追溯。
   - 验收：真实允许来源的 HTML/PDF 至少完成一个端到端 smoke；无许可、超限、解析失败均 fail-closed；全文不改变默认排序，Evidence F1 需单独评测。
   - 依赖：允许抓取的开放全文与 P0-02。
-  - 当前进展（2026-08-25）：新增独立 `POST /api/v1/full-text/fetch` 受控入口，要求调用方提供已核验许可证和精确 HTTPS 主机 allow-list；全文不进入搜索排序。新增 XML/HTML 解析和反爬挑战页拒绝逻辑，后端全文/API 专项回归 39 项通过。前端论文卡片已增加默认折叠的“按许可获取全文证据”控件：只接受显式 HTTPS URL、许可证标识和人工核验确认，成功后展示段落、字符范围和哈希，不修改排名；前端 lint/build 均通过。新增 `evidence-f1-v1` 段落级离线评测器和输入契约，缺少人工 gold 时明确返回 `pending_human_labels`，不输出伪造零分。服务器与本地 Europe PMC `fullTextXML` smoke 均成功（CC0、application/xml、2 个可定位段落，内容哈希 `018532f2…2d7f`）；PMC HTML challenge 被识别并 fail-closed。真实查询集合的人工 Evidence F1 与自动全文接入仍未完成，因此本项保持未完成。
+  - 当前进展（2026-08-25）：新增独立 `POST /api/v1/full-text/fetch` 受控入口，要求调用方提供已核验许可证和精确 HTTPS 主机 allow-list；全文不进入搜索排序。新增 XML/HTML 解析和反爬挑战页拒绝逻辑，后端全文/API 专项回归 39 项通过。前端论文卡片已增加默认折叠的“按许可获取全文证据”控件：仅使用该结果已绑定的 HTTPS PDF 地址，要求许可证标识和人工核验确认；任意 URL 只能经受控数据导入流程进入，不能在卡片粘贴。成功后展示段落、字符范围和哈希，不修改排名；前端 lint/build 均通过。新增 `evidence-f1-v1` 段落级离线评测器和输入契约，缺少人工 gold 时明确返回 `pending_human_labels`，不输出伪造零分。服务器与本地 Europe PMC `fullTextXML` smoke 均成功（CC0、application/xml、2 个可定位段落，内容哈希 `018532f2…2d7f`）；PMC HTML challenge 被识别并 fail-closed。真实查询集合的人工 Evidence F1 与自动全文接入仍未完成，因此本项保持未完成。
+  - **BLOCKED（人工标注）**：需要独立标注者针对固定真实查询-paper 集合，提供已核验全文的段落级证据标签；收到后可直接用 `evidence-f1-v1` 计算，不应由模型或系统推断替代人工标签。
 
 ## P2：受控智能增强与参赛交付
 
@@ -63,6 +65,7 @@
   - 目标：保持 LLM 默认关闭，补齐可观察动作、Schema、预算、Record/Replay 与规则回退。
   - 验收：无 Provider 时稳定降级；有 Provider 时完成同条件 200 条 paired experiment，只有严格正向结果才开放默认开关。
   - 依赖：P1-02 通过、可用 Provider、固定模型/Prompt 快照。
+  - **BLOCKED（Provider）**：当前没有经用户授权、可审计的 LLM Provider/模型快照；保持默认关闭，不能用未固定的第三方模型结果声称改进。
 
 - [ ] **P2-02 竞赛发布包与 5 分钟演示**
   - 目标：输出可复现的源码发布包、零凭据离线演示和一组不依赖 gold 的评委查询。
@@ -74,6 +77,7 @@
   - 目标：技术报告、项目说明、实验表、限制声明与仓库实际能力一致。
   - 验收：逐项核对提交规范；所有数字有可读取证据；团队/官方赛制信息由用户补全后生成最终包。
   - 依赖：P1/P2 实验与官方提交材料。
+  - **BLOCKED（官方材料）**：需要团队信息、官方提交模板/截止要求和官方 scorer 或评分规则；在这些输入缺失时只能维护真实能力说明，不能生成可提交的最终参赛包。
 
 ## 外部阻塞
 
