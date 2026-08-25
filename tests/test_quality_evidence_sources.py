@@ -113,6 +113,24 @@ def test_crossref_collector_accepts_explicit_retraction_update() -> None:
     assert collection.evidence[0].source_record_id == "crossref-work:10.1/retracted"
 
 
+def test_crossref_collector_accepts_direct_retraction_relation() -> None:
+    collection = collect_crossref_retraction_evidence(
+        ["doi:10.1007/s11613-016-0476-y"],
+        opener=lambda *_args, **_kwargs: _Response(
+            {
+                "message": {
+                    "relation": {
+                        "retraction": [{"id-type": "doi", "id": "10.1007/retraction"}]
+                    }
+                }
+            }
+        ),
+    )
+
+    assert collection.lookups[0].outcome == "flagged"
+    assert collection.evidence[0].paper_identifier == "doi:10.1007/s11613-016-0476-y"
+
+
 def test_crossref_collector_keeps_request_failures_unknown() -> None:
     def opener(request, timeout: float):  # noqa: ANN001
         if request.full_url.endswith("10.1%2Fmissing"):

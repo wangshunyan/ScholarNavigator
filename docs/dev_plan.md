@@ -49,7 +49,7 @@
   - 目标：把撤稿和重复风险的独立证据接入现有质量报告；未知状态不扣分，质量分与相关性分分离。
   - 验收：只在可验证的外部证据明确标记时显示/软影响结果；API、前端和测试同步；对固定样本验证排序变化并评估 Recall/F1 影响。
   - 依赖：可公开访问的撤稿/更正数据源与 P1-01 的稳定身份字段。
-  - 当前进展（2026-08-25）：Crossref 撤稿关系采集、严格 ledger 绑定、质量信号 API/前端展示及 fail-closed 测试已存在；历史 20 条 arXiv→Crossref probe 未发现明确撤稿证据（7 条无 DOI、10 条未返回、3 条无明确关系）。由于当前可核验样本没有 flagged 记录，尚不能声称“过滤”带来 Recall/F1 收益；质量 soft 仍默认关闭，需获得含明确外部风险证据的固定候选样本后再做 paired ranking experiment。
+  - 当前进展（2026-08-25）：Crossref 撤稿关系采集、严格 ledger 绑定、质量信号 API/前端展示及 fail-closed 测试已存在。补齐了 Crossref 明确 `relation.retraction` 的识别（原先只识别 `is-retracted-by`/`update-to`），并以公开撤稿 DOI `10.1007/s11613-016-0476-y` 真实 smoke 生成了 `flagged` ledger；未知状态仍不扣分。历史 20 条 arXiv→Crossref probe 未发现实际候选中的明确证据（7 条无 DOI、10 条未返回、3 条无明确关系），且 v3 语料 DOI 覆盖只有 17.897%，因此尚不能声称“过滤”带来 Recall/F1 收益；质量 soft 仍默认关闭，需获得含明确外部风险证据的固定真实候选样本后再做 paired ranking experiment。
 
 - [ ] **P1-04 全文证据展示与定位**
   - 目标：将已验证许可的全文段落稳定呈现给用户，并保持来源、许可证、段落定位和原文哈希可追溯。

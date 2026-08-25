@@ -292,8 +292,16 @@ def _load_crossref_payload(response: Any) -> Mapping[str, Any]:
 
 def _has_explicit_retraction_relation(payload: Mapping[str, Any]) -> bool:
     relation = payload.get("relation")
-    if isinstance(relation, Mapping) and _nonempty_relation(relation.get("is-retracted-by")):
-        return True
+    if isinstance(relation, Mapping):
+        # Crossref uses both ``is-retracted-by`` and the direct ``retraction``
+        # relation for registered works. Both are explicit risk assertions;
+        # missing/unknown relations remain unknown and never produce a clear
+        # ledger record.
+        if any(
+            _nonempty_relation(relation.get(key))
+            for key in ("is-retracted-by", "retraction")
+        ):
+            return True
     updates = payload.get("update-to")
     if not isinstance(updates, list):
         return False
