@@ -941,6 +941,7 @@ function RuntimeReadiness({ config }: { config: RuntimeConfigResponse }) {
               字段完整度将在首次建立本地索引后显示。
             </p>
           )}
+          <RuntimeAssetIdentity details={localBm25?.details} />
         </div>
 
         <div className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-3">
@@ -971,6 +972,7 @@ function RuntimeReadiness({ config }: { config: RuntimeConfigResponse }) {
               字段完整度将在向量索引元数据可用后显示。
             </p>
           )}
+          <RuntimeAssetIdentity details={localHybrid?.details} />
         </div>
 
         <div className="rounded-md border border-[var(--border)] bg-[var(--surface)] p-3">
@@ -988,6 +990,26 @@ function RuntimeReadiness({ config }: { config: RuntimeConfigResponse }) {
         </div>
       </div>
     </section>
+  );
+}
+
+function RuntimeAssetIdentity({
+  details,
+}: {
+  details: RuntimeConfigResponse["connectors"][number]["details"] | undefined;
+}) {
+  const corpus = details?.corpus_sha256;
+  const index = details?.index_fingerprint;
+  const model = details?.model_fingerprint;
+  if (!corpus && !index && !model) return null;
+  const short = (value: string) => `${value.slice(0, 12)}…`;
+  return (
+    <p className="mt-2 text-[11px] text-[var(--muted)]" aria-label="索引资产身份">
+      资产身份：
+      {corpus ? ` 语料 ${short(corpus)}` : ""}
+      {index ? ` · 索引 ${short(index)}` : ""}
+      {model ? ` · 模型 ${short(model)}` : ""}
+    </p>
   );
 }
 

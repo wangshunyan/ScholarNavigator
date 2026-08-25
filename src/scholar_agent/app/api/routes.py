@@ -401,6 +401,8 @@ def _local_bm25_runtime_config() -> ConnectorRuntimeConfig:
         reason=f"configured_from_env:{metadata.document_count}_documents",
         details={
             "field_completeness": metadata.field_completeness,
+            "corpus_sha256": metadata.corpus_sha256,
+            "index_fingerprint": metadata.fingerprint,
             "metadata_quality_scope": "diagnostic_only",
         },
     )
@@ -434,6 +436,9 @@ def _local_hybrid_runtime_config() -> ConnectorRuntimeConfig:
         ),
         details={
             "field_completeness": metadata.field_completeness,
+            "corpus_sha256": metadata.semantic_corpus_sha256,
+            "index_fingerprint": metadata.index_fingerprint,
+            "model_fingerprint": metadata.model_fingerprint,
             "metadata_quality_scope": "diagnostic_only",
         },
     )

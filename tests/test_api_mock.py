@@ -104,8 +104,11 @@ def test_runtime_config_shows_local_bm25_from_env(
     assert connectors["local_bm25"]["reason"] == "configured_from_env:1_documents"
     assert connectors["local_bm25"]["details"] == {
         "field_completeness": None,
+        "corpus_sha256": hashlib.sha256(corpus.read_bytes()).hexdigest(),
+        "index_fingerprint": connectors["local_bm25"]["details"]["index_fingerprint"],
         "metadata_quality_scope": "diagnostic_only",
     }
+    assert len(connectors["local_bm25"]["details"]["index_fingerprint"]) == 64
 
     monkeypatch.delenv("SCHOLAR_AGENT_LOCAL_BM25_CORPUS", raising=False)
     client.get("/api/v1/runtime/config")
@@ -193,6 +196,11 @@ def test_runtime_config_shows_local_hybrid_from_env(
     )
     assert connectors["local_hybrid"]["details"] == {
         "field_completeness": None,
+        "corpus_sha256": hashlib.sha256(corpus_bytes).hexdigest(),
+        "index_fingerprint": "test",
+        "model_fingerprint": hashlib.sha256(
+            b"config.json" + (model_dir / "config.json").read_bytes()
+        ).hexdigest(),
         "metadata_quality_scope": "diagnostic_only",
     }
 

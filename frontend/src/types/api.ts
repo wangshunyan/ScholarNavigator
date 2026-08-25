@@ -53,6 +53,9 @@ export interface RuntimeConfigResponse {
     reason?: string | null;
     details?: {
       field_completeness?: Record<string, number> | null;
+      corpus_sha256?: string;
+      index_fingerprint?: string;
+      model_fingerprint?: string;
       metadata_quality_scope?: string;
       [key: string]: unknown;
     } | null;
